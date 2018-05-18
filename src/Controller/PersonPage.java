@@ -1,6 +1,5 @@
 package Controller;
 
 public class PersonPage {
-
-    //just for testing
+//Pray for this thing to work!
 }
