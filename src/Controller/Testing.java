@@ -1,4 +1,4 @@
-package TestP;
+package Controller;
 
 public class Testing {
     public static void main(String[] args){
