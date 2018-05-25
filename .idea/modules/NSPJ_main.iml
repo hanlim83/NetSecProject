@@ -5,9 +5,10 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src">
       <sourceFolder url="file://$MODULE_DIR$/../../src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/View" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.jfoenix:jfoenix:9.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.jfoenix:jfoenix:8.0.4" level="project" />
   </component>
 </module>
