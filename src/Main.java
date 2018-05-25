@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("BaseLayout.fxml"));
+            loader.setLocation(getClass().getResource("BaseLayout.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 888, 500);
             primaryStage.setResizable(false);
