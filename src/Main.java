@@ -11,7 +11,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("BaseLayout.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 888, 500);
+            Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.setTitle("NSPJ");

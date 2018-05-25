@@ -3,9 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BaseLayout">
+<AnchorPane prefHeight="600.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BaseLayout">
    <children>
-      <JFXButton layoutX="300.0" layoutY="146.0" prefHeight="209.0" prefWidth="288.0" text="TESTING BUTTON" />
+      <JFXButton layoutX="389.0" layoutY="196.0" prefHeight="209.0" prefWidth="288.0" text="TESTING BUTTON" />
    </children>
 </AnchorPane>
