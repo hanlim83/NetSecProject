@@ -1,5 +1,3 @@
-package Controller;
-
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BaseLayoutController implements Initializable {
+public class ControllerBaseLayout implements Initializable {
     @FXML
     private JFXButton Button;
 
@@ -28,14 +26,14 @@ public class BaseLayoutController implements Initializable {
     @FXML
     void onClickButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("out/production/resources/LoginPage.fxml"));
-        System.out.println(getClass().getResource("LoginPage.fxml"));
+        loader.setLocation(ControllerBaseLayout.class.getResource("LoginPage.fxml"));
+        System.out.println(ControllerBaseLayout.class.getResource("LoginPage.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = loader.load();
 
 
-        LoginPageController controller = loader.<LoginPageController>getController();
+        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
         //controller.passData(admin);
 
         stage.setScene(new Scene(nextView));
