@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.pcap4j:pcap4j-packetfactory-static:1.7.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-packetfactory-static/1.7.3/1d4d6877ba61d7f2b28950d3dccf1cb983adcec0/pcap4j-packetfactory-static-1.7.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-packetfactory-static/1.7.3/df789438949337808ab869f02b43e2a7a12bbb75/pcap4j-packetfactory-static-1.7.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
