@@ -20,7 +20,8 @@ dependencies {
     compile 'com.google.apis:google-api-services-oauth2:v2-rev137-1.23.0'
     compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.11.0-beta'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
-    compile group: 'org.pcap4j', name: 'pcap4j', version: '1.7.3', ext: 'pom'
+    compile 'org.pcap4j:pcap4j-core:1.+'
+    compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
 }
 sourceSets {
     main {
