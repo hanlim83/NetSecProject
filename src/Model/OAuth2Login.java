@@ -73,7 +73,7 @@ public class OAuth2Login {
         }
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setDataStoreFactory(
+                httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setAccessType("offline").setApprovalPrompt("force").setDataStoreFactory(
                 dataStoreFactory).build();
         // authorize
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");

@@ -85,16 +85,16 @@ public class Testing {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
             // authorization
-//            credential = authorize();
-//            // set up global Oauth2 instance
-//            oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-//                    APPLICATION_NAME).build();
-            Storage storage = StorageOptions.newBuilder().setCredentials(new GoogleCredentials(new AccessToken(authorize().getAccessToken(),null))).build().getService();
-
-            Page<Bucket> buckets = storage.list();
-            for (Bucket bucket : buckets.iterateAll()) {
-                System.out.println(bucket.toString());
-            }
+            credential = authorize();
+            // set up global Oauth2 instance
+            oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                    APPLICATION_NAME).build();
+//            Storage storage = StorageOptions.newBuilder().setCredentials(new GoogleCredentials(new AccessToken(authorize().getAccessToken(),null))).build().getService();
+//
+//            Page<Bucket> buckets = storage.list();
+//            for (Bucket bucket : buckets.iterateAll()) {
+//                System.out.println(bucket.toString());
+//            }
 //            // run commands
             tokenInfo(credential.getAccessToken());
             userInfo();
