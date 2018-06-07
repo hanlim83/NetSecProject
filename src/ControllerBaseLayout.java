@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +16,8 @@ import java.util.ResourceBundle;
 public class ControllerBaseLayout implements Initializable {
     @FXML
     private JFXButton Button;
+    @FXML
+    private JFXButton LogOutButton;
 
     private Scene myScene;
 
@@ -25,9 +28,14 @@ public class ControllerBaseLayout implements Initializable {
 
     @FXML
     void onClickButton(ActionEvent event) throws IOException {
+        //test
+        File tmpDir = new File(System.getProperty("user.home")+"/"+".store/oauth2_sample");
+        boolean exists = tmpDir.exists();
+        System.out.println(exists);
+        //test
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(ControllerBaseLayout.class.getResource("LoginPage.fxml"));
-        System.out.println(ControllerBaseLayout.class.getResource("LoginPage.fxml"));
+        loader.setLocation(getClass().getResource("LoginPage.fxml"));
+        System.out.println(getClass().getResource("LoginPage.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = loader.load();
@@ -39,5 +47,15 @@ public class ControllerBaseLayout implements Initializable {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    @FXML
+    void onClickLogOut(ActionEvent event) {
+        //String filepath=System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential";
+        //System.out.println(filepath);
+        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+        //File file1=new File("C:/Users/hugoc/.store/oauth2_sample/StoredCredential");
+        file.delete();
+        //file1.delete();
     }
 }

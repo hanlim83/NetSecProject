@@ -17,15 +17,16 @@ import com.google.cloud.storage.StorageOptions;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.ResourceBundle;
-
-import static com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential.REFRESH_TOKEN;
 
 public class ControllerLoginPage implements Initializable {
     @FXML
@@ -51,17 +52,7 @@ public class ControllerLoginPage implements Initializable {
 
     OAuth2Login login=new OAuth2Login();
     private Scene myScene;
-    Date date=new Date(2018,11,12);
-    AccessToken accessToken;
     private static Oauth2 oauth2;
-
-//    {
-//        try {
-//            accessToken = new AccessToken(login.authorize().getAccessToken(),date);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,7 +60,7 @@ public class ControllerLoginPage implements Initializable {
     }
 
     @FXML
-    void onClickLoginButton(ActionEvent event) {
+    void onClickLoginButton(ActionEvent event) throws IOException {
 //        try {
 //            new AccessToken(login.authorize().getAccessToken(),null).getExpirationTime();
 //            System.out.println(new AccessToken(login.authorize().getAccessToken(),null).getExpirationTime());
@@ -81,22 +72,26 @@ public class ControllerLoginPage implements Initializable {
             dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
             // authorization
             Credential credential=login.authorize();
-            credential.getRefreshToken();
+            //credential.getRefreshToken();
             if (credential.getExpirationTimeMilliseconds()==null) {
                 //System.out.println(credential.getExpirationTimeMilliseconds());
                 credential.getRefreshToken();
+                System.out.println("Getting new Token");
+            }
+            else{
+                oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                        APPLICATION_NAME).build();
+                tokenInfo(credential.getAccessToken());
             }
 
 //            if (credential.getRefreshToken()!=null) {
 //                credential.getRefreshToken();
 //            }
             // set up global Oauth2 instance
-            oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-                    APPLICATION_NAME).build();
-            tokenInfo(credential.getAccessToken());
+
 
             // authorization + Get Buckets
-            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(login.authorize().getAccessToken(),null))).build().getService();
+            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
             //Testing for storage
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
@@ -110,11 +105,25 @@ public class ControllerLoginPage implements Initializable {
             //System.out.println(accessToken.getTokenValue().toString());
             //ChangeScene(event);
 
-            return;
+            //return;
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        System.exit(1);
+        //System.exit(1);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("BaseLayout.fxml"));
+        System.out.println(getClass().getResource("BaseLayout.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+
+        ControllerBaseLayout controller = loader.<ControllerBaseLayout>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     private static void tokenInfo(String accessToken) throws IOException {
@@ -125,21 +134,5 @@ public class ControllerLoginPage implements Initializable {
 //        if (!tokeninfo.getAudience().equals(clientSecrets.getDetails().getClientId())) {
 //            System.err.println("ERROR: audience does not match our client ID!");
 //        }
-    }
-
-    private void ChangeScene(ActionEvent event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("src/View/BaseLayout.fxml"));
-//        myScene = (Scene) ((Node) event.getSource()).getScene();
-//        Stage stage = (Stage) (myScene).getWindow();
-//        Parent nextView = loader.load();
-//
-//
-//        ControllerBaseLayout controller = loader.<ControllerBaseLayout>getController();
-////            //controller.passData(admin);
-//
-//        stage.setScene(new Scene(nextView));
-//        stage.setTitle("NSPJ");
-//        stage.show();
     }
 }
