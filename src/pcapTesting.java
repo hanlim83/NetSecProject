@@ -6,6 +6,8 @@ import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.TcpPacket;
+import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.util.NifSelector;
 
 public class pcapTesting {
@@ -41,8 +43,26 @@ public class pcapTesting {
             @Override
             public void gotPacket(Packet packet) {
                 // Override the default gotPacket() function and process packet
-                System.out.println(handle.getTimestamp());
-                System.out.println(packet);
+                if (packet instanceof TcpPacket) {
+                    System.out.println("Packet Type: TCP");
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getSrcPort()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getDstPort()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getSequenceNumber()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getAcknowledgmentNumber()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getSyn()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getRst()));
+                    System.out.println((packet.get(TcpPacket.class).getHeader().getFin()));
+                }
+                else if (packet instanceof UdpPacket){
+                    System.out.println("Packet Type: UDP");
+                    System.out.println((packet.get(UdpPacket.class).getHeader().getSrcPort()));
+                    System.out.println((packet.get(UdpPacket.class).getHeader().getDstPort()));
+                    System.out.println((packet.get(UdpPacket.class).getHeader().getLength()));
+                }
+                else {
+                    System.out.println(packet.getHeader());
+                    System.out.println(packet.getPayload());
+                }
             }
         };
 
