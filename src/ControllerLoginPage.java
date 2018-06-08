@@ -73,16 +73,25 @@ public class ControllerLoginPage implements Initializable {
             // authorization
             Credential credential=login.authorize();
             //credential.getRefreshToken();
-            if (credential.getExpirationTimeMilliseconds()==null) {
+            if (credential.getExpiresInSeconds()<900) {
                 //System.out.println(credential.getExpirationTimeMilliseconds());
+                System.out.println(credential.getExpiresInSeconds());
                 credential.getRefreshToken();
+                System.out.println(credential.getExpiresInSeconds());
                 System.out.println("Getting new Token");
+//                oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+//                        APPLICATION_NAME).build();
+//                tokenInfo(credential.getAccessToken());
+//                System.out.println("Token exists");
+//                System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
             }
-            else{
+            //else{
                 oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
                         APPLICATION_NAME).build();
                 tokenInfo(credential.getAccessToken());
-            }
+                System.out.println("Token exists");
+                System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
+            //}
 
 //            if (credential.getRefreshToken()!=null) {
 //                credential.getRefreshToken();
