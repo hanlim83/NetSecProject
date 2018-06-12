@@ -58,7 +58,7 @@ public class OAuth2Login {
     private static GoogleClientSecrets clientSecrets;
 
     /** Authorizes the installed application to access user's protected data. */
-    public Credential authorize() throws Exception {
+    private Credential authorize() throws Exception {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // load client secrets
@@ -79,6 +79,32 @@ public class OAuth2Login {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
+    public Credential login() throws Exception {
+        Credential credential=authorize();
+        if (credential.getExpiresInSeconds()<500) {
+            System.out.println(credential.getExpiresInSeconds());
+            System.out.println("Getting new Token");
+            //extra
+            oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                    APPLICATION_NAME).build();
+            try {
+                tokenInfo(credential.getAccessToken());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Token exists");
+            System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
+        }
+        oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                APPLICATION_NAME).build();
+        tokenInfo(credential.getAccessToken());
+        userInfo();
+
+        System.out.println("Token exists");
+        System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
+        return credential;
+    }
+
     private static void tokenInfo(String accessToken) throws IOException {
         header("Validating a token");
         Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(accessToken).execute();
@@ -91,6 +117,7 @@ public class OAuth2Login {
     private static void userInfo() throws IOException {
         header("Obtaining User Profile Information");
         Userinfoplus userinfo = oauth2.userinfo().get().execute();
+        System.out.println(userinfo.getEmail());
         System.out.println(userinfo.toPrettyString());
     }
 

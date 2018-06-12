@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1066.0" style="-fx-background-color: #a3c2c2;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCALanding">
+   <children>
+      <Text fill="#542424" layoutX="276.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Capturing Agent" wrappingWidth="513.13671875">
+         <font>
+            <Font name="Marlett" size="49.0" />
+         </font>
+      </Text>
+      <JFXButton fx:id="StartBtn" buttonType="RAISED" layoutX="429.0" layoutY="535.0" onAction="#capture" ripplerFill="#397383" text="Start Capturing" textFill="#f87c7c">
+         <font>
+            <Font name="Lucida Sans Regular" size="24.0" />
+         </font>
+      </JFXButton>
+      <GridPane layoutX="151.0" layoutY="137.0" prefHeight="49.0" prefWidth="765.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0" minWidth="10.0" prefWidth="330.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="443.0" minWidth="10.0" prefWidth="435.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Interface To Capture:">
+               <font>
+                  <Font name="Lucida Sans Regular" size="22.0" />
+               </font>
+            </Text>
+            <JFXComboBox fx:id="InterfaceChooser" onAction="#populateInformation" prefHeight="25.0" prefWidth="502.0" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane layoutX="151.0" layoutY="230.0" prefHeight="239.0" prefWidth="765.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0" minWidth="10.0" prefWidth="319.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="599.0" minWidth="10.0" prefWidth="446.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Interface Name:">
+               <font>
+                  <Font name="Lucida Sans Regular" size="22.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="InterfaceName" editable="false" GridPane.columnIndex="1" />
+            <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Interface Network Addresses:" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Lucida Sans Regular" size="22.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="InterfaceAddress1" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="InterfaceAddress2" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXTextField fx:id="InterfaceAddress3" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <JFXTextField fx:id="InterfaceAddress4" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Interface MAC Address:" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Lucida Sans Regular" size="22.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="InterfacePhysicalAddress" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
