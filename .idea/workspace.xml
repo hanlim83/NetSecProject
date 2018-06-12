@@ -2,9 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Re-enable Gradle Build #2">
+      <change afterPath="$PROJECT_DIR$/src/ControllerSideTab.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/SideTab.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayout.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayout.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayoutNew.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayoutNew.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/BaseLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/BaseLayout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/BaseLayoutNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/BaseLayoutNew.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControllerLoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerLoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -29,27 +38,30 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="12" column="64" selection-start-line="12" selection-start-column="64" selection-end-line="12" selection-end-column="64" />
+            <state relative-caret-position="210">
+              <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerLoginPage.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+      <file leaf-file-name="SideTab.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1078">
-              <caret line="77" column="37" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
+            <state relative-caret-position="170">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerBaseLayoutNew.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
+      <file leaf-file-name="ControllerSideTab.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerSideTab.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="459">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#625#647#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,10 +70,24 @@
       <file leaf-file-name="ControllerBaseLayout.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayout.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="61" />
+            <state relative-caret-position="119">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControllerBaseLayoutNew.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#429#430#0" expanded="true" />
+                <element signature="e#458#459#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,51 +97,8 @@
         <entry file="file://$PROJECT_DIR$/src/View/BaseLayoutNew.fxml">
           <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseLayout.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/BaseLayout.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Testing.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Testing.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="90" column="46" selection-start-line="90" selection-start-column="46" selection-end-line="90" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OAuth2Login.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-301">
-              <caret line="35" column="86" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="86" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+              <caret line="8" column="185" selection-start-line="8" selection-start-column="146" selection-end-line="8" selection-end-column="185" />
             </state>
           </provider>
         </entry>
@@ -531,11 +514,13 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
         <option value="$PROJECT_DIR$/src/Testing.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/ControllerBaseLayout.java" />
-        <option value="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" />
-        <option value="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" />
         <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
+        <option value="$PROJECT_DIR$/src/ControllerSideTab.java" />
+        <option value="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" />
+        <option value="$PROJECT_DIR$/src/View/SideTab.fxml" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" />
       </list>
     </option>
   </component>
@@ -549,10 +534,9 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="238" />
-    <option name="y" value="-10" />
-    <option name="width" value="390" />
-    <option name="height" value="420" />
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -561,6 +545,8 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -579,12 +565,14 @@
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -596,7 +584,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="debugger.dataViews" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -774,15 +762,22 @@
       <workItem from="1528342510013" duration="1320000" />
       <workItem from="1528345107766" duration="2250000" />
       <workItem from="1528370752380" duration="6241000" />
-      <workItem from="1528426752063" duration="1348000" />
+      <workItem from="1528426752063" duration="1487000" />
+      <workItem from="1528449417343" duration="822000" />
+      <workItem from="1528451137183" duration="953000" />
+      <workItem from="1528458184054" duration="554000" />
+      <workItem from="1528596566103" duration="316000" />
+      <workItem from="1528702358595" duration="1471000" />
+      <workItem from="1528770269303" duration="4054000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80638000" />
+    <option name="totallyTimeSpent" value="88947000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -790,15 +785,15 @@
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.25104168" side_tool="true" visible="true" weight="0.49521786" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.25260416" side_tool="true" visible="true" weight="0.33581296" />
       <window_info anchor="right" id="Maven Projects" order="5" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.74895835" visible="true" weight="0.49521786" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7473958" visible="true" weight="0.33581296" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1078125" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12708333" />
       <window_info anchor="right" id="Database" order="8" />
       <window_info anchor="right" id="Gradle" order="6" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -833,21 +828,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Model/PersonTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="33" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/PersonPage.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/Testing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="22" lean-forward="true" selection-start-column="22" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/PersonPage.java" />
     <entry file="file://$PROJECT_DIR$/src/Model/PersonTest.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -997,13 +977,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="12" column="64" selection-start-line="12" selection-start-column="64" selection-end-line="12" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Testing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
@@ -1014,19 +987,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="61" />
+        <state relative-caret-position="272">
+          <caret line="35" column="86" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1041,28 +1005,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BaseLayoutNew.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
+    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="268">
+          <caret line="123" column="8" lean-forward="true" selection-start-line="123" selection-start-column="8" selection-end-line="136" selection-end-column="21" />
+          <folding>
+            <element signature="e#5535#5557#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/EventHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-301">
-          <caret line="35" column="86" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="86" />
+        <state relative-caret-position="357">
+          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerSideTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#625#647#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/BaseLayoutNew.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="185" selection-start-line="8" selection-start-column="146" selection-end-line="8" selection-end-column="185" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1078">
-          <caret line="77" column="37" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
+        <state relative-caret-position="850">
+          <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

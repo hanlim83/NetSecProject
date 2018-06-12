@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBaseLayout">
-
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBaseLayoutNew">
+   <children>
+      <Text layoutX="522.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Line endX="100.0" layoutX="522.0" layoutY="70.0" startX="-100.0" />
+      <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="27.0" />
+      <JFXDrawer fx:id="drawer" layoutY="70.0" prefHeight="530.0" prefWidth="130.0" />
+   </children>
 </AnchorPane>
