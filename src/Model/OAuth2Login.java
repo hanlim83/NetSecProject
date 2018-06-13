@@ -121,6 +121,12 @@ public class OAuth2Login {
         System.out.println(userinfo.toPrettyString());
     }
 
+    //code to print out or to get the email
+    public String getEmail() throws IOException {
+        Userinfoplus userinfo = oauth2.userinfo().get().execute();
+        return userinfo.getEmail();
+    }
+
     static void header(String name) {
         System.out.println();
         System.out.println("================== " + name + " ==================");

@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Re-enable Gradle Build #2">
-      <change afterPath="$PROJECT_DIR$/src/DrawerDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayoutNew.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerBaseLayoutNew.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/OAuth2Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/OAuth2Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/BaseLayoutNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/BaseLayoutNew.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/LoginPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/LoginPage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/SideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/SideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerLoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerLoginPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/OAuth2Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/OAuth2Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/LoginPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LoginPage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client_secret2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client_secrets.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources/client_secrets.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -49,11 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerLoginPage.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ControllerLoginPage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="105" column="12" lean-forward="true" selection-start-line="105" selection-start-column="12" selection-end-line="112" selection-end-column="13" />
+            <state relative-caret-position="1680">
+              <caret line="111" column="30" selection-start-line="111" selection-start-column="30" selection-end-line="111" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -115,12 +100,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginPage.fxml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LoginPage.fxml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/LoginPage.fxml">
           <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="44" lean-forward="true" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+            <state relative-caret-position="238">
+              <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -128,8 +113,8 @@
       <file leaf-file-name="OAuth2Login.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="517">
+              <caret line="125" column="48" lean-forward="true" selection-start-line="125" selection-start-column="48" selection-end-line="125" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -561,15 +546,15 @@
         <option value="$PROJECT_DIR$/src/ControllerSideTab.java" />
         <option value="$PROJECT_DIR$/src/SideTabController.java" />
         <option value="$PROJECT_DIR$/src/ControllerCALanding.java" />
-        <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
         <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
         <option value="$PROJECT_DIR$/src/View/BaseLayout.fxml" />
         <option value="$PROJECT_DIR$/src/View/SideTab.fxml" />
         <option value="$PROJECT_DIR$/src/DrawerDemo.java" />
         <option value="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" />
-        <option value="$PROJECT_DIR$/src/View/LoginPage.fxml" />
         <option value="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" />
         <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
+        <option value="$PROJECT_DIR$/src/View/LoginPage.fxml" />
       </list>
     </option>
   </component>
@@ -809,16 +794,15 @@
       <workItem from="1528596566103" duration="316000" />
       <workItem from="1528702358595" duration="1471000" />
       <workItem from="1528770269303" duration="4054000" />
-      <workItem from="1528856018479" duration="4528000" />
+      <workItem from="1528856018479" duration="5427000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99740000" />
+    <option name="totallyTimeSpent" value="100639000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -830,7 +814,7 @@
       <window_info anchor="right" id="Maven Projects" order="5" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.746875" visible="true" weight="0.18278427" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.746875" visible="true" weight="0.17959617" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
@@ -1061,32 +1045,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LoginPage.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="44" lean-forward="true" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerSideTab.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -1118,6 +1076,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" column="73" lean-forward="true" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="125" column="48" lean-forward="true" selection-start-line="125" selection-start-column="48" selection-end-line="125" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1680">
+          <caret line="111" column="30" selection-start-line="111" selection-start-column="30" selection-end-line="111" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/BaseLayoutNew.fxml">
       <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
@@ -1126,17 +1108,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="12" column="73" lean-forward="true" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
+    <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="105" column="12" lean-forward="true" selection-start-line="105" selection-start-column="12" selection-end-line="112" selection-end-column="13" />
+    <entry file="file://$PROJECT_DIR$/src/View/LoginPage.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
         </state>
       </provider>
     </entry>
