@@ -1,20 +1,23 @@
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.DataStoreFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.gax.paging.Page;
 
-import com.google.api.services.oauth2.Oauth2;
+import com.google.api.client.http.InputStreamContent;
+import com.google.api.services.storage.model.ObjectAccessControl;
+import com.google.api.services.storage.model.Objects;
+import com.google.api.services.storage.model.StorageObject;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,27 +37,10 @@ import static com.google.api.client.util.Charsets.UTF_8;
 public class ControllerLoginPage implements Initializable {
     @FXML
     private JFXButton LoginButton;
-//
-//    private static final String APPLICATION_NAME = "Test";
-//
-//    /** Directory to store user credentials. */
-//    private static final java.io.File DATA_STORE_DIR =
-//            new java.io.File(System.getProperty("user.home"), ".store/oauth2_sample");
-//
-//    /**
-//     * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
-//     * globally shared instance across your application.
-//     */
-//    private static FileDataStoreFactory dataStoreFactory;
-//
-//    /** Global instance of the HTTP transport. */
-//    private static HttpTransport httpTransport;
-//
-//    /** Global instance of the JSON factory. */
-//    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private OAuth2Login login=new OAuth2Login();
     private Scene myScene;
+    private Credential credential;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,17 +48,13 @@ public class ControllerLoginPage implements Initializable {
     }
 
     @FXML
-    void onClickLoginButton(ActionEvent event) throws IOException {
+    void onClickLoginButton(ActionEvent event) throws Exception {
         MACaddrTest();
-//        try {
-//            new AccessToken(login.authorize().getAccessToken(),null).getExpirationTime();
-//            System.out.println(new AccessToken(login.authorize().getAccessToken(),null).getExpirationTime());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        System.out.println(getIp());
+        WindowsVersionNo();
         try {
             // authorization
-            Credential credential=login.login();
+            credential=login.login();
             //credential.getRefreshToken();
 //            if (credential.getExpiresInSeconds()<900) {
 //                //System.out.println(credential.getExpirationTimeMilliseconds());
@@ -106,21 +88,22 @@ public class ControllerLoginPage implements Initializable {
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
                 System.out.println(bucket.toString());
-                File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
-                InputStream targetStream = new FileInputStream(initialFile);
-                InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-                Blob blob = bucket.create("TestFile", targetStream, "text/plain");
             }
 
-//            System.out.println(login.authorize().getAccessToken());
-
-//            Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(credential.getAccessToken()).execute();
-//            System.out.println(tokeninfo.toPrettyString());
-            //System.out.println(accessToken.getExpirationTime());
-            //System.out.println(accessToken.getTokenValue().toString());
-            //ChangeScene(event);
-
-            //return;
+            for (Bucket bucket : buckets.iterateAll()) {
+                Page<Blob> blobs = bucket.list();
+                for (Blob blob : blobs.iterateAll()) {
+                    // do something with the blob
+                    System.out.println(blob);
+                    System.out.println(blob.getName());
+                }
+            }
+            String filename= "TestFILENEW1";
+            if (checkNameTaken(filename)==true){
+                System.out.println("Change NAME!!!!");
+            } else{
+                uploadFile(filename);
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -139,6 +122,59 @@ public class ControllerLoginPage implements Initializable {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    public boolean checkNameTaken(String fileName){
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+        Page<Blob> blobs = storage.list("hr_dept");
+        for (Blob blob : blobs.iterateAll()) {
+            // do something with the blob
+            System.out.println("FROM METHOD"+blob);
+            System.out.println("FROM METHOD"+blob.getName());
+            if(fileName.equals(blob.getName())){
+                System.out.println("Choose Different NAME!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void uploadFile(String filename) throws FileNotFoundException {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+        Page<Bucket> buckets = storage.list();
+        for (Bucket bucket : buckets.iterateAll()) {
+            System.out.println(bucket.toString());
+            File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
+            InputStream targetStream = new FileInputStream(initialFile);
+            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
+            Blob blob = bucket.create(filename, targetStream, "text/plain");
+        }
+    }
+
+    public static String getIp() throws Exception {
+        URL whatismyip = new URL("http://checkip.amazonaws.com");
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            String ip = in.readLine();
+            return ip;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void WindowsVersionNo(){
+        System.out.println("os.name: " + System.getProperty("os.name"));
+        System.out.println("os.version: " + System.getProperty("os.version"));
+        WindowsUtils utils= new WindowsUtils();
+        utils.getEdition();
     }
 
     public void MACaddrTest() throws SocketException, UnknownHostException {
