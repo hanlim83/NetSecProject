@@ -41,6 +41,7 @@ public class ControllerBaseLayoutNew implements Initializable {
             VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
+            drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
             Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -48,13 +49,12 @@ public class ControllerBaseLayoutNew implements Initializable {
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
         transition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            System.out.println("Clicked");
             transition.setRate(transition.getRate() * -1);
             transition.play();
 
             if (drawer.isOpened()) {
                 drawer.close();
-                drawer.setDisable(true);
+                //drawer.setDisable(true);
                 //drawer.setVisible(false);
             } else {
                 drawer.open();

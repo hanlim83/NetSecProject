@@ -9,7 +9,6 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.gax.paging.Page;
 
 import com.google.api.services.oauth2.Oauth2;
-import com.google.api.services.oauth2.model.Tokeninfo;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
@@ -26,9 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
 
@@ -37,28 +34,27 @@ import static com.google.api.client.util.Charsets.UTF_8;
 public class ControllerLoginPage implements Initializable {
     @FXML
     private JFXButton LoginButton;
-
-    private static final String APPLICATION_NAME = "Test";
-
-    /** Directory to store user credentials. */
-    private static final java.io.File DATA_STORE_DIR =
-            new java.io.File(System.getProperty("user.home"), ".store/oauth2_sample");
-
-    /**
-     * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
-     * globally shared instance across your application.
-     */
-    private static FileDataStoreFactory dataStoreFactory;
-
-    /** Global instance of the HTTP transport. */
-    private static HttpTransport httpTransport;
-
-    /** Global instance of the JSON factory. */
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+//
+//    private static final String APPLICATION_NAME = "Test";
+//
+//    /** Directory to store user credentials. */
+//    private static final java.io.File DATA_STORE_DIR =
+//            new java.io.File(System.getProperty("user.home"), ".store/oauth2_sample");
+//
+//    /**
+//     * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
+//     * globally shared instance across your application.
+//     */
+//    private static FileDataStoreFactory dataStoreFactory;
+//
+//    /** Global instance of the HTTP transport. */
+//    private static HttpTransport httpTransport;
+//
+//    /** Global instance of the JSON factory. */
+//    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private OAuth2Login login=new OAuth2Login();
     private Scene myScene;
-    private static Oauth2 oauth2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,10 +71,7 @@ public class ControllerLoginPage implements Initializable {
 //            e.printStackTrace();
 //        }
         try {
-            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
             // authorization
-            //Credential credential=login.authorize();
             Credential credential=login.login();
             //credential.getRefreshToken();
 //            if (credential.getExpiresInSeconds()<900) {
@@ -113,8 +106,10 @@ public class ControllerLoginPage implements Initializable {
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
                 System.out.println(bucket.toString());
+                File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
+                InputStream targetStream = new FileInputStream(initialFile);
                 InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-                Blob blob = bucket.create("TestFile", content, "text/plain");
+                Blob blob = bucket.create("TestFile", targetStream, "text/plain");
             }
 
 //            System.out.println(login.authorize().getAccessToken());
