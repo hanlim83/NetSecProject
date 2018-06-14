@@ -2,19 +2,10 @@ import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 
-import com.google.api.client.http.InputStreamContent;
-import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.api.services.storage.model.Objects;
-import com.google.api.services.storage.model.StorageObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
@@ -51,7 +42,7 @@ public class ControllerLoginPage implements Initializable {
     void onClickLoginButton(ActionEvent event) throws Exception {
         MACaddrTest();
         System.out.println(getIp());
-        WindowsVersionNo();
+        //WindowsVersionNo();
         try {
             // authorization
             credential=login.login();
@@ -170,12 +161,12 @@ public class ControllerLoginPage implements Initializable {
         }
     }
 
-    public void WindowsVersionNo(){
-        System.out.println("os.name: " + System.getProperty("os.name"));
-        System.out.println("os.version: " + System.getProperty("os.version"));
-        WindowsUtils utils= new WindowsUtils();
-        utils.getEdition();
-    }
+//    public void WindowsVersionNo(){
+//        System.out.println("os.name: " + System.getProperty("os.name"));
+//        System.out.println("os.version: " + System.getProperty("os.version"));
+//        WindowsUtils utils= new WindowsUtils();
+//        utils.getEdition();
+//    }
 
     public void MACaddrTest() throws SocketException, UnknownHostException {
 //        System.out.println("Ip: " + GetNetworkAddress.GetAddress("ip"));

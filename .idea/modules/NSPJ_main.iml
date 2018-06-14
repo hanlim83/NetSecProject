@@ -18,6 +18,7 @@
     <orderEntry type="library" name="Gradle: com.google.api:gax:1.25.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.auth:google-auth-library-oauth2-http:0.9.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-oauth2:v2-rev137-1.23.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.api-client:google-api-client:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client-jetty:1.11.0-beta" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.0.1" level="project" />

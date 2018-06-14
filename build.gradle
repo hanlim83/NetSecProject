@@ -22,6 +22,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
     compile 'org.pcap4j:pcap4j-core:1.+'
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
+    compile 'com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0'
 }
 sourceSets {
     main {
