@@ -40,8 +40,6 @@ public class ControllerLoginPage implements Initializable {
 
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
-        MACaddrTest();
-        System.out.println(getIp());
         //WindowsVersionNo();
         try {
             // authorization
@@ -72,7 +70,6 @@ public class ControllerLoginPage implements Initializable {
 //            }
             // set up global Oauth2 instance
 
-
             // authorization + Get Buckets
             Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
             //Testing for storage
@@ -100,14 +97,13 @@ public class ControllerLoginPage implements Initializable {
         }
         //System.exit(1);
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BaseLayout.fxml"));
-        System.out.println(getClass().getResource("BaseLayout.fxml"));
+        loader.setLocation(getClass().getResource("UserHome.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = loader.load();
 
 
-        ControllerBaseLayout controller = loader.<ControllerBaseLayout>getController();
+        ControllerUserHome controller = loader.<ControllerUserHome>getController();
         //controller.passData(admin);
 
         stage.setScene(new Scene(nextView));
@@ -141,88 +137,10 @@ public class ControllerLoginPage implements Initializable {
             Blob blob = bucket.create(filename, targetStream, "text/plain");
         }
     }
-
-    public static String getIp() throws Exception {
-        URL whatismyip = new URL("http://checkip.amazonaws.com");
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            String ip = in.readLine();
-            return ip;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 //    public void WindowsVersionNo(){
 //        System.out.println("os.name: " + System.getProperty("os.name"));
 //        System.out.println("os.version: " + System.getProperty("os.version"));
 //        WindowsUtils utils= new WindowsUtils();
 //        utils.getEdition();
 //    }
-
-    public void MACaddrTest() throws SocketException, UnknownHostException {
-//        System.out.println("Ip: " + GetNetworkAddress.GetAddress("ip"));
-//        System.out.println("Mac: " + GetNetworkAddress.GetAddress("mac"));
-        InetAddress ip;
-        try {
-
-            ip = InetAddress.getLocalHost();
-            System.out.println("Current IP address : " + ip.getHostAddress());
-
-            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-
-            byte[] mac = network.getHardwareAddress();
-
-            System.out.print("Current MAC address : ");
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-            }
-            System.out.println("MACAddr"+sb.toString());
-
-        } catch (UnknownHostException e) {
-
-            e.printStackTrace();
-
-        } catch (SocketException e){
-
-            e.printStackTrace();
-
-        }
-        System.out.println("TESTTTTTTTTTTTTTTTTTTTTT"+getMacAddress());
-    }
-
-    public static String getMacAddress() throws UnknownHostException,
-            SocketException
-    {
-        InetAddress ipAddress = InetAddress.getLocalHost();
-        NetworkInterface networkInterface = NetworkInterface
-                .getByInetAddress(ipAddress);
-        byte[] macAddressBytes = networkInterface.getHardwareAddress();
-        StringBuilder macAddressBuilder = new StringBuilder();
-
-        for (int macAddressByteIndex = 0; macAddressByteIndex < macAddressBytes.length; macAddressByteIndex++)
-        {
-            String macAddressHexByte = String.format("%02X",
-                    macAddressBytes[macAddressByteIndex]);
-            macAddressBuilder.append(macAddressHexByte);
-
-            if (macAddressByteIndex != macAddressBytes.length - 1)
-            {
-                macAddressBuilder.append(":");
-            }
-        }
-
-        return macAddressBuilder.toString();
-    }
-
 }

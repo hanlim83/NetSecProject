@@ -23,6 +23,7 @@ dependencies {
     compile 'org.pcap4j:pcap4j-core:1.+'
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
     compile 'com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0'
+    compile 'com.google.cloud.sql:mysql-socket-factory:1.0.8'
 }
 sourceSets {
     main {
