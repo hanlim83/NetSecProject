@@ -44,99 +44,78 @@ public class ControllerLoginPage implements Initializable {
         try {
             // authorization
             credential=login.login();
-            //credential.getRefreshToken();
-//            if (credential.getExpiresInSeconds()<900) {
-//                //System.out.println(credential.getExpirationTimeMilliseconds());
-//                System.out.println(credential.getExpiresInSeconds());
-//                credential.getRefreshToken();
-//                System.out.println(credential.getExpiresInSeconds());
-//                System.out.println("Getting new Token");
-////                oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-////                        APPLICATION_NAME).build();
-////                tokenInfo(credential.getAccessToken());
-////                System.out.println("Token exists");
-////                System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
-//            }
-//            //else{
-//            oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-//                    APPLICATION_NAME).build();
-//            tokenInfo(credential.getAccessToken());
-//            System.out.println("Token exists");
-//            System.out.println("Token expiry time:"+credential.getExpiresInSeconds());
-//            //}
-
-//            if (credential.getRefreshToken()!=null) {
-//                credential.getRefreshToken();
-//            }
             // set up global Oauth2 instance
 
             // authorization + Get Buckets
-            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-            //Testing for storage
-            Page<Bucket> buckets = storage.list();
-            for (Bucket bucket : buckets.iterateAll()) {
-                System.out.println(bucket.toString());
-            }
-
-            for (Bucket bucket : buckets.iterateAll()) {
-                Page<Blob> blobs = bucket.list();
-                for (Blob blob : blobs.iterateAll()) {
-                    // do something with the blob
-                    System.out.println(blob);
-                    System.out.println(blob.getName());
-                }
-            }
-            String filename= "TestFILENEW1";
-            if (checkNameTaken(filename)==true){
-                System.out.println("Change NAME!!!!");
-            } else{
-                uploadFile(filename);
-            }
+//            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+//            //Testing for storage
+//            Page<Bucket> buckets = storage.list();
+//            for (Bucket bucket : buckets.iterateAll()) {
+//                System.out.println(bucket.toString());
+//            }
+//
+//            for (Bucket bucket : buckets.iterateAll()) {
+//                Page<Blob> blobs = bucket.list();
+//                for (Blob blob : blobs.iterateAll()) {
+//                    // do something with the blob
+//                    System.out.println(blob);
+//                    System.out.println(blob.getName());
+//                }
+//            }
+//            String filename= "TestFILENEW1";
+//            if (checkNameTaken(filename)==true){
+//                System.out.println("Change NAME!!!!");
+//            } else{
+//                uploadFile(filename);
+//            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
         //System.exit(1);
+        //If not sign up go to sign up page
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("UserHome.fxml"));
+        loader.setLocation(getClass().getResource("SignUpPage.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = loader.load();
 
 
-        ControllerUserHome controller = loader.<ControllerUserHome>getController();
-        //controller.passData(admin);
+        ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
+        controller.passData(login.getEmail());
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+        //else goToDeviceCheck
     }
 
-    public boolean checkNameTaken(String fileName){
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-        Page<Blob> blobs = storage.list("hr_dept");
-        for (Blob blob : blobs.iterateAll()) {
-            // do something with the blob
-            System.out.println("FROM METHOD"+blob);
-            System.out.println("FROM METHOD"+blob.getName());
-            if(fileName.equals(blob.getName())){
-                System.out.println("Choose Different NAME!");
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean checkNameTaken(String fileName){
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+//        Page<Blob> blobs = storage.list("hr_dept");
+//        for (Blob blob : blobs.iterateAll()) {
+//            // do something with the blob
+//            System.out.println("FROM METHOD"+blob);
+//            System.out.println("FROM METHOD"+blob.getName());
+//            if(fileName.equals(blob.getName())){
+//                System.out.println("Choose Different NAME!");
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public void uploadFile(String filename) throws FileNotFoundException {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+//        Page<Bucket> buckets = storage.list();
+//        for (Bucket bucket : buckets.iterateAll()) {
+//            System.out.println(bucket.toString());
+//            File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
+//            InputStream targetStream = new FileInputStream(initialFile);
+//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
+//            Blob blob = bucket.create(filename, targetStream, "text/plain");
+//        }
+//    }
 
-    public void uploadFile(String filename) throws FileNotFoundException {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-        Page<Bucket> buckets = storage.list();
-        for (Bucket bucket : buckets.iterateAll()) {
-            System.out.println(bucket.toString());
-            File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
-            InputStream targetStream = new FileInputStream(initialFile);
-            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-            Blob blob = bucket.create(filename, targetStream, "text/plain");
-        }
-    }
 //    public void WindowsVersionNo(){
 //        System.out.println("os.name: " + System.getProperty("os.name"));
 //        System.out.println("os.version: " + System.getProperty("os.version"));

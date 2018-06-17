@@ -18,7 +18,7 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-        <JFXButton fx:id="LoginButton" layoutX="429.0" layoutY="410.0" onAction="#onClickLoginButton" prefHeight="122.0" prefWidth="211.0" text="Login">
+        <JFXButton fx:id="LoginButton" layoutX="429.0" layoutY="437.0" onAction="#onClickLoginButton" prefHeight="122.0" prefWidth="211.0" text="Login">
          <font>
             <Font size="37.0" />
          </font></JFXButton>

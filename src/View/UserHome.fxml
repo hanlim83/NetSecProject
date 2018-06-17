@@ -22,6 +22,7 @@
             </children>
         </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton fx:id="randomButton" layoutX="454.0" layoutY="238.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="randomButton" layoutX="454.0" layoutY="127.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="CloudStorageTestButton" layoutX="434.0" layoutY="358.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="141.0" prefWidth="201.0" text="Cloud Storage Test" />
     </children>
 </AnchorPane>

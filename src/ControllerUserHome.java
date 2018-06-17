@@ -1,3 +1,12 @@
+import Model.OAuth2Login;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.gax.paging.Page;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -11,13 +20,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ControllerUserHome implements Initializable {
     @FXML
@@ -32,9 +41,15 @@ public class ControllerUserHome implements Initializable {
     @FXML
     private JFXButton randomButton;
 
+    @FXML
+    private JFXButton CloudStorageTestButton;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
+
+    private Credential credential;
+    private OAuth2Login login=new OAuth2Login();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,6 +60,67 @@ public class ControllerUserHome implements Initializable {
     void onClickRandomButton(ActionEvent event) throws Exception {
         System.out.println(getIp());
         MACaddrTest();
+    }
+
+    @FXML
+    void onClickCloudStorageTestButton(ActionEvent event) {
+        try {
+            // authorization
+            credential=login.login();
+            // set up global Oauth2 instance
+
+            // authorization + Get Buckets
+            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+            //Testing for storage
+            Page<Bucket> buckets = storage.list();
+            for (Bucket bucket : buckets.iterateAll()) {
+                System.out.println(bucket.toString());
+            }
+
+            for (Bucket bucket : buckets.iterateAll()) {
+                Page<Blob> blobs = bucket.list();
+                for (Blob blob : blobs.iterateAll()) {
+                    // do something with the blob
+                    System.out.println(blob);
+                    System.out.println(blob.getName());
+                }
+            }
+            String filename= "TestFILENEW1";
+            if (checkNameTaken(filename)==true){
+                System.out.println("Change NAME!!!!");
+            } else{
+                uploadFile(filename);
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+        public boolean checkNameTaken(String fileName){
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+        Page<Blob> blobs = storage.list("hr_dept");
+        for (Blob blob : blobs.iterateAll()) {
+            // do something with the blob
+            System.out.println("FROM METHOD"+blob);
+            System.out.println("FROM METHOD"+blob.getName());
+            if(fileName.equals(blob.getName())){
+                System.out.println("Choose Different NAME!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void uploadFile(String filename) throws FileNotFoundException {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+        Page<Bucket> buckets = storage.list();
+        for (Bucket bucket : buckets.iterateAll()) {
+            System.out.println(bucket.toString());
+            File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
+            InputStream targetStream = new FileInputStream(initialFile);
+            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
+            Blob blob = bucket.create(filename, targetStream, "text/plain");
+        }
     }
 
     public static String getIp() throws Exception {
@@ -144,7 +220,7 @@ public class ControllerUserHome implements Initializable {
 
             if (drawer.isOpened()) {
                 drawer.close();
-                //drawer.setDisable(true);
+                drawer.setDisable(true);
                 //drawer.setVisible(false);
             } else {
                 drawer.open();

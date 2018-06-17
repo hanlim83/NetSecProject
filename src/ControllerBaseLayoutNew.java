@@ -54,7 +54,7 @@ public class ControllerBaseLayoutNew implements Initializable {
 
             if (drawer.isOpened()) {
                 drawer.close();
-                //drawer.setDisable(true);
+                drawer.setDisable(true);
                 //drawer.setVisible(false);
             } else {
                 drawer.open();
