@@ -42,49 +42,69 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import static Model.CloudSQLAuth.login;
 import static Model.OAuth2Login.credential;
 import static com.google.api.client.util.Charsets.UTF_8;
 
 public class StorageSnippets {
 
-
-
     private OAuth2Login login=new OAuth2Login();
-//     private StorageSnippets storageObject = new StorageSnippets();
+//    Credential credential;
+    Storage storage;
 
-//    public StorageSnippets(){
-//
-//    }
-    private final Storage storages;
+  //  StorageSnippets storagesnippets = new StorageSnippets();
 
-    public StorageSnippets(Storage storages) {
-        this.storages = storages;
-    }
 
-    private Credential getCredentials(){
-        Credential credential = null;
+
+    public StorageSnippets(){
+        Credential credential;
         try {
             credential = login.login();
+            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return credential;
     }
 
-    public Bucket createBucket(String bucketName){
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-        StorageSnippets storageObject = new StorageSnippets(storage);
-        storageObject.getCredentials();
-        Bucket buckets = storage.create(BucketInfo.of(bucketName));
+    public StorageSnippets(Storage storage) {
+        this.storage = storage;
+    }
+
+//    public void getCredentials(){
+//        try {
+//            Credential credentials = login.login();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    public Bucket createBucket(String bucketName){
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+//        StorageSnippets storageObject = new StorageSnippets(storage);
+//        storageObject.getCredentials();
+//        Bucket buckets = storage.create(BucketInfo.of(bucketName));
 //
-        return buckets;
+//        return buckets;
+//
+//    }
+
+    public Bucket createBucketWithStorageClassAndLocation(String bucketName) {
+     // [START createBucketWithStorageClassAndLocation]
+        Bucket bucket = storage.create(BucketInfo.newBuilder(bucketName)
+                // See here for possible values: http://g.co/cloud/storage/docs/storage-classes
+                .setStorageClass(StorageClass.MULTI_REGIONAL)
+                // Possible values: http://g.co/cloud/storage/docs/bucket-locations#location-mr
+                .setLocation("US")
+                .build());
+        // [END createBucketWithStorageClassAndLocation]
+        return bucket;
     }
 
     public void listBuckets() {
         try {
-            Credential credential=login.login();
-            Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+       //     Credential credential=login.login();
+      //      Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+     //       storagesnippets.getCredentials();
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
                 System.out.println(bucket.toString());
@@ -105,18 +125,5 @@ public class StorageSnippets {
 
 
 
-    public static void main(String[] args){
-        String bucketName;
-        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter ur bucket name: ");
-        bucketName=sc.next();
-
-
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-        StorageSnippets storage1 = new StorageSnippets(storage);
-        storage1.getCredentials();
-        storage1.listBuckets();
-        storage1.createBucket(bucketName);
-    }
 }
