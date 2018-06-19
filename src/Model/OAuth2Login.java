@@ -52,7 +52,8 @@ public class OAuth2Login {
             "https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/devstorage.full_control",
-            "https://www.googleapis.com/auth/cloud-platform");
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/sqlservice.admin");
 
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;
@@ -64,7 +65,7 @@ public class OAuth2Login {
         // load client secrets
         clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
                 //new InputStreamReader(Testing.class.getResourceAsStream("client_secrets.json")));
-                new InputStreamReader(new FileInputStream("src/client_secrets.json")));
+                new InputStreamReader(new FileInputStream("src/Resources/client_secrets.json")));
         if (clientSecrets.getDetails().getClientId().startsWith("Enter")
                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
             System.out.println("Enter Client ID and Secret from https://code.google.com/apis/console/ "
@@ -75,6 +76,17 @@ public class OAuth2Login {
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setAccessType("offline").setApprovalPrompt("force").setDataStoreFactory(
                 dataStoreFactory).build();
+        //test
+        // Set up global SQLAdmin instance.
+//        client = new SQLAdmin.Builder(httpTransport, JSON_FACTORY, credential)
+//                .setServicePath("sql/v1beta4/")
+//                .setApplicationName(APPLICATION_NAME).build();
+//        InstancesListResponse resp = client.instances().list("PROJECT_ID").execute();
+//        List<DatabaseInstance> list = resp.getItems();
+//        for (DatabaseInstance d : list) {
+//            System.out.println(d.getName());
+//        }
+        //test
         // authorize
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
@@ -119,6 +131,11 @@ public class OAuth2Login {
         Userinfoplus userinfo = oauth2.userinfo().get().execute();
         System.out.println(userinfo.getEmail());
         System.out.println(userinfo.toPrettyString());
+    }
+
+    public String getEmail() throws IOException {
+        Userinfoplus userinfo = oauth2.userinfo().get().execute();
+        return userinfo.getEmail();
     }
 
     static void header(String name) {

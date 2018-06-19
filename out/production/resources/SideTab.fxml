@@ -3,10 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="130.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSideTab">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSideTab">
    <children>
-      <JFXButton fx:id="button1" onAction="#onClickTestButton" prefHeight="80.0" prefWidth="130.0" text="Button1" />
-      <JFXButton fx:id="button2" prefHeight="81.0" prefWidth="130.0" text="Button2" />
-      <JFXButton fx:id="button3" prefHeight="91.0" prefWidth="132.0" text="Button3" />
+      <JFXButton fx:id="testButton" onAction="#onClickTestButton" prefHeight="91.0" prefWidth="219.0" text="Change Page" />
    </children>
 </VBox>
