@@ -769,7 +769,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TestStorageSnippets">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="ListTables" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ListTables" />
       <module name="NSPJ_main" />
@@ -867,9 +867,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestStorageSnippets" />
         <item itemvalue="Application.StorageSnippets" />
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.ListTables" />
         <item itemvalue="Application.WindowsUtils" />
       </list>

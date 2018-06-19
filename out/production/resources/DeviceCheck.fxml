@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerDeviceCheck">
+   <children>
+      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+         <children>
+            <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+         </children>
+      </AnchorPane>
+      <JFXButton layoutX="46.0" layoutY="410.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="184.0" text="Button" />
+      <JFXSpinner layoutX="410.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
+   </children>
+</AnchorPane>

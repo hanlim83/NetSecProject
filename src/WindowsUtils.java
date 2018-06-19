@@ -107,8 +107,12 @@ public class WindowsUtils implements Runnable{
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
                 databaseName,
                 instanceConnectionName);
+        //same
+        System.out.println(jdbcUrl);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //check this
+        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = DriverManager.getConnection(jdbcUrl);
         //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoginPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoginPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -22,5 +23,6 @@
          <font>
             <Font size="37.0" />
          </font></JFXButton>
+      <JFXSpinner layoutX="329.0" layoutY="122.0" prefHeight="262.0" prefWidth="412.0" />
     </children>
 </AnchorPane>

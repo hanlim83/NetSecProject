@@ -24,6 +24,9 @@ dependencies {
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
     compile 'com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0'
     compile 'com.google.cloud.sql:mysql-socket-factory:1.0.8'
+    compile 'com.google.cloud.sql:postgres-socket-factory:1.0.8'
+    compile group: 'com.beust', name: 'jcommander', version: '1.7'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
 }
 sourceSets {
     main {

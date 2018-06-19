@@ -64,7 +64,6 @@ public class OAuth2Login {
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // load client secrets
         clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                //new InputStreamReader(Testing.class.getResourceAsStream("client_secrets.json")));
                 new InputStreamReader(new FileInputStream("src/Resources/client_secrets.json")));
         if (clientSecrets.getDetails().getClientId().startsWith("Enter")
                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
@@ -74,19 +73,9 @@ public class OAuth2Login {
         }
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setAccessType("offline").setApprovalPrompt("force").setDataStoreFactory(
-                dataStoreFactory).build();
-        //test
-        // Set up global SQLAdmin instance.
-//        client = new SQLAdmin.Builder(httpTransport, JSON_FACTORY, credential)
-//                .setServicePath("sql/v1beta4/")
-//                .setApplicationName(APPLICATION_NAME).build();
-//        InstancesListResponse resp = client.instances().list("PROJECT_ID").execute();
-//        List<DatabaseInstance> list = resp.getItems();
-//        for (DatabaseInstance d : list) {
-//            System.out.println(d.getName());
-//        }
-        //test
+                httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setAccessType("offline").setApprovalPrompt("force")
+                .setDataStoreFactory(dataStoreFactory).build();
+        System.out.println(flow);
         // authorize
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }

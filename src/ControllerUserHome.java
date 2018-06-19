@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
@@ -60,6 +61,19 @@ public class ControllerUserHome implements Initializable {
     void onClickRandomButton(ActionEvent event) throws Exception {
         System.out.println(getIp());
         MACaddrTest();
+        StringBuilder output = new StringBuilder();
+        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
+        p.waitFor(); //Wait for the process to finish before continuing the Java program.
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = "";
+        while ((line = reader.readLine()) != null) {
+            output.append(line + "\n");
+        }
+        System.out.println(output.toString());
+        //Desktop.getDesktop().open(new File("C://"));
+        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
+    //output.toString() will contain the result of "netsh advfirewall show all profiles state"
     }
 
     @FXML

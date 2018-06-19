@@ -23,13 +23,13 @@ public class ControllerUserSideTab {
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LoginPage.fxml"));
+        loader.setLocation(getClass().getResource("BaseLayoutNew.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = loader.load();
 
 
-        ControllerBaseLayout controller = loader.<ControllerBaseLayout>getController();
+        ControllerBaseLayoutNew controller = loader.<ControllerBaseLayoutNew>getController();
         //controller.passData(admin);
 
         stage.setScene(new Scene(nextView));
