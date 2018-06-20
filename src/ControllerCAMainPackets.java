@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,8 @@ public class ControllerCAMainPackets implements Initializable {
     private NetworkCapture capture;
     private Thread captureThread;
     private ScheduledExecutorService service;
-    private boolean FirstRun = false;
+    private ScheduledFuture tableviewRunnable;
+    private boolean FirstRun = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,8 +116,8 @@ public class ControllerCAMainPackets implements Initializable {
             capture = new NetworkCapture(device);
             captureToggle.setSelected(true);
         }
-        if (FirstRun == false){
-            service.scheduleAtFixedRate(new Runnable() {
+//        if (FirstRun == true){
+            tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
                     Platform.runLater(new Runnable() {
@@ -128,8 +130,8 @@ public class ControllerCAMainPackets implements Initializable {
                     });
                 }
             }, 2, 1, TimeUnit.SECONDS);
-            FirstRun = true;
-        }
+            /*FirstRun = false;
+        }*/
         Runnable task = () -> {
                 capture.startSniffing();
                 packets = capture.packets;
@@ -143,6 +145,7 @@ public class ControllerCAMainPackets implements Initializable {
     }
     public void stopCapturing(){
         capture.stopSniffing();
+        tableviewRunnable.cancel(true);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Capture Summary");
         alert.setHeaderText("Capture Summary Details");

@@ -15,8 +15,10 @@ public class CapturedPacket {
         this.originalPacket = originalPacket;
         this.number = packetNumber;
         this.timestamp = timestamp;
-        if (!originalPacket.contains(IpPacket.class))
+        if (!originalPacket.contains(IpPacket.class)) {
+            this.information ="Not a Layer 2 (IP) Packet";
             return;
+        }
         else {
             IpPacket ipPacket = this.originalPacket.get(IpPacket.class);
             this.srcIP = ipPacket.getHeader().getSrcAddr().getHostAddress().toString();
