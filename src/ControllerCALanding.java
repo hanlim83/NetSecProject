@@ -1,22 +1,37 @@
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ControllerCALanding implements Initializable {
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private JFXHamburger hamburger;
     @FXML
     private JFXButton StartBtn;
     @FXML
@@ -33,11 +48,18 @@ public class ControllerCALanding implements Initializable {
     private JFXTextField InterfaceAddress4;
     @FXML
     private JFXTextField InterfacePhysicalAddress;
+    @FXML
+    private JFXDrawer drawer;
 
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
+    private Scene myScene;
+    public static AnchorPane rootP;
+    private ScheduledExecutorService service;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hamburgerBar();
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
@@ -53,9 +75,12 @@ public class ControllerCALanding implements Initializable {
             alert.showAndWait();
         }
     }
+    public void passVariables(ScheduledExecutorService service) {
+        this.service = service;
+    }
     @FXML
     public void populateInformation(ActionEvent event) {
-        PcapNetworkInterface device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
+        device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
         List<PcapAddress> interfaceAddresses = device.getAddresses();
         InterfaceName.setText(device.getName());
         InterfacePhysicalAddress.setText(device.getLinkLayerAddresses().get(0).toString().toUpperCase());
@@ -82,7 +107,49 @@ public class ControllerCALanding implements Initializable {
     }
     @FXML
     public void capture(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
+            controller.passVariables(device,service);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+    }
+    public void hamburgerBar() {
+        rootP = anchorPane;
 
+        try {
+            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            drawer.setSidePane(box);
+            drawer.setVisible(false);
+            drawer.setDefaultDrawerSize(219);
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+        transition.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
+
+            if (drawer.isOpened()) {
+                drawer.close();
+                drawer.setDisable(true);
+                //drawer.setVisible(false);
+            } else {
+                drawer.open();
+                drawer.setVisible(true);
+                drawer.setDisable(false);
+            }
+        });
     }
 }
 

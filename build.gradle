@@ -20,13 +20,13 @@ dependencies {
     compile 'com.google.apis:google-api-services-oauth2:v2-rev137-1.23.0'
     compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.11.0-beta'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
-    compile 'org.pcap4j:pcap4j-core:1.+'
-    compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
     compile 'com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0'
     compile 'com.google.cloud.sql:mysql-socket-factory:1.0.8'
     compile 'com.google.cloud.sql:postgres-socket-factory:1.0.8'
     compile group: 'com.beust', name: 'jcommander', version: '1.7'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
+    compile 'org.pcap4j:pcap4j-core:1.+'
+    compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
 }
 sourceSets {
     main {

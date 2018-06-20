@@ -4,7 +4,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 public class CAMain extends Application {
+    private ScheduledExecutorService service;
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -13,6 +17,9 @@ public class CAMain extends Application {
             System.out.println(getClass().getResource("CALanding.fxml"));
             System.out.println(getClass().getResource("CABackdrop.png"));
             Parent root = loader.load();
+            ControllerCALanding controller = loader.<ControllerCALanding>getController();
+            service = Executors.newSingleThreadScheduledExecutor();;
+            controller.passVariables(service);
             Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
@@ -21,6 +28,11 @@ public class CAMain extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop(){
+        service.shutdownNow();
     }
 
     public static void main(String[] args) {
