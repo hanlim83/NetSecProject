@@ -1,19 +1,17 @@
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,9 +34,6 @@ public class ControllerSignUpPage implements Initializable {
 
     @FXML
     private JFXPasswordField ConfirmPasswordField;
-
-    @FXML
-    private StackPane StackPane;
 
     private Scene myScene;
     WindowsUtils utils = new WindowsUtils();
@@ -82,11 +77,11 @@ public class ControllerSignUpPage implements Initializable {
         if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
             //Known bug. Clicking the grey area causes the whole screen to be blocked
-//            StackPane.setVisible(true);
-//
-//            String title = "";
-//
-//            String content = "Please fill up all fields!";
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "";
+            String content = "Please fill up all fields!";
 //
 //            JFXDialogLayout dialogContent = new JFXDialogLayout();
 //
@@ -94,29 +89,121 @@ public class ControllerSignUpPage implements Initializable {
 //
 //            dialogContent.setBody(new Text(content));
 //
-//            JFXButton close = new JFXButton("Close");
-//
-//            close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//            close.setStyle("-fx-background-color: #00bfff;");
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
 //
 //            dialogContent.setActions(close);
 //
 //            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
 //
-//            close.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent __) {
-//                    dialog.close();
-//                    StackPane.setVisible(false);
-//                }
-//            });
 //            dialog.show();
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent __) {
+                    alert.hideWithAnimation();
+                }
+            });
+            alert.show();
         } else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
             System.out.println("Passwords do not match!");
+            //Alert below
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "";
+            String content = "Passwords do not match";
+//
+//            JFXDialogLayout dialogContent = new JFXDialogLayout();
+//
+//            dialogContent.setHeading(new Text(title));
+//
+//            dialogContent.setBody(new Text(content));
+//
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+//
+//            dialogContent.setActions(close);
+//
+//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
+//
+//            dialog.show();
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent __) {
+                    alert.hideWithAnimation();
+                }
+            });
+            alert.show();
         }else{
             if (validate(PasswordField.getText())==false){
                 System.out.println("Use stronger password");
+                //Alert below
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+
+                String title = "";
+                String content = "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future";
+//
+//            JFXDialogLayout dialogContent = new JFXDialogLayout();
+//
+//            dialogContent.setHeading(new Text(title));
+//
+//            dialogContent.setBody(new Text(content));
+//
+                JFXButton close = new JFXButton("Close");
+
+                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close.setStyle("-fx-background-color: #00bfff;");
+//
+//            dialogContent.setActions(close);
+//
+//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
+//
+//            dialog.show();
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent __) {
+                        alert.hideWithAnimation();
+                    }
+                });
+                alert.show();
             }else{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("UserHome.fxml"));
