@@ -27,6 +27,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.postgresql:postgresql:9.4-1200-jdbc41" level="project" />
+    <orderEntry type="library" name="Gradle: de.jensd:fontawesomefx:8.9" level="project" />
     <orderEntry type="library" name="Gradle: org.pcap4j:pcap4j-packetfactory-static:1.7.3" level="project" />
     <orderEntry type="library" name="Gradle: org.pcap4j:pcap4j-core:1.7.3" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-storage:v1-rev131-1.23.0" level="project" />

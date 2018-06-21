@@ -25,6 +25,7 @@ dependencies {
     compile 'com.google.cloud.sql:postgres-socket-factory:1.0.8'
     compile group: 'com.beust', name: 'jcommander', version: '1.7'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
+    compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
     compile 'org.pcap4j:pcap4j-core:1.+'
     compile 'org.pcap4j:pcap4j-packetfactory-static:1.+'
 }

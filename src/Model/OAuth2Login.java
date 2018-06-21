@@ -18,6 +18,7 @@ import com.google.api.services.oauth2.model.Userinfoplus;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +60,8 @@ public class OAuth2Login {
     private static GoogleClientSecrets clientSecrets;
 
     /** Authorizes the installed application to access user's protected data. */
-    private Credential authorize() throws Exception {
+    private Credential authorize() throws UnknownHostException,Exception {
+
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // load client secrets
@@ -80,7 +82,7 @@ public class OAuth2Login {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
-    public Credential login() throws Exception {
+    public Credential login() throws UnknownHostException,Exception {
         Credential credential=authorize();
         if (credential.getExpiresInSeconds()<500) {
             System.out.println(credential.getExpiresInSeconds());
@@ -106,7 +108,7 @@ public class OAuth2Login {
         return credential;
     }
 
-    private static void tokenInfo(String accessToken) throws IOException {
+    private static void tokenInfo(String accessToken) throws UnknownHostException,IOException {
         header("Validating a token");
         Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(accessToken).execute();
         System.out.println(tokeninfo.toPrettyString());

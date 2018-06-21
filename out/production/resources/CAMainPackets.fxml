@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCAMainPackets">
+   <children>
+      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+         <children>
+            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
+            <Text layoutX="301.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Capturing Agent" wrappingWidth="465.13671875">
+               <font>
+                  <Font name="Marlett" size="40.0" />
+               </font>
+            </Text>
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+         </children>
+      </AnchorPane>
+      <StackPane layoutY="139.0" prefHeight="461.0" prefWidth="1069.0">
+         <children>
+            <TableView fx:id="packetstable" onMouseClicked="#ShowpacketDetails">
+               <columns>
+                  <TableColumn fx:id="tableColPN" editable="false" prefWidth="109.99996948242188" text="Packet Number" />
+                  <TableColumn fx:id="tableColSrcIP" editable="false" prefWidth="124.0" text="Source IP Address" />
+                  <TableColumn fx:id="tableColSrcPort" editable="false" prefWidth="85.0" text="Source Port" />
+                  <TableColumn fx:id="tableColDstIP" editable="false" prefWidth="139.0" text="Destination IP Address" />
+                  <TableColumn fx:id="tableColDstPort" editable="false" prefWidth="118.0" text="Destination Port" />
+                  <TableColumn fx:id="tableColProtocol" editable="false" prefWidth="67.0" text="Protocol" />
+                  <TableColumn fx:id="tableColLength" editable="false" prefWidth="67.0" text="Length" />
+                  <TableColumn fx:id="tableColInfo" editable="false" prefWidth="358.0" sortable="false" text="Information" />
+               </columns>
+            </TableView>
+         </children>
+      </StackPane>
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXToggleButton fx:id="captureToggle" layoutX="372.0" layoutY="71.0" text="Capture Network Packets">
+         <font>
+            <Font name="Lucida Sans Regular" size="20.0" />
+         </font>
+      </JFXToggleButton>
+   </children>
+</AnchorPane>

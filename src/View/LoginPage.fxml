@@ -23,6 +23,6 @@
          <font>
             <Font size="37.0" />
          </font></JFXButton>
-      <JFXSpinner layoutX="329.0" layoutY="122.0" prefHeight="262.0" prefWidth="412.0" />
+      <JFXSpinner fx:id="LoadingSpinner" layoutX="403.0" layoutY="197.0" prefHeight="206.0" prefWidth="263.0" visible="false" />
     </children>
 </AnchorPane>
