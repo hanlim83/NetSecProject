@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -20,7 +21,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.packet.Packet;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -106,16 +110,21 @@ public class ControllerCAMainPackets implements Initializable {
             }
         });
     }
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
         this.device = nif;
         this.service = service;
+        this.capture = Capture;
+        if (capture != null){
+            packets = capture.packets;
+            OLpackets = FXCollections.observableArrayList(packets);
+            packetstable.setItems(OLpackets);
+            packetstable.refresh();
+        }
     }
 
     public void startCapturing(){
-        if (capture == null) {
+        if (capture == null)
             capture = new NetworkCapture(device);
-            captureToggle.setSelected(true);
-        }
 //        if (FirstRun == true){
             tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
                 @Override
@@ -186,6 +195,30 @@ public class ControllerCAMainPackets implements Initializable {
     }
     @FXML
     public void ShowpacketDetails(MouseEvent event) {
+        CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
+        if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Unsupported Packet");
+            alert.setHeaderText("Unsupported Packet");
+            alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
+            alert.showAndWait();
+        }
+        else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
+                controller.passVariables(device,service,capture,selected);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("NSPJ");
+            stage.show();
+        }
 
     }
 }
