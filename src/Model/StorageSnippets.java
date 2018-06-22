@@ -40,6 +40,7 @@ import com.google.cloud.storage.StorageOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static Model.CloudSQLAuth.login;
@@ -100,13 +101,13 @@ public class StorageSnippets {
         return bucket;
     }
 
-    public void listBuckets() {
+    public ArrayList<String> listBuckets() {
+        ArrayList<String> bucketList = new ArrayList();
         try {
-       //     Credential credential=login.login();
-      //      Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-     //       storagesnippets.getCredentials();
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
+                String BUCKETS = bucket.toString();
+                bucketList.add(BUCKETS);
                 System.out.println(bucket.toString());
             }
 
@@ -114,13 +115,11 @@ public class StorageSnippets {
             e.printStackTrace();
         }
 
-
-        System.out.println("Credentials here : " + login.toString());
-
 //        // [START createBucket]
 //        Bucket bucket = storage.create(BucketInfo.of(bucketName));
 //        // [END createBucket]
       //  return bucket;
+        return bucketList;
     }
 
 
