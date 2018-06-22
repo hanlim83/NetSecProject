@@ -16,7 +16,7 @@
       <AnchorPane prefHeight="65.0" prefWidth="1066.0">
          <children>
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-            <Text layoutX="301.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Capturing Agent" wrappingWidth="465.13671875">
+            <Text layoutX="301.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Packet Capture" wrappingWidth="465.13671875">
                <font>
                   <Font name="Marlett" size="40.0" />
                </font>
@@ -24,12 +24,12 @@
             <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
-      <StackPane layoutY="139.0" prefHeight="461.0" prefWidth="1069.0">
+      <StackPane layoutY="139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="1069.0">
          <children>
             <TableView fx:id="packetstable" onMouseClicked="#ShowpacketDetails">
                <columns>
-                  <TableColumn fx:id="tableColPN" editable="false" prefWidth="109.99996948242188" text="Packet Number" />
-                  <TableColumn fx:id="tableColSrcIP" editable="false" prefWidth="124.0" text="Source IP Address" />
+                  <TableColumn fx:id="tableColPN" editable="false" prefWidth="96.0" text="Packet Number" />
+                  <TableColumn fx:id="tableColSrcIP" editable="false" prefWidth="138.0" text="Source IP Address" />
                   <TableColumn fx:id="tableColSrcPort" editable="false" prefWidth="85.0" text="Source Port" />
                   <TableColumn fx:id="tableColDstIP" editable="false" prefWidth="139.0" text="Destination IP Address" />
                   <TableColumn fx:id="tableColDstPort" editable="false" prefWidth="118.0" text="Destination Port" />

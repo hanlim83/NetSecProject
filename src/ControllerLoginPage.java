@@ -72,18 +72,22 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            thread = new Thread(task);
 //            thread.start();
         //if(process.)
+        LoginButton.setDisable(true);
         process.start();
         process.setOnSucceeded( e -> {
             // TODO, . . .
             // You can modify any GUI element from here...
             // ...with the values you got from the service
             //process.reset();
-            System.out.println("Success");
+            //System.out.println("Success");
             if(email.equals("")){
+                System.out.println("No email");
                 process.reset();
+                LoginButton.setDisable(false);
+                LoadingSpinner.setVisible(false);
             }else{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
-                System.out.println(anchorPane.getScene());
+                //System.out.println(anchorPane.getScene());
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
                 Parent nextView = null;
