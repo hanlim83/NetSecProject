@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -37,6 +40,7 @@ public class ControllerSignUpPage implements Initializable {
 
     private Scene myScene;
     WindowsUtils utils = new WindowsUtils();
+    private String email;
 
     //public static AnchorPane rootP;
 
@@ -46,6 +50,7 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     void passData(String email) {
+        this.email = email;
         EmailTextField.setText(email);
     }
 
@@ -160,8 +165,8 @@ public class ControllerSignUpPage implements Initializable {
                 }
             });
             alert.show();
-        }else{
-            if (validate(PasswordField.getText())==false){
+        } else {
+            if (validate(PasswordField.getText()) == false) {
                 System.out.println("Use stronger password");
                 //Alert below
                 myScene = anchorPane.getScene();
@@ -204,26 +209,29 @@ public class ControllerSignUpPage implements Initializable {
                     }
                 });
                 alert.show();
-            }else{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = loader.load();
+            } else {
+                //Compute Hash of Password
+                String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+                System.out.println(HashPassword);
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("UserHome.fxml"));
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = loader.load();
 
-            //Will change to Device Checking Page next time
-            ControllerUserHome controller = loader.<ControllerUserHome>getController();
-            //controller.passData(login.getEmail());
+                //Will change to Device Checking Page next time
+                ControllerUserHome controller = loader.<ControllerUserHome>getController();
+                //controller.passData(login.getEmail());
 
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
             }
         }
     }
 
     //Will strengthen password validator
-    private boolean validate(String password){
+    private boolean validate(String password) {
         if (password == null || password.length() < 8) {
             return false;
         }
@@ -240,6 +248,23 @@ public class ControllerSignUpPage implements Initializable {
             }
         }
         return false;
+    }
+
+    public String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
     }
 
     private void keyGenerator() {
