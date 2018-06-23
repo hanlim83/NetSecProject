@@ -38,7 +38,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
     private Scene myScene;
     private Credential credential;
 //    private String threadName;
-//    private static Timer t1;
     private String email="";
 
     public AnchorPane getAnchorPane() {
@@ -47,14 +46,13 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //t1 = new Timer();
+
     }
 
     //Thread thread;
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
         LoadingSpinner.setVisible(true);
-        //timerUpdateInfo();
         //try {
         // authorization
         //credential=login.login();
@@ -115,11 +113,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            Thread thread = new Thread(worker);
 //            thread.start();
 
-        //run();
-//        } catch (Throwable t) {
-//            t.printStackTrace();
-//        }
-
 //        Platform.runLater(new Runnable() {
 //            public void run() {
 //                new Thread(task).start();
@@ -144,42 +137,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //        //else goToDeviceCheck
 
     }
-
-//    private void timerUpdateInfo() {
-//        t1.schedule(tt1, 0, 1000);
-//    }
-//
-//    TimerTask tt1 = new TimerTask() {
-//        @Override
-//        public void run() {
-//            Platform.runLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                        if (!email.equals(null)) {
-//                                t1.cancel();
-//                                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
-//                                System.out.println(anchorPane.getScene());
-//                                myScene = anchorPane.getScene();
-//                                Stage stage = (Stage) (myScene).getWindow();
-//                                Parent nextView = null;
-//                                try {
-//                                    nextView = loader.load();
-//                                    ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
-//                                    //System.out.println("Email: " + login.getEmail());
-//                                    controller.passData(login.getEmail());
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                stage.setScene(new Scene(nextView));
-//                            stage.setTitle("NSPJ");
-//                            stage.show();
-//                        }
-//                        //System.out.println("Check your codes!!! Commented out stacktrace to prevent spam when device is offline!!!!");
-//                        //e.printStackTrace();
-//                }
-//            });
-//        }
-//    };
 
 
     //Service method
