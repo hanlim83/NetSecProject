@@ -1,26 +1,29 @@
 import Model.CapturedPacket;
 import Model.NetworkCapture;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.packet.Packet;
@@ -155,20 +158,65 @@ public class ControllerCAMainPackets implements Initializable {
     public void stopCapturing(){
         capture.stopSniffing();
         tableviewRunnable.cancel(true);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        System.out.println("Passwords do not match!");
+        //Alert below
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        String title = "Packet Capturing Summary";
+        String content;
+        if (com.sun.jna.Platform.isWindows())
+            content = "Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPacketsCaptured();
+        else
+            content = "Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPktCount();
+//
+//            JFXDialogLayout dialogContent = new JFXDialogLayout();
+//
+//            dialogContent.setHeading(new Text(title));
+//
+//            dialogContent.setBody(new Text(content));
+//
+        JFXButton close = new JFXButton("Close");
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+//
+//            dialogContent.setActions(close);
+//
+//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
+//
+//            dialog.show();
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent __) {
+                alert.hideWithAnimation();
+            }
+        });
+        alert.show();
+       /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Capture Summary");
         alert.setHeaderText("Capture Summary Details");
         if (com.sun.jna.Platform.isWindows())
             alert.setContentText("Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPacketsCaptured());
         else
             alert.setContentText("Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPktCount());
-        alert.showAndWait();
+        alert.showAndWait();*/
     }
     public void hamburgerBar() {
         rootP = anchorPane;
 
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
@@ -219,6 +267,18 @@ public class ControllerCAMainPackets implements Initializable {
             stage.setTitle("NSPJ");
             stage.show();
         }
+    }
+    @FXML
+    public void ClearPackets(ActionEvent event) {
+        capture = null;
+        OLpackets = null;
+        packetstable.setItems(null);
+        packetstable.refresh();
+
+    }
+
+    @FXML
+    public void launchPcapExport(ActionEvent event) {
 
     }
 }

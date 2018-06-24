@@ -60,7 +60,7 @@ public class ControllerCADetailedPacket implements Initializable {
         rootP = anchorPane;
 
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);

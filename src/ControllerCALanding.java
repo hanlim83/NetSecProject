@@ -60,6 +60,7 @@ public class ControllerCALanding implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        StartBtn.setDisable(true);
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
@@ -126,7 +127,7 @@ public class ControllerCALanding implements Initializable {
         rootP = anchorPane;
 
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
