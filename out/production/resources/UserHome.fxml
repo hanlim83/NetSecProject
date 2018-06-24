@@ -22,8 +22,7 @@
             </children>
         </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton fx:id="randomButton" layoutX="194.0" layoutY="123.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
-      <JFXButton fx:id="CloudStorageTestButton" layoutX="174.0" layoutY="349.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="141.0" prefWidth="201.0" text="Cloud Storage Test" />
-      <JFXButton fx:id="RSAButton" layoutX="711.0" layoutY="123.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="125.0" prefWidth="219.0" text="RSA Test Button" />
+      <JFXButton fx:id="randomButton" layoutX="454.0" layoutY="127.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="CloudStorageTestButton" layoutX="434.0" layoutY="358.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="141.0" prefWidth="201.0" text="Cloud Storage Test" />
     </children>
 </AnchorPane>

@@ -1,7 +1,5 @@
 import Model.StorageSnippets;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +41,12 @@ public class ControllerBucketsPage implements Initializable {
     @FXML
     private AnchorPane CreatingBuckets;
 
+    @FXML
+    private JFXTextField bucketName;
+
+    @FXML
+    private JFXButton enterButton;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -66,6 +70,30 @@ public class ControllerBucketsPage implements Initializable {
 
         String BUCKETS = String.join("\n",listedbuckets);
         listedBuckets.setText(BUCKETS);
+
+    }
+
+    @FXML
+    void handleEnter(MouseEvent event) {
+        String bucketname = bucketName.getText();
+        System.out.println(bucketname);
+        // if() bucket name not eligible
+        //show error
+
+        //else if
+        try {
+            storagesnippets.createBucketWithStorageClassAndLocation(bucketname);
+        }catch(com.google.cloud.storage.StorageException e) {
+            System.out.println("Already have this bucket name");
+            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+            snackbar.show("BUCKET ALREADY EXIST", 3000);
+        }
+        //reupdate the arraylist of buckets
+        storagesnippets.listBuckets();
+
+        //else SUCCESSFUL POP UP
+        
+
 
     }
 
