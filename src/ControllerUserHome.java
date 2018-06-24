@@ -102,13 +102,20 @@ public class ControllerUserHome implements Initializable {
     void onClickRSAButton(ActionEvent event) throws Exception {
         RSAKeyGenerator rsaKeyGenerator=new RSAKeyGenerator();
         rsaKeyGenerator.buildKeyPair();
+        System.out.println("=====================Public Key==========================");
         System.out.println(rsaKeyGenerator.getPublicKeyString());
-        System.out.println(rsaKeyGenerator.getPrivateKeyString());
-        String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233");
-        System.out.println(encryptedPrivateKey);
-        String privateKey=rsaKeyGenerator.getPrivateKeyString("pass123",encryptedPrivateKey);
+        System.out.println("================================Private Key================================");
+        String privateKey=rsaKeyGenerator.getPrivateKeyString();
         System.out.println(privateKey);
-        rsaKeyGenerator.getPublicKeyString().equals(privateKey);
+
+        String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233",privateKey);
+        System.out.println("==========================Encrypted Private Key==================================");
+        System.out.println(encryptedPrivateKey);
+
+        System.out.println("==========================Decrypted Private Key==================================");
+        String privateKey2=rsaKeyGenerator.getPrivateKeyString("pass1233",encryptedPrivateKey);
+        System.out.println(privateKey2);
+        System.out.println(privateKey.equals(privateKey2));
     }
 
     @FXML

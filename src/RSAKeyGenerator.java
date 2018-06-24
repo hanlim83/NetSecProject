@@ -1,5 +1,6 @@
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
@@ -9,6 +10,8 @@ public class RSAKeyGenerator {
     private KeyPair keyPair;
     private PublicKey publicKey;
     private PrivateKey privateKey;
+    byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    IvParameterSpec ivspec = new IvParameterSpec(iv);
 
     public void buildKeyPair() throws NoSuchAlgorithmException {
         final int keySize = 2048;
@@ -30,17 +33,20 @@ public class RSAKeyGenerator {
         return Base64.getEncoder().encodeToString(privateKey.getEncoded());
     }
 
-    public String getPrivateKeyString(String password, String EncryptedPrivateKeyString) throws Exception {
-        byte[] PrivateKeyString=decryptPrivateKey(calculateSymmetricKey(password),EncryptedPrivateKeyString.getBytes());
-        return  new String(PrivateKeyString);
+    public String getPrivateKeyString(String password, String EncodedPrivateKeyString) throws Exception {
+        //decode String from EncryptedPrivateKeyString
+        byte[] EncryptedPrivateKeyString=Base64.getDecoder().decode(EncodedPrivateKeyString);
+        byte[] PrivateKeyString=decryptPrivateKey(calculateSymmetricKey(password),EncryptedPrivateKeyString);
+        //return Base64.getEncoder().encodeToString(PrivateKeyString);
+        return new String(PrivateKeyString);
     }
 
-    public String getEncryptedPrivateKeyString(String password) throws Exception {
+    public String getEncryptedPrivateKeyString(String password, String privateKey) throws Exception {
         //String EncryptedPrivateKeyString=null;
         //getPrivateKeyString();
 
         //encryption codes
-        byte[] EncryptedPrivateKeyString=encryptPrivateKey(calculateSymmetricKey(password),getPrivateKeyString());
+        byte[] EncryptedPrivateKeyString=encryptPrivateKey(calculateSymmetricKey(password),privateKey);
         //convert to base64
         return Base64.getEncoder().encodeToString(EncryptedPrivateKeyString);
     }
@@ -63,16 +69,16 @@ public class RSAKeyGenerator {
         return s.substring(0, length).getBytes("UTF-8");
     }
 
-    private static byte[] encryptPrivateKey(SecretKeySpec symmetricKey, String privateKey) throws Exception {
+    private byte[] encryptPrivateKey(SecretKeySpec symmetricKey, String privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey);
+        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, ivspec);
 
         return cipher.doFinal(privateKey.getBytes());
     }
 
-    private static byte[] decryptPrivateKey(SecretKeySpec symmetricKey, byte [] encrypted) throws Exception {
+    private byte[] decryptPrivateKey(SecretKeySpec symmetricKey, byte [] encrypted) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, symmetricKey);
+        cipher.init(Cipher.DECRYPT_MODE, symmetricKey, ivspec);
 
         return cipher.doFinal(encrypted);
     }

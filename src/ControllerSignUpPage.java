@@ -81,90 +81,12 @@ public class ControllerSignUpPage implements Initializable {
     private void passwordValidation() throws IOException {
         if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
-            //Known bug. Clicking the grey area causes the whole screen to be blocked
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-
-            String title = "";
-            String content = "Please fill up all fields!";
-//
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
-//
-//            dialogContent.setHeading(new Text(title));
-//
-//            dialogContent.setBody(new Text(content));
-//
-            JFXButton close = new JFXButton("Close");
-
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-
-            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
-        } else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
+            showAlert(anchorPane.getScene(),"","Please fill up all fields","Close");
+        }
+        //Consider checking password strength before checking whether it matches
+        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
             System.out.println("Passwords do not match!");
-            //Alert below
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-
-            String title = "";
-            String content = "Passwords do not match";
-//
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
-//
-//            dialogContent.setHeading(new Text(title));
-//
-//            dialogContent.setBody(new Text(content));
-//
-            JFXButton close = new JFXButton("Close");
-
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-
-            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
+            showAlert(anchorPane.getScene(),"","Passwords do not match!","Close");
         } else {
             if (validate(PasswordField.getText()) == false) {
                 System.out.println("Use stronger password");
@@ -210,6 +132,7 @@ public class ControllerSignUpPage implements Initializable {
                 });
                 alert.show();
             } else {
+                //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
                 //Compute Hash of Password
                 String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
                 System.out.println(HashPassword);
@@ -231,21 +154,21 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     //Will strengthen password validator
-    private boolean validate(String password) {
-        if (password == null || password.length() < 8) {
-            return false;
-        }
-        boolean containsChar = false;
-        boolean containsDigit = false;
-        for (char c : password.toCharArray()) {
-            if (Character.isLetter(c)) {
-                containsChar = true;
-            } else if (Character.isDigit(c)) {
-                containsDigit = true;
-            }
-            if (containsChar && containsDigit) {
-                return true;
-            }
+            private boolean validate(String password) {
+                if (password == null || password.length() < 8) {
+                    return false;
+                }
+                boolean containsChar = false;
+                boolean containsDigit = false;
+                for (char c : password.toCharArray()) {
+                    if (Character.isLetter(c)) {
+                        containsChar = true;
+                    } else if (Character.isDigit(c)) {
+                        containsDigit = true;
+                    }
+                    if (containsChar && containsDigit) {
+                        return true;
+                    }
         }
         return false;
     }
@@ -267,8 +190,35 @@ public class ControllerSignUpPage implements Initializable {
         return generatedPassword;
     }
 
-    private void keyGenerator() {
+    private void keyGenerator() throws NoSuchAlgorithmException {
+        RSAKeyGenerator rsaKeyGenerator=new RSAKeyGenerator();
+        rsaKeyGenerator.buildKeyPair();
+    }
 
+    private void showAlert(Scene scene, String Title, String Content,String buttonContent){
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String title = Title;
+        String content = Content;
+
+        JFXButton close = new JFXButton(buttonContent);
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
     }
 }
 
