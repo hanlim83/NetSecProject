@@ -73,11 +73,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
         LoginButton.setDisable(true);
         process.start();
         process.setOnSucceeded( e -> {
-            // TODO, . . .
-            // You can modify any GUI element from here...
-            // ...with the values you got from the service
-            //process.reset();
-            //System.out.println("Success");
             if(email.equals("")){
                 System.out.println("No email");
                 process.reset();
@@ -85,14 +80,12 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoadingSpinner.setVisible(false);
             }else{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
-                //System.out.println(anchorPane.getScene());
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
                 Parent nextView = null;
                 try {
                     nextView = loader.load();
                     ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
-                    //System.out.println("Email: " + login.getEmail());
                     controller.passData(login.getEmail());
                 } catch (IOException u) {
                     u.printStackTrace();
@@ -102,13 +95,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 stage.show();
             }
         });
-//        process.start();
-//        }
-//        } else{
-//            System.out.println(thread.getId());
-//            thread.interrupt();
-//        }
-
 //            ControllerLoginPage worker = new ControllerLoginPage();
 //            Thread thread = new Thread(worker);
 //            thread.start();
@@ -134,10 +120,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //                stage.show();
 //            }
 //        });
-//        //else goToDeviceCheck
-
     }
-
 
     //Service method
     Service process = new Service() {
