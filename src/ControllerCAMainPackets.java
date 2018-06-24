@@ -247,7 +247,10 @@ public class ControllerCAMainPackets implements Initializable {
     }
     @FXML
     public void ShowpacketDetails(MouseEvent event) {
-        if (capture.isRunning()){
+        if (capture == null){
+
+        }
+        else if (capture.isRunning()){
 
         }
         else {
