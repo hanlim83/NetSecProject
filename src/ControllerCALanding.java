@@ -85,6 +85,14 @@ public class ControllerCALanding implements Initializable {
     }
     public void passVariables(ScheduledExecutorService service) {
         this.service = service;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(null,this.service,null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     public void populateInformation(ActionEvent event) {

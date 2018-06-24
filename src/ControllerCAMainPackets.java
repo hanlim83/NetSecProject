@@ -13,12 +13,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,6 +29,7 @@ import org.pcap4j.packet.Packet;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -79,6 +78,12 @@ public class ControllerCAMainPackets implements Initializable {
     @FXML
     private JFXToggleButton captureToggle;
 
+    @FXML
+    private JFXButton exportPcapBtn;
+
+    @FXML
+    private JFXButton clearCaptureBtn;
+
     private PcapNetworkInterface device;
     private Scene myScene;
     public static AnchorPane rootP;
@@ -117,11 +122,24 @@ public class ControllerCAMainPackets implements Initializable {
         this.device = nif;
         this.service = service;
         this.capture = Capture;
-        if (capture != null){
+        if (capture == null){
+            clearCaptureBtn.setDisable(true);
+            exportPcapBtn.setDisable(true);
+        } else if (capture != null){
+            clearCaptureBtn.setDisable(false);
+            exportPcapBtn.setDisable(false);
             packets = capture.packets;
             OLpackets = FXCollections.observableArrayList(packets);
             packetstable.setItems(OLpackets);
             packetstable.refresh();
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.device,this.service,this.capture);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -168,25 +186,9 @@ public class ControllerCAMainPackets implements Initializable {
             content = "Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPacketsCaptured();
         else
             content = "Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPktCount();
-//
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
-//
-//            dialogContent.setHeading(new Text(title));
-//
-//            dialogContent.setBody(new Text(content));
-//
         JFXButton close = new JFXButton("Close");
-
         close.setButtonType(JFXButton.ButtonType.RAISED);
-
         close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label(title));
         layout.setBody(new Label(content));
@@ -203,14 +205,16 @@ public class ControllerCAMainPackets implements Initializable {
             }
         });
         alert.show();
-       /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Capture Summary");
-        alert.setHeaderText("Capture Summary Details");
-        if (com.sun.jna.Platform.isWindows())
-            alert.setContentText("Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPacketsCaptured());
-        else
-            alert.setContentText("Packets Received By Interface: "+capture.getPacketsReceived()+"\nPackets Dropped: "+capture.getPacketsDropped()+"\nPackets Dropped By Interface: "+capture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+capture.getPktCount());
-        alert.showAndWait();*/
+        clearCaptureBtn.setDisable(false);
+        exportPcapBtn.setDisable(false);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.device,this.service,this.capture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public void hamburgerBar() {
         rootP = anchorPane;
@@ -243,38 +247,86 @@ public class ControllerCAMainPackets implements Initializable {
     }
     @FXML
     public void ShowpacketDetails(MouseEvent event) {
-        CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
-        if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Unsupported Packet");
-            alert.setHeaderText("Unsupported Packet");
-            alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
-            alert.showAndWait();
+        if (capture.isRunning()){
+
         }
         else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
-                controller.passVariables(device,service,capture,selected);
-            } catch (IOException e) {
-                e.printStackTrace();
+            CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
+            if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Unsupported Packet");
+                alert.setHeaderText("Unsupported Packet");
+                alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
+                alert.showAndWait();
             }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+            else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
+                    controller.passVariables(device, service, capture, selected);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
+            }
         }
     }
     @FXML
     public void ClearPackets(ActionEvent event) {
-        capture = null;
-        OLpackets = null;
-        packetstable.setItems(null);
-        packetstable.refresh();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Confirmation of Action");
+        alert.setContentText("Do just want to delete the current capture only or delete the current capture and select a new interface?");
 
+        ButtonType buttonTypeOne = new ButtonType("Delete Current Capture Only");
+        ButtonType buttonTypeTwo = new ButtonType("Delete Current Capture and choose a new Interface");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            capture = null;
+            OLpackets = null;
+            packetstable.setItems(null);
+            packetstable.refresh();
+            clearCaptureBtn.setDisable(true);
+            exportPcapBtn.setDisable(true);
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+                ctrl.getVariables(this.device,this.service,this.capture);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (result.get() == buttonTypeTwo) {
+            capture = null;
+            OLpackets = null;
+            packetstable.setItems(null);
+            packetstable.refresh();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
+            myScene = (Scene) ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCALanding controller = loader.<ControllerCALanding>getController();
+                controller.passVariables(service);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.show();
+        }  else {
+            //No Action
+        }
     }
 
     @FXML

@@ -54,6 +54,14 @@ public class ControllerCADetailedPacket implements Initializable {
         this.service = service;
         this.capture = Capture;
         this.packet = packet;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.device,this.service,this.capture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void hamburgerBar() {

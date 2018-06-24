@@ -133,4 +133,8 @@ public class NetworkCapture {
         }
     }
 
+    public boolean isRunning() {
+        return Phandle.isOpen();
+    }
+
 }
