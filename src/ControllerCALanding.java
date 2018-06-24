@@ -64,15 +64,22 @@ public class ControllerCALanding implements Initializable {
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
+            if (devices == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("No Network Interface Found");
+                alert.setHeaderText("No Network Interface Found");
+                alert.setContentText("Ooops, Pcap4j can't find any Network Interfaces! Please check your interfaces or reinstall WinPcap to continue!");
+                alert.showAndWait();
+            }
             List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
             ObservableList<String> intnames = FXCollections.observableList(names);
             InterfaceChooser.setItems(intnames);
             InterfaceChooser.setValue("Select an Interface");
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Pcap Error Occurred");
-            alert.setHeaderText("Pcap Error Detected");
-            alert.setContentText("Ooops, there is an error with Pcap. The agent depends on Pcap to capture Packets! Please correct the problem before continuing!");
+            alert.setTitle("Pcap4j Error Occurred");
+            alert.setHeaderText("Pcap4j Error Detected");
+            alert.setContentText("Ooops, there is an error with Pcap4j. The agent depends on Pcap4j and WinPcap to capture packets! Please reinstall WinPcap to continue!");
             alert.showAndWait();
         }
     }
