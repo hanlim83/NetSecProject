@@ -73,7 +73,7 @@ public class ControllerSignUpPage implements Initializable {
 
 
     @FXML
-    void onClickConfirmButton(ActionEvent event) throws IOException, SQLException {
+    void onClickConfirmButton(ActionEvent event) throws Exception {
         passwordValidation();
         //migrate this to the device checking page
 //        if (utils.checkWindowsApproved()==true) {
@@ -95,7 +95,7 @@ public class ControllerSignUpPage implements Initializable {
 //        }
     }
 
-    private void passwordValidation() throws IOException {
+    private void passwordValidation() throws Exception {
         if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
             showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
@@ -153,10 +153,8 @@ public class ControllerSignUpPage implements Initializable {
             System.out.println("Passwords do not match!");
             showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
         } else {
-            //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
-            //Compute Hash of Password
-            String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-            System.out.println(HashPassword);
+            keyGenerator();
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("UserHome.fxml"));
             myScene = anchorPane.getScene();
@@ -236,9 +234,23 @@ public class ControllerSignUpPage implements Initializable {
         return generatedPassword;
     }
 
-    private void keyGenerator() throws NoSuchAlgorithmException {
+    private void keyGenerator() throws Exception {
+        //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
+        //Compute Hash of Password
+        String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+        System.out.println(HashPassword);
         RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
         rsaKeyGenerator.buildKeyPair();
+        String publicKey=rsaKeyGenerator.getPublicKeyString();
+        System.out.println(publicKey);
+        String privateKey=rsaKeyGenerator.getPrivateKeyString();
+        System.out.println(privateKey);
+        String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString(PasswordField.getText(),privateKey);
+        System.out.println(encryptedPrivateKey);
+        String decryptedPrivateKey=rsaKeyGenerator.getPrivateKeyString(PasswordField.getText(),encryptedPrivateKey);
+        System.out.println(decryptedPrivateKey);
+        System.out.println(privateKey.equals(decryptedPrivateKey));
+        //upload all the info to the cloud
     }
 
     private void showAlert(Scene scene, String Title, String Content, String buttonContent) {

@@ -59,6 +59,8 @@ public class OAuth2Login {
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;
 
+    public LocalServerReceiver l=new LocalServerReceiver();
+
     /** Authorizes the installed application to access user's protected data. */
     private Credential authorize() throws UnknownHostException,Exception {
 
@@ -77,14 +79,15 @@ public class OAuth2Login {
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setAccessType("offline").setApprovalPrompt("force")
                 .setDataStoreFactory(dataStoreFactory).build();
-        System.out.println(flow);
+        //System.out.println(flow);
         // authorize
-        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+        return new AuthorizationCodeInstalledApp(flow, l).authorize("user");
     }
 
     public Credential login() throws UnknownHostException,Exception {
         Credential credential=authorize();
-        if (credential.getExpiresInSeconds()<500) {
+
+        if (credential.getExpiresInSeconds()<300) {
             System.out.println(credential.getExpiresInSeconds());
             System.out.println("Getting new Token");
             //extra

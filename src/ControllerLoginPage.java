@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -23,6 +24,10 @@ import java.net.*;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
@@ -34,11 +39,15 @@ public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
     private JFXSpinner LoadingSpinner;
 
+    @FXML
+    private JFXButton TestButton;
+
     private OAuth2Login login = new OAuth2Login();
     private Scene myScene;
     private Credential credential;
-//    private String threadName;
-    private String email="";
+    //    private String threadName;
+    private String email = "";
+    //private ScheduledExecutorService service;
 
     public AnchorPane getAnchorPane() {
         return anchorPane;
@@ -49,10 +58,54 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     }
 
+    @FXML
+    void onClickTestButton(ActionEvent event) throws Exception {
+        login.l.stop();
+        LoadingSpinner.setVisible(false);
+        LoginButton.setDisable(false);
+    }
+
+    Timer timer;
+
+    public void startTimer() {
+        timer = new Timer();
+        TimerTask Task = new TimerTask() {
+            public void run() {
+                try {
+                    login.l.stop();
+                    LoadingSpinner.setVisible(false);
+                    LoginButton.setDisable(false);
+                    endTimer();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.schedule(Task, 5000);
+    }
+
+    public void endTimer() {
+        timer.cancel();
+        timer.purge();
+    }
+
+
     //Thread thread;
+//    private ScheduledFuture tableviewRunnable;
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
         LoadingSpinner.setVisible(true);
+        if (process.getState().equals("RUNNING")){
+            process.reset();
+            process.start();
+            startTimer();
+        }else{
+            process.restart();
+            startTimer();
+        }
+//        process.start();
+//        startTimer();
+
         //try {
         // authorization
         //credential=login.login();
@@ -71,14 +124,14 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            thread.start();
         //if(process.)
         LoginButton.setDisable(true);
-        process.start();
-        process.setOnSucceeded( e -> {
-            if(email.equals("")){
+
+        process.setOnSucceeded(e -> {
+            if (email.equals("")) {
                 System.out.println("No email");
                 process.reset();
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
-            }else{
+            } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
@@ -95,6 +148,56 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 stage.show();
             }
         });
+
+//        service.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//                Platform.runLater(new Runnable() {
+//                    @Override public void run() {
+//                        try {
+//                            login.l.stop();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        process.reset();
+//                        LoadingSpinner.setVisible(false);
+//                        LoginButton.setDisable(false);
+//                    }
+//                });
+//            }
+//        }, 5, TimeUnit.SECONDS);
+
+//        ScheduledExecutorService scheduler
+//                = Executors.newSingleThreadScheduledExecutor();
+//
+//        Runnable task = new Runnable() {
+//            public void run() {
+//                try {
+//                    login.l.stop();
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                }
+//                LoadingSpinner.setVisible(false);
+//                LoginButton.setDisable(false);
+//                //endTimer();
+//                process.reset();
+//                System.out.println("DONE");
+//            }
+//        };
+//        int delay = 5;
+//        scheduler.schedule(task, delay, TimeUnit.SECONDS);
+//        scheduler.shutdown();
+
+//        process.setOnCancelled(e -> {
+//                    System.out.println("Cancelled");
+//                }
+//        );
+//        process.setOnFailed(e -> {
+//                    System.out.println("Failed");
+//                }
+//        );
+
+
 //            ControllerLoginPage worker = new ControllerLoginPage();
 //            Thread thread = new Thread(worker);
 //            thread.start();
@@ -131,7 +234,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 protected Void call() throws Exception {
                     try {
                         credential = login.login();
-                        email=login.getEmail();
+                        email = login.getEmail();
                     } catch (UnknownHostException u) {
                         Platform.runLater(() -> {
                             System.out.println("No wifi");
@@ -151,7 +254,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
     //redundant codes
     Task<Void> task = new Task<Void>() {
         @Override
-        public Void call(){
+        public Void call() {
             //System.out.println("Thread running"+thread.getId());
             try {
                 credential = login.login();
@@ -174,17 +277,17 @@ public class ControllerLoginPage implements Initializable, Runnable {
     ///Will implement email check againstDB in future updates && also show spinner when running this
     @Override
     public void run() {
-            try {
-                credential = login.login();
-            } catch (UnknownHostException u) {
-                Platform.runLater(() -> {
-                    System.out.println("No wifi");
-                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                    snackbar.show("Check your internet connection", 3000);
-                    //u.printStackTrace();
-                });
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
+        try {
+            credential = login.login();
+        } catch (UnknownHostException u) {
+            Platform.runLater(() -> {
+                System.out.println("No wifi");
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.show("Check your internet connection", 3000);
+                //u.printStackTrace();
+            });
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
 }

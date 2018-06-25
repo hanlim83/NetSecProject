@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -29,7 +29,7 @@
       <TextField fx:id="EmailTextField" disable="true" editable="false" layoutX="419.0" layoutY="172.0" prefHeight="39.0" prefWidth="232.0" />
       <JFXPasswordField fx:id="PasswordField" layoutX="419.0" layoutY="261.0" prefHeight="39.0" prefWidth="232.0" promptText="Password" />
       <JFXPasswordField fx:id="ConfirmPasswordField" layoutX="419.0" layoutY="351.0" prefHeight="39.0" prefWidth="232.0" promptText="Confirm Password" />
-      <JFXButton fx:id="ConfirmButton" layoutX="303.0" layoutY="455.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
+      <JFXButton fx:id="ConfirmButton" layoutX="303.0" layoutY="472.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
       <Label layoutX="288.0" layoutY="261.0" prefHeight="39.0" prefWidth="124.0" text="Password:">
          <font>
             <Font size="26.0" />
@@ -40,6 +40,16 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <JFXButton fx:id="CancelButton" layoutX="560.0" layoutY="455.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
+      <JFXButton fx:id="CancelButton" layoutX="561.0" layoutY="472.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
+      <Label layoutX="352.0" layoutY="390.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="268.0" layoutY="67.0" prefHeight="78.0" prefWidth="535.0" text="Please create a new password to register your usage for the app" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
