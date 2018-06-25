@@ -282,19 +282,26 @@ public class ControllerCAMainPackets implements Initializable {
     }
     @FXML
     public void ClearPackets(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirmation of Action");
-        alert.setContentText("Do just want to delete the current capture only or delete the current capture and select a new interface?");
-
-        ButtonType buttonTypeOne = new ButtonType("Delete Current Capture Only");
-        ButtonType buttonTypeTwo = new ButtonType("Delete Current Capture and choose a new Interface");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeOne){
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        String title = "Confirmation Dialog";
+        String content = "Do just want to clear the current capture only or clear the current capture and select a new interface?";
+        JFXButton clearCapture = new JFXButton("Clear Capture Only");
+        clearCapture.setButtonType(JFXButton.ButtonType.RAISED);
+        clearCapture.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
+        JFXButton clearCaptureAndInt = new JFXButton("Clear and choose new interface");
+        clearCaptureAndInt.setButtonType(JFXButton.ButtonType.RAISED);
+        clearCaptureAndInt.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(clearCapture,clearCaptureAndInt);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        clearCapture.setOnAction(addEvent -> {
             capture = null;
             OLpackets = null;
             packetstable.setItems(null);
@@ -309,14 +316,15 @@ public class ControllerCAMainPackets implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (result.get() == buttonTypeTwo) {
+            alert.hideWithAnimation();
+        });
+        clearCaptureAndInt.setOnAction(addEvent -> {
             capture = null;
             OLpackets = null;
             packetstable.setItems(null);
             packetstable.refresh();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
@@ -326,12 +334,11 @@ public class ControllerCAMainPackets implements Initializable {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            alert.close();
             stage.show();
-        }  else {
-            //No Action
-        }
+        });
+         alert.showAndWait();
     }
-
     @FXML
     public void launchPcapExport(ActionEvent event) {
 

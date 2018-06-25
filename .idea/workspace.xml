@@ -3,17 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/CAMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/CAMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCALanding.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCALanding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerCALanding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCALanding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerBucketsPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerBucketsPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCADetailedPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCADetailedPacket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/NetworkCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/NetworkCapture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/CAMainPackets.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/CAMainPackets.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -74,11 +77,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CAMain.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CAMain.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CAMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="19" column="78" lean-forward="true" selection-start-line="19" selection-start-column="78" selection-end-line="19" selection-end-column="78" />
+            <state relative-caret-position="318">
+              <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#772#793#0" expanded="true" />
@@ -92,19 +95,18 @@
       <file leaf-file-name="ControllerAdminSideTab.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="57" column="25" lean-forward="true" selection-start-line="45" selection-start-column="12" selection-end-line="57" selection-end-column="25" />
+            <state relative-caret-position="391">
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="276" column="13" selection-start-line="276" selection-start-column="13" selection-end-line="276" selection-end-column="13" />
+            <state relative-caret-position="967">
+              <caret line="340" column="5" selection-start-line="340" selection-start-column="5" selection-end-line="340" selection-end-column="5" />
               <folding>
-                <element signature="e#4713#4737#0" expanded="true" />
                 <element signature="e#7959#7960#0" expanded="true" />
                 <element signature="e#8016#8017#0" expanded="true" />
               </folding>
@@ -115,11 +117,11 @@
       <file leaf-file-name="NetworkCapture.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
+            <state relative-caret-position="1989">
               <caret line="136" column="32" selection-start-line="136" selection-start-column="32" selection-end-line="136" selection-end-column="32" />
               <folding>
                 <element signature="e#4481#4482#0" expanded="true" />
-                <element signature="e#4505#4506#0" expanded="true" />
+                <element signature="e#4520#4521#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -128,8 +130,8 @@
       <file leaf-file-name="ControllerCALanding.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="135" selection-start-line="135" selection-end-line="135" />
+            <state relative-caret-position="-1447">
+              <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -604,10 +606,10 @@
         <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
         <option value="$PROJECT_DIR$/src/Model/CapturedPacket.java" />
         <option value="$PROJECT_DIR$/src/CAMain.java" />
-        <option value="$PROJECT_DIR$/src/ControllerCALanding.java" />
         <option value="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" />
         <option value="$PROJECT_DIR$/src/ControllerAdminSideTab.java" />
         <option value="$PROJECT_DIR$/src/Model/NetworkCapture.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCALanding.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAMainPackets.java" />
       </list>
     </option>
@@ -622,7 +624,7 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="641" />
+    <option name="x" value="640" />
     <option name="y" value="25" />
     <option name="width" value="1025" />
     <option name="height" value="1050" />
@@ -634,6 +636,8 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -685,8 +689,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -720,144 +722,6 @@
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\AuthTest" />
     </key>
   </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerBucketsPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSignUpPage$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSignUpPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerUserHome.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/PacketSnifferTesting.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/RSAKeyGenerator.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/BucketsPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/LoginPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/SignUpPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/UserHome.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerBucketsPage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerSignUpPage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerUserHome.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/RSAKeyGenerator.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/BucketsPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/LoginPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/SignUpPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/UserHome.fxml</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/RSAKeyTest.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ScannerTestMain.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/RSAKeyTest.java</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSignUpPage$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSignUpPage$3.class</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
-  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -870,7 +734,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.ScannerTestMain">
+  <component name="RunManager" selected="Application.CAMain">
     <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CAMain" />
       <module name="NSPJ_main" />
@@ -886,10 +750,16 @@
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="ScannerTestMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ScannerTestMain" />
+    <configuration name="StorageSnippets" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Model.StorageSnippets" />
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
     </configuration>
     <configuration name="TestStorageSnippets" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Model.TestStorageSnippets" />
@@ -955,18 +825,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.StorageSnippets" />
       <item itemvalue="Application.TestStorageSnippets" />
       <item itemvalue="Application.GettingStarted" />
       <item itemvalue="Application.CAMain" />
-      <item itemvalue="Application.ScannerTestMain" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ScannerTestMain" />
         <item itemvalue="Application.CAMain" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.GettingStarted" />
         <item itemvalue="Application.TestStorageSnippets" />
+        <item itemvalue="Application.StorageSnippets" />
       </list>
     </recent_temporary>
   </component>
@@ -1039,7 +909,12 @@
       <workItem from="1529415106705" duration="2103000" />
       <workItem from="1529420942634" duration="37657000" />
       <workItem from="1529763905125" duration="5057000" />
-      <workItem from="1529844559046" duration="11798000" />
+      <workItem from="1529844559046" duration="12555000" />
+      <workItem from="1529889368750" duration="159000" />
+      <workItem from="1529889572099" duration="85000" />
+      <workItem from="1529889665335" duration="19000" />
+      <workItem from="1529889819329" duration="260000" />
+      <workItem from="1529890491894" duration="3776000" />
     </task>
     <task id="LOCAL-00001" summary="Fixes Issue &quot;No selection of interface on CAMain but can still move to the next page&quot;">
       <created>1529844938386</created>
@@ -1055,11 +930,25 @@
       <option name="project" value="LOCAL" />
       <updated>1529845939340</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Improved Passing of Variables between pages">
+      <created>1529856584925</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1529856584925</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Corrected Errorous handling of tableview onclick method">
+      <created>1529857126920</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1529857126920</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="200941000" />
+    <option name="totallyTimeSpent" value="205997000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1083,15 +972,14 @@
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5362416" side_tool="true" weight="0.33333334" />
       <window_info anchor="right" id="Maven Projects" order="5" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.46375838" visible="true" weight="0.33333334" />
-      <window_info anchor="right" id="Coverage" order="11" side_tool="true" weight="0.3295302" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49932885" weight="0.32905984" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.46375838" visible="true" weight="0.33333334" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.147651" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15771812" />
       <window_info anchor="right" id="Database" order="8" />
-      <window_info anchor="right" id="Gradle" order="6" weight="0.19616205" />
+      <window_info anchor="right" id="Gradle" order="6" weight="0.19597316" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
@@ -1105,6 +993,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
+      <window_info anchor="right" id="Coverage" order="11" side_tool="true" weight="0.3295302" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1118,7 +1007,9 @@
     <MESSAGE value="Re-enable Gradle Build #2" />
     <MESSAGE value="Fixes Issue &quot;No selection of interface on CAMain but can still move to the next page&quot;" />
     <MESSAGE value="Better Handling of &quot;No interface available in CAMain&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better Handling of &quot;No interface available in CAMain&quot;" />
+    <MESSAGE value="Improved Passing of Variables between pages" />
+    <MESSAGE value="Corrected Errorous handling of tableview onclick method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corrected Errorous handling of tableview onclick method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1175,10 +1066,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="11" column="13" lean-forward="true" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1931#1939#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1223,17 +1110,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2816">
           <caret line="200" column="42" lean-forward="true" selection-start-line="200" selection-start-column="42" selection-end-line="200" selection-end-column="42" />
-          <folding>
-            <element signature="e#1092#1093#0" expanded="true" />
-            <element signature="e#1125#1126#0" expanded="true" />
-            <element signature="e#2918#2940#0" expanded="true" />
-            <element signature="e#6430#7350#0" expanded="true" />
-            <element signature="e#6521#7333#0" expanded="true" />
-            <element signature="e#7332#7333#0" expanded="true" />
-            <element signature="e#7349#7350#0" expanded="true" />
-            <element signature="e#7397#8145#0" expanded="true" />
-            <element signature="e#8144#8145#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1248,11 +1124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="129">
           <caret line="150" lean-forward="true" selection-start-line="125" selection-start-column="12" selection-end-line="166" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5631#5632#0" expanded="true" />
-            <element signature="e#5696#5697#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1260,9 +1131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="124" column="27" selection-start-line="124" selection-start-column="27" selection-end-line="124" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1270,10 +1138,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="413">
           <caret line="43" selection-start-line="43" selection-end-line="71" selection-end-column="5" />
-          <folding>
-            <element signature="e#1162#1163#0" expanded="true" />
-            <element signature="e#1190#1191#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1311,12 +1175,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
           <caret line="61" column="33" lean-forward="true" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
-          <folding>
-            <element signature="e#1478#1479#0" expanded="true" />
-            <element signature="e#1508#1509#0" expanded="true" />
-            <element signature="e#1966#1990#0" expanded="true" />
-            <element signature="e#3202#3227#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1376,10 +1234,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="111">
           <caret line="88" selection-start-line="88" selection-end-line="88" />
-          <folding>
-            <element signature="e#3176#3853#0" expanded="true" />
-            <element signature="e#3852#3853#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1387,10 +1241,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="111">
           <caret line="79" selection-start-line="79" selection-end-line="79" />
-          <folding>
-            <element signature="e#6461#6462#0" expanded="true" />
-            <element signature="e#6511#6512#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1493,11 +1343,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="134">
           <caret line="8411" selection-start-line="8411" selection-end-line="8411" />
-          <folding>
-            <element signature="e#35131#35138#0" expanded="true" />
-            <element signature="e#48219#48220#0" expanded="true" />
-            <element signature="e#48263#48264#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1528,52 +1373,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="135" selection-start-line="135" selection-end-line="135" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CAMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="19" column="78" lean-forward="true" selection-start-line="19" selection-start-column="78" selection-end-line="19" selection-end-column="78" />
+        <state relative-caret-position="1989">
+          <caret line="136" column="32" selection-start-line="136" selection-start-column="32" selection-end-line="136" selection-end-column="32" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#772#793#0" expanded="true" />
-            <element signature="e#1262#1263#0" expanded="true" />
-            <element signature="e#1299#1300#0" expanded="true" />
+            <element signature="e#4481#4482#0" expanded="true" />
+            <element signature="e#4520#4521#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="57" column="25" lean-forward="true" selection-start-line="45" selection-start-column="12" selection-end-line="57" selection-end-column="25" />
+        <state relative-caret-position="391">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
+    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="136" column="32" selection-start-line="136" selection-start-column="32" selection-end-line="136" selection-end-column="32" />
-          <folding>
-            <element signature="e#4481#4482#0" expanded="true" />
-            <element signature="e#4505#4506#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1447">
+          <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="276" column="13" selection-start-line="276" selection-start-column="13" selection-end-line="276" selection-end-column="13" />
+        <state relative-caret-position="967">
+          <caret line="340" column="5" selection-start-line="340" selection-start-column="5" selection-end-line="340" selection-end-column="5" />
           <folding>
-            <element signature="e#4713#4737#0" expanded="true" />
             <element signature="e#7959#7960#0" expanded="true" />
             <element signature="e#8016#8017#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CAMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#772#793#0" expanded="true" />
+            <element signature="e#1262#1263#0" expanded="true" />
+            <element signature="e#1299#1300#0" expanded="true" />
           </folding>
         </state>
       </provider>
