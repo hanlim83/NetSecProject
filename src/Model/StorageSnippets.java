@@ -49,19 +49,17 @@ import static com.google.api.client.util.Charsets.UTF_8;
 
 public class StorageSnippets {
 
-    private OAuth2Login login=new OAuth2Login();
-//    Credential credential;
+    private OAuth2Login login = new OAuth2Login();
+
     Storage storage;
+    Bucket bucket;
+    String BUCKETS;
 
-  //  StorageSnippets storagesnippets = new StorageSnippets();
-
-
-
-    public StorageSnippets(){
+    public StorageSnippets() {
         Credential credential;
         try {
             credential = login.login();
-            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,42 +69,23 @@ public class StorageSnippets {
         this.storage = storage;
     }
 
-//    public void getCredentials(){
-//        try {
-//            Credential credentials = login.login();
-//        } catch (Exception e) {
-//            e.printStackTrace();
+
+//    // [TARGET delete(BucketSourceOption...)]
+//    public boolean delete() {
+//        // [START delete]
+//        boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
+//        if (deleted) {
+//            System.out.println("The bucket was deleted!!");
+//        } else {
+//            // the bucket was not found
+//            System.out.println("The bucket was not found!!");
 //        }
+//        // [END delete]
+//        return deleted;
 //    }
-
-//    public Bucket createBucket(String bucketName){
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
-//        StorageSnippets storageObject = new StorageSnippets(storage);
-//        storageObject.getCredentials();
-//        Bucket buckets = storage.create(BucketInfo.of(bucketName));
-//
-//        return buckets;
-//
-//    }
-
-
-    // [TARGET delete(BucketSourceOption...)]
-    public boolean delete() {
-        // [START delete]
-        boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
-        if (deleted) {
-            System.out.println("The bucket was deleted!!");
-        } else {
-            // the bucket was not found
-            System.out.println("The bucket was not found!!");
-        }
-        // [END delete]
-        return deleted;
-    }
-    Bucket bucket;
 
     public Bucket createBucketWithStorageClassAndLocation(String bucketName) {
-     // [START createBucketWithStorageClassAndLocation]
+        // [START createBucketWithStorageClassAndLocation]
         bucket = storage.create(BucketInfo.newBuilder(bucketName)
                 // See here for possible values: http://g.co/cloud/storage/docs/storage-classes
                 .setStorageClass(StorageClass.MULTI_REGIONAL)
@@ -122,7 +101,7 @@ public class StorageSnippets {
         try {
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
-                String BUCKETS = bucket.toString();
+                BUCKETS = bucket.toString();
                 bucketList.add(BUCKETS);
                 System.out.println(bucket.toString());
             }
@@ -131,14 +110,8 @@ public class StorageSnippets {
             e.printStackTrace();
         }
 
-//        // [START createBucket]
-//        Bucket bucket = storage.create(BucketInfo.of(bucketName));
-//        // [END createBucket]
-      //  return bucket;
         return bucketList;
     }
-
-
 
 
 }
