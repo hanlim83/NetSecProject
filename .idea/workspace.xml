@@ -622,10 +622,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="642" />
+    <option name="x" value="641" />
     <option name="y" value="25" />
     <option name="width" value="1025" />
-    <option name="height" value="1049" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -870,7 +870,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.CAMain">
+  <component name="RunManager" selected="Application.ScannerTestMain">
     <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CAMain" />
       <module name="NSPJ_main" />
@@ -886,16 +886,10 @@
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="StorageSnippets" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Model.StorageSnippets" />
+    <configuration name="ScannerTestMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ScannerTestMain" />
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
     </configuration>
     <configuration name="TestStorageSnippets" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Model.TestStorageSnippets" />
@@ -961,18 +955,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Application.StorageSnippets" />
       <item itemvalue="Application.TestStorageSnippets" />
       <item itemvalue="Application.GettingStarted" />
       <item itemvalue="Application.CAMain" />
+      <item itemvalue="Application.ScannerTestMain" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ScannerTestMain" />
         <item itemvalue="Application.CAMain" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.GettingStarted" />
         <item itemvalue="Application.TestStorageSnippets" />
-        <item itemvalue="Application.StorageSnippets" />
       </list>
     </recent_temporary>
   </component>

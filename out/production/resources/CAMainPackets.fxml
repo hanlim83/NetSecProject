@@ -41,7 +41,6 @@
             </TableView>
          </children>
       </StackPane>
-      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <JFXToggleButton fx:id="captureToggle" layoutX="372.0" layoutY="71.0" text="Capture Network Packets">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
@@ -52,10 +51,11 @@
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets" text="Clear Current Packets" textFill="RED">
+      <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets" text="Clear Current Capture" textFill="RED">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </JFXButton>
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>
