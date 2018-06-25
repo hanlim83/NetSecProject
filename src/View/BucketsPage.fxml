@@ -3,13 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
     <children>
         <AnchorPane fx:id="exitpane" prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -25,9 +26,17 @@
       <JFXButton fx:id="ListBuckets" layoutX="287.0" layoutY="108.0" onMouseClicked="#handleListBuckets" prefHeight="120.0" prefWidth="188.0" text="Listing Buckets" />
       <Label fx:id="listedBuckets" layoutX="535.0" layoutY="81.0" prefHeight="131.0" prefWidth="211.0" text="Fake text to be changed when button is clicked" wrapText="true" />
       <JFXButton fx:id="CreateBuckets" layoutX="295.0" layoutY="268.0" onMouseClicked="#handleCreateBuckets" prefHeight="105.0" prefWidth="142.0" text="Creating Buckets" />
-      <AnchorPane fx:id="CreatingBuckets" layoutY="66.0" prefHeight="535.0" prefWidth="1069.0" style="-fx-background-color: #b5d1ff;" visible="false">
+      <AnchorPane fx:id="CreatingBuckets" layoutX="1.0" layoutY="66.0" prefHeight="535.0" prefWidth="1069.0" style="-fx-background-color: #b5d1ff;">
          <children>
             <JFXButton fx:id="exitButton" layoutX="481.0" layoutY="363.0" onMouseClicked="#handleExit" style="-fx-background-color: #ff63c2;" text="Temp Exit button tbr" textFill="#100000" />
+            <Label layoutX="283.0" layoutY="89.0" prefHeight="31.0" prefWidth="128.0" text="Bucket Name: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="bucketName" layoutX="397.0" layoutY="89.0" prefHeight="31.0" prefWidth="197.0" promptText="Enter Bucket Name Here" />
+            <Label layoutX="283.0" layoutY="68.0" text="Must be unique across Cloud Storage" textFill="#e83a3a" />
+            <JFXButton fx:id="enterButton" layoutX="463.0" layoutY="195.0" onMouseClicked="#handleEnter" style="-fx-background-color: #42f49b;" text="Enter" />
          </children>
       </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />

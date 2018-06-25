@@ -4,7 +4,7 @@ import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.UdpPacket;
-
+import java.sql.Timestamp;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -13,11 +13,13 @@ public class CapturedPacket {
     private String srcIP,destIP,Protocol;
     private String information,timestamp;
     private Packet originalPacket;
+    private Timestamp orignalTimeStamp;
 
-    public CapturedPacket(Packet originalPacket, int packetNumber, String timestamp){
+    public CapturedPacket(Packet originalPacket, int packetNumber, Timestamp timestamp){
         this.originalPacket = originalPacket;
         this.number = packetNumber;
-        this.timestamp = timestamp;
+        this.orignalTimeStamp = timestamp;
+        this.timestamp = this.orignalTimeStamp.toString();
         if (!originalPacket.contains(IpPacket.class)) {
             this.information ="Not a Layer 2 (IP) Packet";
             return;
@@ -158,6 +160,10 @@ public class CapturedPacket {
     public String getTimestamp() {
         return timestamp;
     }
+    public Timestamp getOrignalTimeStamp() {
+        return orignalTimeStamp;
+    }
+
     @Override
     public String toString(){
         return "Packet Number: "+this.number+" | Source IP Address: "+this.srcIP+" | Source Port: "+this.srcPort+" | Destination IP Address: "+destIP+" | Destination Port:"+dstPort;

@@ -60,23 +60,39 @@ public class ControllerCALanding implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        StartBtn.setDisable(true);
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
+            if (devices == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("No Network Interface Found");
+                alert.setHeaderText("No Network Interface Found");
+                alert.setContentText("Ooops, Pcap4j can't find any Network Interfaces! Please check your interfaces or reinstall WinPcap to continue!");
+                alert.showAndWait();
+            }
             List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
             ObservableList<String> intnames = FXCollections.observableList(names);
             InterfaceChooser.setItems(intnames);
             InterfaceChooser.setValue("Select an Interface");
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Pcap Error Occurred");
-            alert.setHeaderText("Pcap Error Detected");
-            alert.setContentText("Ooops, there is an error with Pcap. The agent depends on Pcap to capture Packets! Please correct the problem before continuing!");
+            alert.setTitle("Pcap4j Error Occurred");
+            alert.setHeaderText("Pcap4j Error Detected");
+            alert.setContentText("Ooops, there is an error with Pcap4j. The agent depends on Pcap4j and WinPcap to capture packets! Please reinstall WinPcap to continue!");
             alert.showAndWait();
         }
     }
     public void passVariables(ScheduledExecutorService service) {
         this.service = service;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(null,this.service,null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     public void populateInformation(ActionEvent event) {
@@ -126,7 +142,7 @@ public class ControllerCALanding implements Initializable {
         rootP = anchorPane;
 
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);

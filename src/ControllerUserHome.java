@@ -19,10 +19,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +47,9 @@ public class ControllerUserHome implements Initializable {
 
     @FXML
     private JFXButton CloudStorageTestButton;
+
+    @FXML
+    private JFXButton RSAButton;
 
     private Scene myScene;
 
@@ -72,8 +78,44 @@ public class ControllerUserHome implements Initializable {
         }
         System.out.println(output.toString());
         //Desktop.getDesktop().open(new File("C://"));
-        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-    //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+//        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file=fileChooser.showOpenDialog(null);
+        String pathsInfo = "";
+        pathsInfo += "getPath(): " + file.getPath() + "\n";
+        pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
+
+        pathsInfo += (new File(file.getPath())).isAbsolute();
+
+        try {
+            pathsInfo += "getCanonicalPath(): " +
+                    file.getCanonicalPath() + "\n";
+        } catch (IOException ex) {
+
+        }
+        System.out.println(pathsInfo);
+                    //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+    }
+
+    @FXML
+    void onClickRSAButton(ActionEvent event) throws Exception {
+        RSAKeyGenerator rsaKeyGenerator=new RSAKeyGenerator();
+        rsaKeyGenerator.buildKeyPair();
+        System.out.println("=====================Public Key==========================");
+        System.out.println(rsaKeyGenerator.getPublicKeyString());
+        System.out.println("================================Private Key================================");
+        String privateKey=rsaKeyGenerator.getPrivateKeyString();
+        System.out.println(privateKey);
+
+        String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233",privateKey);
+        System.out.println("==========================Encrypted Private Key==================================");
+        System.out.println(encryptedPrivateKey);
+
+        System.out.println("==========================Decrypted Private Key==================================");
+        String privateKey2=rsaKeyGenerator.getPrivateKeyString("pass1233",encryptedPrivateKey);
+        System.out.println(privateKey2);
+        System.out.println(privateKey.equals(privateKey2));
     }
 
     @FXML

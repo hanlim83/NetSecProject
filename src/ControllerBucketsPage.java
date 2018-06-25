@@ -1,7 +1,5 @@
 import Model.StorageSnippets;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +41,12 @@ public class ControllerBucketsPage implements Initializable {
     @FXML
     private AnchorPane CreatingBuckets;
 
+    @FXML
+    private JFXTextField bucketName;
+
+    @FXML
+    private JFXButton enterButton;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -66,6 +70,62 @@ public class ControllerBucketsPage implements Initializable {
 
         String BUCKETS = String.join("\n",listedbuckets);
         listedBuckets.setText(BUCKETS);
+
+    }
+
+    private boolean checkEligible(String bucketname){
+        System.out.println("HIHIHIIHIHI");
+        //The bucket name should at least be 3 to 63 characters
+        //start and end with a number or letter.
+        //Bucket names must contain only lowercase letters
+        // numbers, dashes (-), underscores (_), and dots (.).
+        //Bucket names cannot begin with the "goog" prefix.
+        //Bucket names cannot contain "google" or close misspellings, such as "g00gle".
+        boolean hasUppercase = !bucketname.equals(bucketname.toLowerCase());
+        final String SPECIAL_CHARACTERS = " .[,~,!,@,#,$,%,^,&,,(,),-,_,/,=,+,[,{,],},|,;,:,<,>,/,?].*$)\"\'\\ ";
+        final String FIRST_SPECIAL = "[,~,!,@,#,$,%,^,&,,(,),/,=,+,[,{,],},|,;,:,<,>,/,?].*$)\"\'\\ ";
+
+        if ((bucketname.length()<3) || (bucketname.length()>63)){
+            System.out.println("Invalid bucketname - too short/too long");
+            return false;
+        }
+        else if(hasUppercase){
+            System.out.println("Invalid bucketname - Must not have UPPER CASE!! ONLY LOWERCASE!! ");
+            return false;
+        }
+        else if(SPECIAL_CHARACTERS.indexOf(bucketname.charAt(0)) >= 0 || SPECIAL_CHARACTERS.indexOf(bucketname.charAt(bucketname.length() - 1)) >= 0){
+            System.out.println("MUST START AND END WITH NUMBER OR LETTERS");
+            return false;
+        }
+        else {
+            return true;
+        }
+        }
+
+
+    @FXML
+    void handleEnter(MouseEvent event) {
+        String bucketname = bucketName.getText();
+        System.out.println(bucketname);
+        // if() bucket name not eligible
+//        if (bucketname!)
+        //show error
+
+        //else if
+        try {
+            storagesnippets.createBucketWithStorageClassAndLocation(bucketname);
+        }catch(com.google.cloud.storage.StorageException e) {
+            checkEligible(bucketname);
+            System.out.println("Already have this bucket name");
+            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+            snackbar.show("BUCKET ALREADY EXIST", 3000);
+        }
+        //reupdate the arraylist of buckets
+        storagesnippets.listBuckets();
+
+        //else SUCCESSFUL POP UP
+        
+
 
     }
 

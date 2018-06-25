@@ -1,13 +1,8 @@
 package Model;
 
 import com.sun.jna.Platform;
-import org.pcap4j.core.NotOpenException;
-import org.pcap4j.core.PacketListener;
-import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.PcapNativeException;
-import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
-import org.pcap4j.core.PcapStat;
 import org.pcap4j.packet.Packet;
 import java.util.ArrayList;
 
@@ -37,7 +32,7 @@ public class NetworkCapture {
         @Override
         public void gotPacket(Packet packet) {
             incrementCount();
-            CapturedPacket cPacket = new CapturedPacket(packet,getPacketCount(),Phandle.getTimestamp().toString());
+            CapturedPacket cPacket = new CapturedPacket(packet,getPacketCount(),Phandle.getTimestamp());
             packets.add(cPacket);
             /*System.out.println(cPacket.toString());
             System.out.println(cPacket.getProtocol());
@@ -101,7 +96,7 @@ public class NetworkCapture {
                     e.printStackTrace();
                 }
         catch (InterruptedException e) {
-                    e.printStackTrace();
+            System.err.println("Stopped successfully");
                 }
         catch (NotOpenException e) {
                     e.printStackTrace();
@@ -123,4 +118,23 @@ public class NetworkCapture {
             e.printStackTrace();
         }
     }
+    //Export to pcap file
+    public void export(String filepath){
+        try {
+            PcapDumper dumper = Phandle.dumpOpen("");
+            for (CapturedPacket p : packets){
+                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
+            }
+            dumper.close();
+        } catch (PcapNativeException e) {
+            e.printStackTrace();
+        } catch (NotOpenException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isRunning() {
+        return Phandle.isOpen();
+    }
+
 }

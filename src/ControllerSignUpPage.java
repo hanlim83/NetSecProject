@@ -1,10 +1,8 @@
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -38,6 +36,9 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     private JFXPasswordField ConfirmPasswordField;
 
+    @FXML
+    private JFXButton CancelButton;
+
     private Scene myScene;
     WindowsUtils utils = new WindowsUtils();
     private String email;
@@ -52,6 +53,22 @@ public class ControllerSignUpPage implements Initializable {
     void passData(String email) {
         this.email = email;
         EmailTextField.setText(email);
+    }
+
+    @FXML
+    void onClickCancelButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("LoginPage.fxml"));
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
+        //controller.passData(login.getEmail());
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
 
@@ -81,152 +98,78 @@ public class ControllerSignUpPage implements Initializable {
     private void passwordValidation() throws IOException {
         if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
-            //Known bug. Clicking the grey area causes the whole screen to be blocked
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-
-            String title = "";
-            String content = "Please fill up all fields!";
+            showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
+        }
+//        else if(PasswordField.getText().equals(email)){
+//            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
+//        }
+        else if (validate(PasswordField.getText()) == false) {
+            System.out.println("Use stronger password");
+            showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
+//            //Alert below
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
 //
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
+//            String title = "";
+//            String content = "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future";
+////
+////            JFXDialogLayout dialogContent = new JFXDialogLayout();
+////
+////            dialogContent.setHeading(new Text(title));
+////
+////            dialogContent.setBody(new Text(content));
+////
+//            JFXButton close = new JFXButton("Close");
 //
-//            dialogContent.setHeading(new Text(title));
+//            close.setButtonType(JFXButton.ButtonType.RAISED);
 //
-//            dialogContent.setBody(new Text(content));
+//            close.setStyle("-fx-background-color: #00bfff;");
+////
+////            dialogContent.setActions(close);
+////
+////            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
+////
+////            dialog.show();
 //
-            JFXButton close = new JFXButton("Close");
-
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-
-            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
-        } else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
+//            JFXDialogLayout layout = new JFXDialogLayout();
+//            layout.setHeading(new Label(title));
+//            layout.setBody(new Label(content));
+//            layout.setActions(close);
+//            JFXAlert<Void> alert = new JFXAlert<>(stage);
+//            alert.setOverlayClose(true);
+//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//            alert.setContent(layout);
+//            alert.initModality(Modality.NONE);
+//            close.setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent __) {
+//                    alert.hideWithAnimation();
+//                }
+//            });
+//            alert.show();
+        }
+        //Consider checking password strength before checking whether it matches
+        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
             System.out.println("Passwords do not match!");
-            //Alert below
+            showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
+        } else {
+            //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
+            //Compute Hash of Password
+            String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+            System.out.println(HashPassword);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("UserHome.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = loader.load();
 
-            String title = "";
-            String content = "Passwords do not match";
-//
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
-//
-//            dialogContent.setHeading(new Text(title));
-//
-//            dialogContent.setBody(new Text(content));
-//
-            JFXButton close = new JFXButton("Close");
+            //Will change to Device Checking Page next time
+            ControllerUserHome controller = loader.<ControllerUserHome>getController();
+            //controller.passData(login.getEmail());
 
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-
-            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
-        } else {
-            if (validate(PasswordField.getText()) == false) {
-                System.out.println("Use stronger password");
-                //Alert below
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-
-                String title = "";
-                String content = "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future";
-//
-//            JFXDialogLayout dialogContent = new JFXDialogLayout();
-//
-//            dialogContent.setHeading(new Text(title));
-//
-//            dialogContent.setBody(new Text(content));
-//
-                JFXButton close = new JFXButton("Close");
-
-                close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                close.setStyle("-fx-background-color: #00bfff;");
-//
-//            dialogContent.setActions(close);
-//
-//            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-//
-//            dialog.show();
-
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading(new Label(title));
-                layout.setBody(new Label(content));
-                layout.setActions(close);
-                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                alert.setOverlayClose(true);
-                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                alert.setContent(layout);
-                alert.initModality(Modality.NONE);
-                close.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent __) {
-                        alert.hideWithAnimation();
-                    }
-                });
-                alert.show();
-            } else {
-                //Compute Hash of Password
-                String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-                System.out.println(HashPassword);
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("UserHome.fxml"));
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = loader.load();
-
-                //Will change to Device Checking Page next time
-                ControllerUserHome controller = loader.<ControllerUserHome>getController();
-                //controller.passData(login.getEmail());
-
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
-                stage.show();
-            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("NSPJ");
+            stage.show();
         }
     }
 
@@ -235,19 +178,45 @@ public class ControllerSignUpPage implements Initializable {
         if (password == null || password.length() < 8) {
             return false;
         }
-        boolean containsChar = false;
-        boolean containsDigit = false;
-        for (char c : password.toCharArray()) {
-            if (Character.isLetter(c)) {
-                containsChar = true;
-            } else if (Character.isDigit(c)) {
-                containsDigit = true;
-            }
-            if (containsChar && containsDigit) {
-                return true;
-            }
+        //New Algo
+        String upperCaseChars = "(.*[A-Z].*)";
+        if (!password.matches(upperCaseChars ))
+        {
+            System.out.println("Password should contain atleast one upper case alphabet");
+            return false;
         }
-        return false;
+        String lowerCaseChars = "(.*[a-z].*)";
+        if (!password.matches(lowerCaseChars ))
+        {
+            System.out.println("Password should contain atleast one lower case alphabet");
+            return false;
+        }
+        String numbers = "(.*[0-9].*)";
+        if (!password.matches(numbers ))
+        {
+            System.out.println("Password should contain atleast one number.");
+            return false;
+        }
+        String specialChars = "(.*[,~,!,@,#,$,%,^,&,*,(,),-,_,=,+,[,{,],},|,;,:,<,>,/,?].*$)";
+        if (!password.matches(specialChars ))
+        {
+            System.out.println("Password should contain atleast one special character");
+            return false;
+        }
+        //Old Algo
+//        boolean containsChar = false;
+//        boolean containsDigit = false;
+//        for (char c : password.toCharArray()) {
+//            if (Character.isLetter(c)) {
+//                containsChar = true;
+//            } else if (Character.isDigit(c)) {
+//                containsDigit = true;
+//            }
+//            if (containsChar && containsDigit) {
+//                return true;
+//            }
+//        }
+        return true;
     }
 
     public String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
@@ -267,8 +236,35 @@ public class ControllerSignUpPage implements Initializable {
         return generatedPassword;
     }
 
-    private void keyGenerator() {
+    private void keyGenerator() throws NoSuchAlgorithmException {
+        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
+        rsaKeyGenerator.buildKeyPair();
+    }
 
+    private void showAlert(Scene scene, String Title, String Content, String buttonContent) {
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String title = Title;
+        String content = Content;
+
+        JFXButton close = new JFXButton(buttonContent);
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
     }
 }
 
