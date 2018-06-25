@@ -89,9 +89,25 @@ public class StorageSnippets {
 //
 //    }
 
+
+    // [TARGET delete(BucketSourceOption...)]
+    public boolean delete() {
+        // [START delete]
+        boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
+        if (deleted) {
+            System.out.println("The bucket was deleted!!");
+        } else {
+            // the bucket was not found
+            System.out.println("The bucket was not found!!");
+        }
+        // [END delete]
+        return deleted;
+    }
+    Bucket bucket;
+
     public Bucket createBucketWithStorageClassAndLocation(String bucketName) {
      // [START createBucketWithStorageClassAndLocation]
-        Bucket bucket = storage.create(BucketInfo.newBuilder(bucketName)
+        bucket = storage.create(BucketInfo.newBuilder(bucketName)
                 // See here for possible values: http://g.co/cloud/storage/docs/storage-classes
                 .setStorageClass(StorageClass.MULTI_REGIONAL)
                 // Possible values: http://g.co/cloud/storage/docs/bucket-locations#location-mr
