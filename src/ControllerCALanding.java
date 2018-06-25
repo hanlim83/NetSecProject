@@ -81,6 +81,12 @@ public class ControllerCALanding implements Initializable {
             alert.setHeaderText("Pcap4j Error Detected");
             alert.setContentText("Ooops, there is an error with Pcap4j. The agent depends on Pcap4j and WinPcap to capture packets! Please reinstall WinPcap to continue!");
             alert.showAndWait();
+        } catch (UnsatisfiedLinkError e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Pcap4j Error Occurred");
+            alert.setHeaderText("Pcap4j Error Detected");
+            alert.setContentText("Ooops, the agent depends on Pcap4j and WinPcap to capture packets! Please reinstall WinPcap to continue!");
+            alert.showAndWait();
         }
     }
     public void passVariables(ScheduledExecutorService service) {

@@ -34,10 +34,6 @@ public class NetworkCapture {
             incrementCount();
             CapturedPacket cPacket = new CapturedPacket(packet,getPacketCount(),Phandle.getTimestamp());
             packets.add(cPacket);
-            /*System.out.println(cPacket.toString());
-            System.out.println(cPacket.getProtocol());
-            System.out.println(cPacket.getLength());
-            System.out.println(cPacket.getInformation());*/
         }
     };
     public int getPktCount() {
@@ -91,7 +87,6 @@ public class NetworkCapture {
                 try{
                     Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
                     Phandle.loop(COUNT, listener);
-//                    Phandle.loop(5000, listener);
                 } catch(PcapNativeException e){
                     e.printStackTrace();
                 }
@@ -114,22 +109,27 @@ public class NetworkCapture {
             Phandle.breakLoop();
             printStat();
         } catch (NotOpenException e) {
-            // Auto-generated catch block
             e.printStackTrace();
         }
     }
     //Export to pcap file
-    public void export(String filepath){
+    public boolean export(String filepath){
         try {
-            PcapDumper dumper = Phandle.dumpOpen("");
+            if (!Phandle.isOpen())
+                Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            PcapDumper dumper = Phandle.dumpOpen(filepath);
             for (CapturedPacket p : packets){
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
             dumper.close();
+            Phandle.close();
+            return true;
         } catch (PcapNativeException e) {
             e.printStackTrace();
+            return false;
         } catch (NotOpenException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
