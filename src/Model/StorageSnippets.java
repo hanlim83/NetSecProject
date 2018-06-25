@@ -49,17 +49,20 @@ import static com.google.api.client.util.Charsets.UTF_8;
 
 public class StorageSnippets {
 
-    private OAuth2Login login = new OAuth2Login();
-
+    private OAuth2Login login=new OAuth2Login();
+//    Credential credential;
     Storage storage;
     Bucket bucket;
     String BUCKETS;
+  //  StorageSnippets storagesnippets = new StorageSnippets();
 
-    public StorageSnippets() {
+
+
+    public StorageSnippets(){
         Credential credential;
         try {
             credential = login.login();
-            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,6 +71,24 @@ public class StorageSnippets {
     public StorageSnippets(Storage storage) {
         this.storage = storage;
     }
+
+//    public void getCredentials(){
+//        try {
+//            Credential credentials = login.login();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    public Bucket createBucket(String bucketName){
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+//        StorageSnippets storageObject = new StorageSnippets(storage);
+//        storageObject.getCredentials();
+//        Bucket buckets = storage.create(BucketInfo.of(bucketName));
+//
+//        return buckets;
+//
+//    }
 
 
 //    // [TARGET delete(BucketSourceOption...)]
@@ -85,7 +106,7 @@ public class StorageSnippets {
 //    }
 
     public Bucket createBucketWithStorageClassAndLocation(String bucketName) {
-        // [START createBucketWithStorageClassAndLocation]
+     // [START createBucketWithStorageClassAndLocation]
         bucket = storage.create(BucketInfo.newBuilder(bucketName)
                 // See here for possible values: http://g.co/cloud/storage/docs/storage-classes
                 .setStorageClass(StorageClass.MULTI_REGIONAL)
@@ -110,8 +131,14 @@ public class StorageSnippets {
             e.printStackTrace();
         }
 
+//        // [START createBucket]
+//        Bucket bucket = storage.create(BucketInfo.of(bucketName));
+//        // [END createBucket]
+      //  return bucket;
         return bucketList;
     }
+
+
 
 
 }
