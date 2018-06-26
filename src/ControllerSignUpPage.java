@@ -17,7 +17,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerSignUpPage implements Initializable {

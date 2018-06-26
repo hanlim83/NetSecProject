@@ -59,7 +59,7 @@ public class OAuth2Login {
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;
 
-    private LocalServerReceiver l=new LocalServerReceiver();
+    private LocalServerReceiver l;
 
     public void stopLocalServerReciver() throws Exception {
         l.stop();
@@ -67,7 +67,7 @@ public class OAuth2Login {
 
     /** Authorizes the installed application to access user's protected data. */
     private Credential authorize() throws UnknownHostException,Exception {
-
+        l=new LocalServerReceiver();
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // load client secrets

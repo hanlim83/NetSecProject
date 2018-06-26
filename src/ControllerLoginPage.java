@@ -6,7 +6,6 @@ import java.io.IOException;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -19,16 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sun.nio.ch.ThreadPool;
 
 import java.net.*;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
@@ -62,9 +56,42 @@ public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
     void onClickTestButton(ActionEvent event) throws Exception {
         //login.l.stop();
-        login.stopLocalServerReciver();
-        LoadingSpinner.setVisible(false);
-        LoginButton.setDisable(false);
+//        login.stopLocalServerReciver();
+//        LoadingSpinner.setVisible(false);
+//        LoginButton.setDisable(false);
+        try {
+            //login.l.stop();
+            login.stopLocalServerReciver();
+            LoadingSpinner.setVisible(false);
+            LoginButton.setDisable(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(() -> {
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "";
+            String content = "The connection timeout. Please try again";
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
+        });
     }
 
     Timer timer;
@@ -110,7 +137,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
             }
         };
-        timer.schedule(Task, 15000);
+        timer.schedule(Task, 10000);
     }
 
     public void endTimer() {
@@ -119,20 +146,33 @@ public class ControllerLoginPage implements Initializable, Runnable {
     }
 
 
+    int counter=0;
     //Thread thread;
 //    private ScheduledFuture tableviewRunnable;
     //2nd time process does not complete bug
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
         LoadingSpinner.setVisible(true);
-        if (process.getState().equals("RUNNING")){
-            process.reset();
-            process.start();
-            startTimer();
-        }else{
+        String state=process.getState().toString();
+        counter++;
+        if (process.getState().toString().equals("RUNNING")){
+//            process.cancel();
+//            process.start();
+
             process.restart();
-            startTimer();
+            //process.restart();
+//            startTimer();
+        }else if(process.getState().toString().equals("READY")){
+            process.start();
+//            startTimer();
+        }else if(process.getState().toString().equals("CANCELLED")){
+            process.start();
         }
+//        else{
+//            System.out.println(state);
+//            System.out.println(process.getState());
+//            System.out.println("Failed to run");
+//        }
 //        process.start();
 //        startTimer();
 
@@ -156,13 +196,14 @@ public class ControllerLoginPage implements Initializable, Runnable {
         LoginButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
+            System.out.println("Process succeeded");
             if (email.equals("")) {
                 System.out.println("No email");
                 process.reset();
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-                endTimer();
+//                endTimer();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
@@ -178,6 +219,40 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 stage.setTitle("NSPJ");
                 stage.show();
             }
+        });
+        process.setOnCancelled(e -> {
+            if (counter<1){
+            System.out.println("Cancelled");
+            process.reset();
+            }else{
+                System.out.println("Process succeeded");
+                if (email.equals("")) {
+                    System.out.println("No email");
+                    process.reset();
+                    LoginButton.setDisable(false);
+                    LoadingSpinner.setVisible(false);
+                } else {
+                    endTimer();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+                    Parent nextView = null;
+                    try {
+                        nextView = loader.load();
+                        ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
+                        controller.passData(login.getEmail());
+                    } catch (IOException u) {
+                        u.printStackTrace();
+                    }
+                    stage.setScene(new Scene(nextView));
+                    stage.setTitle("NSPJ");
+                    stage.show();
+                }
+            }
+        });
+        process.setOnFailed(e ->{
+            System.out.println("Failed");
+            process.reset();
         });
 
 //        service.schedule(new Runnable() {
@@ -265,7 +340,13 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 protected Void call() throws Exception {
                     try {
                         credential = login.login();
+                        System.out.println("First step done");
                         email = login.getEmail();
+                        System.out.println("2nd step done"+email);
+//                        if(counter>1){
+//                            process.cancel();
+//                            System.out.println("Restarting process");
+//                        }
                     } catch (UnknownHostException u) {
                         Platform.runLater(() -> {
                             System.out.println("No wifi");
