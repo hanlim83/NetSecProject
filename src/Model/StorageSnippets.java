@@ -54,8 +54,9 @@ public class StorageSnippets {
     Storage storage;
     Bucket bucket;
     String BUCKETS;
+   // ObjectConversion objc = new ObjectConversion();
   //  StorageSnippets storagesnippets = new StorageSnippets();
-
+    ArrayList<CloudBuckets>cloudbucketsList = new ArrayList<CloudBuckets>();
 
 
     public StorageSnippets(){
@@ -117,16 +118,18 @@ public class StorageSnippets {
         return bucket;
     }
 
-    public ArrayList<String> listBuckets() {
+   /* public ArrayList<String> listBuckets() {
         ArrayList<String> bucketList = new ArrayList();
         try {
             Page<Bucket> buckets = storage.list();
             for (Bucket bucket : buckets.iterateAll()) {
-                BUCKETS = bucket.toString();
-                bucketList.add(BUCKETS);
+                cloudbucketsList.add(new CloudBuckets(bucket));
+                *//*BUCKETS = bucket.toString();
+                bucketList.add(BUCKETS);*//*
                 System.out.println(bucket.toString());
             }
-
+         // Calling object conversion class to pass in arraylist of buckets
+//          ObjectConversion objc = new ObjectConversion(bucketList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,9 +139,22 @@ public class StorageSnippets {
 //        // [END createBucket]
       //  return bucket;
         return bucketList;
+    }*/
+
+    public void listBuckets() {
+        try {
+            Page<Bucket> buckets = storage.list();
+            for (Bucket bucket : buckets.iterateAll()) {
+                CloudBuckets cloudB = new CloudBuckets(bucket);
+                cloudbucketsList.add(cloudB);
+                System.out.println(bucket.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
-
-
+    public ArrayList<CloudBuckets> getCloudbucketsList() {
+        return cloudbucketsList;
+    }
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
     <children>
         <AnchorPane fx:id="exitpane" prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -39,9 +39,10 @@
             <JFXTextField fx:id="bucketName" layoutX="397.0" layoutY="89.0" prefHeight="31.0" prefWidth="197.0" promptText="Enter Bucket Name Here" />
             <Label layoutX="283.0" layoutY="68.0" text="Must be unique across Cloud Storage" textFill="#e83a3a" />
             <JFXButton fx:id="enterButton" layoutX="420.0" layoutY="159.0" onMouseClicked="#handleEnter" style="-fx-background-color: #42f49b;" text="Enter" />
-            <TableView fx:id="bucketsTable" layoutX="228.0" layoutY="250.0" prefHeight="200.0" prefWidth="283.0">
+            <TableView fx:id="bucketsTable" layoutX="278.0" layoutY="233.0" prefHeight="200.0" prefWidth="283.0">
               <columns>
-                <TableColumn fx:id="tableColBucketName" prefWidth="282.0" text="Bucket" />
+                <TableColumn fx:id="tableColBucketName" prefWidth="202.73330688476562" text="Bucket" />
+                  <TableColumn fx:id="deleteBuckets" prefWidth="79.26669311523438" text="Deletion" />
               </columns>
             </TableView>
          </children>

@@ -1,18 +1,21 @@
-import Model.StorageSnippets;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -55,24 +58,32 @@ public class ControllerBucketsPage implements Initializable {
     private JFXButton enterButton;
 
     @FXML
-    private TableView<?> bucketsTable;
+    private TableView<CloudBuckets> bucketsTable;
 
     @FXML
-    private TableColumn<StorageSnippets, String> tableColBucketName;
+    private TableColumn<CloudBuckets, String> tableColBucketName;
 
     @FXML
-    private TableColumn<StorageSnippets, Integer> deleteBucket;
+    private TableColumn<CloudBuckets, Button> deleteBuckets;
 
     private Scene myScene;
 
     public static AnchorPane rootP;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    hamburgerBar();
-    }
+    private ArrayList<CloudBuckets> objectArrayList;
+    private ObservableList<CloudBuckets> objectList;
+    ObjectConversion objC = new ObjectConversion();
+    StorageSnippets storagesnippets;
 
-    StorageSnippets storagesnippets = new StorageSnippets();
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        hamburgerBar();
+        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets,String>("bucketName"));
+        storagesnippets = new StorageSnippets();
+        storagesnippets.listBuckets();
+        objectArrayList = storagesnippets.getCloudbucketsList();
+    }
 
     @FXML
     void handleCreateBuckets(MouseEvent event) {
@@ -81,12 +92,11 @@ public class ControllerBucketsPage implements Initializable {
 
     @FXML
     void handleListBuckets(MouseEvent event) {
-        ArrayList<String> listedbuckets = new ArrayList();
-        listedbuckets = storagesnippets.listBuckets();
-
-        String BUCKETS = String.join("\n",listedbuckets);
-        listedBuckets.setText(BUCKETS);
-
+        String allBucketNames = "";
+        for (CloudBuckets b : objectArrayList){
+            allBucketNames = allBucketNames +"\n"+ b.getBucketName();
+        }
+        listedBuckets.setText(allBucketNames);
     }
 
     String errorMessage="";
@@ -167,7 +177,16 @@ public class ControllerBucketsPage implements Initializable {
             }
         }
         //reupdate the arraylist of buckets
-        storagesnippets.listBuckets();
+        objectList = FXCollections.observableList(objectArrayList);
+        bucketsTable.setItems(objectList);
+
+        deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+            bucketsTable.getItems().remove(cldB);
+            return cldB;
+        }));
+        /*objectArrayList.add(objC.getBucketsname());
+        objectList.addAll(objectArrayList);
+        bucketsTable.setItems(objectList);*/
 
         if(errorMessage.equals("")) {
             successfulMessage = "Successful Creation - Bucket has been created";
