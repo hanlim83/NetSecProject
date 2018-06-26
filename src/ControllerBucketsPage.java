@@ -72,14 +72,12 @@ public class ControllerBucketsPage implements Initializable {
 
     private ArrayList<CloudBuckets> objectArrayList;
     private ObservableList<CloudBuckets> objectList;
-    ObjectConversion objC = new ObjectConversion();
     StorageSnippets storagesnippets;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets,String>("bucketName"));
+        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
         storagesnippets = new StorageSnippets();
         storagesnippets.listBuckets();
         objectArrayList = storagesnippets.getCloudbucketsList();
@@ -93,16 +91,17 @@ public class ControllerBucketsPage implements Initializable {
     @FXML
     void handleListBuckets(MouseEvent event) {
         String allBucketNames = "";
-        for (CloudBuckets b : objectArrayList){
-            allBucketNames = allBucketNames +"\n"+ b.getBucketName();
+        for (CloudBuckets b : objectArrayList) {
+            allBucketNames = allBucketNames + "\n" + b.getBucketName();
         }
         listedBuckets.setText(allBucketNames);
     }
 
-    String errorMessage="";
-    String successfulMessage ="";
+    String errorMessage = "";
+    String successfulMessage = "";
 
-    private boolean checkEligible(String bucketname){
+
+    private boolean checkEligible(String bucketname) {
         System.out.println("Checking if bucket name is accepted...");
         //The bucket name should at least be 3 to 63 characters (DONE)
         //start and end with a number or letter. (DONE)
@@ -118,40 +117,34 @@ public class ControllerBucketsPage implements Initializable {
 //        Pattern pattern1 = Pattern.compile("google,g00gle,g00g1e,goog1e,g0ogle,go0gle,g0og1e,go0g1e,g00g,g0og,go0g");
 //        Matcher matcher1 = pattern1.matcher(bucketname);
 
-        if ((bucketname.length()<3) || (bucketname.length()>63)){
-            errorMessage="Invalid bucket name - Too short / Too Long";
+        if ((bucketname.length() < 3) || (bucketname.length() > 63)) {
+            errorMessage = "Invalid bucket name - Too short / Too Long";
             System.out.println(errorMessage);
             return false;
-        }
-        else if(hasUppercase){
-            errorMessage="Invalid bucket name - Only lowercase is accepted ";
+        } else if (hasUppercase) {
+            errorMessage = "Invalid bucket name - Only lowercase is accepted ";
             System.out.println(errorMessage);
             return false;
-        }
-        else if(SPECIAL_CHARACTERS.indexOf(bucketname.charAt(0)) >= 0 || SPECIAL_CHARACTERS.indexOf(bucketname.charAt(bucketname.length() - 1)) >= 0){
-            errorMessage="Invalid bucket name - Must start or end with a number / character";
+        } else if (SPECIAL_CHARACTERS.indexOf(bucketname.charAt(0)) >= 0 || SPECIAL_CHARACTERS.indexOf(bucketname.charAt(bucketname.length() - 1)) >= 0) {
+            errorMessage = "Invalid bucket name - Must start or end with a number / character";
             System.out.println(errorMessage);
             return false;
-        }
-        else if(!matcher.matches()){
-            errorMessage="Invalid bucket name - Name should only contains letters, number, - , _ and . ";
+        } else if (!matcher.matches()) {
+            errorMessage = "Invalid bucket name - Name should only contains letters, number, - , _ and . ";
             System.out.println(errorMessage);
             return false;
-        }
-        else if (bucketname.substring(0,4).matches("goog")){
-            errorMessage="Name cannot begin with goog or have any reference to google";
+        } else if (bucketname.substring(0, 4).matches("goog")) {
+            errorMessage = "Name cannot begin with goog or have any reference to google";
             System.out.println(errorMessage);
             return false;
-        }
-        else if (bucketname.substring(0,6).matches("g00gle")){
-            errorMessage="Name cannot contain google, g00gle, or other prefixes";
+        } else if (bucketname.substring(0, 6).matches("g00gle")) {
+            errorMessage = "Name cannot contain google, g00gle, or other prefixes";
             System.out.println(errorMessage);
             return false;
-        }
-        else {
+        } else {
             return true;
         }
-        }
+    }
 
 
     @FXML
@@ -162,39 +155,46 @@ public class ControllerBucketsPage implements Initializable {
         //Checking for eligibilty - NOT ACCEPTED
         try {
             storagesnippets.createBucketWithStorageClassAndLocation(bucketname);
-        }catch(com.google.cloud.storage.StorageException e) {
-            errorMessage="-";
+        } catch (com.google.cloud.storage.StorageException e) {
+            errorMessage = "-";
             checkEligible(bucketname);
-            if(errorMessage.equals("-")){
-                errorMessage="Bucket with this name already exist";
+            if (errorMessage.equals("-")) {
+                errorMessage = "Bucket with this name already exist";
                 System.out.println(errorMessage);
-                errorMessagePopOut(anchorPane.getScene(),errorMessage,"Close");
-            }else {
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            } else {
                 System.out.println(errorMessage);
                 JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                 snackbar.show(errorMessage, 3000);
-                errorMessagePopOut(anchorPane.getScene(),errorMessage,"Close");
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
         }
-        //reupdate the arraylist of buckets
-        objectList = FXCollections.observableList(objectArrayList);
-        bucketsTable.setItems(objectList);
 
-        deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
-            bucketsTable.getItems().remove(cldB);
-            return cldB;
-        }));
-        /*objectArrayList.add(objC.getBucketsname());
-        objectList.addAll(objectArrayList);
-        bucketsTable.setItems(objectList);*/
-
-        if(errorMessage.equals("")) {
+        if (errorMessage.equals("")) {
+            objectArrayList = storagesnippets.getCloudbucketsList();
             successfulMessage = "Successful Creation - Bucket has been created";
-            errorMessagePopOut(anchorPane.getScene(), successfulMessage, "Close");
+            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
         }
-        //else SUCCESSFUL POP UP
+            //TABLE OF BUCKETS
+            objectList = FXCollections.observableList(objectArrayList);
+            bucketsTable.setItems(objectList);
+
+            //DELETION OF BUCKETS
+            deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+                bucketsTable.getItems().remove(cldB);
+                String allBucketNames = "";
+                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
+                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
+                System.out.println(NAMEBUCKET);
+                storagesnippets.deleteGcsBucket(NAMEBUCKET);
+                System.out.println("Deleted :" + NAMEBUCKET);
+                return cldB;
+            }));
+
+            //DO A ARE U SURE TO DELETE THIS BUCKET CONFIMRATION
     }
-    private void successfulMessage(Scene scene, String successfulMessage, String buttonContent){
+
+    private void successfulMessage(Scene scene, String successfulMessage, String buttonContent) {
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -218,6 +218,7 @@ public class ControllerBucketsPage implements Initializable {
         close.setOnAction(__ -> alert.hideWithAnimation());
         alert.show();
     }
+
     private void errorMessagePopOut(Scene scene, String errorMessage, String buttonContent) {
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();

@@ -41,6 +41,7 @@ import com.google.cloud.storage.StorageOptions;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 import static Model.CloudSQLAuth.login;
@@ -49,21 +50,21 @@ import static com.google.api.client.util.Charsets.UTF_8;
 
 public class StorageSnippets {
 
-    private OAuth2Login login=new OAuth2Login();
-//    Credential credential;
+    private OAuth2Login login = new OAuth2Login();
+    //    Credential credential;
     Storage storage;
     Bucket bucket;
     String BUCKETS;
-   // ObjectConversion objc = new ObjectConversion();
-  //  StorageSnippets storagesnippets = new StorageSnippets();
-    ArrayList<CloudBuckets>cloudbucketsList = new ArrayList<CloudBuckets>();
+    // ObjectConversion objc = new ObjectConversion();
+    //  StorageSnippets storagesnippets = new StorageSnippets();
+    ArrayList<CloudBuckets> cloudbucketsList = new ArrayList<CloudBuckets>();
 
 
-    public StorageSnippets(){
+    public StorageSnippets() {
         Credential credential;
         try {
             credential = login.login();
-            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
+            this.storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,13 +108,16 @@ public class StorageSnippets {
 //    }
 
     public Bucket createBucketWithStorageClassAndLocation(String bucketName) {
-     // [START createBucketWithStorageClassAndLocation]
+        // [START createBucketWithStorageClassAndLocation]
         bucket = storage.create(BucketInfo.newBuilder(bucketName)
                 // See here for possible values: http://g.co/cloud/storage/docs/storage-classes
                 .setStorageClass(StorageClass.MULTI_REGIONAL)
                 // Possible values: http://g.co/cloud/storage/docs/bucket-locations#location-mr
                 .setLocation("US")
                 .build());
+
+        CloudBuckets cloudB = new CloudBuckets(bucket);
+        cloudbucketsList.add(cloudB);
         // [END createBucketWithStorageClassAndLocation]
         return bucket;
     }
@@ -152,6 +156,32 @@ public class StorageSnippets {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+//    public boolean deleteBuckets() {
+//       // boolean deleted = bucket.delete(BucketSourceOption.metagenerationMatch());
+//        storage.buckets().delete(Properties.bucketId).execute()
+//        if (deleted) {
+//            // the bucket was deleted
+//        } else
+//
+//        {
+//            // the bucket was not found
+//        }
+//    }
+
+    public void deleteGcsBucket(String gcsBucketName) {
+//        StorageOptions.Builder optionsBuilder = StorageOptions.newBuilder();
+//        StorageOptions storageOptions = optionsBuilder.setProjectId(projectId).build();
+//        Storage storage = storageOptions.getService();
+        System.out.println("Processing to delete bucket...");
+        Iterable<Blob> blobs = storage.list(gcsBucketName, Storage.BlobListOption.prefix("")).iterateAll();
+        for (Blob blob : blobs) {
+            blob.delete(Blob.BlobSourceOption.generationMatch());
+        }
+
+        System.out.println("Deleting...");
+        storage.delete(gcsBucketName);
     }
 
     public ArrayList<CloudBuckets> getCloudbucketsList() {

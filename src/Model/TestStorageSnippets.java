@@ -25,7 +25,8 @@ public class TestStorageSnippets {
                 StorageSnippets storage1 = new StorageSnippets();
               // storage1.getCredentials();
                 storage1.listBuckets();
-                storage1.createBucketWithStorageClassAndLocation(bucketName);
+               storage1.createBucketWithStorageClassAndLocation(bucketName);
+             //   storage1.deleteGcsBucket(bucketName);
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
