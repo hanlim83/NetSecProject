@@ -161,12 +161,13 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
             process.restart();
             //process.restart();
-//            startTimer();
+            startTimer();
         }else if(process.getState().toString().equals("READY")){
             process.start();
-//            startTimer();
+            startTimer();
         }else if(process.getState().toString().equals("CANCELLED")){
             process.start();
+            startTimer();
         }
 //        else{
 //            System.out.println(state);
@@ -203,7 +204,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-//                endTimer();
+                endTimer();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
