@@ -79,23 +79,7 @@ public class ControllerUserHome implements Initializable {
         System.out.println(output.toString());
         //Desktop.getDesktop().open(new File("C://"));
 //        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        File file=fileChooser.showOpenDialog(null);
-        String pathsInfo = "";
-        pathsInfo += "getPath(): " + file.getPath() + "\n";
-        pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
-
-        pathsInfo += (new File(file.getPath())).isAbsolute();
-
-        try {
-            pathsInfo += "getCanonicalPath(): " +
-                    file.getCanonicalPath() + "\n";
-        } catch (IOException ex) {
-
-        }
-        System.out.println(pathsInfo);
-                    //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
     }
 
     @FXML
@@ -124,7 +108,22 @@ public class ControllerUserHome implements Initializable {
             // authorization
             credential=login.login();
             // set up global Oauth2 instance
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            File file=fileChooser.showOpenDialog(null);
+            String pathsInfo = "";
+            pathsInfo += "getPath(): " + file.getPath() + "\n";
+            pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
 
+            pathsInfo += (new File(file.getPath())).isAbsolute();
+
+            try {
+                pathsInfo += "getCanonicalPath(): " +
+                        file.getCanonicalPath() + "\n";
+            } catch (IOException ex) {
+
+            }
+            System.out.println(pathsInfo);
             // authorization + Get Buckets
             Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
             //Testing for storage
@@ -141,11 +140,11 @@ public class ControllerUserHome implements Initializable {
                     System.out.println(blob.getName());
                 }
             }
-            String filename= "TestFILENEW1";
-            if (checkNameTaken(filename)==true){
+            //String filename= "TestFILENEW1";
+            if (checkNameTaken(file.getName())==true){
                 System.out.println("Change NAME!!!!");
             } else{
-                uploadFile(filename);
+                uploadFile(file.getName(),file.getAbsolutePath());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -167,12 +166,12 @@ public class ControllerUserHome implements Initializable {
         return false;
     }
 
-    public void uploadFile(String filename) throws FileNotFoundException {
+    public void uploadFile(String filename,String AbsolutePath) throws FileNotFoundException {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(),null))).build().getService();
         Page<Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
             System.out.println(bucket.toString());
-            File initialFile = new File("C:\\Users\\hugoc\\Desktop\\NSPJ Logs\\Latest Login method logs.txt");
+            File initialFile = new File(AbsolutePath);
             InputStream targetStream = new FileInputStream(initialFile);
             InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
             Blob blob = bucket.create(filename, targetStream, "text/plain");

@@ -3,9 +3,8 @@ import com.google.api.client.auth.oauth2.Credential;
 
 import java.io.IOException;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
@@ -16,7 +15,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sun.nio.ch.ThreadPool;
 
@@ -60,7 +61,8 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     @FXML
     void onClickTestButton(ActionEvent event) throws Exception {
-        login.l.stop();
+        //login.l.stop();
+        login.stopLocalServerReciver();
         LoadingSpinner.setVisible(false);
         LoginButton.setDisable(false);
     }
@@ -72,16 +74,43 @@ public class ControllerLoginPage implements Initializable, Runnable {
         TimerTask Task = new TimerTask() {
             public void run() {
                 try {
-                    login.l.stop();
+                    //login.l.stop();
+                    login.stopLocalServerReciver();
                     LoadingSpinner.setVisible(false);
                     LoginButton.setDisable(false);
                     endTimer();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "The connection timeout. Please try again";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+
             }
         };
-        timer.schedule(Task, 5000);
+        timer.schedule(Task, 15000);
     }
 
     public void endTimer() {
@@ -92,6 +121,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     //Thread thread;
 //    private ScheduledFuture tableviewRunnable;
+    //2nd time process does not complete bug
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
         LoadingSpinner.setVisible(true);
@@ -132,6 +162,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
+                endTimer();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();

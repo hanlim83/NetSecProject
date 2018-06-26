@@ -59,7 +59,11 @@ public class OAuth2Login {
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;
 
-    public LocalServerReceiver l=new LocalServerReceiver();
+    private LocalServerReceiver l=new LocalServerReceiver();
+
+    public void stopLocalServerReciver() throws Exception {
+        l.stop();
+    }
 
     /** Authorizes the installed application to access user's protected data. */
     private Credential authorize() throws UnknownHostException,Exception {

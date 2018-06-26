@@ -247,9 +247,11 @@ public class ControllerSignUpPage implements Initializable {
         System.out.println(privateKey);
         String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString(PasswordField.getText(),privateKey);
         System.out.println(encryptedPrivateKey);
+        //For testing purpose only
         String decryptedPrivateKey=rsaKeyGenerator.getPrivateKeyString(PasswordField.getText(),encryptedPrivateKey);
         System.out.println(decryptedPrivateKey);
         System.out.println(privateKey.equals(decryptedPrivateKey));
+        //For testing purpose only
         //upload all the info to the cloud
     }
 
