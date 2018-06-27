@@ -3,10 +3,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -27,6 +24,7 @@ import java.io.*;
 import java.net.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,23 +61,57 @@ public class ControllerUserHome implements Initializable {
         hamburgerBar();
     }
 
+    //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
-        System.out.println(getIp());
-        MACaddrTest();
-        StringBuilder output = new StringBuilder();
-        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
-        p.waitFor(); //Wait for the process to finish before continuing the Java program.
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            output.append(line + "\n");
-        }
-        System.out.println(output.toString());
-        //Desktop.getDesktop().open(new File("C://"));
-//        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+//        int count=1;
+//        String DomainFirewall = null;
+//        String PrivateFirewall = null;
+//        String PublicFirewall = null;
+//        StringBuilder output = new StringBuilder();
+////        String term="state";
+//        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
+//        p.waitFor(); //Wait for the process to finish before continuing the Java program.
+//
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line = "";
+//        while ((line = reader.readLine()) != null) {
+//            //Scanner s = new Scanner(line).useDelimiter();
+//            if (line.startsWith("State")){
+//                Scanner s = new Scanner(line).useDelimiter("                                 ");
+//                String firstLine=s.next();
+//                String firewallStatus=s.next();
+////                output.append(line + "\n");
+//                System.out.println(line);
+//                System.out.println(firewallStatus);
+//                //System.out.println("Delimit here next time");
+//                if(count==1){
+//                    DomainFirewall=firewallStatus;
+//                }else if(count==2){
+//                    PrivateFirewall=firewallStatus;
+//                }else if(count==3){
+//                    PublicFirewall=firewallStatus;
+//                }
+//                count++;
+//            }
+//            output.append(line + "\n");
+//        }
+//
+////        Scanner s = new Scanner(osName).useDelimiter("                ");
+////        String firstLine=s.next();
+////        String osBuildNoStr=s.next();
+////        //System.out.println("OS version is " + osName);
+////        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
+////        String osBuildNo=sc.next();
+////        System.out.println(osBuildNo);
+//
+//        System.out.println(output.toString());
+//        //Desktop.getDesktop().open(new File("C://"));
+////        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
+//        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+//        System.out.println(DomainFirewall);
+//        System.out.println(PrivateFirewall);
+//        System.out.println(PublicFirewall);
     }
 
     @FXML
@@ -103,7 +135,9 @@ public class ControllerUserHome implements Initializable {
     }
 
     @FXML
-    void onClickCloudStorageTestButton(ActionEvent event) {
+    void onClickCloudStorageTestButton(ActionEvent event) throws Exception {
+        System.out.println(getIp());
+        MACaddrTest();
         try {
             // authorization
             credential=login.login();
