@@ -16,7 +16,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -25,13 +30,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
-import org.pcap4j.packet.Packet;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -39,52 +42,25 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ControllerCAMainPackets implements Initializable {
-
+public class ControllerCADashboard implements Initializable {
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private JFXHamburger hamburger;
-
     @FXML
     private JFXDrawer drawer;
-
-    @FXML
-    private TableView packetstable;
-
-    @FXML
-    private TableColumn<CapturedPacket, Integer> tableColPN;
-
-    @FXML
-    private TableColumn<CapturedPacket, String> tableColSrcIP;
-
-    @FXML
-    private TableColumn<CapturedPacket, Integer> tableColSrcPort;
-
-    @FXML
-    private TableColumn<CapturedPacket, String> tableColDstIP;
-
-    @FXML
-    private TableColumn<CapturedPacket, Integer> tableColDstPort;
-
-    @FXML
-    private TableColumn<CapturedPacket, String> tableColProtocol;
-
-    @FXML
-    private TableColumn<CapturedPacket, Integer> tableColLength;
-
-    @FXML
-    private TableColumn<CapturedPacket, String> tableColInfo;
-
     @FXML
     private JFXToggleButton captureToggle;
-
     @FXML
     private JFXButton exportPcapBtn;
-
     @FXML
     private JFXButton clearCaptureBtn;
+    @FXML
+    private LineChart<?, ?> networkTrafficChart;
+    @FXML
+    private PieChart protocolChart;
+    @FXML
+    private PieChart top10IPChart;
 
     private PcapNetworkInterface device;
     private Scene myScene;
@@ -95,20 +71,11 @@ public class ControllerCAMainPackets implements Initializable {
     private Thread captureThread;
     private ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
-    private Runnable captureTask;
     private boolean FirstRun = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        tableColPN.setCellValueFactory(new PropertyValueFactory<CapturedPacket,Integer>("number"));
-        tableColSrcIP.setCellValueFactory(new PropertyValueFactory<CapturedPacket,String>("srcIP"));
-        tableColSrcPort.setCellValueFactory(new PropertyValueFactory<CapturedPacket,Integer>("srcPort"));
-        tableColDstIP.setCellValueFactory(new PropertyValueFactory<CapturedPacket,String>("destIP"));
-        tableColDstPort.setCellValueFactory(new PropertyValueFactory<CapturedPacket,Integer>("dstPort"));
-        tableColProtocol.setCellValueFactory(new PropertyValueFactory<CapturedPacket,String>("Protocol"));
-        tableColLength.setCellValueFactory(new PropertyValueFactory<CapturedPacket,Integer>("length"));
-        tableColInfo.setCellValueFactory(new PropertyValueFactory<CapturedPacket,String>("information"));
         captureToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -133,10 +100,6 @@ public class ControllerCAMainPackets implements Initializable {
             exportPcapBtn.setDisable(false);
             packets = capture.packets;
             OLpackets = FXCollections.observableArrayList(packets);
-            packetstable.setItems(OLpackets);
-            packetstable.refresh();
-        } else if (capture.isRunning()){
-
         }
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -159,28 +122,25 @@ public class ControllerCAMainPackets implements Initializable {
                         @Override public void run() {
                             packets = capture.packets;
                             OLpackets = FXCollections.observableArrayList(packets);
-                            packetstable.setItems(OLpackets);
-                            packetstable.refresh();
                         }
                     });
                 }
             }, 2, 1, TimeUnit.SECONDS);
             /*FirstRun = false;
         }*/
-        captureTask = () -> {
+        Runnable task = () -> {
                 capture.startSniffing();
                 packets = capture.packets;
         };
-        captureThread = new Thread(captureTask);
+        captureThread = new Thread(task);
         captureThread.setDaemon(true);
         captureThread.start();
-        System.out.println(captureThread.isAlive());
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
     public void stopCapturing(){
         capture.stopSniffing();
-        System.out.println(captureThread.isAlive());
+        tableviewRunnable.cancel(true);
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -250,41 +210,6 @@ public class ControllerCAMainPackets implements Initializable {
         });
     }
     @FXML
-    public void ShowpacketDetails(MouseEvent event) {
-        if (capture == null){
-
-        }
-        else if (capture.isRunning()){
-
-        }
-        else {
-            CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
-            if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Unsupported Packet");
-                alert.setHeaderText("Unsupported Packet");
-                alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
-                alert.showAndWait();
-            }
-            else {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
-                    controller.passVariables(device, service, capture, selected);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
-                stage.show();
-            }
-        }
-    }
-    @FXML
     public void ClearPackets(ActionEvent event) {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -308,8 +233,6 @@ public class ControllerCAMainPackets implements Initializable {
         clearCapture.setOnAction(addEvent -> {
             capture = null;
             OLpackets = null;
-            packetstable.setItems(null);
-            packetstable.refresh();
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);
             try {
@@ -325,8 +248,6 @@ public class ControllerCAMainPackets implements Initializable {
         clearCaptureAndInt.setOnAction(addEvent -> {
             capture = null;
             OLpackets = null;
-            packetstable.setItems(null);
-            packetstable.refresh();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Parent nextView = null;
@@ -348,7 +269,6 @@ public class ControllerCAMainPackets implements Initializable {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         FileChooser choose = new FileChooser();
-        choose.setTitle("Choose Save Location");
         choose.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network Packet Capture File (*.pcap)", "*.pcap"));
         File f = choose.showSaveDialog(stage);
         if (f == null)
@@ -357,8 +277,8 @@ public class ControllerCAMainPackets implements Initializable {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
         if (capture.export(f.getAbsolutePath())) {
-            String title = "Packet Capture Exported Successfully";
-            String content = "Packet Capture has been exported successfully! You may open this export file with WireShark or other tools for further analysis.";
+            String title = "Packet Capture Exported Sucessfully";
+            String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
             JFXButton close = new JFXButton("Close");
             close.setButtonType(JFXButton.ButtonType.RAISED);
             close.setStyle("-fx-background-color: #00bfff;");
