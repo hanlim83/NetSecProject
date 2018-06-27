@@ -20,7 +20,7 @@ public class ScannerTestMain {
             VirusTotalConfig.getConfigInstance().setVirusTotalAPIKey("1ac910b3fbfcb977b199e7113a20030386f81ce6ba242d4c56683789f08ae42e");
             VirustotalPublicV2 virusTotalRef = new VirustotalPublicV2Impl();
 
-            ScanInfo scanInformation = virusTotalRef.scanFile(new File("C:\\Users\\Fende\\Desktop\\test.txt"));
+            ScanInfo scanInformation = virusTotalRef.scanFile(new File("C:\\Users\\Fende\\Desktop\\virus.txt"));
 
             System.out.println("___SCAN INFORMATION___");
             System.out.println("MD5 :\t" + scanInformation.getMd5());
@@ -41,7 +41,7 @@ public class ScannerTestMain {
             int testPositive = report.getPositives();
 
             System.out.println("Positives :\t" + report.getPositives());
-            System.out.println("Total :\t" + report.getTotal());
+            System.out.println("Total :\t" + report.getTotal() + "\n");
 
 
             Map<String, VirusScanInfo> scans = report.getScans();
