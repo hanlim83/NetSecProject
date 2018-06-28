@@ -56,7 +56,7 @@ public class CapturedPacket {
             }
             length = this.originalPacket.length();
             this.Protocol = identifyProtocol();
-//            this.information = identifyHost();
+            this.information = identifyHost();
         }
         else {
             this.information ="Not a Layer 2 (IP) Packet";
