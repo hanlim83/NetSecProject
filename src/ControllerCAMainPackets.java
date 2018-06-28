@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
@@ -155,12 +156,14 @@ public class ControllerCAMainPackets implements Initializable {
             tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    Platform.runLater(new Runnable() {
-                        @Override public void run() {
+                    Platform.runLater(() -> {
+                        try {
                             packets = capture.packets;
                             OLpackets = FXCollections.observableArrayList(packets);
                             packetstable.setItems(OLpackets);
                             packetstable.refresh();
+                        } catch (ConcurrentModificationException e){
+
                         }
                     });
                 }
@@ -181,6 +184,11 @@ public class ControllerCAMainPackets implements Initializable {
     public void stopCapturing(){
         capture.stopSniffing();
         System.out.println(captureThread.isAlive());
+        tableviewRunnable.cancel(true);
+        packets = capture.packets;
+        OLpackets = FXCollections.observableArrayList(packets);
+        packetstable.setItems(OLpackets);
+        packetstable.refresh();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
