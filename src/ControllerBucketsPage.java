@@ -52,10 +52,22 @@ public class ControllerBucketsPage implements Initializable {
     private AnchorPane CreatingBuckets;
 
     @FXML
+    private JFXButton deletingBuckets;
+
+    @FXML
     private JFXTextField bucketName;
 
     @FXML
     private JFXButton enterButton;
+
+    @FXML
+    private TableView<CloudBuckets> bucketsTable1;
+
+    @FXML
+    private TableColumn<CloudBuckets, String> tableColBucketName1;
+
+    @FXML
+    private TableColumn<CloudBuckets, Button> deleteBuckets1;
 
     @FXML
     private TableView<CloudBuckets> bucketsTable;
@@ -74,10 +86,17 @@ public class ControllerBucketsPage implements Initializable {
     private ObservableList<CloudBuckets> objectList;
     StorageSnippets storagesnippets;
 
+    String errorMessage = "";
+    String successfulMessage = "";
+    int checker = 0;
+    String doubleConfirm = "";
+    int checker2 = -1;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
+        tableColBucketName1.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
         storagesnippets = new StorageSnippets();
         storagesnippets.listBuckets();
         objectArrayList = storagesnippets.getCloudbucketsList();
@@ -89,6 +108,50 @@ public class ControllerBucketsPage implements Initializable {
     }
 
     @FXML
+    void handleDeleteBuckets(MouseEvent event) {
+        //TABLE OF BUCKETS
+        objectList = FXCollections.observableList(objectArrayList);
+        bucketsTable1.setItems(objectList);
+
+        //DELETION OF BUCKETS
+        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+            //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
+            doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + "will be permanently deleted from the cloud. Are you sure to delete it?";
+            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+
+            System.out.println("CHECKER 2 IS " + checker2);
+
+
+            if (checker2 == 0) {
+                errorMessage="Bucket was not deleted successfully";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+
+            } else if (checker2 ==1){
+                bucketsTable1.getItems().remove(cldB);
+                String allBucketNames = "";
+                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
+                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
+                System.out.println(NAMEBUCKET);
+                checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
+                System.out.println("CHECKER IS : " + checker);
+                System.out.println("Deleted :" + NAMEBUCKET);
+                System.out.println("THE CHECKER IS NOW : " + storagesnippets.getChecker());
+                if (checker == 1) {
+                    successfulMessage = "Bucket Deleted Successfully";
+                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                }
+            }
+
+
+            return cldB;
+//.
+        }));
+
+
+        System.out.println("After success msg");
+    }
+
+    @FXML
     void handleListBuckets(MouseEvent event) {
         String allBucketNames = "";
         for (CloudBuckets b : objectArrayList) {
@@ -96,9 +159,6 @@ public class ControllerBucketsPage implements Initializable {
         }
         listedBuckets.setText(allBucketNames);
     }
-
-    String errorMessage = "";
-    String successfulMessage = "";
 
 
     private boolean checkEligible(String bucketname) {
@@ -175,23 +235,72 @@ public class ControllerBucketsPage implements Initializable {
             successfulMessage = "Successful Creation - Bucket has been created";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
         }
-            //TABLE OF BUCKETS
-            objectList = FXCollections.observableList(objectArrayList);
-            bucketsTable.setItems(objectList);
+        //TABLE OF BUCKETS
+        objectList = FXCollections.observableList(objectArrayList);
+        bucketsTable.setItems(objectList);
 
-            //DELETION OF BUCKETS
-            deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
-                bucketsTable.getItems().remove(cldB);
-                String allBucketNames = "";
-                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
-                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
-                System.out.println(NAMEBUCKET);
-                storagesnippets.deleteGcsBucket(NAMEBUCKET);
-                System.out.println("Deleted :" + NAMEBUCKET);
-                return cldB;
-            }));
+//        //DELETION OF BUCKETS
+//        deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+//            bucketsTable.getItems().remove(cldB);
+//            String allBucketNames = "";
+//            System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
+//            String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
+//            System.out.println(NAMEBUCKET);
+//            checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
+//            System.out.println("CHECKER IS : " + checker);
+//            System.out.println("Deleted :" + NAMEBUCKET);
+//            return cldB;
+//        }));
 
-            //DO A ARE U SURE TO DELETE THIS BUCKET CONFIMRATION
+//        if (checker == 1) {
+//            successfulMessage = "Bucket Deleted Successfully";
+//            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+//        }
+
+
+    }
+
+
+    private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String message = doubleconfirm;
+        String title = "Are you sure?";
+
+        JFXButton no = new JFXButton(buttonContent);
+        no.setButtonType(JFXButton.ButtonType.RAISED);
+        no.setStyle("-fx-background-color: #00bfff;");
+
+        JFXButton yes = new JFXButton(buttonContent2);
+        yes.setButtonType(JFXButton.ButtonType.RAISED);
+        yes.setStyle("-fx-background-color: #ff2828");
+
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(message));
+
+        layout.setActions(no,yes);
+
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+
+        //GET WHETHER PRESS YES or NO
+        yes.setOnAction(__addEvent -> {
+            checker2=1;
+            alert.hideWithAnimation();
+        });
+        no.setOnAction(__addEvent -> {
+            checker2=0;
+            alert.hideWithAnimation();
+        });
+        alert.show();
+
+
     }
 
     private void successfulMessage(Scene scene, String successfulMessage, String buttonContent) {
