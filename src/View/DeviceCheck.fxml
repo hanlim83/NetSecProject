@@ -19,7 +19,7 @@
             <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
-      <JFXButton layoutX="46.0" layoutY="410.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="184.0" text="Button" />
+      <JFXButton fx:id="tempButton" layoutX="46.0" layoutY="410.0" mnemonicParsing="false" onAction="#onClickTempButton" prefHeight="150.0" prefWidth="184.0" text="Button" />
       <JFXSpinner layoutX="410.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
    </children>
 </AnchorPane>

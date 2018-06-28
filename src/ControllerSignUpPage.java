@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -56,6 +57,9 @@ public class ControllerSignUpPage implements Initializable {
 
     @FXML
     void onClickCancelButton(ActionEvent event) throws IOException {
+        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+        file.delete();
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("LoginPage.fxml"));
         myScene = anchorPane.getScene();
@@ -155,13 +159,13 @@ public class ControllerSignUpPage implements Initializable {
             keyGenerator();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
+            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = loader.load();
 
             //Will change to Device Checking Page next time
-            ControllerUserHome controller = loader.<ControllerUserHome>getController();
+            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
             //controller.passData(login.getEmail());
 
             stage.setScene(new Scene(nextView));
