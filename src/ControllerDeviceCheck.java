@@ -1,6 +1,5 @@
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,9 +8,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -139,5 +140,31 @@ public class ControllerDeviceCheck implements Initializable {
         System.out.println(DomainFirewall);
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
+
+//        if (DomainFirewall.equals("OFF")||PrivateFirewall.equals("OFF")||PublicFirewall.equals("OFF")){
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//
+//            String title = "";
+//            String content = "Please turn on your firewall and try again.";
+//
+//            JFXButton close = new JFXButton("Close");
+//
+//            close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//            close.setStyle("-fx-background-color: #00bfff;");
+//
+//            JFXDialogLayout layout = new JFXDialogLayout();
+//            layout.setHeading(new Label(title));
+//            layout.setBody(new Label(content));
+//            layout.setActions(close);
+//            JFXAlert<Void> alert = new JFXAlert<>(stage);
+//            alert.setOverlayClose(true);
+//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//            alert.setContent(layout);
+//            alert.initModality(Modality.NONE);
+//            close.setOnAction(__ -> alert.hideWithAnimation());
+//            alert.show();
+//        }
     }
 }

@@ -138,7 +138,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
             }
         };
-        timer.schedule(Task, 10000);
+        timer.schedule(Task, 60000);
     }
 
     public void endTimer() {
