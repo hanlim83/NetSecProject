@@ -1,12 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBaseLayoutNew">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFileScanner">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -19,7 +22,16 @@
                 <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-        <JFXButton layoutX="24.0" layoutY="266.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="184.0" text="Button" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+        <JFXButton fx:id="scannerButton" layoutX="477.0" layoutY="476.0" mnemonicParsing="false" onAction="#Scanner" prefHeight="2.0" prefWidth="116.0" style="-fx-background-color: #00FF00;" text="Scan">
+         <font>
+            <Font name="System Bold Italic" size="17.0" />
+         </font></JFXButton>
+      <Label fx:id="browseLabel" layoutX="320.0" layoutY="280.0" prefHeight="45.0" prefWidth="273.0" style="-fx-alignment: center; -fx-background-color: #D3D3D3;" text="Choose a file from your computer" textAlignment="CENTER" />
+      <JFXButton fx:id="browserFile" layoutX="615.0" layoutY="283.0" mnemonicParsing="false" onAction="#fileBrowser" prefHeight="2.0" prefWidth="90.0" style="-fx-background-color: grey;" text="Browse">
+         <font>
+            <Font name="System Bold Italic" size="17.0" />
+         </font>
+      </JFXButton>
     </children>
 </AnchorPane>
