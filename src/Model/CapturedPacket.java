@@ -42,7 +42,7 @@ public class CapturedPacket {
             }
             length = this.originalPacket.length();
             this.Protocol = identifyProtocol();
-            this.information = identifyHost();
+            //this.information = identifyHost();
         }
     }
 
