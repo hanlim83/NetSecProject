@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ControllerCADashboard implements Initializable {
+public class ControllerCAMainDashboard implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     @FXML
