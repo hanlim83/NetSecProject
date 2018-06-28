@@ -74,7 +74,7 @@ public class WindowsUtils implements Runnable{
     // TODO: fill this in
     // The instance connection name can be obtained from the instance overview page in Cloud Console
     // or by running "gcloud sql instances describe <instance> | grep connectionName".
-    static String instanceConnectionName = "netsecpj:us-central1:device-supported-versions";
+    static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
 
     // TODO: fill this in
     // The database from which to list tables.
@@ -107,12 +107,13 @@ public class WindowsUtils implements Runnable{
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
                 databaseName,
                 instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
         //same
         System.out.println(jdbcUrl);
 
         //check this
         //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        Connection connection = DriverManager.getConnection(jdbcUrl);
         //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
