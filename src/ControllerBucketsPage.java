@@ -27,7 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//*HERE SINCE 3.44pm
+
+//*HERE SINCE 4.52PM
 public class ControllerBucketsPage implements Initializable {
 
     @FXML
@@ -85,12 +86,15 @@ public class ControllerBucketsPage implements Initializable {
     private ArrayList<CloudBuckets> objectArrayList;
     private ObservableList<CloudBuckets> objectList;
     StorageSnippets storagesnippets;
+    CloudBuckets cldB2 = new CloudBuckets();
+
 
     String errorMessage = "";
     String successfulMessage = "";
     int checker = 0;
     String doubleConfirm = "";
-    int checker2 = -1;
+    int checker2;
+    int CHECKING;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -100,47 +104,58 @@ public class ControllerBucketsPage implements Initializable {
         storagesnippets = new StorageSnippets();
         storagesnippets.listBuckets();
         objectArrayList = storagesnippets.getCloudbucketsList();
-    }
+//        CHECKING=-1;
+//        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {//DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
+//            CHECKING=checker2;
+//            bucketsTable1.getItems().remove(cldB);
+//            String allBucketNames = "";
+//            System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
+//            String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
+//            System.out.println(NAMEBUCKET);
+//            checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
+//        return cldB;
+//        }));
+        }
 
     @FXML
     void handleCreateBuckets(MouseEvent event) {
         CreatingBuckets.setVisible(true);
     }
 
+    public CloudBuckets cldBucket(CloudBuckets cldB){
+        cldB2 = cldB;
+
+        return cldB2;
+    }
+
     @FXML
     void handleDeleteBuckets(MouseEvent event) {
+        CHECKING=-1;
         //TABLE OF BUCKETS
         objectList = FXCollections.observableList(objectArrayList);
         bucketsTable1.setItems(objectList);
 
         //DELETION OF BUCKETS
         deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+            cldBucket(cldB);
             //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
             doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + "will be permanently deleted from the cloud. Are you sure to delete it?";
             doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+            CHECKING=checker2;
+            System.out.println("CHECKER NOW IS " + CHECKING);
 
-            System.out.println("CHECKER 2 IS " + checker2);
+//            if (CHECKING == 1) {
+//                bucketsTable1.getItems().remove(cldB);
+//                String allBucketNames = "";
+//                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
+//                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
+//                System.out.println(NAMEBUCKET);
+//                checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
+//                System.out.println("CHECKER IS : " + checker);
+//                System.out.println("Deleted :" + NAMEBUCKET);
+//                System.out.println("THE CHECKER IS NOW : " + storagesnippets.getChecker());
+//            }
 
-
-            if (checker2 == 0) {
-                errorMessage="Bucket was not deleted successfully";
-                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-
-            } else if (checker2 ==1){
-                bucketsTable1.getItems().remove(cldB);
-                String allBucketNames = "";
-                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
-                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
-                System.out.println(NAMEBUCKET);
-                checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
-                System.out.println("CHECKER IS : " + checker);
-                System.out.println("Deleted :" + NAMEBUCKET);
-                System.out.println("THE CHECKER IS NOW : " + storagesnippets.getChecker());
-                if (checker == 1) {
-                    successfulMessage = "Bucket Deleted Successfully";
-                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-                }
-            }
 
 
             return cldB;
@@ -262,6 +277,7 @@ public class ControllerBucketsPage implements Initializable {
 
 
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
+        checker2=-1;
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -281,7 +297,7 @@ public class ControllerBucketsPage implements Initializable {
         layout.setHeading(new Label(title));
         layout.setBody(new Label(message));
 
-        layout.setActions(no,yes);
+        layout.setActions(no, yes);
 
         JFXAlert<Void> alert = new JFXAlert<>(stage);
         alert.setOverlayClose(true);
@@ -291,11 +307,31 @@ public class ControllerBucketsPage implements Initializable {
 
         //GET WHETHER PRESS YES or NO
         yes.setOnAction(__addEvent -> {
-            checker2=1;
+            checker2 = 1;
+            CHECKING = -1;
+            System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
+
+//        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {//DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
+
+            CHECKING=checker2;
+            bucketsTable1.getItems().remove(cldB2);
+            String allBucketNames = "";
+            System.out.println("DELETING THIS BUCKET: " + cldB2.getBucketName());
+            String NAMEBUCKET = cldB2.getBucketName().substring(12, cldB2.getBucketName().length() - 1);
+            System.out.println(NAMEBUCKET);
+            checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
+//        return cldB2;
+//        }));
+
+            successfulMessage = "Bucket Deleted Successfully";
+            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
             alert.hideWithAnimation();
         });
         no.setOnAction(__addEvent -> {
-            checker2=0;
+            checker2 = 0;
+            System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
+            errorMessage = "Bucket was not deleted successfully";
+            errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             alert.hideWithAnimation();
         });
         alert.show();

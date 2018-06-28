@@ -6,6 +6,10 @@ public class CloudBuckets {
     private Bucket orignalBucket;
     private String bucketName;
 
+    public CloudBuckets(){
+
+    }
+
     public CloudBuckets (Bucket orignalBucket) {
         this.orignalBucket = orignalBucket;
         this.bucketName = this.orignalBucket.toString();
