@@ -61,6 +61,7 @@ public class ControllerUserHome implements Initializable {
         hamburgerBar();
     }
 
+    //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {

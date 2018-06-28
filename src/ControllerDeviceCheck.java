@@ -44,6 +44,7 @@ public class ControllerDeviceCheck implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        //run windows device checker
     }
 
     //TODO

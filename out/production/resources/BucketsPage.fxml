@@ -28,7 +28,14 @@
       <JFXButton fx:id="ListBuckets" layoutX="287.0" layoutY="108.0" onMouseClicked="#handleListBuckets" prefHeight="120.0" prefWidth="188.0" text="Listing Buckets" />
       <Label fx:id="listedBuckets" layoutX="535.0" layoutY="81.0" prefHeight="131.0" prefWidth="211.0" text="Fake text to be changed when button is clicked" wrapText="true" />
       <JFXButton fx:id="CreateBuckets" layoutX="295.0" layoutY="268.0" onMouseClicked="#handleCreateBuckets" prefHeight="105.0" prefWidth="142.0" text="Creating Buckets" />
-      <AnchorPane fx:id="CreatingBuckets" layoutX="1.0" layoutY="66.0" prefHeight="535.0" prefWidth="1069.0" style="-fx-background-color: #b5d1ff;">
+      <JFXButton fx:id="deletingBuckets" layoutX="302.0" layoutY="395.0" onMouseClicked="#handleDeleteBuckets" prefHeight="105.0" prefWidth="142.0" text="Deleting Buckets" />
+      <TableView fx:id="bucketsTable1" layoutX="536.0" layoutY="348.0" prefHeight="200.0" prefWidth="283.0">
+         <columns>
+            <TableColumn fx:id="tableColBucketName1" prefWidth="202.73330688476562" text="Bucket" />
+            <TableColumn fx:id="deleteBuckets1" prefWidth="79.26669311523438" text="Deletion" />
+         </columns>
+      </TableView>
+      <AnchorPane fx:id="CreatingBuckets" layoutX="1.0" layoutY="66.0" prefHeight="535.0" prefWidth="1069.0" style="-fx-background-color: #b5d1ff;" visible="false">
          <children>
             <JFXButton fx:id="exitButton" layoutX="748.0" layoutY="27.0" onMouseClicked="#handleExit" style="-fx-background-color: #ff63c2;" text="Temp Exit button tbr" textFill="#100000" />
             <Label layoutX="283.0" layoutY="89.0" prefHeight="31.0" prefWidth="128.0" text="Bucket Name: ">
