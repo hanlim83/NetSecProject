@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+//*HERE SINCE 3.44pm
 public class ControllerBucketsPage implements Initializable {
 
     @FXML
@@ -144,7 +144,7 @@ public class ControllerBucketsPage implements Initializable {
 
 
             return cldB;
-//.
+
         }));
 
 

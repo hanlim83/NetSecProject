@@ -115,22 +115,22 @@ public class ControllerCADashboard implements Initializable {
         if (capture == null)
             capture = new NetworkCapture(device);
 //        if (FirstRun == true){
-            tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    Platform.runLater(new Runnable() {
-                        @Override public void run() {
-                            packets = capture.packets;
-                            OLpackets = FXCollections.observableArrayList(packets);
-                        }
-                    });
-                }
-            }, 2, 1, TimeUnit.SECONDS);
+        tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        packets = capture.packets;
+                        OLpackets = FXCollections.observableArrayList(packets);
+                    }
+                });
+            }
+        }, 2, 1, TimeUnit.SECONDS);
             /*FirstRun = false;
         }*/
         Runnable task = () -> {
-                capture.startSniffing();
-                packets = capture.packets;
+            capture.startSniffing();
+            packets = capture.packets;
         };
         captureThread = new Thread(task);
         captureThread.setDaemon(true);
@@ -262,7 +262,7 @@ public class ControllerCADashboard implements Initializable {
             alert.close();
             stage.show();
         });
-         alert.showAndWait();
+        alert.showAndWait();
     }
     @FXML
     public void launchPcapExport(ActionEvent event) {

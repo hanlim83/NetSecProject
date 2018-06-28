@@ -32,7 +32,7 @@ public class WindowsUtils implements Runnable{
 //        return "";
 //    }
 
-    public String getEdition() {
+    private String getEdition() {
         String osName = findSysInfo("OS Version:");
 //        if (!osName.isEmpty()) {
 //            for (String edition : EDITIONS) {

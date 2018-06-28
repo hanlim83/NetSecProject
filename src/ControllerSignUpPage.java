@@ -155,13 +155,13 @@ public class ControllerSignUpPage implements Initializable {
             keyGenerator();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
+            loader.setLocation(getClass().getResource("UserHome.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = loader.load();
 
             //Will change to Device Checking Page next time
-            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+            ControllerUserHome controller = loader.<ControllerUserHome>getController();
             //controller.passData(login.getEmail());
 
             stage.setScene(new Scene(nextView));

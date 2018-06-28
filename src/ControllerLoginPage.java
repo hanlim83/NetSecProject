@@ -53,7 +53,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     }
 
-    //TODO To be removed soon
     @FXML
     void onClickTestButton(ActionEvent event) throws Exception {
         //login.l.stop();
@@ -95,7 +94,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         });
     }
 
-    private Timer timer;
+    Timer timer;
 
     public void startTimer() {
         timer = new Timer();
@@ -296,11 +295,41 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //        scheduler.schedule(task, delay, TimeUnit.SECONDS);
 //        scheduler.shutdown();
 
+//        process.setOnCancelled(e -> {
+//                    System.out.println("Cancelled");
+//                }
+//        );
+//        process.setOnFailed(e -> {
+//                    System.out.println("Failed");
+//                }
+//        );
+
 
 //            ControllerLoginPage worker = new ControllerLoginPage();
 //            Thread thread = new Thread(worker);
 //            thread.start();
 
+//        Platform.runLater(new Runnable() {
+//            public void run() {
+//                new Thread(task).start();
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
+//                System.out.println(anchorPane.getScene());
+//                myScene = anchorPane.getScene();
+//                Stage stage = (Stage) (myScene).getWindow();
+//                Parent nextView = null;
+//                try {
+//                    nextView = loader.load();
+//                    ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
+//                    System.out.println("Email: " + login.getEmail());
+//                    controller.passData(login.getEmail());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                stage.setScene(new Scene(nextView));
+//                stage.setTitle("NSPJ");
+//                stage.show();
+//            }
+//        });
     }
 
     //Service method

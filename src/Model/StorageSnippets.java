@@ -58,7 +58,7 @@ public class StorageSnippets {
     // ObjectConversion objc = new ObjectConversion();
     //  StorageSnippets storagesnippets = new StorageSnippets();
     ArrayList<CloudBuckets> cloudbucketsList = new ArrayList<CloudBuckets>();
-
+    int checker=0;
 
     public StorageSnippets() {
         Credential credential;
@@ -170,7 +170,9 @@ public class StorageSnippets {
 //        }
 //    }
 
-    public void deleteGcsBucket(String gcsBucketName) {
+
+
+    public int deleteGcsBucket(String gcsBucketName) {
 //        StorageOptions.Builder optionsBuilder = StorageOptions.newBuilder();
 //        StorageOptions storageOptions = optionsBuilder.setProjectId(projectId).build();
 //        Storage storage = storageOptions.getService();
@@ -182,6 +184,12 @@ public class StorageSnippets {
 
         System.out.println("Deleting...");
         storage.delete(gcsBucketName);
+        checker=1;
+        return checker;
+    }
+
+    public int getChecker() {
+        return checker;
     }
 
     public ArrayList<CloudBuckets> getCloudbucketsList() {

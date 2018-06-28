@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
@@ -96,7 +95,6 @@ public class ControllerCAMainPackets implements Initializable {
     private Thread captureThread;
     private ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
-    private Runnable captureTask;
     private boolean FirstRun = true;
 
     @Override
@@ -136,8 +134,6 @@ public class ControllerCAMainPackets implements Initializable {
             OLpackets = FXCollections.observableArrayList(packets);
             packetstable.setItems(OLpackets);
             packetstable.refresh();
-        } else if (capture.isRunning()){
-
         }
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -156,39 +152,31 @@ public class ControllerCAMainPackets implements Initializable {
             tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    Platform.runLater(() -> {
-                        try {
+                    Platform.runLater(new Runnable() {
+                        @Override public void run() {
                             packets = capture.packets;
                             OLpackets = FXCollections.observableArrayList(packets);
                             packetstable.setItems(OLpackets);
                             packetstable.refresh();
-                        } catch (ConcurrentModificationException e){
-
                         }
                     });
                 }
             }, 2, 1, TimeUnit.SECONDS);
             /*FirstRun = false;
         }*/
-        captureTask = () -> {
+        Runnable task = () -> {
                 capture.startSniffing();
                 packets = capture.packets;
         };
-        captureThread = new Thread(captureTask);
+        captureThread = new Thread(task);
         captureThread.setDaemon(true);
         captureThread.start();
-        System.out.println(captureThread.isAlive());
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
     public void stopCapturing(){
         capture.stopSniffing();
-        System.out.println(captureThread.isAlive());
         tableviewRunnable.cancel(true);
-        packets = capture.packets;
-        OLpackets = FXCollections.observableArrayList(packets);
-        packetstable.setItems(OLpackets);
-        packetstable.refresh();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -356,7 +344,6 @@ public class ControllerCAMainPackets implements Initializable {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         FileChooser choose = new FileChooser();
-        choose.setTitle("Choose Save Location");
         choose.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network Packet Capture File (*.pcap)", "*.pcap"));
         File f = choose.showSaveDialog(stage);
         if (f == null)
@@ -365,8 +352,8 @@ public class ControllerCAMainPackets implements Initializable {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
         if (capture.export(f.getAbsolutePath())) {
-            String title = "Packet Capture Exported Successfully";
-            String content = "Packet Capture has been exported successfully! You may open this export file with WireShark or other tools for further analysis.";
+            String title = "Packet Capture Exported Sucessfully";
+            String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
             JFXButton close = new JFXButton("Close");
             close.setButtonType(JFXButton.ButtonType.RAISED);
             close.setStyle("-fx-background-color: #00bfff;");
