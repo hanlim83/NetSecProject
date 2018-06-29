@@ -11,15 +11,20 @@
    <children>
       <AnchorPane prefHeight="65.0" prefWidth="1066.0">
          <children>
-            <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+            <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
                <font>
                   <Font size="40.0" />
                </font>
             </Text>
-            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
       <JFXButton fx:id="tempButton" layoutX="46.0" layoutY="410.0" mnemonicParsing="false" onAction="#onClickTempButton" prefHeight="150.0" prefWidth="184.0" text="Button" />
-      <JFXSpinner layoutX="410.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
+      <JFXSpinner layoutX="409.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
+      <JFXButton layoutX="379.0" layoutY="453.0" prefHeight="120.0" prefWidth="310.0" text="Restart Device Checking">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

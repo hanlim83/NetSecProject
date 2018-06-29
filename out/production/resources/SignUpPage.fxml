@@ -5,43 +5,30 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
-                <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+                <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
                     <font>
                         <Font size="40.0" />
                     </font>
                 </Text>
-                <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+                <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-      <Label layoutX="331.0" layoutY="172.0" prefHeight="39.0" prefWidth="81.0" text="Email:">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <TextField fx:id="EmailTextField" disable="true" editable="false" layoutX="419.0" layoutY="172.0" prefHeight="39.0" prefWidth="232.0" />
-      <JFXPasswordField fx:id="PasswordField" layoutX="419.0" layoutY="261.0" prefHeight="39.0" prefWidth="232.0" promptText="Password" />
-      <JFXPasswordField fx:id="ConfirmPasswordField" layoutX="419.0" layoutY="351.0" prefHeight="39.0" prefWidth="232.0" promptText="Confirm Password" />
-      <JFXButton fx:id="ConfirmButton" layoutX="303.0" layoutY="472.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
-      <Label layoutX="288.0" layoutY="261.0" prefHeight="39.0" prefWidth="124.0" text="Password:">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <Label layoutX="190.0" layoutY="351.0" prefHeight="39.0" prefWidth="221.0" text="Confirm Password:">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="CancelButton" layoutX="561.0" layoutY="472.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
-      <Label layoutX="352.0" layoutY="390.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
+      <JFXButton fx:id="ConfirmButton" layoutX="279.0" layoutY="497.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
+      <JFXButton fx:id="CancelButton" layoutX="571.0" layoutY="497.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
+      <Label layoutX="353.0" layoutY="419.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>
@@ -51,5 +38,42 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <VBox layoutX="288.0" layoutY="138.0" prefHeight="78.0" prefWidth="493.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+      <GridPane layoutX="266.0" layoutY="174.0" prefHeight="211.0" prefWidth="507.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="387.0" minWidth="10.0" prefWidth="243.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.9999694824219" minWidth="10.0" prefWidth="292.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="39.0" prefWidth="81.0" text="Email:" GridPane.halignment="RIGHT">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="EmailTextField" disable="true" editable="false" prefHeight="39.0" prefWidth="316.0" GridPane.columnIndex="1" />
+            <Label prefHeight="39.0" prefWidth="124.0" text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <JFXPasswordField fx:id="PasswordField" prefHeight="39.0" prefWidth="232.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label prefHeight="39.0" prefWidth="221.0" text="Confirm Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <JFXPasswordField fx:id="ConfirmPasswordField" prefHeight="39.0" prefWidth="232.0" promptText="Confirm Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
     </children>
 </AnchorPane>

@@ -164,9 +164,8 @@ public class ControllerSignUpPage implements Initializable {
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = loader.load();
 
-            //Will change to Device Checking Page next time
             ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
-            //controller.passData(login.getEmail());
+            controller.runCheck();
 
             stage.setScene(new Scene(nextView));
             stage.setTitle("NSPJ");

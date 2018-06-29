@@ -2,6 +2,8 @@ import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -71,10 +74,47 @@ public class ControllerDeviceCheck implements Initializable {
 //        stage.show();
     }
 
-    private void runCheck() throws IOException, InterruptedException, SQLException {
-        localDeviceFirewallCheck();
-        checkWindowsApproved();
+    public void runCheck() throws IOException, InterruptedException, SQLException {
+        process.start();
+        process.setOnSucceeded(e -> {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("UserHome.fxml"));
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerUserHome controller = loader.<ControllerUserHome>getController();
+            } catch (IOException u) {
+                u.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("NSPJ");
+            stage.show();
+        });
+        process.setOnCancelled(e -> {
+            System.out.println("Cancelled");
+        });
+        process.setOnFailed(e -> {
+            System.out.println("Failed");
+        });
     }
+
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    localDeviceFirewallCheck();
+                    //Error when connecting to cloud. need to handle all errors, and also the button to force reset and stuff after a certain amount of time
+                    checkWindowsApproved();
+                    return null;
+                }
+            };
+        }
+    };
+
 
     String DomainFirewall = null;
     String PrivateFirewall = null;
@@ -171,21 +211,22 @@ public class ControllerDeviceCheck implements Initializable {
 //            stage.setScene(new Scene(nextView));
 //            stage.setTitle("NSPJ");
 //            stage.show();
+            System.out.println("SUPPORTED VERSION");
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerUserHome controller = loader.<ControllerUserHome>getController();
-            } catch (IOException u) {
-                u.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+//            FXMLLoader loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("UserHome.fxml"));
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//            Parent nextView = null;
+//            try {
+//                nextView = loader.load();
+//                ControllerUserHome controller = loader.<ControllerUserHome>getController();
+//            } catch (IOException u) {
+//                u.printStackTrace();
+//            }
+//            stage.setScene(new Scene(nextView));
+//            stage.setTitle("NSPJ");
+//            stage.show();
         }else{
             System.out.println("Not supported VERSION!");
         }

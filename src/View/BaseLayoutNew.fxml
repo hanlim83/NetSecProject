@@ -13,12 +13,12 @@
       <AnchorPane prefHeight="65.0" prefWidth="1066.0">
          <children>
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-            <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+            <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
                <font>
                   <Font size="40.0" />
                </font>
             </Text>
-            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
       <JFXButton layoutX="24.0" layoutY="266.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="184.0" text="Button" />
