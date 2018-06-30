@@ -66,7 +66,6 @@ public class ControllerCAMainDashboard implements Initializable {
     private Scene myScene;
     public static AnchorPane rootP;
     private ArrayList<CapturedPacket>packets;
-    private ObservableList<CapturedPacket> OLpackets;
     private NetworkCapture capture;
     private Thread captureThread;
     private ScheduledExecutorService service;
@@ -76,17 +75,6 @@ public class ControllerCAMainDashboard implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        captureToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (captureToggle.isSelected()){
-                    startCapturing();
-                }
-                else {
-                    stopCapturing();
-                }
-            }
-        });
     }
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
         this.device = nif;
@@ -99,7 +87,6 @@ public class ControllerCAMainDashboard implements Initializable {
             clearCaptureBtn.setDisable(false);
             exportPcapBtn.setDisable(false);
             packets = capture.packets;
-            OLpackets = FXCollections.observableArrayList(packets);
         }
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -121,7 +108,6 @@ public class ControllerCAMainDashboard implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         packets = capture.packets;
-                        OLpackets = FXCollections.observableArrayList(packets);
                     }
                 });
             }
@@ -143,6 +129,7 @@ public class ControllerCAMainDashboard implements Initializable {
         tableviewRunnable.cancel(true);
         //Alert below
         myScene = anchorPane.getScene();
+        capture.getTrafficPerSecond();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;
@@ -232,7 +219,6 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.initModality(Modality.APPLICATION_MODAL);
         clearCapture.setOnAction(addEvent -> {
             capture = null;
-            OLpackets = null;
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);
             try {
@@ -247,7 +233,6 @@ public class ControllerCAMainDashboard implements Initializable {
         });
         clearCaptureAndInt.setOnAction(addEvent -> {
             capture = null;
-            OLpackets = null;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Parent nextView = null;
@@ -273,7 +258,7 @@ public class ControllerCAMainDashboard implements Initializable {
         File f = choose.showSaveDialog(stage);
         if (f == null)
             return;
-        else if(!f.getName().contains(".")) {
+        else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
         if (capture.export(f.getAbsolutePath())) {
@@ -298,8 +283,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             });
             alert.show();
-        }
-        else {
+        } else {
             String title = "Packet Capture Exported Failed";
             String content = "Oops something happened and the export failed.";
             JFXButton close = new JFXButton("Close");

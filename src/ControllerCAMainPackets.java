@@ -97,6 +97,7 @@ public class ControllerCAMainPackets implements Initializable {
     private ScheduledFuture tableviewRunnable;
     private boolean FirstRun = true;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
@@ -149,24 +150,24 @@ public class ControllerCAMainPackets implements Initializable {
         if (capture == null)
             capture = new NetworkCapture(device);
 //        if (FirstRun == true){
-            tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    Platform.runLater(new Runnable() {
-                        @Override public void run() {
-                            packets = capture.packets;
-                            OLpackets = FXCollections.observableArrayList(packets);
-                            packetstable.setItems(OLpackets);
-                            packetstable.refresh();
-                        }
-                    });
-                }
-            }, 2, 1, TimeUnit.SECONDS);
+        tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        packets = capture.packets;
+                        OLpackets = FXCollections.observableArrayList(packets);
+                        packetstable.setItems(OLpackets);
+                        packetstable.refresh();
+                    }
+                });
+            }
+        }, 2, 1, TimeUnit.SECONDS);
             /*FirstRun = false;
         }*/
         Runnable task = () -> {
-                capture.startSniffing();
-                packets = capture.packets;
+            capture.startSniffing();
+            packets = capture.packets;
         };
         captureThread = new Thread(task);
         captureThread.setDaemon(true);
@@ -338,7 +339,7 @@ public class ControllerCAMainPackets implements Initializable {
             alert.close();
             stage.show();
         });
-         alert.showAndWait();
+        alert.showAndWait();
     }
     @FXML
     public void launchPcapExport(ActionEvent event) {
@@ -349,7 +350,7 @@ public class ControllerCAMainPackets implements Initializable {
         File f = choose.showSaveDialog(stage);
         if (f == null)
             return;
-        else if(!f.getName().contains(".")) {
+        else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
         if (capture.export(f.getAbsolutePath())) {
@@ -374,8 +375,7 @@ public class ControllerCAMainPackets implements Initializable {
                 }
             });
             alert.show();
-        }
-        else {
+        } else {
             String title = "Packet Capture Exported Failed";
             String content = "Oops something happened and the export failed.";
             JFXButton close = new JFXButton("Close");
