@@ -4,7 +4,15 @@ import com.sun.jna.Platform;
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class NetworkCapture {
     //Pre-Defined Variables
@@ -131,6 +139,21 @@ public class NetworkCapture {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public int getTrafficPerSecond() {
+        Timestamp original = new Timestamp(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(original.getTime());
+        cal.add(Calendar.SECOND, 10);
+        Timestamp later = new Timestamp(cal.getTime().getTime());
+        int packetCount = 0;
+        for (CapturedPacket packet : packets){
+            if (packet.getOrignalTimeStamp().before(later))
+                packetCount++;
+        }
+        System.out.println(packetCount);
+        return packetCount;
     }
 
     public boolean isRunning() {

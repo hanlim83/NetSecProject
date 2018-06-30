@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Better Handling of &quot;No interface available in CAMain&quot;">
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerUserHome.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerUserHome.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/CapturedPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/CapturedPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerBucketsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerBucketsPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/CloudBuckets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/CloudBuckets.java" afterDir="false" />
+    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/NetworkCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/NetworkCapture.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -23,7 +24,6 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/NSPJ$Main.ic" NAME="Main Coverage Results" MODIFIED="1529504854720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/NSPJ$CAMain.ic" NAME="CAMain Coverage Results" MODIFIED="1529852004513" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -67,36 +67,68 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ControllerBucketsPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerBucketsPage.java">
+      <file leaf-file-name="CAMain.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CAMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="221" column="5" lean-forward="true" selection-start-line="221" selection-start-column="5" selection-end-line="221" selection-end-column="5" />
+            <state relative-caret-position="187">
+              <caret line="18" column="40" lean-forward="true" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CapturedPacket.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/CapturedPacket.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="620">
+              <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NetworkCapture.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="316">
+              <caret line="154" column="38" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
               <folding>
-                <element signature="e#3064#3065#0" expanded="true" />
-                <element signature="e#3112#3113#0" expanded="true" />
-                <element signature="e#3252#3266#0" expanded="true" />
-                <element signature="e#14772#14773#0" expanded="true" />
-                <element signature="e#14821#14822#0" expanded="true" />
+                <element signature="e#4690#4691#0" expanded="true" />
+                <element signature="e#4729#4730#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CloudBuckets.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Model/CloudBuckets.java">
+      <file leaf-file-name="ControllerAdminSideTab.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-end-line="6" />
+            <state relative-caret-position="272">
+              <caret line="30" column="42" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StorageSnippets.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/StorageSnippets.java">
+      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="184" column="29" lean-forward="true" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
+            <state relative-caret-position="-2758">
+              <caret line="181" column="38" selection-start-line="181" selection-start-column="38" selection-end-line="181" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControllerCAMainDashboard.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4448">
+              <caret line="324" column="5" selection-start-line="324" selection-start-column="5" selection-end-line="324" selection-end-column="5" />
+              <folding>
+                <element signature="e#6468#6469#0" expanded="true" />
+                <element signature="e#6525#6526#0" expanded="true" />
+                <element signature="e#12346#12347#0" expanded="true" />
+                <element signature="e#12411#12412#0" expanded="true" />
+                <element signature="e#13386#13387#0" expanded="true" />
+                <element signature="e#13451#13452#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -107,9 +139,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaFXApplication" />
+        <option value="FxmlFile" />
         <option value="CSS File" />
         <option value="Class" />
-        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -133,7 +165,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\winst\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\hanse\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -313,9 +345,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6118317083567" />
+        <entry key="$PROJECT_DIR$" value="6117625145290" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="103489466" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2377619048" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="1862156268" />
       </map>
@@ -526,12 +558,15 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/CAMain.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/ControllerUserHome.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/RSAKeyGenerator.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/BaseLayoutController.java" />
+        <option value="$PROJECT_DIR$/src/Controller/LoginPageController.java" />
         <option value="$PROJECT_DIR$/src/NSPJ/Controller/BaseLayoutController.java" />
         <option value="$PROJECT_DIR$/src/NSPJController/BaseLayoutController.java" />
         <option value="$PROJECT_DIR$/src/Controller/BaseLayoutController.java" />
@@ -570,19 +605,17 @@
         <option value="$PROJECT_DIR$/src/RSAKeyGenerator.java" />
         <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
         <option value="$PROJECT_DIR$/src/WindowsUtils.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
         <option value="$PROJECT_DIR$/src/ControllerDeviceCheck.java" />
         <option value="$PROJECT_DIR$/src/ControllerUserHome.java" />
         <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
         <option value="$PROJECT_DIR$/src/ControllerAdminSideTab.java" />
-        <option value="$PROJECT_DIR$/src/ControllerCAMainPackets.java" />
-        <option value="$PROJECT_DIR$/src/Model/CapturedPacket.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/ControllerCADashboard.java" />
-        <option value="$PROJECT_DIR$/src/ControllerFileScanner.java" />
-        <option value="$PROJECT_DIR$/src/View/CAMainDashboard.fxml" />
-        <option value="$PROJECT_DIR$/src/Model/CloudBuckets.java" />
-        <option value="$PROJECT_DIR$/src/ControllerBucketsPage.java" />
+        <option value="$PROJECT_DIR$/src/Model/CapturedPacket.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAMainPackets.java" />
+        <option value="$PROJECT_DIR$/src/Model/NetworkCapture.java" />
       </list>
     </option>
   </component>
@@ -592,20 +625,13 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
-  </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="700" />
-    <option name="y" value="10" />
-    <option name="width" value="1025" />
-    <option name="height" value="1050" />
+    <option name="x" value="380" />
+    <option name="width" value="390" />
+    <option name="height" value="420" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -613,9 +639,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -626,24 +649,7 @@
             <path>
               <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="gradle" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="gradle" type="462c0819:PsiDirectoryNode" />
-              <item name="wrapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Media" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
@@ -655,18 +661,15 @@
               <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -683,22 +686,22 @@
     <property name="settings.editor.selected.configurable" value="preferences.JavaFX" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\AuthTest" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
     </key>
   </component>
   <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
@@ -716,12 +719,15 @@
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
           <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerUserHome.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/CapturedPacket.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/BucketsPage.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSignUpPage.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/BaseLayoutNew.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/DeviceCheck.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/SignUpPage.fxml</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerDeviceCheck.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerUserHome.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerSignUpPage.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/BaseLayoutNew.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/DeviceCheck.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/SignUpPage.fxml</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -729,14 +735,8 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$2$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$3.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$4.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$5.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck$1$1.class</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck$1.class</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -837,7 +837,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.CAMain">
     <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CAMain" />
       <module name="NSPJ_main" />
@@ -923,8 +923,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.CAMain" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.PacketSnifferTesting" />
         <item itemvalue="Application.RSAKeyTest" />
         <item itemvalue="Application.GettingStarted" />
@@ -1003,7 +1003,14 @@
       <workItem from="1529977741379" duration="12697000" />
       <workItem from="1530078442360" duration="6493000" />
       <workItem from="1530107654793" duration="3568000" />
-      <workItem from="1530155372388" duration="4984000" />
+      <workItem from="1530155372388" duration="5067000" />
+      <workItem from="1530162832696" duration="71000" />
+      <workItem from="1530163067275" duration="156000" />
+      <workItem from="1530165039544" duration="730000" />
+      <workItem from="1530169959874" duration="335000" />
+      <workItem from="1530173468080" duration="1525000" />
+      <workItem from="1530175061873" duration="3471000" />
+      <workItem from="1530237747923" duration="4106000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Dashboard FXML">
       <created>1530111634091</created>
@@ -1012,11 +1019,32 @@
       <option name="project" value="LOCAL" />
       <updated>1530111634091</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Code optimization and improve identification of packets">
+      <created>1530161203042</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1530161203042</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Minor Edit of CapturePacket Class">
+      <created>1530165171736</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1530165171736</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed Controller Naming Issue">
+      <created>1530173863881</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1530173863881</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="261315000" />
+    <option name="totallyTimeSpent" value="271792000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1028,23 +1056,25 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1293" height="693" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.46695095" weight="0.3233618" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32763532" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.47583893" weight="0.3233618" />
       <window_info anchor="right" id="Palette&#9;" order="10" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.29798657" side_tool="true" weight="0.32763532" />
-      <window_info anchor="right" id="Maven Projects" order="6" weight="0.32955465" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.70255864" visible="true" weight="0.34347048" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5174497" side_tool="true" weight="0.36039886" />
+      <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.48255032" visible="true" weight="0.36039886" />
       <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.13817663" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32905984" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2582996" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14295302" />
+      <window_info anchor="right" id="Database" order="9" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.19597316" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
@@ -1053,15 +1083,13 @@
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.49373883" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Database" order="9" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47228146" weight="0.4159544" />
-      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47181207" weight="0.25925925" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1101,7 +1129,9 @@
     <MESSAGE value="Re-enable Gradle Build #2" />
     <MESSAGE value="Initial Dashboard FXML" />
     <MESSAGE value="Code optimization and improve identification of packets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code optimization and improve identification of packets" />
+    <MESSAGE value="Minor Edit of CapturePacket Class" />
+    <MESSAGE value="Fixed Controller Naming Issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Controller Naming Issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1109,23 +1139,75 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/Event.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Scene.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/fxml/FXMLLoader.java" />
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.23.0/fb386c0b92d0adff70acc4a88e5b8b624f26f798/google-http-client-1.23.0-sources.jar!/com/google/api/client/http/javanet/NetHttpTransport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.23.0/fb386c0b92d0adff70acc4a88e5b8b624f26f798/google-http-client-1.23.0-sources.jar!/com/google/api/client/util/SecurityUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.23.0/1da1acc283f4ff3ae0b67bc5ca25b6e387f3afa9/google-api-client-1.23.0-sources.jar!/com/google/api/client/googleapis/javanet/GoogleNetHttpTransport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="54" selection-start-line="54" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.23.0/1da1acc283f4ff3ae0b67bc5ca25b6e387f3afa9/google-api-client-1.23.0-sources.jar!/com/google/api/client/googleapis/GoogleUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="8411" selection-start-line="8411" selection-end-line="8411" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/control/Button.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="186" selection-start-line="186" selection-end-line="186" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="198" selection-start-line="198" selection-end-line="198" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="3781" selection-start-line="3781" selection-end-line="3781" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="1776" selection-start-line="1776" selection-end-line="1776" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Testing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1241">
           <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/AdminSideTab.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GettingStarted.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1156,17 +1238,16 @@
       </provider>
       <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/jre/lib/jce.jar!/javax/crypto/Cipher.class" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/jre/lib/jce.jar!/javax/crypto/Cipher.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="396" selection-start-line="396" selection-end-line="396" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/CALanding.fxml">
       <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/UserHome.fxml">
       <provider editor-type-id="text-editor">
@@ -1217,16 +1298,72 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/application/PlatformImpl.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/LambdaForm.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Task.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessController.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/DirectMethodHandle.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessControlContext.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Service.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/application/Platform.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/tk/Toolkit.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/ActionEvent.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/application/PlatformImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="263" selection-start-line="263" selection-end-line="263" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/LambdaForm.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="1008" selection-start-line="1008" selection-end-line="1008" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="825" selection-start-line="825" selection-end-line="825" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/DirectMethodHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="282" selection-start-line="282" selection-end-line="282" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessControlContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="617" selection-start-line="617" selection-end-line="617" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Service.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="574" selection-start-line="574" selection-end-line="574" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/application/Platform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/tk/Toolkit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="284" selection-start-line="284" selection-end-line="284" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/ActionEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1530">
@@ -1284,9 +1421,69 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="156" column="12" selection-start-line="156" selection-start-column="12" selection-end-line="168" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/AdminSideTab.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="30" column="42" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerBucketsPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-224">
+          <caret line="134" column="57" selection-start-line="134" selection-start-column="57" selection-end-line="134" selection-end-column="57" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2859#2860#0" expanded="true" />
+            <element signature="e#2907#2908#0" expanded="true" />
+            <element signature="e#3199#3213#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="11" column="73" lean-forward="true" selection-start-line="11" selection-start-column="73" selection-end-line="11" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4448">
+          <caret line="324" column="5" selection-start-line="324" selection-start-column="5" selection-end-line="324" selection-end-column="5" />
+          <folding>
+            <element signature="e#6468#6469#0" expanded="true" />
+            <element signature="e#6525#6526#0" expanded="true" />
+            <element signature="e#12346#12347#0" expanded="true" />
+            <element signature="e#12411#12412#0" expanded="true" />
+            <element signature="e#13386#13387#0" expanded="true" />
+            <element signature="e#13451#13452#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/CapturedPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="44" column="14" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1294,152 +1491,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="18" column="40" lean-forward="true" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
-          <folding>
-            <element signature="e#772#793#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="304" column="14" selection-start-line="304" selection-start-column="14" selection-end-line="304" selection-end-column="14" />
+        <state relative-caret-position="-2758">
+          <caret line="181" column="38" selection-start-line="181" selection-start-column="38" selection-end-line="181" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/CapturedPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+        <state relative-caret-position="316">
+          <caret line="154" column="38" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
           <folding>
-            <element signature="e#8285#8286#0" expanded="true" />
-            <element signature="e#8315#8316#0" expanded="true" />
-            <element signature="e#8346#8347#0" expanded="true" />
-            <element signature="e#8376#8377#0" expanded="true" />
-            <element signature="e#8406#8407#0" expanded="true" />
-            <element signature="e#8435#8436#0" expanded="true" />
-            <element signature="e#8465#8466#0" expanded="true" />
-            <element signature="e#8494#8495#0" expanded="true" />
-            <element signature="e#8526#8527#0" expanded="true" />
-            <element signature="e#8554#8555#0" expanded="true" />
-            <element signature="e#8587#8588#0" expanded="true" />
-            <element signature="e#8616#8617#0" expanded="true" />
-            <element signature="e#8651#8652#0" expanded="true" />
-            <element signature="e#8682#8683#0" expanded="true" />
-            <element signature="e#8720#8721#0" expanded="true" />
-            <element signature="e#8754#8755#0" expanded="true" />
-            <element signature="e#8795#8796#0" expanded="true" />
-            <element signature="e#8832#8833#0" expanded="true" />
-            <element signature="e#8867#8868#0" expanded="true" />
-            <element signature="e#8899#8900#0" expanded="true" />
-            <element signature="e#8944#8945#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
+            <element signature="e#4690#4691#0" expanded="true" />
+            <element signature="e#4729#4730#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
-          <caret line="135" selection-start-line="135" selection-end-line="135" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1445">
-          <caret line="99" selection-start-line="99" selection-end-line="99" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BucketsPage.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="876">
-          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCADashboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4455">
-          <caret line="325" column="1" selection-start-line="325" selection-start-column="1" selection-end-line="325" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3731#3755#0" expanded="true" />
-            <element signature="e#6464#6465#0" expanded="true" />
-            <element signature="e#6521#6522#0" expanded="true" />
-            <element signature="e#6837#6861#0" expanded="true" />
-            <element signature="e#9761#9785#0" expanded="true" />
-            <element signature="e#10438#10459#0" expanded="true" />
-            <element signature="e#12342#12343#0" expanded="true" />
-            <element signature="e#12407#12408#0" expanded="true" />
-            <element signature="e#13382#13383#0" expanded="true" />
-            <element signature="e#13447#13448#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAMainDashboard.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/ActionButtonTableCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/StorageSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="184" column="29" lean-forward="true" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerBucketsPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="221" column="5" lean-forward="true" selection-start-line="221" selection-start-column="5" selection-end-line="221" selection-end-column="5" />
-          <folding>
-            <element signature="e#3064#3065#0" expanded="true" />
-            <element signature="e#3112#3113#0" expanded="true" />
-            <element signature="e#3252#3266#0" expanded="true" />
-            <element signature="e#14772#14773#0" expanded="true" />
-            <element signature="e#14821#14822#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/CloudBuckets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-end-line="6" />
         </state>
       </provider>
     </entry>

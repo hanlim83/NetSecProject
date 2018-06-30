@@ -179,6 +179,7 @@ public class ControllerCAMainPackets implements Initializable {
         tableviewRunnable.cancel(true);
         //Alert below
         myScene = anchorPane.getScene();
+        capture.getTrafficPerSecond();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;
