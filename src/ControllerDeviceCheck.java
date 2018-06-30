@@ -36,22 +36,29 @@ public class ControllerDeviceCheck implements Initializable {
     @FXML
     private JFXButton tempButton;
 
+    @FXML
+    private JFXButton RestartDeviceCheckButton;
+
+    @FXML
+    private JFXSpinner LoadingSpinner;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
-    WindowsUtils utils = new WindowsUtils();
+    private WindowsUtils utils = new WindowsUtils();
+
+    private boolean AllFirewallStatus;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        try {
-//            runCheck();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+
+    }
+
+    @FXML
+    void onClickRestartDeviceCheckButton(ActionEvent event) {
+        process.start();
+        LoadingSpinner.setVisible(true);
+        RestartDeviceCheckButton.setDisable(true);
     }
 
     //TODO
@@ -74,9 +81,41 @@ public class ControllerDeviceCheck implements Initializable {
 //        stage.show();
     }
 
+    //TODO Include error handling for cloud next time
     public void runCheck() throws IOException, InterruptedException, SQLException {
         process.start();
         process.setOnSucceeded(e -> {
+            process.reset();
+            if (AllFirewallStatus==false){
+                LoadingSpinner.setVisible(false);
+                RestartDeviceCheckButton.setVisible(true);
+                RestartDeviceCheckButton.setDisable(false);
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "Please turn on your firewall and try again.";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+            }else{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("UserHome.fxml"));
             myScene = anchorPane.getScene();
@@ -91,12 +130,20 @@ public class ControllerDeviceCheck implements Initializable {
             stage.setScene(new Scene(nextView));
             stage.setTitle("NSPJ");
             stage.show();
+            }
         });
         process.setOnCancelled(e -> {
+            process.reset();
             System.out.println("Cancelled");
+            RestartDeviceCheckButton.setVisible(true);
         });
         process.setOnFailed(e -> {
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            process.reset();
             System.out.println("Failed");
+            RestartDeviceCheckButton.setVisible(true);
         });
     }
 
@@ -116,9 +163,9 @@ public class ControllerDeviceCheck implements Initializable {
     };
 
 
-    String DomainFirewall = null;
-    String PrivateFirewall = null;
-    String PublicFirewall = null;
+    private String DomainFirewall = null;
+    private String PrivateFirewall = null;
+    private String PublicFirewall = null;
 
     private void localDeviceFirewallCheck() throws IOException, InterruptedException {
         int count = 1;
@@ -167,33 +214,13 @@ public class ControllerDeviceCheck implements Initializable {
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
 
-        Platform.runLater(() -> {
-            if (DomainFirewall.equals("OFF") || PrivateFirewall.equals("OFF") || PublicFirewall.equals("OFF")) {
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
+        if (!DomainFirewall.equals("ON")||!PrivateFirewall.equals("ON")||!PublicFirewall.equals("ON")){
+            AllFirewallStatus=false;
+        }else{
+            AllFirewallStatus=true;
+        }
 
-                String title = "";
-                String content = "Please turn on your firewall and try again.";
 
-                JFXButton close = new JFXButton("Close");
-
-                close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                close.setStyle("-fx-background-color: #00bfff;");
-
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading(new Label(title));
-                layout.setBody(new Label(content));
-                layout.setActions(close);
-                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                alert.setOverlayClose(true);
-                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                alert.setContent(layout);
-                alert.initModality(Modality.NONE);
-                close.setOnAction(__ -> alert.hideWithAnimation());
-                alert.show();
-            }
-        });
     }
 
     private void checkWindowsApproved() throws SQLException {

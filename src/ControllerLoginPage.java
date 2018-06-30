@@ -40,13 +40,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
     private OAuth2Login login = new OAuth2Login();
     private Scene myScene;
     private Credential credential;
-    //    private String threadName;
     private String email = "";
-    //private ScheduledExecutorService service;
-
-    public AnchorPane getAnchorPane() {
-        return anchorPane;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

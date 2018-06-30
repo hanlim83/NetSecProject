@@ -20,8 +20,8 @@
          </children>
       </AnchorPane>
       <JFXButton fx:id="tempButton" layoutX="46.0" layoutY="410.0" mnemonicParsing="false" onAction="#onClickTempButton" prefHeight="150.0" prefWidth="184.0" text="Button" />
-      <JFXSpinner layoutX="409.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
-      <JFXButton layoutX="379.0" layoutY="453.0" prefHeight="120.0" prefWidth="310.0" text="Restart Device Checking">
+      <JFXSpinner fx:id="LoadingSpinner" layoutX="409.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
+      <JFXButton fx:id="RestartDeviceCheckButton" layoutX="379.0" layoutY="453.0" onAction="#onClickRestartDeviceCheckButton" prefHeight="120.0" prefWidth="310.0" text="Restart Device Checking" visible="false">
          <font>
             <Font size="21.0" />
          </font>
