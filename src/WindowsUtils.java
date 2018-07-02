@@ -128,6 +128,7 @@ public class WindowsUtils implements Runnable{
 
     public ResultSet handleSQLCommands(String dbName) throws SQLException {
         ResultSet resultSet;
+        ResultSet resultSet2;
         // TODO: fill this in
         // The instance connection name can be obtained from the instance overview page in Cloud Console
         // or by running "gcloud sql instances describe <instance> | grep connectionName".
@@ -173,7 +174,7 @@ public class WindowsUtils implements Runnable{
             while (resultSet.next()) {
                 //System.out.println(resultSet.getString(1));
 //                SupportedVersions.add(resultSet.getString(1));
-                return resultSet;
+//                resultSet2=resultSet.getString(1);
             }
             //Check if can return whole result set
         }

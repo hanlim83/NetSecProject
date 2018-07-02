@@ -54,7 +54,8 @@ public class OAuth2Login {
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/devstorage.full_control",
             "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/sqlservice.admin");
+            "https://www.googleapis.com/auth/sqlservice.admin",
+            "https://www.googleapis.com/auth/logging.admin");
 
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;

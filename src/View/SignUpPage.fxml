@@ -26,8 +26,6 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-      <JFXButton fx:id="ConfirmButton" layoutX="279.0" layoutY="497.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
-      <JFXButton fx:id="CancelButton" layoutX="571.0" layoutY="497.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
       <Label layoutX="353.0" layoutY="419.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
          <font>
             <Font size="16.0" />
@@ -55,6 +53,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
+            <JFXPasswordField fx:id="PasswordField1" prefHeight="39.0" prefWidth="232.0" promptText="Phone number (98762345)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="39.0" prefWidth="81.0" text="Email:" GridPane.halignment="RIGHT">
                <font>
                   <Font size="26.0" />
@@ -78,8 +77,9 @@
                   <Font size="26.0" />
                </font>
             </Label>
-            <JFXPasswordField fx:id="PasswordField1" prefHeight="39.0" prefWidth="232.0" promptText="Phone number (98762345)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
+      <JFXButton fx:id="ConfirmButton" layoutX="279.0" layoutY="497.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
+      <JFXButton fx:id="CancelButton" layoutX="571.0" layoutY="497.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
     </children>
 </AnchorPane>
