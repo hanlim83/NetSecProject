@@ -95,7 +95,6 @@ public class ControllerCAMainPackets implements Initializable {
     private Thread captureThread;
     private ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
-    private boolean FirstRun = true;
 
 
     @Override

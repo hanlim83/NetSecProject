@@ -17,7 +17,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -56,7 +58,7 @@ public class ControllerCAMainDashboard implements Initializable {
     @FXML
     private JFXButton clearCaptureBtn;
     @FXML
-    private LineChart<?, ?> networkTrafficChart;
+    private LineChart<Number,Number> networkTrafficChart;
     @FXML
     private PieChart protocolChart;
     @FXML
@@ -70,11 +72,20 @@ public class ControllerCAMainDashboard implements Initializable {
     private Thread captureThread;
     private ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
-    private boolean FirstRun = true;
+    private XYChart.Series series;
+    private NumberAxis chartXAxis;
+    private NumberAxis chartYAxis;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        series = new XYChart.Series();
+        chartXAxis = new NumberAxis();
+        chartXAxis.setLabel("Time Duration");
+        chartYAxis = new NumberAxis();
+        chartYAxis.setLabel("Packet Count");
+        series.setName("Packets Per 10 seconds");
+
     }
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
         this.device = nif;
