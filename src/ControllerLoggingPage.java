@@ -1,0 +1,2 @@
+public class ControllerLoggingPage {
+}

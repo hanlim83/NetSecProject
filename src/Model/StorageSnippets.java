@@ -51,12 +51,9 @@ import static com.google.api.client.util.Charsets.UTF_8;
 public class StorageSnippets {
 
     private OAuth2Login login = new OAuth2Login();
-    //    Credential credential;
     Storage storage;
     Bucket bucket;
     String BUCKETS;
-    // ObjectConversion objc = new ObjectConversion();
-    //  StorageSnippets storagesnippets = new StorageSnippets();
     ArrayList<CloudBuckets> cloudbucketsList = new ArrayList<CloudBuckets>();
     int checker=0;
 
