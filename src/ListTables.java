@@ -15,7 +15,7 @@ public class ListTables {
     // TODO: fill this in
     // The instance connection name can be obtained from the instance overview page in Cloud Console
     // or by running "gcloud sql instances describe <instance> | grep connectionName".
-    static String instanceConnectionName = "netsecpj:us-central1:device-supported-versions";
+    static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
 
     // TODO: fill this in
     // The database from which to list tables.

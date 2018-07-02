@@ -1,6 +1,5 @@
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -14,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -47,7 +45,9 @@ public class ControllerDeviceCheck implements Initializable {
     public static AnchorPane rootP;
     private WindowsUtils utils = new WindowsUtils();
 
+    //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
+    private boolean WindowsStatus=true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -115,7 +115,36 @@ public class ControllerDeviceCheck implements Initializable {
                     close.setOnAction(__ -> alert.hideWithAnimation());
                     alert.show();
                 });
-            }else{
+            }else if(WindowsStatus==false){
+                LoadingSpinner.setVisible(false);
+                RestartDeviceCheckButton.setVisible(true);
+                RestartDeviceCheckButton.setDisable(false);
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "Your device version is not supported. Please update or use a device with a newer software.";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+            } else{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("UserHome.fxml"));
             myScene = anchorPane.getScene();
@@ -138,9 +167,34 @@ public class ControllerDeviceCheck implements Initializable {
             RestartDeviceCheckButton.setVisible(true);
         });
         process.setOnFailed(e -> {
-            LoadingSpinner.setVisible(false);
-            RestartDeviceCheckButton.setVisible(true);
-            RestartDeviceCheckButton.setDisable(false);
+                    LoadingSpinner.setVisible(false);
+                    RestartDeviceCheckButton.setVisible(true);
+                    RestartDeviceCheckButton.setDisable(false);
+                    Platform.runLater(() -> {
+                                myScene = anchorPane.getScene();
+                                Stage stage = (Stage) (myScene).getWindow();
+
+                                String title = "";
+                                String content = "An error occurred. Please try again later";
+
+                                JFXButton close = new JFXButton("Close");
+
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                                close.setStyle("-fx-background-color: #00bfff;");
+
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(close);
+                                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                alert.setOverlayClose(true);
+                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert.setContent(layout);
+                                alert.initModality(Modality.NONE);
+                                close.setOnAction(__ -> alert.hideWithAnimation());
+                                alert.show();
+                            });
             process.reset();
             System.out.println("Failed");
             RestartDeviceCheckButton.setVisible(true);
@@ -239,6 +293,7 @@ public class ControllerDeviceCheck implements Initializable {
 //            stage.setTitle("NSPJ");
 //            stage.show();
             System.out.println("SUPPORTED VERSION");
+            WindowsStatus=true;
 
 //            FXMLLoader loader = new FXMLLoader();
 //            loader.setLocation(getClass().getResource("UserHome.fxml"));
@@ -255,6 +310,7 @@ public class ControllerDeviceCheck implements Initializable {
 //            stage.setTitle("NSPJ");
 //            stage.show();
         }else{
+            WindowsStatus=false;
             System.out.println("Not supported VERSION!");
         }
     }

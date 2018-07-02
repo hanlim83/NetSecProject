@@ -62,31 +62,31 @@ public class ControllerLoginPage implements Initializable, Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Platform.runLater(() -> {
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-
-            String title = "";
-            String content = "The connection timeout. Please try again";
-
-            JFXButton close = new JFXButton("Close");
-
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-
-            close.setStyle("-fx-background-color: #00bfff;");
-
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(__ -> alert.hideWithAnimation());
-            alert.show();
-        });
+//        Platform.runLater(() -> {
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//
+//            String title = "";
+//            String content = "The connection timeout. Please try again";
+//
+//            JFXButton close = new JFXButton("Close");
+//
+//            close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//            close.setStyle("-fx-background-color: #00bfff;");
+//
+//            JFXDialogLayout layout = new JFXDialogLayout();
+//            layout.setHeading(new Label(title));
+//            layout.setBody(new Label(content));
+//            layout.setActions(close);
+//            JFXAlert<Void> alert = new JFXAlert<>(stage);
+//            alert.setOverlayClose(true);
+//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//            alert.setContent(layout);
+//            alert.initModality(Modality.NONE);
+//            close.setOnAction(__ -> alert.hideWithAnimation());
+//            alert.show();
+//        });
     }
 
     private Timer timer;
@@ -129,7 +129,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     close.setOnAction(__ -> alert.hideWithAnimation());
                     alert.show();
                 });
-
             }
         };
         timer.schedule(Task, 60000);
@@ -141,34 +140,35 @@ public class ControllerLoginPage implements Initializable, Runnable {
     }
 
 
-    int counter=0;
+    int counter = 0;
+
     //Thread thread;
 //    private ScheduledFuture tableviewRunnable;
     //2nd time process does not complete bug
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
-        LoadingSpinner.setVisible(true);
-        String state=process.getState().toString();
+
+        String state = process.getState().toString();
         counter++;
-        if (process.getState().toString().equals("RUNNING")){
+        if (process.getState().toString().equals("RUNNING")) {
 //            process.cancel();
 //            process.start();
 
             process.restart();
             //process.restart();
             startTimer();
-        }else if(process.getState().toString().equals("READY")){
+        } else if (process.getState().toString().equals("READY")) {
             process.start();
             startTimer();
-        }else if(process.getState().toString().equals("CANCELLED")){
+        } else if (process.getState().toString().equals("CANCELLED")) {
             process.start();
             startTimer();
         }
-//        else{
-//            System.out.println(state);
-//            System.out.println(process.getState());
-//            System.out.println("Failed to run");
-//        }
+        else{
+            System.out.println(state);
+            System.out.println(process.getState());
+            System.out.println("Failed to run");
+        }
 //        process.start();
 //        startTimer();
 
@@ -192,6 +192,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         LoginButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
+//            endTimer();
             System.out.println("Process succeeded");
             if (email.equals("")) {
                 System.out.println("No email");
@@ -217,10 +218,10 @@ public class ControllerLoginPage implements Initializable, Runnable {
             }
         });
         process.setOnCancelled(e -> {
-            if (counter<1){
-            System.out.println("Cancelled");
-            process.reset();
-            }else{
+            if (counter < 1) {
+                System.out.println("Cancelled");
+                process.reset();
+            } else {
                 System.out.println("Process succeeded");
                 if (email.equals("")) {
                     System.out.println("No email");
@@ -246,31 +247,11 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 }
             }
         });
-        process.setOnFailed(e ->{
+        process.setOnFailed(e -> {
             System.out.println("Failed");
             process.reset();
         });
 
-//        service.schedule(new Runnable() {
-//            @Override
-//            public void run() {
-//                Platform.runLater(new Runnable() {
-//                    @Override public void run() {
-//                        try {
-//                            login.l.stop();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        process.reset();
-//                        LoadingSpinner.setVisible(false);
-//                        LoginButton.setDisable(false);
-//                    }
-//                });
-//            }
-//        }, 5, TimeUnit.SECONDS);
-
-//        ScheduledExecutorService scheduler
-//                = Executors.newSingleThreadScheduledExecutor();
 //
 //        Runnable task = new Runnable() {
 //            public void run() {
@@ -304,11 +285,13 @@ public class ControllerLoginPage implements Initializable, Runnable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
+                    //After 2nd click spinner dosen't appear
+                    LoadingSpinner.setVisible(true);
                     try {
                         credential = login.login();
                         System.out.println("First step done");
                         email = login.getEmail();
-                        System.out.println("2nd step done"+email);
+                        System.out.println("2nd step done" + email);
 //                        if(counter>1){
 //                            process.cancel();
 //                            System.out.println("Restarting process");

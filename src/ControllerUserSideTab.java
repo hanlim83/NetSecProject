@@ -16,6 +16,12 @@ public class ControllerUserSideTab {
     private JFXButton testButton;
 
     @FXML
+    private JFXButton SecureCloudStorageButton;
+
+    @FXML
+    private JFXButton SecureCloudTransferButton;
+
+    @FXML
     private JFXButton LogoutButton;
 
     private Scene myScene;
@@ -35,6 +41,16 @@ public class ControllerUserSideTab {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    @FXML
+    void onClickSecureCloudStorageButton(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onClickSecureCloudTransferButton(ActionEvent event) {
+
     }
 
     @FXML
