@@ -23,6 +23,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -65,54 +66,61 @@ public class ControllerUserHome implements Initializable {
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
-        int count=1;
-        String DomainFirewall = null;
-        String PrivateFirewall = null;
-        String PublicFirewall = null;
-        StringBuilder output = new StringBuilder();
-//        String term="state";
-        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
-        p.waitFor(); //Wait for the process to finish before continuing the Java program.
+//        int count=1;
+//        String DomainFirewall = null;
+//        String PrivateFirewall = null;
+//        String PublicFirewall = null;
+//        StringBuilder output = new StringBuilder();
+////        String term="state";
+//        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
+//        p.waitFor(); //Wait for the process to finish before continuing the Java program.
+//
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line = "";
+//        while ((line = reader.readLine()) != null) {
+//            //Scanner s = new Scanner(line).useDelimiter();
+//            if (line.startsWith("State")){
+//                Scanner s = new Scanner(line).useDelimiter("                                 ");
+//                String firstLine=s.next();
+//                String firewallStatus=s.next();
+////                output.append(line + "\n");
+//                System.out.println(line);
+//                System.out.println(firewallStatus);
+//                //System.out.println("Delimit here next time");
+//                if(count==1){
+//                    DomainFirewall=firewallStatus;
+//                }else if(count==2){
+//                    PrivateFirewall=firewallStatus;
+//                }else if(count==3){
+//                    PublicFirewall=firewallStatus;
+//                }
+//                count++;
+//            }
+//            output.append(line + "\n");
+//        }
+//
+////        Scanner s = new Scanner(osName).useDelimiter("                ");
+////        String firstLine=s.next();
+////        String osBuildNoStr=s.next();
+////        //System.out.println("OS version is " + osName);
+////        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
+////        String osBuildNo=sc.next();
+////        System.out.println(osBuildNo);
+//
+//        System.out.println(output.toString());
+//        //Desktop.getDesktop().open(new File("C://"));
+////        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
+//        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
+//        System.out.println(DomainFirewall);
+//        System.out.println(PrivateFirewall);
+//        System.out.println(PublicFirewall);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            //Scanner s = new Scanner(line).useDelimiter();
-            if (line.startsWith("State")){
-                Scanner s = new Scanner(line).useDelimiter("                                 ");
-                String firstLine=s.next();
-                String firewallStatus=s.next();
-//                output.append(line + "\n");
-                System.out.println(line);
-                System.out.println(firewallStatus);
-                //System.out.println("Delimit here next time");
-                if(count==1){
-                    DomainFirewall=firewallStatus;
-                }else if(count==2){
-                    PrivateFirewall=firewallStatus;
-                }else if(count==3){
-                    PublicFirewall=firewallStatus;
-                }
-                count++;
-            }
-            output.append(line + "\n");
+        WindowsUtils utils=new WindowsUtils();
+        ResultSet resultset=utils.handleSQLCommands("device_build_number");
+        while (resultset.next()) {
+            System.out.println(resultset.getString(1));
+//            SupportedVersions.add(resultSet.getString(1));
         }
-
-//        Scanner s = new Scanner(osName).useDelimiter("                ");
-//        String firstLine=s.next();
-//        String osBuildNoStr=s.next();
-//        //System.out.println("OS version is " + osName);
-//        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
-//        String osBuildNo=sc.next();
-//        System.out.println(osBuildNo);
-
-        System.out.println(output.toString());
-        //Desktop.getDesktop().open(new File("C://"));
-//        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
-        System.out.println(DomainFirewall);
-        System.out.println(PrivateFirewall);
-        System.out.println(PublicFirewall);
     }
 
     @FXML

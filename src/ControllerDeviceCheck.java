@@ -47,7 +47,7 @@ public class ControllerDeviceCheck implements Initializable {
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
-    private boolean WindowsStatus=true;
+    private boolean WindowsStatus;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -162,6 +162,34 @@ public class ControllerDeviceCheck implements Initializable {
             }
         });
         process.setOnCancelled(e -> {
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            Platform.runLater(() -> {
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+
+                String title = "";
+                String content = "An error occurred. Please try again later";
+
+                JFXButton close = new JFXButton("Close");
+
+                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close.setStyle("-fx-background-color: #00bfff;");
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
             process.reset();
             System.out.println("Cancelled");
             RestartDeviceCheckButton.setVisible(true);
