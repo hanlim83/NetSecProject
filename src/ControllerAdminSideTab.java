@@ -25,6 +25,9 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton captureAnalysis;
 
+    @FXML
+    private JFXButton logsButton;
+
     private Scene myScene;
     private static PcapNetworkInterface device;
     private static ScheduledExecutorService service;
@@ -149,6 +152,24 @@ public class ControllerAdminSideTab {
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("Buckets Page");
+        stage.show();
+    }
+
+    @FXML
+    void onClickLogs(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("BucketsPage.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Logging Page");
         stage.show();
     }
 }

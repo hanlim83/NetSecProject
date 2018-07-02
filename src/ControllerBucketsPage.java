@@ -250,6 +250,7 @@ public class ControllerBucketsPage implements Initializable {
             successfulMessage = "Successful Creation - Bucket has been created";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
         }
+
         //TABLE OF BUCKETS
         objectList = FXCollections.observableList(objectArrayList);
         bucketsTable.setItems(objectList);
@@ -424,6 +425,4 @@ public class ControllerBucketsPage implements Initializable {
             }
         });
     }
-
-
 }

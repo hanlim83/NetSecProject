@@ -55,15 +55,15 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //        LoadingSpinner.setVisible(false);
 //        LoginButton.setDisable(false);
 
-//        try {
-//            //login.l.stop();
-//            login.stopLocalServerReciver();
-//            LoadingSpinner.setVisible(false);
-//            LoginButton.setDisable(false);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        endTimer();
+        try {
+            //login.l.stop();
+            login.stopLocalServerReciver();
+            LoadingSpinner.setVisible(false);
+            LoginButton.setDisable(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        endTimer();
 //        Platform.runLater(() -> {
 //            myScene = anchorPane.getScene();
 //            Stage stage = (Stage) (myScene).getWindow();
@@ -133,7 +133,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
             }
         };
         //TODO change timer back to 60000
-        timer.schedule(Task, 60000);
+        timer.schedule(Task, 15000);
     }
 
     public void endTimer() {
@@ -284,6 +284,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
+                    //
                     //After 2nd click spinner dosen't appear
                     LoadingSpinner.setVisible(true);
                     try {
