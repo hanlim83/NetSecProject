@@ -29,10 +29,13 @@ public class NetworkCapture {
     //Data Variables
     private long PacketsReceived,PacketsDropped,PacketsDroppedByInt,PacketsCaptured;
     public ArrayList<CapturedPacket> packets;
+    public ArrayList<LineChart> packetsLineChart;
+    private int lineChartCounter = 0;
 
     public NetworkCapture(PcapNetworkInterface nif) {
         this.Netinterface = nif;
         packets = new ArrayList<CapturedPacket>();
+        packetsLineChart = new ArrayList<LineChart>();
     }
 
     //Overrides default packet handling
@@ -141,7 +144,7 @@ public class NetworkCapture {
         }
     }
 
-    public int getTrafficPerSecond() {
+    public void getTrafficPerSecond() {
         Timestamp original = new Timestamp(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(original.getTime());
@@ -152,8 +155,12 @@ public class NetworkCapture {
             if (packet.getOrignalTimeStamp().before(later))
                 packetCount++;
         }
-        System.out.println(packetCount);
-        return packetCount;
+        LineChart TPS = new LineChart(packetCount);
+        packetsLineChart.add(TPS);
+    }
+
+    public ArrayList<LineChart> getPacketsLineChart() {
+        return packetsLineChart;
     }
 
     public boolean isRunning() {
