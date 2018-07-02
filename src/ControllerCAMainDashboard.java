@@ -1,13 +1,12 @@
 import Model.CapturedPacket;
+import Model.LineChartObject;
 import Model.NetworkCapture;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,19 +19,15 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.pcap4j.core.PcapNetworkInterface;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +35,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,22 +65,38 @@ public class ControllerCAMainDashboard implements Initializable {
     private NetworkCapture capture;
     private Thread captureThread;
     private ScheduledExecutorService service;
-    private ScheduledFuture tableviewRunnable;
     private XYChart.Series series;
     private NumberAxis chartXAxis;
     private NumberAxis chartYAxis;
+    private Timeline animation;
+    private double y = 10;
+    private final int MAX_DATA_POINTS = 24, MAX = 34, MIN = 5;
+    public ArrayList<LineChartObject> packetsLineChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        animation = new Timeline();
+        animation.setCycleCount(Animation.INDEFINITE);
+        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
+        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
+        networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
         series = new XYChart.Series();
-        chartXAxis = new NumberAxis();
-        chartXAxis.setLabel("Time Duration");
-        chartYAxis = new NumberAxis();
-        chartYAxis.setLabel("Packet Count");
-        series.setName("Packets Per 10 seconds");
-
+        packetsLineChart = new ArrayList<LineChartObject>();
     }
+
+    public void plotCaptureLine() {
+        LineChartObject data = capture.getTrafficPerSecond();
+        series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
+        if (data.getCount() > MAX_DATA_POINTS) {
+            series.getData().remove(0);
+        }
+        if (data.getCount() > MAX_DATA_POINTS - 1) {
+            chartXAxis.setLowerBound(chartXAxis.getLowerBound() + 1);
+            chartXAxis.setUpperBound(chartXAxis.getUpperBound() + 1);
+        }
+    }
+
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
         this.device = nif;
         this.service = service;
@@ -112,19 +122,10 @@ public class ControllerCAMainDashboard implements Initializable {
     public void startCapturing(){
         if (capture == null)
             capture = new NetworkCapture(device);
-//        if (FirstRun == true){
-        tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override public void run() {
-                        packets = capture.packets;
-                    }
-                });
-            }
-        }, 2, 1, TimeUnit.SECONDS);
-            /*FirstRun = false;
-        }*/
+        animation.play();
+        animation.getKeyFrames()
+                .add(new KeyFrame(Duration.millis(10000),
+                        (ActionEvent actionEvent) -> plotCaptureLine()));
         Runnable task = () -> {
             capture.startSniffing();
             packets = capture.packets;
@@ -137,10 +138,9 @@ public class ControllerCAMainDashboard implements Initializable {
     }
     public void stopCapturing(){
         capture.stopSniffing();
-        tableviewRunnable.cancel(true);
+        animation.pause();
         //Alert below
         myScene = anchorPane.getScene();
-        capture.getTrafficPerSecond();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;

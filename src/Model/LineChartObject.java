@@ -1,11 +1,11 @@
 package Model;
 
-public class LineChart {
+public class LineChartObject {
     private static int count = 0;
     private int location;
     private int data;
 
-    public LineChart(int data){
+    public LineChartObject(int data){
         this.location = count;
         this.data = data;
         ++count;
@@ -23,7 +23,12 @@ public class LineChart {
         return data;
     }
 
+    public static int getCount() {
+        return count;
+    }
+
     public void setData(int data) {
         this.data = data;
     }
+
 }

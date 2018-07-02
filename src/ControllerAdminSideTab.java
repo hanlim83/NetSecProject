@@ -38,6 +38,51 @@ public class ControllerAdminSideTab {
 
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
+        if (device == null){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
+            myScene = (Scene) ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCALanding controller = loader.<ControllerCALanding>getController();
+                controller.passVariables(service);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.show();
+        }
+        else if (capture == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
+            myScene = (Scene) ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
+                controller.passVariables(device,service,null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.show();
+        }
+        else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+            myScene = (Scene) ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
+                controller.passVariables(device,service,capture);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.show();
+        }
     }
 
     @FXML
