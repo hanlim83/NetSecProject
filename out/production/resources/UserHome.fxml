@@ -3,12 +3,13 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserHome">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserHome">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -22,8 +23,13 @@
             </children>
         </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton fx:id="randomButton" layoutX="194.0" layoutY="123.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="randomButton" layoutX="776.0" layoutY="377.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
       <JFXButton fx:id="CloudStorageTestButton" layoutX="174.0" layoutY="349.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="141.0" prefWidth="201.0" text="Cloud Storage Test" />
       <JFXButton fx:id="RSAButton" layoutX="711.0" layoutY="123.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="125.0" prefWidth="219.0" text="RSA Test Button" />
+      <Label layoutX="267.0" layoutY="169.0" prefHeight="110.0" prefWidth="312.0" text="Prepare for Dashboard">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

@@ -44,8 +44,20 @@ public class ControllerUserSideTab {
     }
 
     @FXML
-    void onClickSecureCloudStorageButton(ActionEvent event) {
+    void onClickSecureCloudStorageButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("SecureCloudStorage.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
 
+
+        ControllerSecureCloudStorage controller = loader.<ControllerSecureCloudStorage>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     @FXML

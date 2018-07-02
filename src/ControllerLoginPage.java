@@ -54,14 +54,16 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //        login.stopLocalServerReciver();
 //        LoadingSpinner.setVisible(false);
 //        LoginButton.setDisable(false);
-        try {
-            //login.l.stop();
-            login.stopLocalServerReciver();
-            LoadingSpinner.setVisible(false);
-            LoginButton.setDisable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+//        try {
+//            //login.l.stop();
+//            login.stopLocalServerReciver();
+//            LoadingSpinner.setVisible(false);
+//            LoginButton.setDisable(false);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        endTimer();
 //        Platform.runLater(() -> {
 //            myScene = anchorPane.getScene();
 //            Stage stage = (Stage) (myScene).getWindow();
@@ -96,7 +98,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
         TimerTask Task = new TimerTask() {
             public void run() {
                 try {
-                    //login.l.stop();
                     login.stopLocalServerReciver();
                     LoadingSpinner.setVisible(false);
                     LoginButton.setDisable(false);
@@ -131,12 +132,14 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 });
             }
         };
+        //TODO change timer back to 60000
         timer.schedule(Task, 60000);
     }
 
     public void endTimer() {
         timer.cancel();
         timer.purge();
+        System.out.println("TIMER CANCELLEDDD");
     }
 
 
@@ -151,11 +154,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         String state = process.getState().toString();
         counter++;
         if (process.getState().toString().equals("RUNNING")) {
-//            process.cancel();
-//            process.start();
-
             process.restart();
-            //process.restart();
             startTimer();
         } else if (process.getState().toString().equals("READY")) {
             process.start();
@@ -192,7 +191,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         LoginButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
-//            endTimer();
+            endTimer();
             System.out.println("Process succeeded");
             if (email.equals("")) {
                 System.out.println("No email");
@@ -200,7 +199,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-                endTimer();
+//                endTimer();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();

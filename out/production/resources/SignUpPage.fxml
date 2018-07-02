@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -61,18 +61,24 @@
                </font>
             </Label>
             <TextField fx:id="EmailTextField" disable="true" editable="false" prefHeight="39.0" prefWidth="316.0" GridPane.columnIndex="1" />
-            <Label prefHeight="39.0" prefWidth="124.0" text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Label prefHeight="39.0" prefWidth="127.0" text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
             <JFXPasswordField fx:id="PasswordField" prefHeight="39.0" prefWidth="232.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label prefHeight="39.0" prefWidth="221.0" text="Confirm Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Label prefHeight="39.0" prefWidth="224.0" text="Confirm Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
             <JFXPasswordField fx:id="ConfirmPasswordField" prefHeight="39.0" prefWidth="232.0" promptText="Confirm Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label prefHeight="39.0" prefWidth="189.0" text="Phone number:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <JFXPasswordField fx:id="PasswordField1" prefHeight="39.0" prefWidth="232.0" promptText="Phone number (98762345)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
     </children>

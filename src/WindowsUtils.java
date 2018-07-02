@@ -126,6 +126,60 @@ public class WindowsUtils implements Runnable{
         }
     }
 
+    public ResultSet handleSQLCommands(String dbName) throws SQLException {
+        ResultSet resultSet;
+        // TODO: fill this in
+        // The instance connection name can be obtained from the instance overview page in Cloud Console
+        // or by running "gcloud sql instances describe <instance> | grep connectionName".
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+
+        // TODO: fill this in
+        // The database from which to list tables.
+        String databaseName = dbName;
+
+        String username = "root";
+
+        // TODO: fill this in
+        // This is the password that was set via the Cloud Console or empty if never set
+        // (not recommended).
+        String password = "root";
+
+        if (instanceConnectionName.equals("<device-supported-versions>")) {
+            System.err.println("Please update the sample to specify the instance connection name.");
+            System.exit(1);
+        }
+
+        if (password.equals("<insert_password>")) {
+            System.err.println("Please update the sample to specify the mysql password.");
+            System.exit(1);
+        }
+        System.out.printf("The edition of Windows you are using is: %s%n", getEdition());
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //same
+        System.out.println(jdbcUrl);
+
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            resultSet = statement.executeQuery("SELECT versionNumber FROM entries");
+            //Check if can return whole result set
+            while (resultSet.next()) {
+                //System.out.println(resultSet.getString(1));
+//                SupportedVersions.add(resultSet.getString(1));
+                return resultSet;
+            }
+            //Check if can return whole result set
+        }
+        return resultSet;
+    }
+
     @Override
     public void run() {
         currentOSVersion=getEdition();
