@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,8 +59,16 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        //String bucketname=login.getEmail()+"nspj";
-        String bucketname="hugochiaxyznspj";
+        String email=login.getEmail();
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront=s.next();
+//        String osBuildNoStr=s.next();
+//        //System.out.println("OS version is " + osName);
+//        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
+//        String osBuildNo=sc.next();
+//        System.out.println(osBuildNo);
+        String bucketname=emailFront+"nspj";
+//        String bucketname="hugochiaxyznspj";
         Page<Blob> blobs = storage.list(bucketname);
         for (Blob blob : blobs.iterateAll()) {
             // do something with the blob
