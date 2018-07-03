@@ -28,13 +28,16 @@ public class ControllerSignUpPage implements Initializable {
     private TextField EmailTextField;
 
     @FXML
-    private JFXButton ConfirmButton;
+    private JFXTextField PhoneNoField;
 
     @FXML
     private JFXPasswordField PasswordField;
 
     @FXML
     private JFXPasswordField ConfirmPasswordField;
+
+    @FXML
+    private JFXButton ConfirmButton;
 
     @FXML
     private JFXButton CancelButton;
