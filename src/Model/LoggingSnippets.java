@@ -21,7 +21,7 @@ import com.google.cloud.logging.SinkInfo;
 import com.google.cloud.logging.SinkInfo.Destination.DatasetDestination;
 
 import com.google.cloud.logging.Synchronicity;
-import jdk.internal.util.EnvUtils;
+//import jdk.internal.util.EnvUtils;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -478,7 +478,7 @@ public class LoggingSnippets {
         // [START listLogEntries]
         Page<LogEntry> entries = logging.listLogEntries(EntryListOption.filter(filter));
         for (LogEntry entry : entries.iterateAll()) {
-            // do something with the entry
+            System.out.println("PRINTING MY LOGS");
         }
         // [END listLogEntries]
         return entries;
@@ -503,4 +503,14 @@ public class LoggingSnippets {
         return entries;
     }
 
+    public Page<LogEntry> listLogEntries(EntryListOption filter) {
+        // [START listLogEntries]
+        Page<LogEntry> entries = logging.listLogEntries(filter);
+        for (LogEntry entry : entries.iterateAll()) {
+            System.out.println("PRINTING MY LOGS");
+            System.out.println(entry);
+        }
+        // [END listLogEntries]
+        return entries;
+    }
 }

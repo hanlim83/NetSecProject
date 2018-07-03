@@ -139,7 +139,7 @@ public class ControllerBucketsPage implements Initializable {
         deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
             cldBucket(cldB);
             //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
-            doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + "will be permanently deleted from the cloud. Are you sure to delete it?";
+            doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + " will be permanently deleted from the cloud. Are you sure to delete it?";
             doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
             CHECKING=checker2;
             System.out.println("CHECKER NOW IS " + CHECKING);

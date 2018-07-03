@@ -16,7 +16,7 @@ public class TestLoggingSnippets {
 //        LoggingOptions options = LoggingOptions.getDefaultInstance();
         LoggingOptions options = LoggingOptions.getDefaultInstance();
         try(Logging logging = options.getService()) {
-
+            System.out.println(options.getProjectId());
 //            // Create a log entry
 //            LogEntry firstEntry = LogEntry.newBuilder(Payload.StringPayload.of("message"))
 //                    .setLogName("test-log")
@@ -27,9 +27,9 @@ public class TestLoggingSnippets {
 //            logging.write(Collections.singleton(firstEntry));
 
             // List log entries
-            Page<LogEntry> entries = logging.listLogEntries(
-                    EntryListOption.filter("logName=projects/" + options.getProjectId() + "/logs/test-log"));
-            for (LogEntry logEntry : entries.iterateAll()) {
+        //    Page<LogEntry> entries = logging.listLogEntries(EntryListOption.filter("logName=projects/" + options.getProjectId() + "/logs/test-log"));
+            Page<LogEntry> logentries = loggingsnippets.listLogEntries(EntryListOption.filter("logName=projects/" + options.getProjectId()));
+            for (LogEntry logEntry : logentries.iterateAll()) {
                 System.out.println(logEntry);
             }
         }
