@@ -56,6 +56,7 @@ public class ControllerUserHome implements Initializable {
 
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
+    WindowsUtils utils=new WindowsUtils();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -115,12 +116,15 @@ public class ControllerUserHome implements Initializable {
 //        System.out.println(PrivateFirewall);
 //        System.out.println(PublicFirewall);
 
-        WindowsUtils utils=new WindowsUtils();
-        ResultSet resultset=utils.handleSQLCommands("device_build_number");
-        while (resultset.next()) {
-            System.out.println(resultset.getString(1));
-//            SupportedVersions.add(resultSet.getString(1));
-        }
+//        WindowsUtils utils=new WindowsUtils();
+//        ResultSet resultset=utils.handleSQLCommands("device_build_number");
+//        while (resultset.next()) {
+//            System.out.println(resultset.getString(1));
+////            SupportedVersions.add(resultSet.getString(1));
+//        }
+
+        //TODO TESTING DELETE B4 PUSH
+//        System.out.println(utils.getAccStatus("hugochiaxyz@gmail.com"));
     }
 
     @FXML

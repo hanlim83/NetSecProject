@@ -37,58 +37,19 @@ public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
     private JFXButton TestButton;
 
-    private OAuth2Login login = new OAuth2Login();
     private Scene myScene;
+
+    private OAuth2Login login = new OAuth2Login();
+    private WindowsUtils utils=new WindowsUtils();
+
     private Credential credential;
     private String email = "";
+    //hardcoded AccStatus for now
+    private String AccStatus = "";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-    }
-
-    //TODO To be removed soon
-    @FXML
-    void onClickTestButton(ActionEvent event) throws Exception {
-        //login.l.stop();
-//        login.stopLocalServerReciver();
-//        LoadingSpinner.setVisible(false);
-//        LoginButton.setDisable(false);
-
-        try {
-            //login.l.stop();
-            login.stopLocalServerReciver();
-            LoadingSpinner.setVisible(false);
-            LoginButton.setDisable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        endTimer();
-//        Platform.runLater(() -> {
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//
-//            String title = "";
-//            String content = "The connection timeout. Please try again";
-//
-//            JFXButton close = new JFXButton("Close");
-//
-//            close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            JFXDialogLayout layout = new JFXDialogLayout();
-//            layout.setHeading(new Label(title));
-//            layout.setBody(new Label(content));
-//            layout.setActions(close);
-//            JFXAlert<Void> alert = new JFXAlert<>(stage);
-//            alert.setOverlayClose(true);
-//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//            alert.setContent(layout);
-//            alert.initModality(Modality.NONE);
-//            close.setOnAction(__ -> alert.hideWithAnimation());
-//            alert.show();
-//        });
     }
 
     private Timer timer;
@@ -133,7 +94,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
             }
         };
         //TODO change timer back to 60000
-        timer.schedule(Task, 15000);
+        timer.schedule(Task, 60000);
     }
 
     public void endTimer() {
@@ -143,11 +104,8 @@ public class ControllerLoginPage implements Initializable, Runnable {
     }
 
 
-    int counter = 0;
+    private int counter = 0;
 
-    //Thread thread;
-//    private ScheduledFuture tableviewRunnable;
-    //2nd time process does not complete bug
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
 
@@ -199,21 +157,29 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-//                endTimer();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
-                    controller.passData(login.getEmail());
-                } catch (IOException u) {
-                    u.printStackTrace();
+                if (AccStatus.equals("Inactive")){
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+                    Parent nextView = null;
+                    try {
+                        nextView = loader.load();
+                        ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
+                        controller.passData(login.getEmail());
+                    } catch (IOException u) {
+                        u.printStackTrace();
+                    }
+                    stage.setScene(new Scene(nextView));
+                    stage.setTitle("NSPJ");
+                    stage.show();
+                }else if(AccStatus.equals("Active")){
+                    //Go to SMS OTP page
+                }else{
+                    //Not part of DB
+                    System.out.println("NOT INSIDE DB.REJECTED!!!");
                 }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
-                stage.show();
+//                endTimer();
+
             }
         });
         process.setOnCancelled(e -> {
@@ -247,8 +213,11 @@ public class ControllerLoginPage implements Initializable, Runnable {
             }
         });
         process.setOnFailed(e -> {
+            endTimer();
             System.out.println("Failed");
             process.reset();
+            LoginButton.setDisable(false);
+            LoadingSpinner.setVisible(false);
         });
 
 //
@@ -284,7 +253,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    //
                     //After 2nd click spinner dosen't appear
                     LoadingSpinner.setVisible(true);
                     try {
@@ -306,6 +274,10 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     } catch (Exception e) {
                         //e.printStackTrace();
                     }
+                    //after retrieve token, use that to cross check with the DB for active/inactive/null
+                    if (!email.equals("")){
+                        AccStatus=utils.getAccStatus(email);
+                    }
                     return null;
                 }
             };
@@ -313,6 +285,51 @@ public class ControllerLoginPage implements Initializable, Runnable {
     };
 
     //redundant codes
+
+    //TODO To be removed soon
+    @FXML
+    void onClickTestButton(ActionEvent event) throws Exception {
+        //login.l.stop();
+//        login.stopLocalServerReciver();
+//        LoadingSpinner.setVisible(false);
+//        LoginButton.setDisable(false);
+
+        try {
+            //login.l.stop();
+            login.stopLocalServerReciver();
+            LoadingSpinner.setVisible(false);
+            LoginButton.setDisable(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        endTimer();
+//        Platform.runLater(() -> {
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//
+//            String title = "";
+//            String content = "The connection timeout. Please try again";
+//
+//            JFXButton close = new JFXButton("Close");
+//
+//            close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//            close.setStyle("-fx-background-color: #00bfff;");
+//
+//            JFXDialogLayout layout = new JFXDialogLayout();
+//            layout.setHeading(new Label(title));
+//            layout.setBody(new Label(content));
+//            layout.setActions(close);
+//            JFXAlert<Void> alert = new JFXAlert<>(stage);
+//            alert.setOverlayClose(true);
+//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//            alert.setContent(layout);
+//            alert.initModality(Modality.NONE);
+//            close.setOnAction(__ -> alert.hideWithAnimation());
+//            alert.show();
+//        });
+    }
+
     Task<Void> task = new Task<Void>() {
         @Override
         public Void call() {

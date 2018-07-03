@@ -47,7 +47,9 @@ public class ControllerDeviceCheck implements Initializable {
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
+//    private boolean WindowsStatus=true;
     private boolean WindowsStatus;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -58,7 +58,8 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String bucketname=login.getEmail()+"nspj";
+        //String bucketname=login.getEmail()+"nspj";
+        String bucketname="hugochiaxyznspj";
         Page<Blob> blobs = storage.list(bucketname);
         for (Blob blob : blobs.iterateAll()) {
             // do something with the blob

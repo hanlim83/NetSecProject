@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -21,7 +22,8 @@
             <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
-      <JFXButton fx:id="TestButton" layoutX="450.0" layoutY="204.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="150.0" prefWidth="184.0" text="Specific bucket testing button" />
+      <JFXButton fx:id="TestButton" layoutX="746.0" layoutY="165.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="150.0" prefWidth="184.0" text="Specific bucket testing button" />
       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXTreeTableView layoutX="368.0" layoutY="118.0" prefHeight="394.0" prefWidth="248.0" />
    </children>
 </AnchorPane>
