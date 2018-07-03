@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ControllerLoggingPage"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
+    <children>
+        <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
+                <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
+                    <font>
+                        <Font size="40.0" />
+                    </font>
+                </Text>
+                <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            </children>
+        </AnchorPane>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <TableView fx:id="logsTable" layoutX="131.0" layoutY="199.0" prefHeight="364.0" prefWidth="806.0">
+        <columns>
+          <TableColumn fx:id="timestamp" prefWidth="124.0" text="Timestamp" />
+          <TableColumn fx:id="action" prefWidth="169.0" text="Action" />
+            <TableColumn fx:id="bucketName" prefWidth="108.0" text="Bucket Name" />
+            <TableColumn fx:id="user" prefWidth="117.0" text="User" />
+            <TableColumn fx:id="projectID" minWidth="0.0" prefWidth="108.0" text="Project ID" />
+            <TableColumn fx:id="severity" prefWidth="179.0" text="Severity" />
+        </columns>
+      </TableView>
+      <JFXButton fx:id="testtest" layoutX="368.0" layoutY="132.0" onMouseClicked="#handletesting" text="testbutton" />
+    </children>
 </AnchorPane>
