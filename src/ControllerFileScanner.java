@@ -81,15 +81,15 @@ public class ControllerFileScanner {
                     System.out.println("Scanner : " + key);
                     System.out.println("\t\t Result : " + virusInfo.getResult());
                     System.out.println("\t\t Update : " + virusInfo.getUpdate());
-                    System.out.println("\t\t Version :" + virusInfo.getVersion() + "\n");
-                }
+                    System.out.println("\t\t Version :" + virusInfo.getVersion() + "\n\n");
+                    }
 
                 if (testPositive >= 5) {
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("FireE");
                     alert.setHeaderText("This file is malicious!");
-                    alert.setContentText("This file will not be pushed to the cloud as our systems detects this file to be a malicious file.");
+                    alert.setContentText("This file will not be pushed to the cloud as our systems detects this file to be malicious.");
                     alert.showAndWait();
 
                     System.out.println("\033[31;1mThis file is malicious!\033[0m");
@@ -127,7 +127,7 @@ public class ControllerFileScanner {
             fileChooser.setTitle("Open Resource File");
             File file=fileChooser.showOpenDialog(null);
 
-                String pathFile = file.getAbsolutePath();
+            String pathFile = file.getAbsolutePath();
 
             browseLabel.setText(pathFile);
 
