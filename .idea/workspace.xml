@@ -2,28 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/LineChartObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/LineChartObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/LineChartObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/LineChartObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/NetworkCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/NetworkCapture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/CAMainDashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/CAMainDashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoggingPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoggingPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/LogsExtract.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/LogsExtract.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/TestLoggingSnippets.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/TestLoggingSnippets.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -86,8 +74,22 @@
       <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="206" column="21" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="206" selection-end-column="21" />
+            <state relative-caret-position="595">
+              <caret line="211" column="82" lean-forward="true" selection-start-line="211" selection-start-column="82" selection-end-line="211" selection-end-column="82" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControllerCAContinuousCaptureMain.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1262#1263#0" expanded="true" />
+                <element signature="e#1292#1293#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,11 +133,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerCAContinuousCaptureLanding.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ControllerCAContinuousCaptureLanding.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="113" column="65" selection-start-line="113" selection-start-column="65" selection-end-line="113" selection-end-column="65" />
+            <state relative-caret-position="272">
+              <caret line="84" column="8" selection-start-line="84" selection-start-column="8" selection-end-line="84" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6124#6125#0" expanded="true" />
@@ -576,8 +578,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/BaseLayout.fxml" />
-        <option value="$PROJECT_DIR$/src/View/SideTab.fxml" />
         <option value="$PROJECT_DIR$/src/DrawerDemo.java" />
         <option value="$PROJECT_DIR$/src/Controller/ControllerLoginPage.java" />
         <option value="$PROJECT_DIR$/src/ControllerSideTab.java" />
@@ -627,6 +627,8 @@
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCapture.java" />
         <option value="$PROJECT_DIR$/src/ControllerAdminSideTab.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" />
+        <option value="$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml" />
+        <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" />
       </list>
     </option>
   </component>
@@ -663,12 +665,6 @@
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
-            <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="View" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -691,7 +687,16 @@
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -699,15 +704,6 @@
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\AuthTest" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src" />
-      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -891,7 +887,7 @@
       <workItem from="1530591007101" duration="5309000" />
       <workItem from="1530603710884" duration="1748000" />
       <workItem from="1530622890465" duration="2198000" />
-      <workItem from="1530625689803" duration="5251000" />
+      <workItem from="1530625689803" duration="7641000" />
     </task>
     <task id="LOCAL-00001" summary="Essential Linechart FXML and object">
       <created>1530542649928</created>
@@ -907,11 +903,25 @@
       <option name="project" value="LOCAL" />
       <updated>1530542780338</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial Continuous Packet Capturing FXML">
+      <created>1530631051398</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1530631051398</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Minor Refactoring to Continuous Packet Capturing FXML">
+      <created>1530631580070</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1530631580070</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272938000" />
+    <option name="totallyTimeSpent" value="275328000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -936,11 +946,11 @@
       <window_info anchor="right" id="Maven Projects" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.66364604" weight="0.13834423" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5351812" visible="true" weight="0.28104576" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5351812" visible="true" weight="0.28104576" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
       <window_info anchor="right" id="Database" order="9" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.19597316" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1029,7 +1039,9 @@
     <MESSAGE value="Re-enable Gradle Build #2" />
     <MESSAGE value="Essential Linechart FXML and object" />
     <MESSAGE value="Rebuild Project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rebuild Project" />
+    <MESSAGE value="Initial Continuous Packet Capturing FXML" />
+    <MESSAGE value="Minor Refactoring to Continuous Packet Capturing FXML" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor Refactoring to Continuous Packet Capturing FXML" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1037,21 +1049,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/jre/lib/jce.jar!/javax/crypto/Cipher.class" />
     <entry file="file://$PROJECT_DIR$/src/View/UserHome.fxml">
       <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
@@ -1253,14 +1250,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAMainDashboard.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="35" column="18" lean-forward="true" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/CALanding.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
@@ -1315,21 +1304,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
+    <entry file="file://$PROJECT_DIR$/src/View/CAMainDashboard.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="206" column="21" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="206" selection-end-column="21" />
+        <state relative-caret-position="212">
+          <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="25" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="105" selection-start-line="20" selection-start-column="105" selection-end-line="20" selection-end-column="105" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="113" column="65" selection-start-line="113" selection-start-column="65" selection-end-line="113" selection-end-column="65" />
+        <state relative-caret-position="272">
+          <caret line="84" column="8" selection-start-line="84" selection-start-column="8" selection-end-line="84" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6124#6125#0" expanded="true" />
             <element signature="e#6189#6190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="211" column="82" lean-forward="true" selection-start-line="211" selection-start-column="82" selection-end-line="211" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1262#1263#0" expanded="true" />
+            <element signature="e#1292#1293#0" expanded="true" />
           </folding>
         </state>
       </provider>
