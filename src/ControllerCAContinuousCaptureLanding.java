@@ -111,7 +111,11 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
             alert.setContentText("Ooops, the agent depends on Pcap4j and WinPcap to capture packets! Please reinstall WinPcap to continue!");
             alert.showAndWait();
         }
-        phoneNumberField.setOnAction(event -> checkPhoneNumber());
+        phoneNumberField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue) {
+                checkPhoneNumber();
+            }
+        });
     }
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
@@ -121,8 +125,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     }
 
     public void checkPhoneNumber() {
-        System.err.println("Running");
-        String regexStr = "^[0-9]{10}$";
+        String regexStr = "^[0-9]{8}$";
         if (phoneNumberField.getText().matches(regexStr)) {
             if (checkFields())
                 StartBtn.setDisable(false);
