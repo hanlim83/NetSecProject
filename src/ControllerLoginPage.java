@@ -174,6 +174,20 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     stage.show();
                 }else if(AccStatus.equals("Active")){
                     //Go to SMS OTP page
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+                    Parent nextView = null;
+                    try {
+                        nextView = loader.load();
+                        ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
+//                        controller.passData(login.getEmail());
+                    } catch (IOException u) {
+                        u.printStackTrace();
+                    }
+                    stage.setScene(new Scene(nextView));
+                    stage.setTitle("NSPJ");
+                    stage.show();
                 }else{
                     //Not part of DB
                     System.out.println("NOT INSIDE DB.REJECTED!!!");
