@@ -25,10 +25,13 @@ public class NetworkCapture {
     private long PacketsReceived,PacketsDropped,PacketsDroppedByInt,PacketsCaptured;
     public ArrayList<CapturedPacket> packets;
     private int lineChartCounter = 0;
+    public ArrayList<LineChartObject> PreviousTPS;
+    private Timestamp lastTimeStamp = null;
 
     public NetworkCapture(PcapNetworkInterface nif) {
         this.Netinterface = nif;
         packets = new ArrayList<CapturedPacket>();
+        PreviousTPS = new ArrayList<LineChartObject>();
     }
 
     //Overrides default packet handling
@@ -141,14 +144,18 @@ public class NetworkCapture {
         Timestamp original = new Timestamp(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(original.getTime());
-        cal.add(Calendar.SECOND, 10);
+        cal.add(Calendar.SECOND, 9);
         Timestamp later = new Timestamp(cal.getTime().getTime());
         int packetCount = 0;
         for (CapturedPacket packet : packets){
-            if (packet.getOrignalTimeStamp().before(later))
+            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
+                packetCount++;
+            else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
                 packetCount++;
         }
         LineChartObject TPS = new LineChartObject(packetCount);
+        PreviousTPS.add(TPS);
+        lastTimeStamp = later;
         return TPS;
     }
 

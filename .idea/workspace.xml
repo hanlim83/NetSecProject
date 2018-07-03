@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="858ad223-6d14-4252-93bd-2bf7db593acf" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ControllerVerifyText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/VerifyTextAuth.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/NSPJ_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/NSPJ_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/NSPJ_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/NSPJ_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerFileScanner.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerFileScanner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/LineChartObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/LineChartObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/PacketSnifferTesting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/PacketSnifferTesting.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/TextAuthMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/TextAuthMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerFileScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerFileScanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TextAuthMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TextAuthMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainDashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAMainPackets.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/LineChartObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/LineChartObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/NetworkCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/NetworkCapture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AdminSideTab.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/CAMainDashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/CAMainDashboard.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/Test/.gradle/" />
+    <ignored path="$PROJECT_DIR$/Test/build/" />
+    <ignored path="$PROJECT_DIR$/Test/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/NSPJ$Main.ic" NAME="Main Coverage Results" MODIFIED="1529504854720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -51,6 +56,24 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="NSPJ" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="NSPJ" type="f1a62948:ProjectNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="NSPJ" type="f1a62948:ProjectNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="NSPJ" type="f1a62948:ProjectNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -60,73 +83,64 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TextAuthMain.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/TextAuthMain.java">
+      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="88" selection-start-line="19" selection-start-column="88" selection-end-line="19" selection-end-column="88" />
+            <state relative-caret-position="357">
+              <caret line="206" column="21" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="206" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AnimatedLineChartExample.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AnimatedLineChartExample.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="595">
+              <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NetworkCapture.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2125">
+              <caret line="146" column="34" selection-start-line="146" selection-start-column="34" selection-end-line="146" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControllerAdminSideTab.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="632">
+              <caret line="188" column="60" selection-start-line="188" selection-start-column="60" selection-end-line="188" selection-end-column="60" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#6928#6966#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VerifyTextAuth.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/VerifyTextAuth.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
+      <file leaf-file-name="LineChartObject.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/LineChartObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="39" column="14" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
+            <state relative-caret-position="510">
+              <caret line="40" column="21" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerVerifyText.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerVerifyText.java">
+      <file leaf-file-name="ControllerCAContinuousCaptureLanding.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="60" column="1" lean-forward="true" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+            <state relative-caret-position="258">
+              <caret line="113" column="65" selection-start-line="113" selection-start-column="65" selection-end-line="113" selection-end-column="65" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#6124#6125#0" expanded="true" />
+                <element signature="e#6189#6190#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ControllerFileScanner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="115" selection-start-line="115" selection-end-line="115" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileScanner.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/FileScanner.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScannerTestMain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ScannerTestMain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -136,19 +150,34 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaFXApplication" />
         <option value="FxmlFile" />
+        <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>googlea</find>
+      <find>google</find>
+      <find>credential</find>
+      <find>sou</find>
+      <find>system.out</find>
+      <find>runnable</find>
+      <find>private ScheduledExecutorService service;</find>
+      <find>getanchorpane</find>
+      <find>service</find>
+      <find>tableViewRunna</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\Fende\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\hanse\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -328,7 +357,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6120217727477" />
+        <entry key="$PROJECT_DIR$" value="6118060185850" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="3035815484" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
@@ -540,14 +569,64 @@
       </map>
     </option>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/ControllerUserHome.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/RSAKeyGenerator.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/View/VerifyTextAuth.fxml" />
+        <option value="$PROJECT_DIR$/src/View/BaseLayout.fxml" />
+        <option value="$PROJECT_DIR$/src/View/SideTab.fxml" />
+        <option value="$PROJECT_DIR$/src/DrawerDemo.java" />
+        <option value="$PROJECT_DIR$/src/Controller/ControllerLoginPage.java" />
+        <option value="$PROJECT_DIR$/src/ControllerSideTab.java" />
+        <option value="$PROJECT_DIR$/src/View/UserSideTab.fxml" />
+        <option value="$PROJECT_DIR$/src/HamburgerDemo.java" />
+        <option value="$PROJECT_DIR$/src/ControllerUserSideTab.java" />
+        <option value="$PROJECT_DIR$/src/Model/CloudSQLAuth.java" />
+        <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
+        <option value="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" />
+        <option value="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" />
+        <option value="$PROJECT_DIR$/src/ListTables.java" />
+        <option value="$PROJECT_DIR$/src/Model/StorageSnippets.java" />
+        <option value="$PROJECT_DIR$/src/Model/TestStorageSnippets.java" />
+        <option value="$PROJECT_DIR$/src/AlertDemo.java" />
+        <option value="$PROJECT_DIR$/src/Overdrive.java" />
+        <option value="$PROJECT_DIR$/src/View/Icons.fxml" />
+        <option value="$PROJECT_DIR$/src/IconsController.java" />
+        <option value="$PROJECT_DIR$/src/Style.css" />
+        <option value="$PROJECT_DIR$/src/View/Style.css" />
+        <option value="$PROJECT_DIR$/src/View/AdminSideTab.fxml" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/settings.gradle" />
+        <option value="$PROJECT_DIR$/src/RSAKeyTest.java" />
+        <option value="$PROJECT_DIR$/src/View/UserHome.fxml" />
+        <option value="$PROJECT_DIR$/src/View/LoginPage.fxml" />
+        <option value="$PROJECT_DIR$/src/View/SignUpPage.fxml" />
+        <option value="$PROJECT_DIR$/src/RSAKeyGenerator.java" />
+        <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
+        <option value="$PROJECT_DIR$/src/WindowsUtils.java" />
+        <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
+        <option value="$PROJECT_DIR$/src/ControllerDeviceCheck.java" />
+        <option value="$PROJECT_DIR$/src/ControllerUserHome.java" />
+        <option value="$PROJECT_DIR$/src/TextAuth.java" />
+        <option value="$PROJECT_DIR$/src/ScannerTestMain.java" />
         <option value="$PROJECT_DIR$/src/ControllerFileScanner.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
         <option value="$PROJECT_DIR$/src/TextAuthMain.java" />
-        <option value="$PROJECT_DIR$/src/ControllerVerifyText.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAMainPackets.java" />
+        <option value="$PROJECT_DIR$/src/AnimatedLineChartExample.java" />
+        <option value="$PROJECT_DIR$/src/DynamicLineChart.java" />
+        <option value="$PROJECT_DIR$/src/Model/LineChartObject.java" />
+        <option value="$PROJECT_DIR$/src/Model/NetworkCapture.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" />
+        <option value="$PROJECT_DIR$/src/View/CAContinuousCapture.fxml" />
+        <option value="$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml" />
+        <option value="$PROJECT_DIR$/src/ControllerCAContinuousCapture.java" />
+        <option value="$PROJECT_DIR$/src/ControllerAdminSideTab.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" />
       </list>
     </option>
   </component>
@@ -557,20 +636,13 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
-  </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="355" />
-    <option name="y" value="-25" />
-    <option name="width" value="1750" />
-    <option name="height" value="969" />
+    <option name="x" value="760" />
+    <option name="width" value="783" />
+    <option name="height" value="832" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -595,12 +667,6 @@
               <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -612,230 +678,37 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Fende/Documents/GitHub/NetSecProject/src/Main.java&#10;font&#9;ACTION&#9;EditorIncreaseFontSize" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/SceneBuilder/SceneBuilder.exe" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
+    <property name="last.edited.regexp" value="Sample Text" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/misc.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/modules/NSPJ_main.iml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/modules/NSPJ_test.iml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/build.gradle</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerAdminSideTab.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerBucketsPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$3.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$3.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$4.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets$5.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainPackets.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck$1$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerDeviceCheck.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerUserHome.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerUserSideTab.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ListTables.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/NetworkCapture$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/NetworkCapture.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/OAuth2Login.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/StorageSnippets.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/PacketSnifferTesting.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/WindowsUtils.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/AdminSideTab.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/DeviceCheck.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/LoginPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/SignUpPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/UserHome.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/UserSideTab.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerAdminSideTab.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerBucketsPage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerCAMainDashboard.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerCAMainPackets.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerDeviceCheck.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerLoginPage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerUserHome.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerUserSideTab.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ListTables.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/NetworkCapture.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/OAuth2Login.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/StorageSnippets.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/AdminSideTab.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/DeviceCheck.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/LoginPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/SignUpPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/UserHome.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/UserSideTab.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/WindowsUtils.java</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__com_google_api_gax_grpc_1_25_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__com_google_api_grpc_proto_google_cloud_logging_v2_0_14_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__com_google_cloud_google_cloud_core_grpc_1_31_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__com_google_cloud_google_cloud_logging_1_31_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_auth_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_context_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_core_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_netty_shaded_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_protobuf_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_protobuf_lite_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_stub_1_10_1.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_opencensus_opencensus_contrib_grpc_metrics_0_11_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/AnimatedLineChartExample.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerEmployeeDatabase.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerLoggingPage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerSecureCloudStorage.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/Employee.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/LineChartObject.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/LoggingSnippets.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/Quickstart.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/Model/TestLoggingSnippets.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/EmployeeDatabase.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/LoggingPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/resources/SecureCloudStorage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/AnimatedLineChartExample.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerEmployeeDatabase.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerLoggingPage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/ControllerSecureCloudStorage.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/Employee.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/LineChartObject.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/LoggingSnippets.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/Quickstart.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/TestLoggingSnippets.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/EmployeeDatabase.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/LoggingPage.fxml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/SecureCloudStorage.fxml</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/libraries/Gradle__io_grpc_grpc_context_1_9_0.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$2$1.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$2.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$3.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$4.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard$5.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCADashboard.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/classes/ControllerCAMainDashboard$4.class</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/Model/LineChart.java</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hanse\IdeaProjects\NetSecProject\src\View" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\AuthTest" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\View" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\Resources" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src" />
+      <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -849,14 +722,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TextAuthMain">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+  <component name="RunManager" selected="Application.CAMain">
+    <configuration name="AnimatedLineChartExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="AnimatedLineChartExample" />
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="ScannerTestMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ScannerTestMain" />
+    <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="CAMain" />
+      <module name="NSPJ_main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="DynamicLineChart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DynamicLineChart" />
+      <module name="NSPJ_main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="NSPJ_main" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -884,6 +767,16 @@
       </option>
       <patterns />
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="NetSecProject" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -907,15 +800,19 @@
       <listeners />
     </configuration>
     <list>
-      <item itemvalue="Application.ScannerTestMain" />
-      <item itemvalue="Application.TextAuthMain" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.CAMain" />
+      <item itemvalue="Application.TextAuthMain" />
+      <item itemvalue="Application.AnimatedLineChartExample" />
+      <item itemvalue="Application.DynamicLineChart" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TextAuthMain" />
+        <item itemvalue="Application.CAMain" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.ScannerTestMain" />
+        <item itemvalue="Application.AnimatedLineChartExample" />
+        <item itemvalue="Application.DynamicLineChart" />
+        <item itemvalue="Application.TextAuthMain" />
       </list>
     </recent_temporary>
   </component>
@@ -924,165 +821,515 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="858ad223-6d14-4252-93bd-2bf7db593acf" name="Default" comment="" />
-      <created>1530504890448</created>
+      <changelist id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="" />
+      <created>1526653478865</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1530504890448</updated>
-      <workItem from="1530504893473" duration="3159000" />
-      <workItem from="1530618953723" duration="4190000" />
+      <updated>1526653478865</updated>
+      <workItem from="1526658361493" duration="400000" />
+      <workItem from="1526701232493" duration="458000" />
+      <workItem from="1526703385923" duration="44000" />
+      <workItem from="1526703432955" duration="217000" />
+      <workItem from="1526703652698" duration="347000" />
+      <workItem from="1526704002639" duration="315000" />
+      <workItem from="1526705430255" duration="237000" />
+      <workItem from="1526722873991" duration="521000" />
+      <workItem from="1526723403872" duration="581000" />
+      <workItem from="1526796430448" duration="580000" />
+      <workItem from="1526826285945" duration="12000" />
+      <workItem from="1527082035872" duration="1590000" />
+      <workItem from="1527083669355" duration="191000" />
+      <workItem from="1527083884531" duration="3416000" />
+      <workItem from="1527087332503" duration="3611000" />
+      <workItem from="1527131984239" duration="276000" />
+      <workItem from="1527154417581" duration="477000" />
+      <workItem from="1527163286962" duration="1840000" />
+      <workItem from="1527171964406" duration="40000" />
+      <workItem from="1527257370595" duration="3319000" />
+      <workItem from="1527323440101" duration="10118000" />
+      <workItem from="1527342787434" duration="111000" />
+      <workItem from="1527342925779" duration="3384000" />
+      <workItem from="1527347326554" duration="4081000" />
+      <workItem from="1527390989816" duration="10641000" />
+      <workItem from="1527412380273" duration="392000" />
+      <workItem from="1527412801353" duration="8758000" />
+      <workItem from="1527425421124" duration="2188000" />
+      <workItem from="1527427648635" duration="121000" />
+      <workItem from="1527592322184" duration="2378000" />
+      <workItem from="1528083659283" duration="81000" />
+      <workItem from="1528269979551" duration="4114000" />
+      <workItem from="1528286829283" duration="281000" />
+      <workItem from="1528287381475" duration="443000" />
+      <workItem from="1528288159788" duration="1319000" />
+      <workItem from="1528291172179" duration="1057000" />
+      <workItem from="1528296557419" duration="1017000" />
+      <workItem from="1528342510013" duration="1320000" />
+      <workItem from="1528345107766" duration="2250000" />
+      <workItem from="1528370752380" duration="6241000" />
+      <workItem from="1528426752063" duration="1487000" />
+      <workItem from="1528449417343" duration="822000" />
+      <workItem from="1528451137183" duration="953000" />
+      <workItem from="1528458184054" duration="554000" />
+      <workItem from="1528596566103" duration="316000" />
+      <workItem from="1528702358595" duration="1471000" />
+      <workItem from="1528770269303" duration="4054000" />
+      <workItem from="1528856018479" duration="6381000" />
+      <workItem from="1528879439921" duration="9526000" />
+      <workItem from="1528947286046" duration="3033000" />
+      <workItem from="1528953791455" duration="2363000" />
+      <workItem from="1528983030044" duration="3287000" />
+      <workItem from="1529034200485" duration="2749000" />
+      <workItem from="1529041165156" duration="13638000" />
+      <workItem from="1529128382346" duration="858000" />
+      <workItem from="1529229904385" duration="6037000" />
+      <workItem from="1529415106705" duration="2103000" />
+      <workItem from="1529420942634" duration="67865000" />
+      <workItem from="1529887435028" duration="20521000" />
+      <workItem from="1529977741379" duration="12697000" />
+      <workItem from="1530078442360" duration="6493000" />
+      <workItem from="1530532966936" duration="5669000" />
+      <workItem from="1530591007101" duration="5309000" />
+      <workItem from="1530603710884" duration="1748000" />
+      <workItem from="1530622890465" duration="2198000" />
+      <workItem from="1530625689803" duration="5251000" />
     </task>
+    <task id="LOCAL-00001" summary="Essential Linechart FXML and object">
+      <created>1530542649928</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1530542649929</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Rebuild Project">
+      <created>1530542780338</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1530542780338</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7349000" />
+    <option name="totallyTimeSpent" value="272938000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32905984" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="3" weight="0.3295302" />
-      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2991453" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Capture Tool" order="2" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.46695095" weight="0.32135075" />
+      <window_info anchor="right" id="Palette&#9;" order="10" />
+      <window_info id="Image Layers" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.46481878" side_tool="true" weight="0.28104576" />
+      <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.66364604" weight="0.13834423" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5351812" visible="true" weight="0.28104576" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22818792" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.33618233" />
-      <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="Gradle" order="3" weight="0.32885906" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13965885" />
+      <window_info anchor="right" id="Database" order="9" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.19597316" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info id="UI Designer" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.49287748" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.58315563" weight="0.41503268" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47181207" visible="true" weight="0.4159544" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info id="Image Layers" order="6" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.747651" weight="0.2948718" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.252349" side_tool="true" weight="0.32763532" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.46695095" weight="0.3233618" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.13834423" />
+      <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.19597316" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16577181" />
+      <window_info anchor="right" id="Database" order="9" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
+      <window_info anchor="right" id="Palette&#9;" order="10" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.49287748" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Re-enable Gradle Build" />
+    <MESSAGE value="Re-enable Gradle Build #2" />
+    <MESSAGE value="Essential Linechart FXML and object" />
+    <MESSAGE value="Rebuild Project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rebuild Project" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="28" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/TextAuthMain.java">
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ScannerTestMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+    <entry file="file://$PROJECT_DIR$/src/View/SideTab.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/jre/lib/jce.jar!/javax/crypto/Cipher.class" />
+    <entry file="file://$PROJECT_DIR$/src/View/UserHome.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="139" selection-start-line="10" selection-start-column="139" selection-end-line="10" selection-end-column="139" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/RSAKeyTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="4" column="26" lean-forward="true" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+        <state relative-caret-position="170">
+          <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PacketSnifferTesting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="37" column="61" lean-forward="true" selection-start-line="37" selection-start-column="61" selection-end-line="37" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CAMainPackets.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/LoginPage.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SignUpPage.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/application/PlatformImpl.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/LambdaForm.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Task.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessController.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/invoke/DirectMethodHandle.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/security/AccessControlContext.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/concurrent/Service.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/application/Platform.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/tk/Toolkit.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/ActionEvent.java" />
+    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+          <caret line="90" column="69" selection-start-line="90" selection-start-column="69" selection-end-line="90" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerSideTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="35" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerDeviceCheck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
+        <state relative-caret-position="231">
+          <caret line="55" column="52" selection-start-line="55" selection-start-column="52" selection-end-line="55" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Quickstart.java">
+    <entry file="file://$PROJECT_DIR$/src/WindowsUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="22">
+          <caret line="34" column="10" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/View/DeviceCheck.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+        <state relative-caret-position="361">
+          <caret line="23" column="14" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/javafx-src.zip!/javafx/application/Application.java" />
+    <entry file="file://$PROJECT_DIR$/src/View/FileScanner.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/javafx-src.zip!/javafx/scene/control/TextInputControl.java" />
+    <entry file="file://$PROJECT_DIR$/src/ControllerSignUpPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3808">
+          <caret line="244" selection-start-line="244" selection-end-line="244" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RSAKeyGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1479">
+          <caret line="112" selection-start-line="112" selection-end-line="112" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ScannerTestMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="34">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FileScanner.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
+    <entry file="file://$PROJECT_DIR$/src/TextAuthMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="115" selection-start-line="115" selection-end-line="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/VerifyTextAuth.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="39" column="14" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerVerifyText.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="60" column="1" lean-forward="true" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+        <state relative-caret-position="272">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TextAuthMain.java">
+    <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="88" selection-start-line="19" selection-start-column="88" selection-end-line="19" selection-end-column="88" />
+        <state relative-caret-position="408">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/chart/XYChart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="132" selection-start-line="132" selection-end-line="132" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DynamicLineChart.java" />
+    <entry file="file://$PROJECT_DIR$/src/ControllerUserHome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4327">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AnimatedLineChartExample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CAMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="15" column="73" selection-start-line="15" selection-start-column="73" selection-end-line="15" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2125">
+          <caret line="146" column="34" selection-start-line="146" selection-start-column="34" selection-end-line="146" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/LineChartObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="40" column="21" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CAMainDashboard.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="35" column="18" lean-forward="true" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CALanding.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="40" column="146" lean-forward="true" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="151" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="27" column="4" lean-forward="true" selection-start-line="27" selection-start-column="4" selection-end-line="29" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="197" selection-start-line="15" selection-start-column="197" selection-end-line="15" selection-end-column="197" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="127" column="35" lean-forward="true" selection-start-line="104" selection-start-column="7" selection-end-line="127" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1819">
+          <caret line="159" column="39" selection-start-line="159" selection-start-column="39" selection-end-line="159" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4976#5000#0" expanded="true" />
+            <element signature="e#7663#7687#0" expanded="true" />
+            <element signature="e#10557#10581#0" expanded="true" />
+            <element signature="e#11204#11225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="188" column="60" selection-start-line="188" selection-start-column="60" selection-end-line="188" selection-end-column="60" />
+          <folding>
+            <element signature="e#6928#6966#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="206" column="21" lean-forward="true" selection-start-line="180" selection-start-column="8" selection-end-line="206" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="113" column="65" selection-start-line="113" selection-start-column="65" selection-end-line="113" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6124#6125#0" expanded="true" />
+            <element signature="e#6189#6190#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1127,6 +1374,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1138,6 +1386,20 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
+          <last-edited>NSPJ_main|NSPJ</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1149,6 +1411,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>Gradle: com.jfoenix:jfoenix:8.0.4</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

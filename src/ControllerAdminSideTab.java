@@ -28,6 +28,9 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton logsButton;
 
+    @FXML
+    private JFXButton continuousCapture;
+
     private Scene myScene;
     private static PcapNetworkInterface device;
     private static ScheduledExecutorService service;
@@ -72,13 +75,13 @@ public class ControllerAdminSideTab {
             stage.show();
         }
         else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
+                ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
                 controller.passVariables(device,service,capture);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -172,4 +175,24 @@ public class ControllerAdminSideTab {
         stage.setTitle("Logging Page");
         stage.show();
     }
+
+    @FXML
+    public void goToContiouousCapture(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("CAContinuousCaptureLanding.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCAContinuousCaptureLanding controller = loader.<ControllerCAContinuousCaptureLanding>getController();
+            controller.passVariables(device,service,capture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.show();
+    }
+
 }

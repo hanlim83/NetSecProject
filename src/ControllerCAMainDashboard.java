@@ -7,6 +7,8 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -70,24 +72,41 @@ public class ControllerCAMainDashboard implements Initializable {
     private NumberAxis chartYAxis;
     private Timeline animation;
     private double y = 10;
-    private final int MAX_DATA_POINTS = 24, MAX = 34, MIN = 5;
+    private final int MAX_DATA_POINTS = 24, MAX = 39, MIN = 1;
     public ArrayList<LineChartObject> packetsLineChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        captureToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (captureToggle.isSelected()){
+                    startCapturing();
+                }
+                else {
+                    stopCapturing();
+                }
+            }
+        });
         animation = new Timeline();
+        animation.getKeyFrames()
+                .add(new KeyFrame(Duration.millis(10000),
+                        (ActionEvent actionEvent) -> plotCaptureLine()));
         animation.setCycleCount(Animation.INDEFINITE);
-        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
-        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
+        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 10);
+        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 25);
         networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
         series = new XYChart.Series();
         packetsLineChart = new ArrayList<LineChartObject>();
+        networkTrafficChart.getXAxis().setAutoRanging(true);
+        networkTrafficChart.getYAxis().setAutoRanging(true);
     }
 
     public void plotCaptureLine() {
         LineChartObject data = capture.getTrafficPerSecond();
         series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
+        System.out.println(data.getLocation()+","+data.getData());
         if (data.getCount() > MAX_DATA_POINTS) {
             series.getData().remove(0);
         }
@@ -119,13 +138,18 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
+    public void play() {
+        animation.play();
+    }
+
+    public void stop() {
+        animation.pause();
+    }
+
     public void startCapturing(){
         if (capture == null)
             capture = new NetworkCapture(device);
-        animation.play();
-        animation.getKeyFrames()
-                .add(new KeyFrame(Duration.millis(10000),
-                        (ActionEvent actionEvent) -> plotCaptureLine()));
+        play();
         Runnable task = () -> {
             capture.startSniffing();
             packets = capture.packets;
@@ -138,7 +162,7 @@ public class ControllerCAMainDashboard implements Initializable {
     }
     public void stopCapturing(){
         capture.stopSniffing();
-        animation.pause();
+        stop();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();

@@ -1,6 +1,6 @@
 package Model;
 
-public class LineChartObject {
+public class LineChartObject implements Comparable <LineChartObject> {
     private static int count = 0;
     private int location;
     private int data;
@@ -31,4 +31,13 @@ public class LineChartObject {
         this.data = data;
     }
 
+    @Override
+    public int compareTo(LineChartObject l) {
+        if (this.location > l.location)
+            return 1;
+        else if (this.location < l.location)
+            return -1;
+        else
+            return 0;
+    }
 }
