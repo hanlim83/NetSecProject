@@ -2,9 +2,9 @@ import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.auth.AuthMethod;
 import com.nexmo.client.auth.TokenAuthMethod;
+import com.nexmo.client.verify.CheckResult;
 import com.nexmo.client.verify.VerifyResult;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class TextAuthMain {
 
@@ -19,13 +19,8 @@ public class TextAuthMain {
 
             VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE");
 
+
                     System.out.println("Message sent!");
-
-                Scanner sc = new Scanner(System.in);
-                System.out.print("Enter the OTP: ");
-                  String CODE = sc.next();
-
-            client.getVerifyClient().check(ongoingVerify.getRequestId(), CODE);
 
         } catch (IOException e) {
             e.printStackTrace();
