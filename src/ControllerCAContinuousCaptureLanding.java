@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -213,7 +214,19 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
 
     @FXML
     public void startCapture(ActionEvent event) {
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAContinuousCaptureMain.fxml"));
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
+            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(nextView));
+        stage.show();
     }
 
     public boolean checkFields (){
@@ -227,7 +240,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         rootP = anchorPane;
 
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);

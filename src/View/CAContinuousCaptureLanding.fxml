@@ -91,6 +91,11 @@
                   <JFXTextField fx:id="interfaceIPAddress2" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <JFXTextField fx:id="interfaceIPAddress3" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                   <JFXTextField fx:id="interfaceIPAddress4" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interface IP Addresses:" GridPane.rowIndex="7">
+                     <font>
+                        <Font name="Lucida Sans Regular" size="22.0" />
+                     </font>
+                  </Text>
                </children>
             </GridPane>
          </children>

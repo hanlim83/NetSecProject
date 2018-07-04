@@ -56,7 +56,7 @@ public class ContinuousNetworkCapture {
     }
 
     //get the packet count
-    synchronized private int getPacketCount(){
+    synchronized public int getPacketCount(){
         return pktCount;
     }
 
