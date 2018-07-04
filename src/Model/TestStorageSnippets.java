@@ -8,7 +8,7 @@ import com.google.cloud.storage.StorageOptions;
 
 import java.util.Scanner;
 
-import static Model.CloudSQLAuth.login;
+//import static Model.CloudSQLAuth.login;
 
 public class TestStorageSnippets {
     public static void main(String[] args){
