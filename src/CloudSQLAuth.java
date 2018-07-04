@@ -1,5 +1,4 @@
-package Model;
-
+import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.HttpTransport;

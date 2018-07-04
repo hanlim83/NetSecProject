@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCAContinuousCaptureMain">
+   <children>
+      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+         <children>
+            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
+            <Text layoutX="302.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Network Capture" wrappingWidth="465.13671875">
+               <font>
+                  <Font name="Marlett" size="40.0" />
+               </font>
+            </Text>
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+         </children>
+      </AnchorPane>
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXButton fx:id="StopBtn" layoutX="135.0" layoutY="466.0" onAction="#stopCapture" ripplerFill="BLACK" text="Stop Capture" textFill="#d3412e">
+         <font>
+            <Font name="Lucida Sans Regular" size="24.0" />
+         </font>
+      </JFXButton>
+      <Separator layoutX="450.0" layoutY="69.0" orientation="VERTICAL" prefHeight="529.0" prefWidth="6.0" />
+      <GridPane layoutX="31.0" layoutY="228.0" prefHeight="90.0" prefWidth="392.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="10.0" prefWidth="280.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="74.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Packets Captured:">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Packets Dropped:" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Suspicious Network Activities:" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="totalPacketsText" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Number&gt;" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="totalDroppedText" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Number&gt;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="totalAlertsText" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Number&gt;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Lucida Sans Regular" size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <Text layoutX="169.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics">
+         <font>
+            <Font name="Lucida Sans Regular" size="23.0" />
+         </font>
+      </Text>
+      <JFXTextArea fx:id="loggingTextArea" editable="false" layoutX="453.0" layoutY="136.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="615.0" promptText="Events happening during network capture will appear here" wrapText="true">
+         <font>
+            <Font name="Marlett" size="15.0" />
+         </font>
+      </JFXTextArea>
+      <Text layoutX="711.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Capture Logs">
+         <font>
+            <Font name="Lucida Sans Regular" size="23.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

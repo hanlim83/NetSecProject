@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OAuth2Login {
-    static Credential credential=null;
+//    private static Credential credential=null;
     //GoogleCredential googleCredential=credential;
 
     /**
@@ -86,7 +86,9 @@ public class OAuth2Login {
                 .setDataStoreFactory(dataStoreFactory).build();
         //System.out.println(flow);
         // authorize
-        return new AuthorizationCodeInstalledApp(flow, l).authorize("user");
+        Credential c= new AuthorizationCodeInstalledApp(flow, l).authorize("user");
+//        c.
+        return c;
     }
 
     public Credential login() throws UnknownHostException,Exception {

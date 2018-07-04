@@ -124,7 +124,8 @@ public class ControllerUserHome implements Initializable {
 //        }
 
         //TODO TESTING DELETE B4 PUSH
-//        System.out.println(utils.getAccStatus("hugochiaxyz@gmail.com"));
+//        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
+        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
     }
 
     @FXML
