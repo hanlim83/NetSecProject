@@ -13,11 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
@@ -84,6 +87,20 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         continuousNetworkCaptureFuture.cancel(true);
         updateStatsFuture.cancel(true);
         StopBtn.setDisable(true);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("CAContinuousCaptureLanding.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCAContinuousCaptureLanding controller = loader.<ControllerCAContinuousCaptureLanding>getController();
+            controller.passVariables(device,service,Ncapture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(nextView));
+        stage.show();
     }
 
     public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath){
