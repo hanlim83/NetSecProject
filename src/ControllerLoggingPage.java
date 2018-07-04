@@ -87,6 +87,11 @@ public class ControllerLoggingPage implements Initializable {
         loggingsnippets.listLogEntries("one two");
 
         timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("severity"));
+        action.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("action"));
+        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("bucketName"));
+        user.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("user"));
+
         logsList = loggingsnippets.getLogsExtractList();
     }
 
@@ -97,7 +102,6 @@ public class ControllerLoggingPage implements Initializable {
         try (Logging logging = options.getService()) {
             System.out.println(options.getProjectId());
             loggingsnippets.listLogEntries("delete");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

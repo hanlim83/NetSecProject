@@ -477,7 +477,7 @@ public class LoggingSnippets {
     // [TARGET listLogEntries(EntryListOption...)]
     // [VARIABLE "logName=projects/my_project_id/logs/my_log_name"]
     public Page<LogEntry> listLogEntries(String inputfilter) {
-        String resourceType;
+
 
         Page<LogEntry> entries = null;
         // [START listLogEntries]
@@ -493,8 +493,8 @@ public class LoggingSnippets {
             if(inputfilter.equals("delete")){
                 System.out.println("PULLING OUT DELETED LOGS");
                 //get RESOURCES -> cloudsql_database / gcs_bucket
-                resourceType=entry.getResource().getType();
-                System.out.println(resourceType);
+//                resourceType=entry.getResource().getType();
+//                System.out.println(resourceType);
 
                 LogsExtract logE = new LogsExtract(entry);
                 logsExtractList.add(logE);
@@ -502,23 +502,12 @@ public class LoggingSnippets {
             else if (inputfilter.equals("create")){
                 System.out.println("PULLING OUT CREATED LOGS");
                 //get RESOURCES
-                resourceType=entry.getResource().getType();
-                System.out.println(resourceType);
+//                resourceType=entry.getResource().getType();
+//                System.out.println(resourceType);
             }
 
 
-                //getting type -> GCS Bucket / cloudSQL or project
-                //     System.out.println(entry.getResource().getType());
 
-                //getting labels -> Location, projectid, bucketname
-                // System.out.println(entry.getResource().getLabels());
-
-                //get severity
-                //    System.out.println(entry.getSeverity());
-
-                //get payload -> name of user\
-                //if -> type_url: "type.googleapis.com/google.cloud.audit.AuditLog" means is deleted/created something
-                // System.out.println(entry.getPayload().getData());
             }
         } catch (Exception e) {
             e.printStackTrace();

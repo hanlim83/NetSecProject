@@ -32,6 +32,7 @@ dependencies {
     compile group: 'com.github.vatbub', name: 'VirustotalPublicV2.0', version: '1.1.rB'
     compile 'com.nexmo:client:3.5.0'
     compile 'com.google.cloud:google-cloud-logging:1.31.0'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 }
 
 sourceSets {
