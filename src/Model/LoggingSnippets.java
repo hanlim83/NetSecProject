@@ -35,16 +35,18 @@ public class LoggingSnippets {
     private OAuth2Login login = new OAuth2Login();
 
     private Logging logging;
+    ArrayList<LogsExtract> logsExtractList = new ArrayList<LogsExtract>();
 
     public LoggingSnippets() {
         Credential credential;
         try {
-            credential =login.login();
+            credential = login.login();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     public LoggingSnippets(Logging logging) {
         this.logging = logging;
     }
@@ -474,11 +476,52 @@ public class LoggingSnippets {
      */
     // [TARGET listLogEntries(EntryListOption...)]
     // [VARIABLE "logName=projects/my_project_id/logs/my_log_name"]
-    public Page<LogEntry> listLogEntries(String filter) {
+    public Page<LogEntry> listLogEntries(String inputfilter) {
+        String resourceType;
+
+        Page<LogEntry> entries = null;
         // [START listLogEntries]
-        Page<LogEntry> entries = logging.listLogEntries(EntryListOption.filter(filter));
-        for (LogEntry entry : entries.iterateAll()) {
-            System.out.println("PRINTING MY LOGS");
+
+        LoggingOptions options = LoggingOptions.getDefaultInstance();
+        try (Logging logging = options.getService()) {
+            System.out.println(options.getProjectId());
+
+            entries = logging.listLogEntries(EntryListOption.filter(inputfilter));
+            for (LogEntry entry : entries.iterateAll()) {
+             //System.out.println(entry.toString());
+
+            if(inputfilter.equals("delete")){
+                System.out.println("PULLING OUT DELETED LOGS");
+                //get RESOURCES -> cloudsql_database / gcs_bucket
+                resourceType=entry.getResource().getType();
+                System.out.println(resourceType);
+
+                LogsExtract logE = new LogsExtract(entry);
+                logsExtractList.add(logE);
+            }
+            else if (inputfilter.equals("create")){
+                System.out.println("PULLING OUT CREATED LOGS");
+                //get RESOURCES
+                resourceType=entry.getResource().getType();
+                System.out.println(resourceType);
+            }
+
+
+                //getting type -> GCS Bucket / cloudSQL or project
+                //     System.out.println(entry.getResource().getType());
+
+                //getting labels -> Location, projectid, bucketname
+                // System.out.println(entry.getResource().getLabels());
+
+                //get severity
+                //    System.out.println(entry.getSeverity());
+
+                //get payload -> name of user\
+                //if -> type_url: "type.googleapis.com/google.cloud.audit.AuditLog" means is deleted/created something
+                // System.out.println(entry.getPayload().getData());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         // [END listLogEntries]
         return entries;
@@ -503,14 +546,18 @@ public class LoggingSnippets {
         return entries;
     }
 
-    public Page<LogEntry> listLogEntries(EntryListOption filter) {
-        // [START listLogEntries]
-        Page<LogEntry> entries = logging.listLogEntries(filter);
-        for (LogEntry entry : entries.iterateAll()) {
-            System.out.println("PRINTING MY LOGS");
-            System.out.println(entry);
-        }
-        // [END listLogEntries]
-        return entries;
+//    public Page<LogEntry> listLogEntries(EntryListOption filter) {
+//        // [START listLogEntries]
+//        Page<LogEntry> entries = logging.listLogEntries(filter);
+//        for (LogEntry entry : entries.iterateAll()) {
+//            System.out.println("PRINTING MY LOGS");
+//
+//        }
+//        // [END listLogEntries]
+//        return entries;
+//    }
+
+    public ArrayList<LogsExtract> getLogsExtractList(){
+        return logsExtractList;
     }
 }

@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -61,7 +62,10 @@ public class ControllerLoggingPage implements Initializable {
     private TableColumn<LogsExtract, String> severity;
 
     @FXML
-    private JFXButton testtest;
+    private JFXButton deletedlogs;
+
+    @FXML
+    private JFXButton createdlogs;
 
     private Scene myScene;
 
@@ -79,27 +83,31 @@ public class ControllerLoggingPage implements Initializable {
         loggingsnippets = new LoggingSnippets();
         options = LoggingOptions.getDefaultInstance();
 
-        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+        //test inputfilter to trigger loglist
+        loggingsnippets.listLogEntries("one two");
 
+        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+        logsList = loggingsnippets.getLogsExtractList();
     }
 
 
 
     @FXML
-    void handletesting(MouseEvent event) {
+    void handledeleted(MouseEvent event) {
         try (Logging logging = options.getService()) {
             System.out.println(options.getProjectId());
-            try {
-                Page<LogEntry> entries = logging.listLogEntries(Logging.EntryListOption.filter("create"));
-                for (LogEntry logEntry : entries.iterateAll()) {
-                    System.out.println(logEntry.getResource().getType());
-                }
-            }catch(com.google.cloud.logging.LoggingException g){
+            loggingsnippets.listLogEntries("delete");
 
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        logsObservableList = FXCollections.observableList(logsList);
+        logsTable.setItems(logsObservableList);
+    }
+
+    @FXML
+    void handlecreated(MouseEvent event) {
+
     }
 
     public void hamburgerBar() {

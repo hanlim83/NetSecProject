@@ -124,7 +124,6 @@ public class ControllerBucketsPage implements Initializable {
 
     public CloudBuckets cldBucket(CloudBuckets cldB){
         cldB2 = cldB;
-
         return cldB2;
     }
 

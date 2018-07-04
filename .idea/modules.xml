@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/NSPJ.iml" filepath="$PROJECT_DIR$/.idea/modules/NSPJ.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/NSPJ_main.iml" filepath="$PROJECT_DIR$/.idea/modules/NSPJ_main.iml" group="NSPJ" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/NSPJ_test.iml" filepath="$PROJECT_DIR$/.idea/modules/NSPJ_test.iml" group="NSPJ" />
-      <module fileurl="file://$PROJECT_DIR$/NetSecProject.iml" filepath="$PROJECT_DIR$/NetSecProject.iml" />
     </modules>
   </component>
 </project>

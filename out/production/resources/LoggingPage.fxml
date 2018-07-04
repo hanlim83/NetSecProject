@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -34,6 +34,7 @@
             <TableColumn fx:id="severity" prefWidth="179.0" text="Severity" />
         </columns>
       </TableView>
-      <JFXButton fx:id="testtest" layoutX="368.0" layoutY="132.0" onMouseClicked="#handletesting" text="testbutton" />
+      <JFXButton fx:id="deletedlogs" layoutX="270.0" layoutY="122.0" onMouseClicked="#handledeleted" text="Deleted Logs" />
+      <JFXButton fx:id="createdlogs" layoutX="412.0" layoutY="122.0" onMouseClicked="#handlecreated" text="Created Logs" />
     </children>
 </AnchorPane>

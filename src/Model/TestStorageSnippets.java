@@ -1,6 +1,14 @@
 package Model;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+
 import java.util.Scanner;
+
+import static Model.CloudSQLAuth.login;
 
 public class TestStorageSnippets {
     public static void main(String[] args){
