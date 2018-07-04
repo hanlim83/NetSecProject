@@ -36,6 +36,7 @@
     <orderEntry type="library" name="Gradle: org.pcap4j:pcap4j-packetfactory-static:1.7.3" level="project" />
     <orderEntry type="library" name="Gradle: org.pcap4j:pcap4j-core:1.7.3" level="project" />
     <orderEntry type="library" name="Gradle: com.github.vatbub:VirustotalPublicV2.0:1.1.rB" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-storage:v1-rev131-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: io.grpc:grpc-auth:1.10.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.auth:google-auth-library-credentials:0.9.1" level="project" />
