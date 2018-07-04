@@ -232,7 +232,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerCAContinuousCaptureLanding.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);

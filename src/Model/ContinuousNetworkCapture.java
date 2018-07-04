@@ -23,7 +23,7 @@ public class ContinuousNetworkCapture {
     private int pktCount = 0;
 
     //Data Variables
-    private long PacketsReceived,PacketsDropped,PacketsDroppedByInt,PacketsCaptured;
+    private long PacketsReceived,PacketsDropped;
     private String filePath;
 
     public ContinuousNetworkCapture(PcapNetworkInterface nif, String filePath) {
@@ -42,24 +42,12 @@ public class ContinuousNetworkCapture {
             }
         }
     };
-    public int getPktCount() {
-        return pktCount;
-    }
-
     public long getPacketsReceived() {
         return PacketsReceived;
     }
 
     public long getPacketsDropped() {
         return PacketsDropped;
-    }
-
-    public long getPacketsDroppedByInt() {
-        return PacketsDroppedByInt;
-    }
-
-    public long getPacketsCaptured() {
-        return PacketsCaptured;
     }
 
     //Packet count increment
@@ -78,10 +66,6 @@ public class ContinuousNetworkCapture {
             ps = Phandle.getStats();
             PacketsReceived = ps.getNumPacketsReceived();
             PacketsDropped = ps.getNumPacketsDropped();
-            PacketsDroppedByInt =  ps.getNumPacketsDroppedByIf();
-            if (Platform.isWindows()) {
-                PacketsCaptured = ps.getNumPacketsCaptured();
-            }
         } catch (PcapNativeException | NotOpenException e) {
             // Auto-generated catch block
             e.printStackTrace();
