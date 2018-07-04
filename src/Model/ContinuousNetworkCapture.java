@@ -9,37 +9,37 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NetworkCapture {
+public class ContinuousNetworkCapture {
     //Pre-Defined Variables
-    private static final String COUNT_KEY  = NetworkCapture.class.getName() + ".count";
+    private static final String COUNT_KEY  = ContinuousNetworkCapture.class.getName() + ".count";
     private static final int COUNT  = Integer.getInteger(COUNT_KEY, -1); // -1 -> loop infinite
-    private static final String READ_TIMEOUT_KEY  = NetworkCapture.class.getName() + ".readTimeout";
+    private static final String READ_TIMEOUT_KEY  = ContinuousNetworkCapture.class.getName() + ".readTimeout";
     private static final int READ_TIMEOUT  = Integer.getInteger(READ_TIMEOUT_KEY, 100); // [ms]
-    private static final String SNAPLEN_KEY = NetworkCapture.class.getName() + ".snaplen";
+    private static final String SNAPLEN_KEY = ContinuousNetworkCapture.class.getName() + ".snaplen";
     private static final int SNAPLEN = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
+    private PcapDumper dumper;
     private int pktCount = 0;
 
     //Data Variables
     private long PacketsReceived,PacketsDropped,PacketsDroppedByInt,PacketsCaptured;
-    public ArrayList<CapturedPacket> packets;
-    public ArrayList<LineChartObject> PreviousTPS;
-    private Timestamp lastTimeStamp = null;
+    private String filePath;
 
-    public NetworkCapture(PcapNetworkInterface nif) {
+    public ContinuousNetworkCapture(PcapNetworkInterface nif, String filePath) {
         this.Netinterface = nif;
-        packets = new ArrayList<CapturedPacket>();
-        PreviousTPS = new ArrayList<LineChartObject>();
+        this.filePath = filePath;
     }
 
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
         public void gotPacket(Packet packet) {
-            incrementCount();
-            CapturedPacket cPacket = new CapturedPacket(packet,getPacketCount(),Phandle.getTimestamp());
-            packets.add(cPacket);
+            try {
+                dumper.dump(packet);
+            } catch (NotOpenException e) {
+                e.printStackTrace();
+            }
         }
     };
     public int getPktCount() {
@@ -92,6 +92,7 @@ public class NetworkCapture {
     public void startSniffing(){
                 try{
                     Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+                    dumper = Phandle.dumpOpen(filePath);
                     Phandle.loop(COUNT, listener);
                 } catch(PcapNativeException e){
                     e.printStackTrace();
@@ -104,6 +105,7 @@ public class NetworkCapture {
                 }
         finally{
                     printStat();
+                    dumper.close();
                     Phandle.close();
                 }
             }
@@ -117,45 +119,6 @@ public class NetworkCapture {
         } catch (NotOpenException e) {
             e.printStackTrace();
         }
-    }
-    //Export to pcap file
-    public boolean export(String filepath){
-        try {
-            if (!Phandle.isOpen())
-                Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            PcapDumper dumper = Phandle.dumpOpen(filepath);
-            for (CapturedPacket p : packets){
-                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
-            }
-            dumper.close();
-            Phandle.close();
-            return true;
-        } catch (PcapNativeException e) {
-            e.printStackTrace();
-            return false;
-        } catch (NotOpenException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public LineChartObject getTrafficPerSecond() {
-        Timestamp original = new Timestamp(System.currentTimeMillis());
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(original.getTime());
-        cal.add(Calendar.SECOND, 9);
-        Timestamp later = new Timestamp(cal.getTime().getTime());
-        int packetCount = 0;
-        for (CapturedPacket packet : packets){
-            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
-                packetCount++;
-            else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
-                packetCount++;
-        }
-        LineChartObject TPS = new LineChartObject(packetCount);
-        PreviousTPS.add(TPS);
-        lastTimeStamp = later;
-        return TPS;
     }
 
     public boolean isRunning() {

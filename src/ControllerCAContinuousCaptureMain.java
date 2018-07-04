@@ -1,3 +1,5 @@
+import Model.ContinuousNetworkCapture;
+import Model.NetworkCapture;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -12,10 +14,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +51,13 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
 
     private Scene myScene;
     public static AnchorPane rootP;
+    private ContinuousNetworkCapture Ccapture;
+    private String exportFilePath;
+    //Imported from previous screens
+    private PcapNetworkInterface Odevice;
+    private ScheduledExecutorService service;
+    private NetworkCapture Ncapture;
+    private PcapNetworkInterface device;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +67,15 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     @FXML
     public void stopCapture(ActionEvent event) {
 
+    }
+
+    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath){
+        this.Odevice = nif;
+        this.service = service;
+        this.Ncapture = Capture;
+        this.device = device;
+        this.exportFilePath = filePath;
+        this.Ccapture = new ContinuousNetworkCapture(device,exportFilePath);
     }
 
     public void hamburgerBar() {
