@@ -181,7 +181,7 @@ public class WindowsUtils implements Runnable{
         return state;
     }
 
-    public void setUserKeyInfo(String hashPassword, String publicKey, String privateKey,String email) throws SQLException {
+    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String email) throws SQLException {
         //maybe change to boolean next time
         // TODO: fill this in
         // The instance connection name can be obtained from the instance overview page in Cloud Console
@@ -233,7 +233,7 @@ public class WindowsUtils implements Runnable{
 //                //System.out.println(resultSet.getString(1));
 //                state=resultSet.getString(1);
 //            }
-            statement.executeUpdate("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateKey='"+privateKey+"' WHERE email='"+email+"'");
+            statement.executeUpdate("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateKey='"+encryptedPrivateKey+"' WHERE email='"+email+"'");
         }
 
     }

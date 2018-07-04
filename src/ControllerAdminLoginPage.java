@@ -1,8 +1,5 @@
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
-
-import java.io.IOException;
-
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
@@ -19,12 +16,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.*;
+import java.io.IOException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ControllerLoginPage implements Initializable, Runnable {
+public class ControllerAdminLoginPage implements Initializable{
     @FXML
     private AnchorPane anchorPane;
 
@@ -44,7 +43,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     private Credential credential;
     private String email = "";
-    //hardcoded AccStatus for now
     private String AccStatus = "";
 
     @Override
@@ -189,7 +187,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     stage.setTitle("NSPJ");
                     stage.show();
                 }else{
-                    //TODO ADD AN ALERT HERE
                     //Not part of DB
                     System.out.println("NOT INSIDE DB.REJECTED!!!");
                 }
@@ -343,44 +340,5 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            close.setOnAction(__ -> alert.hideWithAnimation());
 //            alert.show();
 //        });
-    }
-
-    Task<Void> task = new Task<Void>() {
-        @Override
-        public Void call() {
-            //System.out.println("Thread running"+thread.getId());
-            try {
-                credential = login.login();
-
-            } catch (UnknownHostException u) {
-                Platform.runLater(() -> {
-                    System.out.println("No wifi");
-                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                    snackbar.show("Please check your internet connection", 3000);
-                    //u.printStackTrace();
-                });
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
-            //System.out.println("Thread running"+thread.getId());
-            return null;
-        }
-    };
-
-    ///Will implement email check againstDB in future updates && also show spinner when running this
-    @Override
-    public void run() {
-        try {
-            credential = login.login();
-        } catch (UnknownHostException u) {
-            Platform.runLater(() -> {
-                System.out.println("No wifi");
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.show("Check your internet connection", 3000);
-                //u.printStackTrace();
-            });
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
     }
 }

@@ -46,6 +46,10 @@ public class ControllerSignUpPage implements Initializable {
     WindowsUtils utils = new WindowsUtils();
     private String email;
 
+    private String hashPassword;
+    private String publicKey;
+    private String encryptedPrivateKey;
+
     //public static AnchorPane rootP;
 
     @Override
@@ -160,7 +164,10 @@ public class ControllerSignUpPage implements Initializable {
             showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
         } else {
             keyGenerator();
-
+            //Compute Hash of Password
+            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+            System.out.println(hashPassword);
+            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
             myScene = anchorPane.getScene();
@@ -241,16 +248,16 @@ public class ControllerSignUpPage implements Initializable {
 
     private void keyGenerator() throws Exception {
         //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
-        //Compute Hash of Password
-        String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-        System.out.println(HashPassword);
+//        //Compute Hash of Password
+//        String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+//        System.out.println(HashPassword);
         RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
         rsaKeyGenerator.buildKeyPair();
-        String publicKey=rsaKeyGenerator.getPublicKeyString();
+        publicKey=rsaKeyGenerator.getPublicKeyString();
         System.out.println(publicKey);
         String privateKey=rsaKeyGenerator.getPrivateKeyString();
         System.out.println(privateKey);
-        String encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString(PasswordField.getText(),privateKey);
+        encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString(PasswordField.getText(),privateKey);
         System.out.println(encryptedPrivateKey);
         //For testing purpose only
         String decryptedPrivateKey=rsaKeyGenerator.getPrivateKeyString(PasswordField.getText(),encryptedPrivateKey);
