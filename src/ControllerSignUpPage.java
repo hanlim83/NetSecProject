@@ -64,21 +64,36 @@ public class ControllerSignUpPage implements Initializable {
 
     @FXML
     void onClickCancelButton(ActionEvent event) throws IOException {
-        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
-        file.delete();
+          if (checkPhoneNoRequirements(PhoneNoField.getText())==true){
+              System.out.println("true");
+          }else{
+              System.out.println(false);
+          }
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LoginPage.fxml"));
-        myScene = anchorPane.getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
+//        if (PhoneNoField.getText().charAt(0)!='9' || PhoneNoField.getText().charAt(0)!='8'){
+//            System.out.println(PhoneNoField.getText().charAt(0));
+////            System.out.println("Must start with 8 or 9");
+//            System.out.println("Good");
+//        }else{
+//            System.out.println("Bad");
+//        }
 
-        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
-        //controller.passData(login.getEmail());
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
+//        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+//        file.delete();
+//
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource("LoginPage.fxml"));
+//        myScene = anchorPane.getScene();
+//        Stage stage = (Stage) (myScene).getWindow();
+//        Parent nextView = loader.load();
+//
+//        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
+//        //controller.passData(login.getEmail());
+//
+//        stage.setScene(new Scene(nextView));
+//        stage.setTitle("NSPJ");
+//        stage.show();
     }
 
 
@@ -231,8 +246,25 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     private boolean checkPhoneNoRequirements(String phoneNo){
-        phoneNo.charAt(0);
-        return false;
+        String numbers = "(.*[0-9].*)";
+        if (phoneNo.length()!=8){
+            System.out.println("Too short");
+            return false;
+        } else if(!phoneNo.startsWith("8")||!phoneNo.startsWith("9")){
+            System.out.println("Must start with 8 or 9");
+        }
+//        else if (phoneNo.charAt(0)!='9' || phoneNo.charAt(0)!='8'){
+//            System.out.println(phoneNo.charAt(0));
+//            System.out.println("Must start with 8 or 9");
+//            return false;
+//        }
+//        if (phoneNo.matches(numbers)){
+//            System.out.println("Password should contain atleast one number.");
+//            return true;
+//        }
+//        phoneNo.charAt(0);
+//        return true;
+        return true;
     }
 
 
