@@ -3,9 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -23,18 +28,116 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <TableView fx:id="logsTable" layoutX="131.0" layoutY="199.0" prefHeight="364.0" prefWidth="806.0">
+      <JFXButton fx:id="createdlogs" layoutX="398.0" layoutY="108.0" onMouseClicked="#handlecreated" text="Created Logs" />
+      <JFXButton fx:id="deletedlogs" layoutX="265.0" layoutY="107.0" onMouseClicked="#handledeleted" text="Deleted Logs" />
+      <TableView fx:id="logsTable" layoutX="46.0" layoutY="170.0" onMouseClicked="#clickItem" prefHeight="400.0" prefWidth="962.0">
         <columns>
-          <TableColumn fx:id="timestamp" prefWidth="124.0" text="Timestamp" />
-          <TableColumn fx:id="action" prefWidth="169.0" text="Action" />
-            <TableColumn fx:id="bucketName" prefWidth="108.0" text="Bucket Name" />
-            <TableColumn fx:id="user" prefWidth="117.0" text="User" />
-            <TableColumn fx:id="projectID" minWidth="0.0" prefWidth="108.0" text="Project ID" />
-            <TableColumn fx:id="severity" prefWidth="179.0" text="Severity" />
+          <TableColumn fx:id="timestamp" prefWidth="96.86665344238281" text="Timestamp" />
+          <TableColumn fx:id="action" prefWidth="113.13334655761719" text="Action" />
+            <TableColumn fx:id="bucketName" prefWidth="352.5999755859375" text="Bucket Name" />
+            <TableColumn fx:id="user" prefWidth="287.33331298828125" text="User" />
+            <TableColumn fx:id="severity" prefWidth="118.66668701171875" text="Severity" />
         </columns>
       </TableView>
-      <JFXButton fx:id="deletedlogs" layoutX="270.0" layoutY="122.0" onMouseClicked="#handledeleted" text="Deleted Logs" />
-      <JFXButton fx:id="createdlogs" layoutX="412.0" layoutY="122.0" onMouseClicked="#handlecreated" text="Created Logs" />
+      <AnchorPane fx:id="popupanchor" layoutX="43.0" layoutY="177.0" prefHeight="390.0" prefWidth="970.0" visible="false">
+         <children>
+            <GridPane gridLinesVisible="true" layoutX="2.0" layoutY="1.0" prefHeight="389.0" prefWidth="966.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="311.2000732421875" minWidth="10.0" prefWidth="118.39997863769531" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="821.6000213623047" minWidth="10.0" prefWidth="821.6000213623047" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="99.39999389648438" minHeight="10.0" prefHeight="30.733367919921875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="192.19998168945312" minHeight="10.0" prefHeight="33.266632080078125" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="157.20001220703125" minHeight="10.0" prefHeight="110.80001831054688" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="129.5333251953125" minHeight="10.0" prefHeight="119.93328857421875" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Timestamp : " GridPane.halignment="RIGHT">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Action : " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Details : " GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="User : " GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Severity : " GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="timestamp1" prefHeight="65.0" prefWidth="817.0" text="Label" wrapText="true" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="action1" prefHeight="120.0" prefWidth="860.0" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="bucketName1" prefHeight="131.0" prefWidth="816.0" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="user1" prefHeight="153.0" prefWidth="838.0" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="severity1" prefHeight="70.0" prefWidth="821.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="7.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>
 </AnchorPane>

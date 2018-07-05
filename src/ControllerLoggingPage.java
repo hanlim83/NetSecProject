@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -55,8 +56,8 @@ public class ControllerLoggingPage implements Initializable {
     @FXML
     private TableColumn<LogsExtract, String> user;
 
-    @FXML
-    private TableColumn<LogsExtract, String> projectID;
+//    @FXML
+//    private TableColumn<LogsExtract, String> projectID;
 
     @FXML
     private TableColumn<LogsExtract, String> severity;
@@ -67,12 +68,31 @@ public class ControllerLoggingPage implements Initializable {
     @FXML
     private JFXButton createdlogs;
 
+    @FXML
+    private AnchorPane popupanchor;
+
+    @FXML
+    private Label timestamp1;
+
+    @FXML
+    private Label action1;
+
+    @FXML
+    private Label bucketName1;
+
+    @FXML
+    private Label user1;
+
+    @FXML
+    private Label severity1;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
 
     LoggingSnippets loggingsnippets;
     LoggingOptions options;
+    LogsExtract logsextract = new LogsExtract();
 
     private ArrayList<LogsExtract> logsList;
     private ObservableList<LogsExtract> logsObservableList;
@@ -84,24 +104,45 @@ public class ControllerLoggingPage implements Initializable {
         options = LoggingOptions.getDefaultInstance();
 
         //test inputfilter to trigger loglist
-        loggingsnippets.listLogEntries("one two");
+      //  loggingsnippets.listLogEntries("one two");
 
         timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
         severity.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("severity"));
         action.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("action"));
         bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("bucketName"));
         user.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("user"));
-
+ //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
         logsList = loggingsnippets.getLogsExtractList();
     }
 
+    @FXML
+    public void clickItem(MouseEvent event)
+    {
+        if (event.getClickCount() == 2) //Checking double click
+        {
+            logsTable.setVisible(false);
+            popupanchor.setVisible(true);
+            timestamp1.setText(logsTable.getSelectionModel().getSelectedItem().getTimestamp());
+            severity1.setText(logsTable.getSelectionModel().getSelectedItem().getSeverity());
+            action1.setText(logsTable.getSelectionModel().getSelectedItem().getAction());
+            bucketName1.setText(logsTable.getSelectionModel().getSelectedItem().getBucketName());
+            user1.setText(logsTable.getSelectionModel().getSelectedItem().getUser());
 
+//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getAction());
+//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getBucketName());
+//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getUser());
+        }
+    }
 
     @FXML
     void handledeleted(MouseEvent event) {
+        popupanchor.setVisible(false);
+        logsTable.setVisible(true);
         try (Logging logging = options.getService()) {
             System.out.println(options.getProjectId());
             loggingsnippets.listLogEntries("delete");
+        } catch (com.google.cloud.logging.LoggingException e1 ) {
+            e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +152,16 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handlecreated(MouseEvent event) {
-
+        popupanchor.setVisible(false);
+        logsTable.setVisible(true);
+        try (Logging logging = options.getService()) {
+            System.out.println(options.getProjectId());
+            loggingsnippets.listLogEntries("create");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logsObservableList = FXCollections.observableList(logsList);
+        logsTable.setItems(logsObservableList);
     }
 
     public void hamburgerBar() {
