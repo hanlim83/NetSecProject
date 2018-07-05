@@ -27,6 +27,7 @@ import org.pcap4j.core.Pcaps;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
@@ -71,6 +72,9 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
 
     @FXML
     private JFXButton StartBtn;
+
+    @FXML
+    private JFXComboBox<String> ThresholdChooser;
 
     private Scene myScene;
     public static AnchorPane rootP;
@@ -117,6 +121,17 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
                 checkPhoneNumber();
             }
         });
+        ArrayList<String> thresholds = new ArrayList<String>();
+        thresholds.add("None");
+        thresholds.add("100");
+        thresholds.add("250");
+        thresholds.add("500");
+        thresholds.add("1000");
+        thresholds.add("5000");
+        thresholds.add("10000");
+        ObservableList<String> thresholdList = FXCollections.observableArrayList(thresholds);
+        ThresholdChooser.setItems(thresholdList);
+        ThresholdChooser.setValue("Select Threshold");
     }
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
@@ -158,6 +173,15 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
                 }
             });
             alert.show();
+        }
+    }
+
+    @FXML
+    public void checkThresholdValue(ActionEvent event) {
+        if (checkFields())
+            StartBtn.setDisable(false);
+        else {
+            StartBtn.setDisable(true);
         }
     }
 
@@ -230,7 +254,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     }
 
     public boolean checkFields (){
-        if (!phoneNumberField.getText().isEmpty() && !pcapFilePathField.getText().isEmpty() && !pcapFileNameField.getText().isEmpty() && !InterfaceChooser.getSelectionModel().getSelectedItem().equals("Select an Interface") && !InterfaceChooser.getSelectionModel().getSelectedItem().isEmpty())
+        if (!phoneNumberField.getText().isEmpty() && !pcapFilePathField.getText().isEmpty() && !pcapFileNameField.getText().isEmpty() && !InterfaceChooser.getSelectionModel().getSelectedItem().equals("Select an Interface") && !InterfaceChooser.getSelectionModel().getSelectedItem().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold"))
             return true;
         else
             return false;
