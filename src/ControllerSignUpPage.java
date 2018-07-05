@@ -106,13 +106,14 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     private void passwordValidation() throws Exception {
-        if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty()) {
+        if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty() || PhoneNoField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
             showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
         }
 //        else if(PasswordField.getText().equals(email)){
 //            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
 //        }
+        //Add phone number checker here
         else if (validate(PasswordField.getText()) == false) {
             System.out.println("Use stronger password");
             showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
@@ -229,7 +230,13 @@ public class ControllerSignUpPage implements Initializable {
         return true;
     }
 
-    public String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
+    private boolean checkPhoneNoRequirements(String phoneNo){
+        phoneNo.charAt(0);
+        return false;
+    }
+
+
+    private String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");

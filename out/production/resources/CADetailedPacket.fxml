@@ -32,7 +32,6 @@
                </columns></JFXTreeTableView>
          </children>
       </StackPane>
-      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <Text layoutX="443.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packet Details">
          <font>
             <Font name="Lucida Sans Regular" size="27.0" />
@@ -43,5 +42,6 @@
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </JFXButton>
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>

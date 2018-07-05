@@ -80,11 +80,11 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <JFXButton fx:id="StartBtn" layoutX="466.0" layoutY="502.0" onAction="#capture" ripplerFill="BLACK" text="Continue" textFill="#d3412e">
          <font>
             <Font name="Lucida Sans Regular" size="24.0" />
          </font>
       </JFXButton>
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>
