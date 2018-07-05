@@ -1,7 +1,4 @@
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.auth.AuthMethod;
@@ -21,6 +18,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class ControllerVerifyText {
+
+    private static String getSendAuth;
 
     private Scene myScene;
 
@@ -48,23 +47,35 @@ public class ControllerVerifyText {
     @FXML
     private JFXButton backButton;
 
+    public static void setGetSendAuth(String getSendAuth) {
+        ControllerVerifyText.getSendAuth = getSendAuth;
+    }
+
     @FXML
     void backToNumber(ActionEvent event) {
 
     }
 
     @FXML
-    void verifyConfirm(ActionEvent event) throws SQLException, InterruptedException {
+    void verifyConfirm(ActionEvent event) throws SQLException, InterruptedException, IOException, NexmoClientException {
 
 
         String CODE = verifyField.getText();
 
+        AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
+        NexmoClient client = new NexmoClient(auth);
 
-//        ControllerVerifyText ongoingVerify = loader.<ControllerVerifyText>getController();
-//        CheckResult result = client.getVerifyClient().check(ongoingVerify.getRequestId(), CODE);
+        sendAuth(getSendAuth);
+        String testId = sendAuth(getSendAuth);
+
+//        String testId = ControllerVerifyText.getSendAuth;
+        System.out.println("Request ID: " + testId);
 
 
-        if (/*result.getStatus() == CheckResult.STATUS_OK ||*/ CODE.equals("999")) {
+        CheckResult result = client.getVerifyClient().check(testId, CODE);
+
+
+        if (result.getStatus() == CheckResult.STATUS_OK || CODE.equals("999")) {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DeviceCheck.fxml"));
             myScene = anchorPane.getScene();
@@ -74,10 +85,12 @@ public class ControllerVerifyText {
                 nextView = loader.load();
                 ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
                 controller.runCheck();
-//                controller.passData(login.getEmail());
+//              controller.passData(login.getEmail());
+
             } catch (IOException u) {
                 u.printStackTrace();
             }
+
             stage.setScene(new Scene(nextView));
             stage.setTitle("NSPJ");
             stage.show();
@@ -89,6 +102,7 @@ public class ControllerVerifyText {
             alert.setHeaderText("Invalid Pin!");
             alert.setContentText("The field appears to be empty, please check your phone and enter the correct OTP sent to you!");
             alert.showAndWait();
+
 
         } else {
 
@@ -103,19 +117,22 @@ public class ControllerVerifyText {
 
     }
 
-    public void sendAuth() {
+    public static String sendAuth(String phoneNo) {
 
         try {
 
             AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
             NexmoClient client = new NexmoClient(auth);
 
-            String TO_NUMBER = "6587170501";
+            String TO_NUMBER = "65" + ;
 
             VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE");
 
+            String VerifyId = ongoingVerify.getRequestId();
 
-            System.out.println("Message sent!");
+            System.out.print("\n\nRequest ID: " + VerifyId);
+
+            return VerifyId;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,10 +140,8 @@ public class ControllerVerifyText {
             e.printStackTrace();
         }
 
-
-
+        return getSendAuth;
     }
-
 
 }
 
