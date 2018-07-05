@@ -1,3 +1,4 @@
+import Model.TextAuthentication;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
@@ -64,36 +65,27 @@ public class ControllerSignUpPage implements Initializable {
 
     @FXML
     void onClickCancelButton(ActionEvent event) throws IOException {
-          if (checkPhoneNoRequirements(PhoneNoField.getText())==true){
-              System.out.println("true");
-          }else{
-              System.out.println(false);
-          }
+//          if (checkPhoneNoRequirements(PhoneNoField.getText())==true){
+//              System.out.println("true");
+//          }else{
+//              System.out.println(false);
+//          }
 
-//        if (PhoneNoField.getText().charAt(0)!='9' || PhoneNoField.getText().charAt(0)!='8'){
-//            System.out.println(PhoneNoField.getText().charAt(0));
-////            System.out.println("Must start with 8 or 9");
-//            System.out.println("Good");
-//        }else{
-//            System.out.println("Bad");
-//        }
+        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+        file.delete();
 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("LoginPage.fxml"));
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
 
-//        File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
-//        file.delete();
-//
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("LoginPage.fxml"));
-//        myScene = anchorPane.getScene();
-//        Stage stage = (Stage) (myScene).getWindow();
-//        Parent nextView = loader.load();
-//
-//        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
-//        //controller.passData(login.getEmail());
-//
-//        stage.setScene(new Scene(nextView));
-//        stage.setTitle("NSPJ");
-//        stage.show();
+        ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
+        //controller.passData(login.getEmail());
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
 
@@ -138,6 +130,9 @@ public class ControllerSignUpPage implements Initializable {
             System.out.println("Passwords do not match!");
             showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
         } else {
+            TextAuthentication verifyText=new TextAuthentication();
+            verifyText.sendAuth(PhoneNoField.getText());
+
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
 
@@ -149,26 +144,11 @@ public class ControllerSignUpPage implements Initializable {
             alert.initModality(Modality.NONE);
 //            close.setOnAction(__ -> alert.hideWithAnimation());
             alert.show();
-//
-//            ControllerVerifyText verifyText=new ControllerVerifyText();
-//            verifyText.sendAuth(PhoneNoField.getText());
 //            keyGenerator();
 //            //Compute Hash of Password
 //            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
 //            System.out.println(hashPassword);
 //            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//            Parent nextView = loader.load();
-//
-//            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
-//            controller.runCheck();
-//
-//            stage.setScene(new Scene(nextView));
-//            stage.setTitle("NSPJ");
-//            stage.show();
         }
     }
 
@@ -206,17 +186,10 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     private boolean checkPhoneNoRequirements(String phoneNo){
-        String numbers = "(.*[0-9].*)";
-        if (!phoneNo.matches(numbers)){
-//            System.out.println("Password should contain atleast one number.");
-            System.out.println("works");
-            return false;
-        } else if (phoneNo.length()!=8){
-            System.out.println("Too short");
-            return false;
-        } else if(phoneNo.startsWith("8") || phoneNo.startsWith("9") ){
+        String numbers = "[0-9]+";
+        if (phoneNo.matches(numbers) && phoneNo.length()==8 && (phoneNo.startsWith("8") || phoneNo.startsWith("9"))){
             return true;
-        } else {
+        } else{
             return false;
         }
     }

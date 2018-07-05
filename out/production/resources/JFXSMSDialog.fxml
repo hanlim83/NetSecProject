@@ -6,15 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerJFXSMSDialog">
    <children>
-      <JFXButton layoutX="479.0" layoutY="331.0" prefHeight="55.0" prefWidth="107.0" text="Submit?" />
-      <JFXTextField layoutX="233.0" layoutY="188.0" promptText="Enter OTP here" />
-      <Label alignment="CENTER" layoutX="142.0" layoutY="14.0" prefHeight="55.0" prefWidth="317.0" text="Verify your number">
+      <JFXButton fx:id="SubmitButton" layoutX="492.0" layoutY="331.0" onAction="#onActionSubmitButton" prefHeight="55.0" prefWidth="94.0" text="Submit" />
+      <JFXTextField fx:id="OTPField" layoutX="208.0" layoutY="177.0" prefHeight="46.0" prefWidth="185.0" promptText="Enter OTP here">
+         <font>
+            <Font size="15.0" />
+         </font></JFXTextField>
+      <Label alignment="CENTER" layoutX="142.0" layoutY="14.0" prefHeight="55.0" prefWidth="317.0" text="Verify your number:">
          <font>
             <Font size="32.0" />
          </font>
       </Label>
-      <JFXButton layoutX="382.0" layoutY="331.0" prefHeight="55.0" prefWidth="107.0" text="Cancel" />
+      <JFXButton fx:id="CancelButton" layoutX="288.0" layoutY="331.0" onAction="#onActionCancelButton" prefHeight="55.0" prefWidth="94.0" text="Cancel" />
+      <Label fx:id="PhoneNumberLabel" alignment="CENTER" layoutX="218.0" layoutY="60.0" prefHeight="55.0" prefWidth="164.0" text="Label">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="ResendButton" layoutX="393.0" layoutY="331.0" onAction="#onActionResendButton" prefHeight="55.0" prefWidth="94.0" text="Resend" />
    </children>
 </AnchorPane>
