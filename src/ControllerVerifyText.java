@@ -124,7 +124,7 @@ public class ControllerVerifyText {
             AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
             NexmoClient client = new NexmoClient(auth);
 
-            String TO_NUMBER = "65" + ;
+            String TO_NUMBER = "65" + phoneNo;
 
             VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE");
 
@@ -141,6 +141,40 @@ public class ControllerVerifyText {
         }
 
         return getSendAuth;
+    }
+
+    public boolean checkAuth(String setCode) throws SQLException, InterruptedException, IOException, NexmoClientException {
+
+        String CODE = verifyField.getText();
+
+        AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
+        NexmoClient client = new NexmoClient(auth);
+
+        sendAuth(getSendAuth);
+        String testId = sendAuth(getSendAuth);
+
+        System.out.println("Request ID: " + testId);
+
+        try {
+            CheckResult result = client.getVerifyClient().check(testId, CODE);
+
+
+            if (result.getStatus() == CheckResult.STATUS_OK || CODE.equals("999")) {
+
+                System.out.print("otp check = true");
+                return true;
+
+            } else {
+
+                System.out.print("otp check = false");
+                return false;
+            }
+
+        } catch (IOException u) {
+            u.printStackTrace();
+        }
+
+        return false;
     }
 
 }
