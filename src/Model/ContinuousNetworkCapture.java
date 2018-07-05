@@ -1,12 +1,9 @@
 package Model;
 
-import com.sun.jna.Platform;
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ContinuousNetworkCapture {
@@ -25,10 +22,13 @@ public class ContinuousNetworkCapture {
     //Data Variables
     private long PacketsReceived,PacketsDropped;
     private String filePath;
+    private int Threshold,perMinutePktCount = 0;
+    private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null;
 
-    public ContinuousNetworkCapture(PcapNetworkInterface nif, String filePath) {
+    public ContinuousNetworkCapture(PcapNetworkInterface nif, String filePath, int Threshold) {
         this.Netinterface = nif;
         this.filePath = filePath;
+        this.Threshold = Threshold;
     }
 
     //Overrides default packet handling
@@ -37,6 +37,16 @@ public class ContinuousNetworkCapture {
         public void gotPacket(Packet packet) {
             try {
                 dumper.dump(packet);
+                incrementCount();
+                if (TrackCurrentTimeStamp == null && TrackAheadTimeStamp == null)
+                    getAheadTimeStamp();
+                else if (new Timestamp(System.currentTimeMillis()).after(TrackAheadTimeStamp) || TrackAheadTimeStamp == null){
+                    perMinutePktCount = 0;
+                    getCurrentTimeStamp();
+                    getAheadTimeStamp();
+                }
+                if (Phandle.getTimestamp().before(TrackAheadTimeStamp) && Phandle.getTimestamp().after(TrackCurrentTimeStamp))
+                    ++perMinutePktCount;
             } catch (NotOpenException e) {
                 e.printStackTrace();
             }
@@ -52,12 +62,36 @@ public class ContinuousNetworkCapture {
 
     //Packet count increment
     synchronized private void incrementCount(){
-        pktCount++;
+        ++pktCount;
     }
 
     //get the packet count
     synchronized public int getPacketCount(){
         return pktCount;
+    }
+
+    public int getPerMinutePktCount() {
+        return perMinutePktCount;
+    }
+
+    public void getCurrentTimeStamp() {
+        TrackCurrentTimeStamp = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void getAheadTimeStamp() {
+        if (TrackCurrentTimeStamp == null){
+            TrackCurrentTimeStamp = new Timestamp(System.currentTimeMillis());
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(TrackCurrentTimeStamp.getTime());
+            cal.add(Calendar.MINUTE, 1);
+            TrackAheadTimeStamp= new Timestamp(cal.getTime().getTime());
+        }
+        else {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(TrackCurrentTimeStamp.getTime());
+            cal.add(Calendar.MINUTE, 1);
+            TrackAheadTimeStamp= new Timestamp(cal.getTime().getTime());
+        }
     }
 
     public void printStat(){

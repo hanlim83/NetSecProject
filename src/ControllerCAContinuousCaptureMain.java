@@ -64,10 +64,9 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     public static AnchorPane rootP;
     private ContinuousNetworkCapture Ccapture;
     private String exportFilePath;
-    private ScheduledFuture continuousNetworkCaptureFuture;
     private ScheduledFuture updateStatsFuture;
-    private Runnable continuousNetworkCapture;
     private Runnable updateStats;
+    private int Threshold;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
     private ScheduledExecutorService service;
@@ -84,7 +83,6 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     @FXML
     public void stopCapture(ActionEvent event) {
         Ccapture.stopSniffing();
-        continuousNetworkCaptureFuture.cancel(true);
         updateStatsFuture.cancel(true);
         StopBtn.setDisable(true);
         FXMLLoader loader = new FXMLLoader();
@@ -103,26 +101,28 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         stage.show();
     }
 
-    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath){
+    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath, String Threshold){
         this.Odevice = nif;
         this.service = service;
         this.Ncapture = Capture;
         this.device = device;
         this.exportFilePath = filePath;
-        this.Ccapture = new ContinuousNetworkCapture(device,exportFilePath);
-        continuousNetworkCapture = new Runnable() {
-            @Override
-            public void run() {
-                Ccapture.startSniffing();
-            }
-        };
+        int Cthreshold;
+        if (Threshold.equals("None")){
+            Cthreshold = 0;
+        }
+        else {
+            Cthreshold = Integer.parseInt(Threshold);
+        }
+        this.Ccapture = new ContinuousNetworkCapture(device,exportFilePath, Cthreshold);
         updateStats = new Runnable() {
             @Override
             public void run() {
+                //Ccapture.printStat();
                 Platform.runLater(() -> {
-                    Ccapture.printStat();
+                    System.err.println("Running");
                     totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
-                    totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
+                    //totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
                 });
             }
         };
@@ -131,8 +131,13 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         for (PcapAddress p: addresses){
             loggingTextArea.setText(loggingTextArea.getText()+"IP Address Assigned on Interface: "+p.toString()+"\n");
         }
-        continuousNetworkCaptureFuture = service.schedule(continuousNetworkCapture,2,TimeUnit.SECONDS);
         updateStatsFuture = service.scheduleAtFixedRate(updateStats,2,1,TimeUnit.SECONDS);
+        service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                Ccapture.startSniffing();
+            }
+        }, 2, TimeUnit.SECONDS);
     }
 
     public void hamburgerBar() {

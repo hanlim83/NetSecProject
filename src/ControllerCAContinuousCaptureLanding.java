@@ -23,7 +23,6 @@ import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -124,14 +123,22 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         ArrayList<String> thresholds = new ArrayList<String>();
         thresholds.add("None");
         thresholds.add("100");
-        thresholds.add("250");
         thresholds.add("500");
         thresholds.add("1000");
+        thresholds.add("2500");
         thresholds.add("5000");
         thresholds.add("10000");
         ObservableList<String> thresholdList = FXCollections.observableArrayList(thresholds);
         ThresholdChooser.setItems(thresholdList);
         ThresholdChooser.setValue("Select Threshold");
+        phoneNumberField.setFocusTraversable(false);
+        pcapFileNameField.setFocusTraversable(false);
+        pcapFilePathField.setFocusTraversable(false);
+        InterfaceChooser.setFocusTraversable(true);
+        interfaceIPAddress1.setFocusTraversable(false);
+        interfaceIPAddress2.setFocusTraversable(false);
+        interfaceIPAddress3.setFocusTraversable(false);
+        interfaceIPAddress4.setFocusTraversable(false);
     }
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
@@ -142,7 +149,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
 
     public void checkPhoneNumber() {
         String regexStr = "^[0-9]{8}$";
-        if (phoneNumberField.getText().matches(regexStr)) {
+        if (phoneNumberField.getText().matches(regexStr) && (phoneNumberField.getText().charAt(0) == '8' || phoneNumberField.getText().charAt(0) == '9')) {
             if (checkFields())
                 StartBtn.setDisable(false);
             else {
@@ -245,7 +252,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
-            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText());
+            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -254,7 +261,8 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     }
 
     public boolean checkFields (){
-        if (!phoneNumberField.getText().isEmpty() && !pcapFilePathField.getText().isEmpty() && !pcapFileNameField.getText().isEmpty() && !InterfaceChooser.getSelectionModel().getSelectedItem().equals("Select an Interface") && !InterfaceChooser.getSelectionModel().getSelectedItem().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold"))
+        String regexStr = "^[0-9]{8}$";
+        if (!phoneNumberField.getText().isEmpty() && phoneNumberField.getText().matches(regexStr) && (phoneNumberField.getText().charAt(0) == '8' || phoneNumberField.getText().charAt(0) == '9') && !pcapFilePathField.getText().isEmpty() && !pcapFileNameField.getText().isEmpty() && !InterfaceChooser.getSelectionModel().getSelectedItem().equals("Select an Interface") && !InterfaceChooser.getSelectionModel().getSelectedItem().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold"))
             return true;
         else
             return false;
