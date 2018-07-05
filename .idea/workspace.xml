@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Better Handling of &quot;No interface available in CAMain&quot;">
-      <change afterPath="$PROJECT_DIR$/src/ControllerJFXSMSDialog.java" afterDir="false" />
+    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoginPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerSignUpPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerSignUpPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/Model/Device_Build_NumberDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/Device_Build_NumberDB.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/Model/OSVersion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/OSVersion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/JFXSMSDialog.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/JFXSMSDialog.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/CAContinuousCaptureLanding.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAContinuousCaptureLanding.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/resources/VerifyTextAuth.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/VerifyTextAuth.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerLoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerLoginPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerSignUpPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerSignUpPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Device_Build_NumberDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Device_Build_NumberDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/JFXSMSDialog.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/JFXSMSDialog.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -34,8 +25,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/NSPJ$Main.ic" NAME="Main Coverage Results" MODIFIED="1529504854720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/NSPJ$CAMain.ic" NAME="CAMain Coverage Results" MODIFIED="1529852004513" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/NSPJ$Main.ic" NAME="Main Coverage Results" MODIFIED="1530780320766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -93,109 +84,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <file leaf-file-name="ControllerCAContinuousCaptureMain.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="11" column="64" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ControllerSignUpPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerSignUpPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="149" column="27" lean-forward="true" selection-start-line="149" selection-start-column="27" selection-end-line="149" selection-end-column="27" />
-              <folding>
-                <element signature="e#2557#2578#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JFXSMSDialog.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/JFXSMSDialog.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-        </entry>
-      </file>
-      <file leaf-file-name="ControllerJFXSMSDialog.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ControllerJFXSMSDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
-              <folding>
-                <element signature="e#1767#1790#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ControllerVerifyText.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerVerifyText.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2329">
-              <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ControllerLoginPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3297">
-              <caret line="198" column="122" selection-start-line="198" selection-start-column="122" selection-end-line="198" selection-end-column="122" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Device_Build_NumberDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Device_Build_NumberDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
+            <state relative-caret-position="207">
+              <caret line="153" column="20" lean-forward="true" selection-end-line="171" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="User_InfoDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/User_InfoDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="62" column="12" lean-forward="true" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="87" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OSVersion.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/OSVersion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-              <folding>
-                <element signature="e#142#143#0" expanded="true" />
-                <element signature="e#176#177#0" expanded="true" />
-                <element signature="e#230#231#0" expanded="true" />
-                <element signature="e#276#277#0" expanded="true" />
-                <element signature="e#315#316#0" expanded="true" />
-                <element signature="e#350#351#0" expanded="true" />
-                <element signature="e#406#407#0" expanded="true" />
-                <element signature="e#454#455#0" expanded="true" />
-                <element signature="e#488#489#0" expanded="true" />
-                <element signature="e#518#519#0" expanded="true" />
-                <element signature="e#564#565#0" expanded="true" />
-                <element signature="e#602#603#0" expanded="true" />
+                <element signature="e#4832#4833#0" expanded="true" />
+                <element signature="e#4888#4889#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -226,8 +123,6 @@
       <find>service</find>
       <find>tableViewRunna</find>
       <find>logging</find>
-      <find>delimiter</find>
-      <find>8</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -236,7 +131,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\hugoc\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\hanse\.gradle\wrapper\dists\gradle-4.8-all\41c9mvq2w0645xx6nsenaerjl\gradle-4.8" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -416,7 +311,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6119617954601" />
+        <entry key="$PROJECT_DIR$" value="6118236891395" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="863750496" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
@@ -629,14 +524,16 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/RSAKeyGenerator.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/ControllerUserHome.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/RSAKeyGenerator.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
+        <option value="$PROJECT_DIR$/src/View/BaseLayoutNew.fxml" />
+        <option value="$PROJECT_DIR$/src/ControllerBaseLayoutNew.java" />
         <option value="$PROJECT_DIR$/src/ListTables.java" />
-        <option value="$PROJECT_DIR$/src/Model/StorageSnippets.java" />
         <option value="$PROJECT_DIR$/src/AlertDemo.java" />
         <option value="$PROJECT_DIR$/src/Overdrive.java" />
         <option value="$PROJECT_DIR$/src/View/Icons.fxml" />
@@ -644,7 +541,6 @@
         <option value="$PROJECT_DIR$/src/Style.css" />
         <option value="$PROJECT_DIR$/src/View/Style.css" />
         <option value="$PROJECT_DIR$/src/View/AdminSideTab.fxml" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/src/RSAKeyTest.java" />
         <option value="$PROJECT_DIR$/src/View/UserHome.fxml" />
@@ -667,25 +563,24 @@
         <option value="$PROJECT_DIR$/src/Model/Quickstart.java" />
         <option value="$PROJECT_DIR$/src/Model/TestLoggingSnippets.java" />
         <option value="$PROJECT_DIR$/src/Model/LoggingSnippets.java" />
+        <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
         <option value="$PROJECT_DIR$/src/ControllerSecureCloudStorage.java" />
+        <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
         <option value="$PROJECT_DIR$/src/CloudSQLAuth.java" />
         <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
-        <option value="$PROJECT_DIR$/src/ControllerUserHome.java" />
-        <option value="$PROJECT_DIR$/src/Model/TestStorageSnippets.java" />
-        <option value="$PROJECT_DIR$/src/Resources/client_secrets.json" />
         <option value="$PROJECT_DIR$/src/WindowsUtils.java" />
-        <option value="$PROJECT_DIR$/src/View/AdminLoginPage.fxml" />
-        <option value="$PROJECT_DIR$/src/ControllerAdminLoginPage.java" />
-        <option value="$PROJECT_DIR$/src/Model/User_InfoDB.java" />
-        <option value="$PROJECT_DIR$/src/Model/OSVersion.java" />
-        <option value="$PROJECT_DIR$/src/Model/Device_Build_NumberDB.java" />
-        <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
-        <option value="$PROJECT_DIR$/src/View/VerifyTextAuth.fxml" />
-        <option value="$PROJECT_DIR$/src/View/JFXSMSDialog.fxml" />
-        <option value="$PROJECT_DIR$/src/ControllerVerifyText.java" />
-        <option value="$PROJECT_DIR$/src/ControllerJFXSMSDialog.java" />
-        <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
+        <option value="$PROJECT_DIR$/src/ControllerUserHome.java" />
+        <option value="$PROJECT_DIR$/src/ControllerLoggingPage.java" />
+        <option value="$PROJECT_DIR$/src/Model/StorageSnippets.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/Model/TestStorageSnippets.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml" />
+        <option value="$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml" />
+        <option value="$PROJECT_DIR$/src/ControllerVerifyText.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" />
+        <option value="$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" />
       </list>
     </option>
   </component>
@@ -705,9 +600,9 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="636" />
-    <option name="width" value="1291" />
-    <option name="height" value="1047" />
+    <option name="x" value="950" />
+    <option name="width" value="975" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -716,7 +611,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -734,24 +628,13 @@
               <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Media" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -786,119 +669,6 @@
       <recent name="C:\Users\hugoc\Documents\GitHub\NetSecProject\src\NSPJ" />
     </key>
   </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/View/VerifyTextAuth.fxml</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
-  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -911,7 +681,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.CAMain">
     <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CAMain" />
       <module name="NSPJ_main" />
@@ -1003,8 +773,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.CAMain" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestLoggingSnippets" />
         <item itemvalue="Application.PacketSnifferTesting" />
         <item itemvalue="Application.RSAKeyTest" />
@@ -1087,9 +857,13 @@
       <workItem from="1530618522621" duration="6250000" />
       <workItem from="1530672116888" duration="108000" />
       <workItem from="1530672389849" duration="1868000" />
-      <workItem from="1530677931052" duration="12216000" />
-      <workItem from="1530756652878" duration="10193000" />
-      <workItem from="1530780589704" duration="14882000" />
+      <workItem from="1530677931052" duration="3753000" />
+      <workItem from="1530705105856" duration="12322000" />
+      <workItem from="1530762385978" duration="4834000" />
+      <workItem from="1530779307059" duration="3899000" />
+      <workItem from="1530795199276" duration="1585000" />
+      <workItem from="1530796831069" duration="5282000" />
+      <workItem from="1530805243830" duration="203000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Dashboard FXML">
       <created>1530111634091</created>
@@ -1098,11 +872,39 @@
       <option name="project" value="LOCAL" />
       <updated>1530111634091</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initial Continuous Capture Controller Codes">
+      <created>1530712892280</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1530712892280</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Additional Continuous Capture Controller Codes">
+      <created>1530719559300</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1530719559300</updated>
+    </task>
+    <task id="LOCAL-00004" summary="General FXML Refactoring">
+      <created>1530720762895</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1530720762895</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Continuous Capture Controller Refactoring">
+      <created>1530783988065</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1530783988065</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="306832000" />
+    <option name="totallyTimeSpent" value="307801000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1119,36 +921,69 @@
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.46695095" weight="0.15359478" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.52132195" weight="0.31808278" />
       <window_info anchor="right" id="Palette&#9;" order="10" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.29798657" side_tool="true" weight="0.32763532" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.47867805" side_tool="true" weight="0.34472933" />
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.32955465" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.13817663" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.70255864" visible="true" weight="0.22766885" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32905984" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.24400872" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6007463" visible="true" weight="0.35185185" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32897604" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15298508" />
-      <window_info anchor="right" id="Database" order="9" weight="0.32932165" />
-      <window_info anchor="right" id="Gradle" order="7" weight="0.19595142" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15511727" />
+      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.195629" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.3845316" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.36710238" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47228146" weight="0.4117647" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4717484" weight="0.31263617" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32955465" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32897604" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47228146" weight="0.10554562" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info id="Image Layers" order="6" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7004049" visible="true" weight="0.2039356" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32905984" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.29959515" side_tool="true" visible="true" weight="0.2039356" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.46639675" weight="0.32200357" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.13817663" />
+      <window_info anchor="right" id="Maven Projects" order="6" weight="0.32955465" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.19595142" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16761133" />
+      <window_info anchor="right" id="Database" order="9" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
+      <window_info anchor="right" id="Palette&#9;" order="10" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.49373883" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1187,260 +1022,137 @@
     <MESSAGE value="Re-enable Gradle Build #2" />
     <MESSAGE value="Initial Dashboard FXML" />
     <MESSAGE value="Code optimization and improve identification of packets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code optimization and improve identification of packets" />
+    <MESSAGE value="Initial Continuous Capture Controller Codes" />
+    <MESSAGE value="Additional Continuous Capture Controller Codes" />
+    <MESSAGE value="General FXML Refactoring" />
+    <MESSAGE value="Continuous Controller Refactoring" />
+    <MESSAGE value="Continuous Capture Controller Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuous Capture Controller Refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="28" />
+      <option name="time" value="42" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ControllerFileScanner.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/Quickstart.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAMainDashboard.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/ActionButtonTableCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        <state>
+          <caret column="14" selection-start-column="14" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/CloudBuckets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+        <state>
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerBucketsPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1887">
-          <caret line="141" column="103" selection-start-line="141" selection-start-column="103" selection-end-line="141" selection-end-column="103" />
+        <state relative-caret-position="160">
+          <caret line="253" column="28" selection-start-line="253" selection-start-column="28" selection-end-line="253" selection-end-column="29" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/EmployeeDatabase.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="15" selection-start-line="31" selection-start-column="15" selection-end-line="31" selection-end-column="15" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerEmployeeDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BaseLayoutNew.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-52">
-          <caret line="2" column="41" lean-forward="true" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.cloud/google-cloud-core/1.31.0/ff610db98b6c090b9f8ebdee0c4a7daa97575d0d/google-cloud-core-1.31.0-sources.jar!/com/google/cloud/ServiceOptions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="516" selection-start-line="516" selection-end-line="516" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/LoggingSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="507" column="40" selection-start-line="507" selection-start-column="40" selection-end-line="507" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/TestLoggingSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Quickstart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/StorageSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SignUpPage.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="23" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/TestStorageSnippets.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" column="41" lean-forward="true" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
+          <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CloudSQLAuth.java">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-595">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resources/client_secrets.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="8" column="52" selection-start-line="8" selection-start-column="52" selection-end-line="8" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/OAuth2Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="124" column="76" selection-start-line="124" selection-start-column="76" selection-end-line="124" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="1768" selection-start-line="1768" selection-end-line="1768" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAMainPackets.fxml">
-      <provider selected="true" editor-type-id="text-editor" />
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Employee.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerSideTab.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="35" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerUserHome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="322" column="26" selection-start-line="312" selection-start-column="23" selection-end-line="312" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerSecureCloudStorage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="77" column="37" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
+        <state relative-caret-position="85">
+          <caret line="9" column="13" lean-forward="true" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="30" column="12" lean-forward="true" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+        <state relative-caret-position="-85">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/com/sun/javafx/tk/quantum/GlassViewEventHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="393" selection-start-line="393" selection-end-line="393" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ListTables.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BaseLayout.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="314">
+          <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
         </state>
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerAdminLoginPage.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/FXCollections.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="93" column="41" lean-forward="true" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
+        <state relative-caret-position="102">
+          <caret line="339" selection-start-line="339" selection-end-line="339" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/AdminLoginPage.fxml">
+    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SecureCloudStorage.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+        <state relative-caret-position="-1173">
+          <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="33" />
         </state>
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="238" column="44" lean-forward="true" selection-start-line="238" selection-start-column="44" selection-end-line="238" selection-end-column="44" />
+        <state relative-caret-position="510">
+          <caret line="57" column="45" selection-start-line="57" selection-start-column="45" selection-end-line="57" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3043">
+          <caret line="193" selection-start-line="193" selection-end-line="193" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/CapturedPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerVerifyText.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="126" column="39" selection-start-line="126" selection-start-column="39" selection-end-line="126" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/NetworkCapture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="150" column="30" selection-start-line="150" selection-start-column="30" selection-end-line="150" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="293" column="87" selection-start-line="293" selection-start-column="87" selection-end-line="293" selection-end-column="87" />
+        <state relative-caret-position="2312">
+          <caret line="175" column="5" selection-start-line="175" selection-start-column="5" selection-end-line="175" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CAMain.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/NativeMappings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="24" column="41" lean-forward="true" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="41" />
+        <state relative-caret-position="185">
+          <caret line="926" selection-start-line="926" selection-end-line="926" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WindowsUtils.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapNetworkInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="77" column="73" selection-start-line="77" selection-start-column="73" selection-end-line="77" selection-end-column="73" />
+        <state relative-caret-position="287">
+          <caret line="272" selection-start-line="272" selection-end-line="272" />
         </state>
       </provider>
     </entry>
@@ -1451,147 +1163,264 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/util/regex/Pattern.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="1132" selection-start-line="1132" selection-end-line="1132" />
-          <folding>
-            <element signature="e#48487#48488#0" expanded="true" />
-            <element signature="e#48531#48532#0" expanded="true" />
-            <element signature="e#76520#76521#0" expanded="true" />
-            <element signature="e#76559#76560#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="2120" selection-start-line="2120" selection-end-line="2120" />
+        <state relative-caret-position="177">
+          <caret line="916" selection-start-line="916" selection-end-line="916" />
           <folding>
-            <element signature="e#22786#22787#0" expanded="true" />
-            <element signature="e#22821#22822#0" expanded="true" />
-            <element signature="e#82667#82668#0" expanded="true" />
+            <element signature="e#20727#20728#0" expanded="true" />
+            <element signature="e#20771#20772#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/io/PrintStream.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.2.1/5f0a469ec2ecedc48c53fcc64be1728ade99ad08/jna-4.2.1-sources.jar!/com/sun/jna/Pointer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="706" selection-start-line="706" selection-end-line="706" />
+        <state relative-caret-position="185">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="830" selection-start-line="830" selection-end-line="830" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/util/concurrent/Executors.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="728" selection-start-line="728" selection-end-line="728" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Runnable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/EventType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="157" selection-start-line="157" selection-end-line="157" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/input/InputEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/input/MouseEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="265" selection-start-line="265" selection-end-line="265" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="150" column="27" selection-start-line="150" selection-start-column="27" selection-end-line="150" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/OSVersion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-          <folding>
-            <element signature="e#142#143#0" expanded="true" />
-            <element signature="e#176#177#0" expanded="true" />
-            <element signature="e#230#231#0" expanded="true" />
-            <element signature="e#276#277#0" expanded="true" />
-            <element signature="e#315#316#0" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-            <element signature="e#406#407#0" expanded="true" />
-            <element signature="e#454#455#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-            <element signature="e#518#519#0" expanded="true" />
-            <element signature="e#564#565#0" expanded="true" />
-            <element signature="e#602#603#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/VerifyTextAuth.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="84" selection-start-line="26" selection-start-column="84" selection-end-line="26" selection-end-column="84" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LoginPage.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="146" lean-forward="true" selection-start-line="9" selection-start-column="146" selection-end-line="9" selection-end-column="181" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/User_InfoDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="62" column="12" lean-forward="true" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="87" />
+        <state relative-caret-position="160">
+          <caret line="257" selection-start-line="257" selection-end-line="257" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3297">
-          <caret line="198" column="122" selection-start-line="198" selection-start-column="122" selection-end-line="198" selection-end-column="122" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/JFXSMSDialog.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerSignUpPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="149" column="27" lean-forward="true" selection-start-line="149" selection-start-column="27" selection-end-line="149" selection-end-column="27" />
+        <state relative-caret-position="177">
+          <caret line="1657" selection-start-line="1657" selection-end-line="1657" />
           <folding>
-            <element signature="e#2557#2578#0" expanded="true" />
+            <element signature="e#66921#66922#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/control/Button.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="11" column="64" selection-start-line="11" selection-start-column="64" selection-end-line="11" selection-end-column="64" />
+        <state relative-caret-position="185">
+          <caret line="186" selection-start-line="186" selection-end-line="186" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerVerifyText.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/event/Event.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2329">
-          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
+        <state relative-caret-position="403">
+          <caret line="197" selection-start-line="197" selection-end-line="197" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Device_Build_NumberDB.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/property/DoublePropertyBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="14" lean-forward="true" selection-start-column="14" selection-end-column="14" />
+        <state relative-caret-position="185">
+          <caret line="140" selection-start-line="140" selection-end-line="140" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/binding/StringExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/binding/ObjectExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="622" selection-start-line="622" selection-end-line="622" />
+          <folding>
+            <element signature="e#6631#6632#0" expanded="true" />
+            <element signature="e#6713#6714#0" expanded="true" />
+            <element signature="e#24488#24489#0" expanded="true" />
+            <element signature="e#66572#66573#0" expanded="true" />
+            <element signature="e#66618#66619#0" expanded="true" />
+            <element signature="e#221315#221316#0" expanded="true" />
+            <element signature="e#221373#221374#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/ListChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/property/BooleanPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="129" selection-start-line="129" selection-end-line="129" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/property/ObjectPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="131" selection-start-line="131" selection-end-line="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="723" selection-start-line="723" selection-end-line="723" />
+          <folding>
+            <element signature="e#31466#31467#0" expanded="true" />
+            <element signature="e#40494#40495#0" expanded="true" />
+            <element signature="e#40528#40529#0" expanded="true" />
+            <element signature="e#97809#97810#0" expanded="true" />
+            <element signature="e#97870#97871#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/layout/GridPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="1655" selection-start-line="1655" selection-end-line="1655" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/ListChangeBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="541" selection-start-line="541" selection-end-line="541" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/ObservableListBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="205" selection-start-line="205" selection-end-line="205" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/control/SkinBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="129" selection-start-line="129" selection-end-line="129" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/Parent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="879" selection-start-line="879" selection-end-line="879" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/value/WeakChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/property/StringPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/beans/property/StringProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/scene/control/Labeled.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="144" column="45" selection-start-line="144" selection-start-column="45" selection-end-line="144" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/stage/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/ModifiableObservableListBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="153" column="20" lean-forward="true" selection-end-line="171" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerJFXSMSDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="50" column="32" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
-          <folding>
-            <element signature="e#1767#1790#0" expanded="true" />
+            <element signature="e#4832#4833#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
           </folding>
         </state>
       </provider>
