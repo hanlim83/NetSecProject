@@ -129,73 +129,46 @@ public class ControllerSignUpPage implements Initializable {
 //            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
 //        }
         //Add phone number checker here
-        else if (validate(PasswordField.getText()) == false) {
+        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
             System.out.println("Use stronger password");
             showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
-//            //Alert below
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//
-//            String title = "";
-//            String content = "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future";
-////
-////            JFXDialogLayout dialogContent = new JFXDialogLayout();
-////
-////            dialogContent.setHeading(new Text(title));
-////
-////            dialogContent.setBody(new Text(content));
-////
-//            JFXButton close = new JFXButton("Close");
-//
-//            close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//            close.setStyle("-fx-background-color: #00bfff;");
-////
-////            dialogContent.setActions(close);
-////
-////            JFXDialog dialog = new JFXDialog(StackPane, dialogContent, JFXDialog.DialogTransition.BOTTOM);
-////
-////            dialog.show();
-//
-//            JFXDialogLayout layout = new JFXDialogLayout();
-//            layout.setHeading(new Label(title));
-//            layout.setBody(new Label(content));
-//            layout.setActions(close);
-//            JFXAlert<Void> alert = new JFXAlert<>(stage);
-//            alert.setOverlayClose(true);
-//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//            alert.setContent(layout);
-//            alert.initModality(Modality.NONE);
-//            close.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent __) {
-//                    alert.hideWithAnimation();
-//                }
-//            });
-//            alert.show();
         }
         //Consider checking password strength before checking whether it matches
         else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
             System.out.println("Passwords do not match!");
             showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
         } else {
-            keyGenerator();
-            //Compute Hash of Password
-            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-            System.out.println(hashPassword);
-            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = loader.load();
 
-            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
-            controller.runCheck();
-
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+            AnchorPane layout=FXMLLoader.load(getClass().getResource("JFXSMSDialog.fxml"));
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(false);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+//            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
+//
+//            ControllerVerifyText verifyText=new ControllerVerifyText();
+//            verifyText.sendAuth(PhoneNoField.getText());
+//            keyGenerator();
+//            //Compute Hash of Password
+//            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
+//            System.out.println(hashPassword);
+//            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
+//            FXMLLoader loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//            Parent nextView = loader.load();
+//
+//            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+//            controller.runCheck();
+//
+//            stage.setScene(new Scene(nextView));
+//            stage.setTitle("NSPJ");
+//            stage.show();
         }
     }
 
@@ -229,42 +202,23 @@ public class ControllerSignUpPage implements Initializable {
             System.out.println("Password should contain atleast one special character");
             return false;
         }
-        //Old Algo
-//        boolean containsChar = false;
-//        boolean containsDigit = false;
-//        for (char c : password.toCharArray()) {
-//            if (Character.isLetter(c)) {
-//                containsChar = true;
-//            } else if (Character.isDigit(c)) {
-//                containsDigit = true;
-//            }
-//            if (containsChar && containsDigit) {
-//                return true;
-//            }
-//        }
         return true;
     }
 
     private boolean checkPhoneNoRequirements(String phoneNo){
         String numbers = "(.*[0-9].*)";
-        if (phoneNo.length()!=8){
+        if (!phoneNo.matches(numbers)){
+//            System.out.println("Password should contain atleast one number.");
+            System.out.println("works");
+            return false;
+        } else if (phoneNo.length()!=8){
             System.out.println("Too short");
             return false;
-        } else if(!phoneNo.startsWith("8")||!phoneNo.startsWith("9")){
-            System.out.println("Must start with 8 or 9");
+        } else if(phoneNo.startsWith("8") || phoneNo.startsWith("9") ){
+            return true;
+        } else {
+            return false;
         }
-//        else if (phoneNo.charAt(0)!='9' || phoneNo.charAt(0)!='8'){
-//            System.out.println(phoneNo.charAt(0));
-//            System.out.println("Must start with 8 or 9");
-//            return false;
-//        }
-//        if (phoneNo.matches(numbers)){
-//            System.out.println("Password should contain atleast one number.");
-//            return true;
-//        }
-//        phoneNo.charAt(0);
-//        return true;
-        return true;
     }
 
 

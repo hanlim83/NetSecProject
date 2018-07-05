@@ -124,26 +124,7 @@ public class ControllerAdminLoginPage implements Initializable{
             System.out.println(process.getState());
             System.out.println("Failed to run");
         }
-//        process.start();
-//        startTimer();
 
-        //try {
-        // authorization
-        //credential=login.login();
-        //new Thread(task).start();
-//        Platform.runLater(() -> {
-//            try {
-//        if (!thread.isAlive()) {
-//        if( thread != null ) {
-//            System.out.println("Destroying thread");
-//            thread.getId();
-//            thread.interrupt();
-//            thread = new Thread(task);
-//            thread.start();
-//        }else{
-//            thread = new Thread(task);
-//            thread.start();
-        //if(process.)
         LoginButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
@@ -231,31 +212,6 @@ public class ControllerAdminLoginPage implements Initializable{
             LoginButton.setDisable(false);
             LoadingSpinner.setVisible(false);
         });
-
-//
-//        Runnable task = new Runnable() {
-//            public void run() {
-//                try {
-//                    login.l.stop();
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                }
-//                LoadingSpinner.setVisible(false);
-//                LoginButton.setDisable(false);
-//                //endTimer();
-//                process.reset();
-//                System.out.println("DONE");
-//            }
-//        };
-//        int delay = 5;
-//        scheduler.schedule(task, delay, TimeUnit.SECONDS);
-//        scheduler.shutdown();
-
-
-//            ControllerLoginPage worker = new ControllerLoginPage();
-//            Thread thread = new Thread(worker);
-//            thread.start();
-
     }
 
     //Service method
@@ -286,7 +242,7 @@ public class ControllerAdminLoginPage implements Initializable{
                     } catch (Exception e) {
                         //e.printStackTrace();
                     }
-                    //after retrieve token, use that to cross check with the DB for active/inactive/null
+                    //Check with another DB
                     if (!email.equals("")){
                         AccStatus=utils.getAccStatus(email);
                     }
