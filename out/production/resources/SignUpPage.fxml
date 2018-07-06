@@ -27,7 +27,7 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-      <Label layoutX="353.0" layoutY="419.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
+      <Label layoutX="343.0" layoutY="393.0" prefHeight="78.0" prefWidth="365.0" text="Password requirements: At least 8 characters, Upper/Lowercase, Numbers and Special Characters" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

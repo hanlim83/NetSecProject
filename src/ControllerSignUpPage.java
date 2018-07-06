@@ -147,18 +147,18 @@ public class ControllerSignUpPage implements Initializable {
             System.out.println("Fill up all fields!");
             showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
         }
-//        else if(PasswordField.getText().equals(email)){
-//            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
-//        }
-//        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
-//            System.out.println("Use stronger password");
-//            showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
-//        }
-//        //Consider checking password strength before checking whether it matches
-//        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
-//            System.out.println("Passwords do not match!");
-//            showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
-//        }
+        else if(PasswordField.getText().equals(email)){
+            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
+        }
+        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
+            System.out.println("Use stronger password");
+            showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
+        }
+        //Consider checking password strength before checking whether it matches
+        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
+            System.out.println("Passwords do not match!");
+            showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
+        }
         else {
             TextAuthentication verifyText=new TextAuthentication();
             verifyText.sendAuth(PhoneNoField.getText());
