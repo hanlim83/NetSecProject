@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerSignUpPage implements Initializable {
@@ -51,12 +52,41 @@ public class ControllerSignUpPage implements Initializable {
     private String publicKey;
     private String encryptedPrivateKey;
 
+//    public AnchorPane getAnchorPane() {
+//        return anchorPane;
+//    }
+
+//    private Scene finalScene;
+//    public Scene getMyScene() {
+//        return finalScene;
+//    }
+
     //public static AnchorPane rootP;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        try {
+            OTPAlert();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void changePage() throws InterruptedException, SQLException, IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
+        myScene = this.anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+        controller.runCheck();
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+    }
+
 
     void passData(String email) {
         this.email = email;
@@ -120,36 +150,42 @@ public class ControllerSignUpPage implements Initializable {
 //        else if(PasswordField.getText().equals(email)){
 //            showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
 //        }
-        //Add phone number checker here
-        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
-            System.out.println("Use stronger password");
-            showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
-        }
-        //Consider checking password strength before checking whether it matches
-        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
-            System.out.println("Passwords do not match!");
-            showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
-        } else {
+//        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
+//            System.out.println("Use stronger password");
+//            showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
+//        }
+//        //Consider checking password strength before checking whether it matches
+//        else if (!PasswordField.getText().equals((ConfirmPasswordField).getText())) {
+//            System.out.println("Passwords do not match!");
+//            showAlert(anchorPane.getScene(), "", "Passwords do not match!", "Close");
+//        }
+        else {
             TextAuthentication verifyText=new TextAuthentication();
             verifyText.sendAuth(PhoneNoField.getText());
-
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-
-            AnchorPane layout=FXMLLoader.load(getClass().getResource("JFXSMSDialog.fxml"));
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(false);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-//            close.setOnAction(__ -> alert.hideWithAnimation());
-            alert.show();
+            OTPAlert();
 //            keyGenerator();
 //            //Compute Hash of Password
 //            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
 //            System.out.println(hashPassword);
 //            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
         }
+    }
+
+    private int counter=0;
+    private void OTPAlert() throws IOException {
+        JFXAlert<Void> alert = null;
+        AnchorPane layout = FXMLLoader.load(getClass().getResource("JFXSMSDialog.fxml"));
+        if (counter!=0) {
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(false);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            alert.show();
+        }
+        counter++;
     }
 
     //Will strengthen password validator

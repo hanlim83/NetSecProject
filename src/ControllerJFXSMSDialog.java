@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -42,6 +43,12 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     TextAuthentication verifyText=new TextAuthentication();
 
+    private Scene myScene;
+
+//    public void setOldAnchorPane(Scene scene){
+//        this.scene=scene;
+//    }
+
     @FXML
     void onActionCancelButton(ActionEvent event) {
         //Close Windows
@@ -54,10 +61,12 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     @FXML
     void onActionSubmitButton(ActionEvent event) throws InterruptedException, SQLException, NexmoClientException, IOException {
+//        if(OTPField.getText().equals("999")){
         if(verifyText.checkAuth(OTPField.getText())==true){
+            ControllerSignUpPage signUpPage=new ControllerSignUpPage();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
-            myScene = anchorPane.getScene();
+            myScene = (Scene) ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = loader.load();
 
@@ -71,9 +80,6 @@ public class ControllerJFXSMSDialog implements Initializable {
             //show some wrong otp warning
         }
     }
-
-    private Scene myScene;
-
 //    public static AnchorPane rootP;
 
     @Override
