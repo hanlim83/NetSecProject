@@ -1,3 +1,4 @@
+import Model.TextAuthentication;
 import com.jfoenix.controls.*;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
@@ -17,8 +18,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static Model.TextAuthentication.getSendAuth;
-import static Model.TextAuthentication.sendAuth;
+//import Model.TextAuthentication.checkAuth;
+//import Model.TextAuthentication.sendAuth;
 
 public class ControllerVerifyText {
 
@@ -62,28 +63,17 @@ public class ControllerVerifyText {
     @FXML
     void verifyConfirm(ActionEvent event) throws SQLException, InterruptedException, IOException, NexmoClientException {
 
+        TextAuthentication textAuth = new TextAuthentication();
 
-        String CODE = verifyField.getText();
+        boolean check = textAuth.checkAuth(verifyField.getText());
 
-        AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
-        NexmoClient client = new NexmoClient(auth);
-
-        sendAuth(getSendAuth);
-        String testId = sendAuth(getSendAuth);
-
-//        String testId = ControllerVerifyText.getSendAuth;
-        System.out.println("Request ID: " + testId);
-
-
-        CheckResult result = client.getVerifyClient().check(testId, CODE);
-
-
-        if (result.getStatus() == CheckResult.STATUS_OK || CODE.equals("999")) {
+        if (check == true) {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DeviceCheck.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
+
             try {
                 nextView = loader.load();
                 ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
@@ -98,25 +88,12 @@ public class ControllerVerifyText {
             stage.setTitle("NSPJ");
             stage.show();
 
-        } else if (CODE.equals("")) {
-
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("FireE");
-            alert.setHeaderText("Invalid Pin!");
-            alert.setContentText("The field appears to be empty, please check your phone and enter the correct OTP sent to you!");
-            alert.showAndWait();
-
-
         } else {
 
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("FireE");
-            alert.setHeaderText("Invalid Pin!");
-            alert.setContentText("The pin you provided does not match our database. please check your phone again and type the pin correctly!");
-            alert.showAndWait();
+            System.out.print("Sorry, wrong pin!");
+
 
         }
-
 
     }
 
@@ -182,4 +159,3 @@ public class ControllerVerifyText {
 
 
 }
-

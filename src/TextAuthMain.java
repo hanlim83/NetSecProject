@@ -20,7 +20,6 @@ public class TextAuthMain {
 
             VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE");
 
-
                     System.out.println("Message sent!");
                     System.out.print("Request ID: " + ongoingVerify.getRequestId());
 //

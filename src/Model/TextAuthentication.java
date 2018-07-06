@@ -10,14 +10,10 @@ import java.io.IOException;
 
 public class TextAuthentication {
 
-    public static String getSendAuth;
-
-    public static void setGetSendAuth(String getSendAuth) {
-        TextAuthentication.getSendAuth = getSendAuth;
-    }
+    private static String VerifyId;
 
 
-    public static String sendAuth(String phoneNo) {
+    public void sendAuth(String phoneNo) {
 
         try {
 
@@ -30,43 +26,39 @@ public class TextAuthentication {
 
             String VerifyId = ongoingVerify.getRequestId();
 
-            System.out.print("\n\nRequest ID: " + VerifyId);
+            System.out.print("\nRequest ID: " + VerifyId);
 
-            return VerifyId;
+            this.VerifyId = VerifyId;
 
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (NexmoClientException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        return getSendAuth;
     }
 
     public boolean checkAuth(String setCode) throws NexmoClientException {
 
-        String CODE = setCode;
-
         AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
         NexmoClient client = new NexmoClient(auth);
 
-        sendAuth(getSendAuth);
-        String testId = sendAuth(getSendAuth);
+        String testId = TextAuthentication.VerifyId;
 
-        System.out.println("Request ID: " + testId);
+        System.out.print("\n\nRequest ID: " + testId);
+        System.out.print("\nCODE entered: " + setCode);
 
         try {
-            CheckResult result = client.getVerifyClient().check(testId, CODE);
+            CheckResult result = client.getVerifyClient().check(testId, setCode);
 
 
-            if (result.getStatus() == CheckResult.STATUS_OK || CODE.equals("999")) {
+            if (setCode.equals("999") || result.getStatus() == CheckResult.STATUS_OK) {
 
-                System.out.print("otp check = true");
+                System.out.print("\notp check = true\n");
                 return true;
 
             } else {
 
-                System.out.print("otp check = false");
+                System.out.print("\notp check = false");
                 return false;
             }
 
