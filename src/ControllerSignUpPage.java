@@ -162,6 +162,7 @@ public class ControllerSignUpPage implements Initializable {
         else {
             TextAuthentication verifyText=new TextAuthentication();
             verifyText.sendAuth(PhoneNoField.getText());
+
             OTPAlert();
 //            keyGenerator();
 //            //Compute Hash of Password
