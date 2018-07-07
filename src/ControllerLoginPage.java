@@ -1,4 +1,5 @@
 import Model.OAuth2Login;
+import Model.User_InfoDB;
 import com.google.api.client.auth.oauth2.Credential;
 
 import java.io.IOException;
@@ -41,10 +42,12 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     private OAuth2Login login = new OAuth2Login();
     private WindowsUtils utils=new WindowsUtils();
+    private User_InfoDB user_infoDB=new User_InfoDB();
 
     private Credential credential;
     private String email = "";
     private String AccStatus = "";
+    private String phoneNo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -176,7 +179,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     try {
                         nextView = loader.load();
                         ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
-                        controller.sendNew("<Info sanitized>");
+                        controller.sendNew(phoneNo);
                     } catch (IOException u) {
                         u.printStackTrace();
                     }
@@ -307,6 +310,9 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     //after retrieve token, use that to cross check with the DB for active/inactive/null
                     if (!email.equals("")){
                         AccStatus=utils.getAccStatus(email);
+                    }
+                    if (AccStatus.equals("Active")){
+                        phoneNo=user_infoDB.getPhoneNumber(email);
                     }
                     return null;
                 }

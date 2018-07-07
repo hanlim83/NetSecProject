@@ -1,9 +1,6 @@
 package Model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class User_InfoDB {
 
@@ -108,5 +105,43 @@ public class User_InfoDB {
 //            }
             statement.executeUpdate("DELETE FROM entries WHERE email='" + email + "'");
         }
+    }
+
+    //TODO FINISH UP THIS
+    public String getPhoneNumber(String email) throws SQLException {
+        String phoneNo = null;
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+        String databaseName = "user_info";
+        String username = "root";
+        String password = "root";
+
+//            if (instanceConnectionName.equals("<device-supported-versions>")) {
+//                System.err.println("Please update the sample to specify the instance connection name.");
+//                System.exit(1);
+//            }
+//
+//            if (password.equals("<insert_password>")) {
+//                System.err.println("Please update the sample to specify the mysql password.");
+//                System.exit(1);
+//            }
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            ResultSet resultSet = statement.executeQuery("SELECT phoneNo FROM entries WHERE email='"+email+"'");
+            while (resultSet.next()) {
+                phoneNo=resultSet.getString(1);
+            }
+        }
+        return phoneNo;
     }
 }
