@@ -63,6 +63,7 @@ public class ControllerSignUpPage implements Initializable {
 
     //public static AnchorPane rootP;
 
+    //TODO Code CLEANUP AND IMPLEMENT MULTITHREADING
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -147,10 +148,13 @@ public class ControllerSignUpPage implements Initializable {
             System.out.println("Fill up all fields!");
             showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
         }
+        else if(checkPhoneNoRequirements(PhoneNoField.getText())==false){
+            showAlert(anchorPane.getScene(), "", "Phone number is not valid", "Close");
+        }
         else if(PasswordField.getText().equals(email)){
             showAlert(anchorPane.getScene(), "", "Cannot use email as your password", "Close");
         }
-        else if (validate(PasswordField.getText()) == false || checkPhoneNoRequirements(PhoneNoField.getText())==false) {
+        else if (validate(PasswordField.getText()) == false) {
             System.out.println("Use stronger password");
             showAlert(anchorPane.getScene(), "", "Use stronger password. Minimum 8 characters, must have letters and numbers. Will increase security in the future", "Close");
         }
@@ -164,6 +168,7 @@ public class ControllerSignUpPage implements Initializable {
             verifyText.sendAuth(PhoneNoField.getText());
 
             OTPAlert();
+            //Move Key Gen and stuff to the OTP CONTROLLER INSTEAD
 //            keyGenerator();
 //            //Compute Hash of Password
 //            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
