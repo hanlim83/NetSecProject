@@ -16,7 +16,7 @@ public class TextAuthMain {
             AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
             NexmoClient client = new NexmoClient(auth);
 
-            String TO_NUMBER = "65" + "87170501"; // Temporarily hardcoded
+            String TO_NUMBER = "65" + "87170501"; // hardcoded
 
             VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE");
 

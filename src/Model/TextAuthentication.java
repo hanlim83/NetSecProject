@@ -27,6 +27,7 @@ public class TextAuthentication {
             String VerifyId = ongoingVerify.getRequestId();
 
             System.out.print("\nRequest ID: " + VerifyId);
+            System.out.print("\nMessage sent!");
 
             this.VerifyId = VerifyId;
 
