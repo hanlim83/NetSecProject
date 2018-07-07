@@ -492,24 +492,26 @@ public class LoggingSnippets {
 
             if(inputfilter.equals("delete")){
                 System.out.println("PULLING OUT DELETED LOGS");
-                //get RESOURCES -> cloudsql_database / gcs_bucket
-//                resourceType=entry.getResource().getType();
-//                System.out.println(resourceType);
-
                 LogsExtract logE = new LogsExtract(entry);
                 logsExtractList.add(logE);
             }
             else if (inputfilter.equals("create")){
                 System.out.println("PULLING OUT CREATED LOGS");
-                //get RESOURCES
-//                resourceType=entry.getResource().getType();
-//                System.out.println(resourceType);
+                LogsExtract logE = new LogsExtract(entry);
+                logsExtractList.add(logE);
             }
-
-
-
+            else if (inputfilter.equals("one two")){
+                System.out.println("PULLING OUT one two LOGS");
+                LogsExtract logE = new LogsExtract(entry);
+                logsExtractList.add(logE);
             }
-        } catch (Exception e) {
+            }
+        } catch(com.google.cloud.logging.LoggingException e1) {
+            e1.printStackTrace();
+        }catch(io.grpc.StatusRuntimeException e2){
+            e2.printStackTrace();
+        }
+        catch(Exception e) {
             e.printStackTrace();
         }
         // [END listLogEntries]

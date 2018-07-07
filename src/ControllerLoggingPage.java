@@ -69,6 +69,9 @@ public class ControllerLoggingPage implements Initializable {
     private JFXButton createdlogs;
 
     @FXML
+    private JFXButton general;
+
+    @FXML
     private AnchorPane popupanchor;
 
     @FXML
@@ -97,40 +100,63 @@ public class ControllerLoggingPage implements Initializable {
     private ArrayList<LogsExtract> logsList;
     private ObservableList<LogsExtract> logsObservableList;
 
+    private ArrayList<Integer> globalCheckerList2 = new ArrayList<Integer>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         loggingsnippets = new LoggingSnippets();
         options = LoggingOptions.getDefaultInstance();
 
+        popupanchor.setVisible(false);
+        logsTable.setVisible(true);
+
+
         //test inputfilter to trigger loglist
-      //  loggingsnippets.listLogEntries("one two");
+        //  loggingsnippets.listLogEntries("one two");
 
         timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
-        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("severity"));
-        action.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("action"));
-        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("bucketName"));
-        user.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("user"));
- //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
+        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
+        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
+        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
+        globalCheckerList2 = logsextract.getGlobalChckerList();
+//        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+
+
+//        globalCheckerList2 = logsextract.getGlobalChckerList();
+//        int check = logsextract.getGlobalchecker();
+//        System.out.println("MY CHECKER IS NOW " + check);
+//        if (check==-1) {
+//            System.out.println("MY CHECKER IS NOW " + check);
+//            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+//
+//        } else {
+//            System.out.println("MY CHECKER IS NOW " + check);
+//            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+//
+//        }
+        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
         logsList = loggingsnippets.getLogsExtractList();
     }
 
     @FXML
-    public void clickItem(MouseEvent event)
-    {
-        if (event.getClickCount() == 2) //Checking double click
-        {
-            logsTable.setVisible(false);
-            popupanchor.setVisible(true);
-            timestamp1.setText(logsTable.getSelectionModel().getSelectedItem().getTimestamp());
-            severity1.setText(logsTable.getSelectionModel().getSelectedItem().getSeverity());
-            action1.setText(logsTable.getSelectionModel().getSelectedItem().getAction());
-            bucketName1.setText(logsTable.getSelectionModel().getSelectedItem().getBucketName());
-            user1.setText(logsTable.getSelectionModel().getSelectedItem().getUser());
-
-//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getAction());
-//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getBucketName());
-//            System.out.println(logsTable.getSelectionModel().getSelectedItem().getUser());
+    public void clickItem(MouseEvent event) {
+        try {
+            if (event.getClickCount() == 2) //Checking double click
+            {
+                logsTable.setVisible(false);
+                popupanchor.setVisible(true);
+                timestamp1.setText(logsTable.getSelectionModel().getSelectedItem().getTimestamp());
+                severity1.setText(logsTable.getSelectionModel().getSelectedItem().getSeverity());
+                action1.setText(logsTable.getSelectionModel().getSelectedItem().getAction());
+                bucketName1.setText(logsTable.getSelectionModel().getSelectedItem().getBucketName());
+                user1.setText(logsTable.getSelectionModel().getSelectedItem().getFinalEmail());
+            }
+        }catch (com.google.cloud.logging.LoggingException e1) {
+            e1.printStackTrace();
+        } catch(io.grpc.StatusRuntimeException e2) {
+            e2.printStackTrace();
         }
     }
 
@@ -141,7 +167,7 @@ public class ControllerLoggingPage implements Initializable {
         try (Logging logging = options.getService()) {
             System.out.println(options.getProjectId());
             loggingsnippets.listLogEntries("delete");
-        } catch (com.google.cloud.logging.LoggingException e1 ) {
+        } catch (com.google.cloud.logging.LoggingException e1) {
             e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,7 +183,26 @@ public class ControllerLoggingPage implements Initializable {
         try (Logging logging = options.getService()) {
             System.out.println(options.getProjectId());
             loggingsnippets.listLogEntries("create");
-        } catch (Exception e) {
+        } catch (com.google.cloud.logging.LoggingException e1) {
+            e1.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        logsObservableList = FXCollections.observableList(logsList);
+        logsTable.setItems(logsObservableList);
+    }
+
+
+    @FXML
+    void handleonetwo(MouseEvent event) {
+        popupanchor.setVisible(false);
+        logsTable.setVisible(true);
+        try (Logging logging = options.getService()) {
+            System.out.println(options.getProjectId());
+            loggingsnippets.listLogEntries("one two");
+        } catch (com.google.cloud.logging.LoggingException e1) {
+            e1.printStackTrace();
+        }catch (Exception e) {
             e.printStackTrace();
         }
         logsObservableList = FXCollections.observableList(logsList);
