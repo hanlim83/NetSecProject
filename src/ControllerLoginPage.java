@@ -181,7 +181,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     try {
                         nextView = loader.load();
                         ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
-//                        controller.passData(login.getEmail());
+                        controller.sendNew("<Info sanitized>");
                     } catch (IOException u) {
                         u.printStackTrace();
                     }
@@ -274,10 +274,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //                System.out.println("DONE");
 //            }
 //        };
-//        int delay = 5;
-//        scheduler.schedule(task, delay, TimeUnit.SECONDS);
-//        scheduler.shutdown();
-
 
 //            ControllerLoginPage worker = new ControllerLoginPage();
 //            Thread thread = new Thread(worker);
