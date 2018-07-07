@@ -1,3 +1,4 @@
+import Model.SignUpPage;
 import Model.TextAuthentication;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -45,25 +46,14 @@ public class ControllerSignUpPage implements Initializable {
     private JFXButton CancelButton;
 
     private Scene myScene;
-    WindowsUtils utils = new WindowsUtils();
-    private String email;
-
-    private String hashPassword;
-    private String publicKey;
-    private String encryptedPrivateKey;
-
-//    public AnchorPane getAnchorPane() {
-//        return anchorPane;
-//    }
-
-//    private Scene finalScene;
-//    public Scene getMyScene() {
-//        return finalScene;
-//    }
-
-    //public static AnchorPane rootP;
+    public static String email;
 
     //TODO Code CLEANUP AND IMPLEMENT MULTITHREADING
+    void passData(String email) {
+        this.email = email;
+        EmailTextField.setText(email);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -71,27 +61,6 @@ public class ControllerSignUpPage implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void changePage() throws InterruptedException, SQLException, IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
-        myScene = this.anchorPane.getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
-
-        ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
-        controller.runCheck();
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
-    }
-
-
-    void passData(String email) {
-        this.email = email;
-        EmailTextField.setText(email);
     }
 
     @FXML
@@ -123,24 +92,6 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     void onClickConfirmButton(ActionEvent event) throws Exception {
         passwordValidation();
-        //migrate this to the device checking page
-//        if (utils.checkWindowsApproved()==true) {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("UserHome.fxml"));
-//            myScene = (Scene) ((Node) event.getSource()).getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//            Parent nextView = loader.load();
-//
-//            //Will change to Device Checking Page next time
-//            ControllerUserHome controller = loader.<ControllerUserHome>getController();
-//            //controller.passData(login.getEmail());
-//
-//            stage.setScene(new Scene(nextView));
-//            stage.setTitle("NSPJ");
-//            stage.show();
-//        }else{
-//            System.out.println("Not supported VERSION!");
-//        }
     }
 
     private void passwordValidation() throws Exception {
@@ -168,12 +119,7 @@ public class ControllerSignUpPage implements Initializable {
             verifyText.sendAuth(PhoneNoField.getText());
 
             OTPAlert();
-            //Move Key Gen and stuff to the OTP CONTROLLER INSTEAD
-//            keyGenerator();
-//            //Compute Hash of Password
-//            hashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-//            System.out.println(hashPassword);
-//            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
+
         }
     }
 
@@ -182,6 +128,7 @@ public class ControllerSignUpPage implements Initializable {
         JFXAlert<Void> alert = null;
         AnchorPane layout = FXMLLoader.load(getClass().getResource("JFXSMSDialog.fxml"));
         if (counter!=0) {
+            SignUpPage signUpPage=new SignUpPage(email,PasswordField.getText(),PhoneNoField.getText());
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             alert = new JFXAlert<>(stage);
@@ -190,6 +137,8 @@ public class ControllerSignUpPage implements Initializable {
             alert.setContent(layout);
             alert.initModality(Modality.NONE);
             alert.show();
+//            ControllerJFXSMSDialog jfxsmsDialog=new ControllerJFXSMSDialog();
+//            jfxsmsDialog.passData(email,PasswordField.getText(),PhoneNoField.getText());
         }
         counter++;
     }
@@ -236,45 +185,6 @@ public class ControllerSignUpPage implements Initializable {
         }
     }
 
-
-    private String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes(StandardCharsets.UTF_8));
-            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
-
-    private void keyGenerator() throws Exception {
-        //Once password is secure enough do necessary stuff. Compute Hash, generate KeyPair, encrypt the private key and upload everything into cloud SQL
-//        //Compute Hash of Password
-//        String HashPassword = get_SHA_512_SecurePassword(PasswordField.getText(), email);
-//        System.out.println(HashPassword);
-        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
-        rsaKeyGenerator.buildKeyPair();
-        publicKey=rsaKeyGenerator.getPublicKeyString();
-        System.out.println(publicKey);
-        String privateKey=rsaKeyGenerator.getPrivateKeyString();
-        System.out.println(privateKey);
-        encryptedPrivateKey=rsaKeyGenerator.getEncryptedPrivateKeyString(PasswordField.getText(),privateKey);
-        System.out.println(encryptedPrivateKey);
-        //For testing purpose only
-        String decryptedPrivateKey=rsaKeyGenerator.getPrivateKeyString(PasswordField.getText(),encryptedPrivateKey);
-        System.out.println(decryptedPrivateKey);
-        System.out.println(privateKey.equals(decryptedPrivateKey));
-        //For testing purpose only
-        //upload all the info to the cloud
-    }
-
     private void showAlert(Scene scene, String Title, String Content, String buttonContent) {
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
@@ -300,5 +210,17 @@ public class ControllerSignUpPage implements Initializable {
         close.setOnAction(__ -> alert.hideWithAnimation());
         alert.show();
     }
+
+
+//    public void changePage() throws InterruptedException, SQLException, IOException {
+//            Move Key Gen and stuff to the OTP CONTROLLER INSTEAD
+//keyGenerator();
+//    //Compute Hash of Password
+//    hashPassword = get_SHA_512_SecurePassword(password, email);
+//            System.out.println(hashPassword);
+//            System.out.println(phoneNo);
+//            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
+//            user_infoDB.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,phoneNo,email);
+//    }
 }
 

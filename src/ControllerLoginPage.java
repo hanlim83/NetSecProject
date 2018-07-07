@@ -44,7 +44,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     private Credential credential;
     private String email = "";
-    //hardcoded AccStatus for now
     private String AccStatus = "";
 
     @Override
@@ -129,10 +128,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //        process.start();
 //        startTimer();
 
-        //try {
-        // authorization
-        //credential=login.login();
-        //new Thread(task).start();
 //        Platform.runLater(() -> {
 //            try {
 //        if (!thread.isAlive()) {
