@@ -51,9 +51,14 @@ public class ControllerVerifyText {
     @FXML
     private JFXButton backButton;
 
-//    public static void setGetSendAuth(String getSendAuth) {
-//        ControllerVerifyText.getSendAuth = getSendAuth;
-//    }
+    public void sendNew(String phoneNo){
+
+        TextAuthentication auth = new TextAuthentication();
+        auth.sendAuth(phoneNo);
+        System.out.println("Message resent!");
+
+    }
+
 
     @FXML
     void backToNumber(ActionEvent event) {
@@ -64,6 +69,8 @@ public class ControllerVerifyText {
     void verifyConfirm(ActionEvent event) throws SQLException, InterruptedException, IOException, NexmoClientException {
 
         TextAuthentication textAuth = new TextAuthentication();
+
+        System.out.println("\nCode input: " + verifyField.getText());
 
         boolean check = textAuth.checkAuth(verifyField.getText());
 
