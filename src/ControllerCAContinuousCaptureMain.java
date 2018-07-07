@@ -34,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.concurrent.TimeUnit.*;
+
 public class ControllerCAContinuousCaptureMain implements Initializable {
 
     @FXML
@@ -118,12 +120,11 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         updateStats = new Runnable() {
             @Override
             public void run() {
-                //Ccapture.printStat();
-                Platform.runLater(() -> {
-                    System.err.println("Running");
-                    totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
-                    //totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
-                });
+                    Ccapture.printStat();
+                    Platform.runLater(() -> {
+                        totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
+                        totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
+                    });
             }
         };
         loggingTextArea.setText(Pcaps.libVersion()+"\n"+"Starting Capture on "+device.getName()+"\n");
@@ -131,13 +132,13 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         for (PcapAddress p: addresses){
             loggingTextArea.setText(loggingTextArea.getText()+"IP Address Assigned on Interface: "+p.toString()+"\n");
         }
-        updateStatsFuture = service.scheduleAtFixedRate(updateStats,2,1,TimeUnit.SECONDS);
+        updateStatsFuture = service.scheduleAtFixedRate(updateStats,2,1,SECONDS);
         service.schedule(new Runnable() {
             @Override
             public void run() {
                 Ccapture.startSniffing();
             }
-        }, 2, TimeUnit.SECONDS);
+        }, 1, SECONDS);
     }
 
     public void hamburgerBar() {

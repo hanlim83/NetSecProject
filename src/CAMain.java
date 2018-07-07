@@ -18,7 +18,8 @@ public class CAMain extends Application {
             System.out.println(getClass().getResource("CABackdrop.png"));
             Parent root = loader.load();
             ControllerCALanding controller = loader.<ControllerCALanding>getController();
-            service = Executors.newSingleThreadScheduledExecutor();;
+            int cores = Runtime.getRuntime().availableProcessors();
+            service = Executors.newScheduledThreadPool(cores);
             controller.passVariables(service);
             Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);

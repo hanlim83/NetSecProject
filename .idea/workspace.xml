@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Continuous Capture Controller Refactoring">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerLoggingPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerLoggingPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerCAContinuousCaptureMain.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/ControllerVerifyText.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/ControllerVerifyText.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/Model/LogsExtract.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/LogsExtract.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/Model/TextAuthentication.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/Model/TextAuthentication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerLoggingPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerLoggingPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/LoggingSnippets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/LoggingSnippets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/LogsExtract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/LogsExtract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/LoggingPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LoggingPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/resources/CAContinuousCaptureLanding.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/CAContinuousCaptureLanding.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CAMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CAMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -87,67 +86,48 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <leaf>
+      <file leaf-file-name="ControllerCAContinuousCaptureMain.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoggingSnippets.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/LoggingSnippets.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="506" column="13" lean-forward="true" selection-start-line="506" selection-start-column="13" selection-end-line="506" selection-end-column="13" />
+            <state relative-caret-position="131">
+              <caret line="122" column="41" lean-forward="true" selection-start-line="122" selection-start-column="41" selection-end-line="122" selection-end-column="41" />
               <folding>
-                <element signature="e#18296#18297#0" expanded="true" />
-                <element signature="e#18334#18335#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#5155#5156#0" expanded="true" />
+                <element signature="e#5211#5212#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogsExtract.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/LogsExtract.java">
+      <file leaf-file-name="CAMain.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CAMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1942">
-              <caret line="100" column="141" selection-start-line="100" selection-start-column="141" selection-end-line="100" selection-end-column="141" />
-              <folding>
-                <element signature="e#9854#9855#0" expanded="true" />
-                <element signature="e#9893#9894#0" expanded="true" />
-                <element signature="e#9933#9934#0" expanded="true" />
-                <element signature="e#9969#9970#0" expanded="true" />
-                <element signature="e#10006#10007#0" expanded="true" />
-                <element signature="e#10042#10043#0" expanded="true" />
-                <element signature="e#10079#10080#0" expanded="true" />
-                <element signature="e#10110#10111#0" expanded="true" />
-                <element signature="e#10146#10147#0" expanded="true" />
-                <element signature="e#10178#10179#0" expanded="true" />
-                <element signature="e#10211#10212#0" expanded="true" />
-                <element signature="e#10240#10241#0" expanded="true" />
-                <element signature="e#10277#10278#0" expanded="true" />
-                <element signature="e#10310#10311#0" expanded="true" />
-                <element signature="e#10341#10342#0" expanded="true" />
-                <element signature="e#10368#10369#0" expanded="true" />
-                <element signature="e#10480#10481#0" expanded="true" />
-                <element signature="e#10513#10514#0" expanded="true" />
-                <element signature="e#10562#10563#0" expanded="true" />
-                <element signature="e#10596#10597#0" expanded="true" />
-                <element signature="e#10631#10632#0" expanded="true" />
-                <element signature="e#10662#10663#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="289">
+              <caret line="24" column="45" lean-forward="true" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerLoggingPage.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ControllerLoggingPage.java">
+      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="209" column="5" lean-forward="true" selection-end-line="242" />
+            <state relative-caret-position="369">
+              <caret line="172" column="30" lean-forward="true" selection-start-line="170" selection-start-column="8" selection-end-line="172" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContinuousNetworkCapture.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="182">
+              <caret line="99" selection-start-line="99" selection-end-line="99" />
+              <folding>
+                <element signature="e#2462#2463#0" expanded="true" />
+                <element signature="e#2499#2500#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -365,7 +345,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6122839556548" />
+        <entry key="$PROJECT_DIR$" value="6118236891395" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="863750496" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
@@ -615,6 +595,7 @@
         <option value="$PROJECT_DIR$/src/Model/QuickStart.java" />
         <option value="$PROJECT_DIR$/src/Model/Quickstart.java" />
         <option value="$PROJECT_DIR$/src/Model/TestLoggingSnippets.java" />
+        <option value="$PROJECT_DIR$/src/Model/LoggingSnippets.java" />
         <option value="$PROJECT_DIR$/src/ControllerSignUpPage.java" />
         <option value="$PROJECT_DIR$/src/ControllerSecureCloudStorage.java" />
         <option value="$PROJECT_DIR$/src/ControllerLoginPage.java" />
@@ -622,7 +603,9 @@
         <option value="$PROJECT_DIR$/src/Model/OAuth2Login.java" />
         <option value="$PROJECT_DIR$/src/WindowsUtils.java" />
         <option value="$PROJECT_DIR$/src/ControllerUserHome.java" />
+        <option value="$PROJECT_DIR$/src/ControllerLoggingPage.java" />
         <option value="$PROJECT_DIR$/src/Model/StorageSnippets.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Model/TestStorageSnippets.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml" />
@@ -630,11 +613,8 @@
         <option value="$PROJECT_DIR$/src/ControllerVerifyText.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" />
         <option value="$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java" />
+        <option value="$PROJECT_DIR$/src/CAMain.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/Model/LogsExtract.java" />
-        <option value="$PROJECT_DIR$/src/Model/LoggingSnippets.java" />
-        <option value="$PROJECT_DIR$/src/ControllerLoggingPage.java" />
       </list>
     </option>
   </component>
@@ -654,9 +634,9 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="952" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+    <option name="x" value="950" />
+    <option name="width" value="975" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -666,35 +646,23 @@
     <panes>
       <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NetSecProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -741,7 +709,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.CAMain">
     <configuration name="CAMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CAMain" />
       <module name="NSPJ_main" />
@@ -833,8 +801,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.CAMain" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestLoggingSnippets" />
         <item itemvalue="Application.PacketSnifferTesting" />
         <item itemvalue="Application.RSAKeyTest" />
@@ -924,6 +892,9 @@
       <workItem from="1530795199276" duration="1585000" />
       <workItem from="1530796831069" duration="5282000" />
       <workItem from="1530805243830" duration="203000" />
+      <workItem from="1530808417164" duration="443000" />
+      <workItem from="1530869673796" duration="297000" />
+      <workItem from="1530974394543" duration="4687000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Dashboard FXML">
       <created>1530111634091</created>
@@ -964,7 +935,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="307801000" />
+    <option name="totallyTimeSpent" value="313375000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -976,49 +947,50 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.52132195" weight="0.31766382" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.52132195" weight="0.31808278" />
       <window_info anchor="right" id="Palette&#9;" order="10" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.4" side_tool="true" weight="0.3846154" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.47867805" side_tool="true" weight="0.34422657" />
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.32955465" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4989339" weight="0.24400872" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.6" visible="true" weight="0.2920228" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.6007463" visible="true" weight="0.35185185" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32897604" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.33691275" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15991472" />
+      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.195629" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.42022792" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.36710238" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4717484" weight="0.31263617" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32897604" />
-      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
     </layout>
     <layout-to-restore>
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.47228146" weight="0.10554562" />
       <window_info id="Designer" order="2" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7004049" visible="true" weight="0.2039356" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32905984" />
@@ -1040,7 +1012,6 @@
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49635416" weight="0.32943678" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4979757" weight="0.49373883" />
     </layout-to-restore>
@@ -1091,54 +1062,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="44" />
+      <option name="time" value="47" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Model/TestStorageSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-85">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureMain.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/collections/FXCollections.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="339" selection-start-line="339" selection-end-line="339" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CAContinuousCaptureLanding.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1173">
-          <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="33" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="57" column="45" selection-start-line="57" selection-start-column="45" selection-end-line="57" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerAdminSideTab.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3043">
@@ -1167,13 +1094,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2312">
-          <caret line="175" column="5" selection-start-line="175" selection-start-column="5" selection-end-line="175" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/NativeMappings.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
@@ -1181,28 +1101,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapNetworkInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="272" selection-start-line="272" selection-end-line="272" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
           <caret line="916" selection-start-line="916" selection-end-line="916" />
-          <folding>
-            <element signature="e#20727#20728#0" expanded="true" />
-            <element signature="e#20771#20772#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1210,13 +1112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="71" selection-start-line="71" selection-end-line="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapHandle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="830" selection-start-line="830" selection-end-line="830" />
         </state>
       </provider>
     </entry>
@@ -1259,6 +1154,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="257" selection-start-line="257" selection-end-line="257" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1287,13 +1185,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="140" selection-start-line="140" selection-end-line="140" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
         </state>
       </provider>
     </entry>
@@ -1423,66 +1314,135 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-476">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapNetworkInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="266" selection-start-line="266" selection-end-line="266" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/javafx-src.zip!/javafx/application/Platform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+          <folding>
+            <element signature="e#2657#2658#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapStat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
+          <folding>
+            <element signature="e#1744#1745#0" expanded="true" />
+            <element signature="e#1779#1780#0" expanded="true" />
+            <element signature="e#1886#1887#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapDumper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="211" selection-start-line="211" selection-end-line="211" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pcap4j/pcap4j-core/1.7.3/d24302ef6a6f89bcbf96985d7cb40d3a5d9d4843/pcap4j-core-1.7.3-sources.jar!/org/pcap4j/core/PcapHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="1284" selection-start-line="1284" selection-end-line="1284" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerLoginPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-527">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerBaseLayoutNew.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="24" column="9" lean-forward="true" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="946" selection-start-line="946" selection-end-line="946" />
+          <folding>
+            <element signature="e#36767#36768#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/util/concurrent/FutureTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="428" selection-start-line="428" selection-end-line="428" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_172/src.zip!/java/util/concurrent/locks/LockSupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="174" selection-start-line="174" selection-end-line="174" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
+          <folding>
+            <element signature="e#2462#2463#0" expanded="true" />
+            <element signature="e#2499#2500#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CAMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="24" column="45" lean-forward="true" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="172" column="30" lean-forward="true" selection-start-line="170" selection-start-column="8" selection-end-line="172" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="158" lean-forward="true" selection-start-line="158" selection-end-line="158" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/LogsExtract.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1942">
-          <caret line="100" column="141" selection-start-line="100" selection-start-column="141" selection-end-line="100" selection-end-column="141" />
+        <state relative-caret-position="131">
+          <caret line="122" column="41" lean-forward="true" selection-start-line="122" selection-start-column="41" selection-end-line="122" selection-end-column="41" />
           <folding>
-            <element signature="e#9854#9855#0" expanded="true" />
-            <element signature="e#9893#9894#0" expanded="true" />
-            <element signature="e#9933#9934#0" expanded="true" />
-            <element signature="e#9969#9970#0" expanded="true" />
-            <element signature="e#10006#10007#0" expanded="true" />
-            <element signature="e#10042#10043#0" expanded="true" />
-            <element signature="e#10079#10080#0" expanded="true" />
-            <element signature="e#10110#10111#0" expanded="true" />
-            <element signature="e#10146#10147#0" expanded="true" />
-            <element signature="e#10178#10179#0" expanded="true" />
-            <element signature="e#10211#10212#0" expanded="true" />
-            <element signature="e#10240#10241#0" expanded="true" />
-            <element signature="e#10277#10278#0" expanded="true" />
-            <element signature="e#10310#10311#0" expanded="true" />
-            <element signature="e#10341#10342#0" expanded="true" />
-            <element signature="e#10368#10369#0" expanded="true" />
-            <element signature="e#10480#10481#0" expanded="true" />
-            <element signature="e#10513#10514#0" expanded="true" />
-            <element signature="e#10562#10563#0" expanded="true" />
-            <element signature="e#10596#10597#0" expanded="true" />
-            <element signature="e#10631#10632#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#5155#5156#0" expanded="true" />
+            <element signature="e#5211#5212#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/LoggingSnippets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="506" column="13" lean-forward="true" selection-start-line="506" selection-start-column="13" selection-end-line="506" selection-end-column="13" />
-          <folding>
-            <element signature="e#18296#18297#0" expanded="true" />
-            <element signature="e#18334#18335#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerLoggingPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="209" column="5" lean-forward="true" selection-end-line="242" />
         </state>
       </provider>
     </entry>
