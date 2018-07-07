@@ -1,5 +1,7 @@
+import Model.MyBlob;
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.util.DateTime;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -24,14 +26,15 @@ import java.io.*;
 import java.net.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class ControllerUserHome implements Initializable {
+public class ControllerUserHome implements Initializable{
     @FXML
     private AnchorPane anchorPane;
 
@@ -63,10 +66,57 @@ public class ControllerUserHome implements Initializable {
         hamburgerBar();
     }
 
+    ArrayList<MyBlob> BlobList=new ArrayList<MyBlob>();
+    private void getLatestFile() throws IOException {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        String email=login.getEmail();
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront=s.next();
+        String bucketname=emailFront+"nspj";
+//        String bucketname="hugochiaxyznspj";
+        Page<Blob> blobs = storage.list(bucketname);
+        for (Blob blob : blobs.iterateAll()) {
+            // do something with the blob
+            BlobList.add(new MyBlob(blob));
+            System.out.println("FROM METHOD" + blob);
+            System.out.println(convertTime(blob.getCreateTime()));
+            System.out.println("FROM METHOD" + blob.getName());
+//            if (fileName.equals(blob.getName())) {
+//                System.out.println("Choose Different NAME!");
+//                return true;
+//            }
+        }
+    }
+
+    public String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
+        return format.format(date);
+    }
+
+
+//    @Override
+//    public int compareTo(Blob o) {
+//        return 0;
+//    }
+
+
+
+
     //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
+        try {
+            credential=login.login();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        getLatestFile();
+        Collections.sort(BlobList);
+        System.out.println("=======================LATEST FILE/TIME===============================");
+        System.out.println(BlobList.get(0).toString());
+        System.out.println(convertTime(BlobList.get(0).getTime()));
 //        int count=1;
 //        String DomainFirewall = null;
 //        String PrivateFirewall = null;
@@ -123,9 +173,9 @@ public class ControllerUserHome implements Initializable {
 ////            SupportedVersions.add(resultSet.getString(1));
 //        }
 
-        //TODO TESTING DELETE B4 PUSH
-//        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
-        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
+//        //TODO TESTING DELETE B4 PUSH
+////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
+//        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
     }
 
     @FXML
