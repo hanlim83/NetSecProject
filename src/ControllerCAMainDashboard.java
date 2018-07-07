@@ -36,9 +36,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAMainDashboard implements Initializable {
     @FXML
@@ -65,7 +66,6 @@ public class ControllerCAMainDashboard implements Initializable {
     public static AnchorPane rootP;
     private ArrayList<CapturedPacket>packets;
     private NetworkCapture capture;
-    private Thread captureThread;
     private ScheduledExecutorService service;
     private XYChart.Series series;
     private NumberAxis chartXAxis;
@@ -149,14 +149,13 @@ public class ControllerCAMainDashboard implements Initializable {
     public void startCapturing(){
         if (capture == null)
             capture = new NetworkCapture(device);
+        service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                capture.startSniffing();
+            }
+        }, 1, SECONDS);
         play();
-        Runnable task = () -> {
-            capture.startSniffing();
-            packets = capture.packets;
-        };
-        captureThread = new Thread(task);
-        captureThread.setDaemon(true);
-        captureThread.start();
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }

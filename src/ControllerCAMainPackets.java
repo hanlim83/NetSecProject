@@ -39,6 +39,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 public class ControllerCAMainPackets implements Initializable {
 
     @FXML
@@ -92,7 +94,6 @@ public class ControllerCAMainPackets implements Initializable {
     private ArrayList<CapturedPacket>packets;
     private ObservableList<CapturedPacket> OLpackets;
     private NetworkCapture capture;
-    private Thread captureThread;
     private ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
 
@@ -148,7 +149,6 @@ public class ControllerCAMainPackets implements Initializable {
     public void startCapturing(){
         if (capture == null)
             capture = new NetworkCapture(device);
-//        if (FirstRun == true){
         tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -162,15 +162,12 @@ public class ControllerCAMainPackets implements Initializable {
                 });
             }
         }, 2, 1, TimeUnit.SECONDS);
-            /*FirstRun = false;
-        }*/
-        Runnable task = () -> {
-            capture.startSniffing();
-            packets = capture.packets;
-        };
-        captureThread = new Thread(task);
-        captureThread.setDaemon(true);
-        captureThread.start();
+        service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                capture.startSniffing();
+            }
+        }, 1, SECONDS);
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
