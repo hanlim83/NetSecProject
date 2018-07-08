@@ -54,11 +54,12 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     }
 
-    private Timer timer;
+    private static Timer timer;
+    TimerTask Task;
 
     public void startTimer() {
         timer = new Timer();
-        TimerTask Task = new TimerTask() {
+        Task = new TimerTask() {
             public void run() {
                 try {
                     login.stopLocalServerReciver();
@@ -100,6 +101,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
     }
 
     public void endTimer() {
+        Task.cancel();
         timer.cancel();
         timer.purge();
         System.out.println("TIMER CANCELLEDDD");
@@ -220,6 +222,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
             }
         });
         process.setOnCancelled(e -> {
+            endTimer();
             if (counter < 1) {
                 System.out.println("Cancelled");
                 process.reset();
@@ -309,7 +312,9 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     }
                     //after retrieve token, use that to cross check with the DB for active/inactive/null
                     if (!email.equals("")){
-                        AccStatus=utils.getAccStatus(email);
+                        //Migrating to new codes
+//                        AccStatus=utils.getAccStatus(email);
+                        AccStatus=user_infoDB.getAccStatus(email);
                     }
                     if (AccStatus.equals("Active")){
                         phoneNo=user_infoDB.getPhoneNumber(email);
@@ -338,7 +343,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        endTimer();
+        endTimer();
 //        Platform.runLater(() -> {
 //            myScene = anchorPane.getScene();
 //            Stage stage = (Stage) (myScene).getWindow();
