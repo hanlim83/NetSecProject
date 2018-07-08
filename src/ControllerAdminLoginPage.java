@@ -52,11 +52,12 @@ public class ControllerAdminLoginPage implements Initializable {
 
     }
 
-    private Timer timer;
+    private static Timer timer;
+    private TimerTask Task;
 
     public void startTimer() {
         timer = new Timer();
-        TimerTask Task = new TimerTask() {
+        Task = new TimerTask() {
             public void run() {
                 try {
                     login.stopLocalServerReciver();
@@ -98,11 +99,11 @@ public class ControllerAdminLoginPage implements Initializable {
     }
 
     public void endTimer() {
+        Task.cancel();
         timer.cancel();
         timer.purge();
         System.out.println("TIMER CANCELLEDDD");
     }
-
 
     private int counter = 0;
 
@@ -123,38 +124,6 @@ public class ControllerAdminLoginPage implements Initializable {
 
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
-//        myScene = anchorPane.getScene();
-//        Stage stage = (Stage) (myScene).getWindow();
-//
-//        String title = "";
-//        String content = "The connection timeout. Please try again";
-//
-//        JFXButton close = new JFXButton("Close");
-//
-//        close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//        close.setStyle("-fx-background-color: #00bfff;");
-//
-////        JFXDialogLayout layout = new JFXDialogLayout();
-////        layout.setHeading(new Label(title));
-////        layout.setBody(new Label(content));
-////        layout.setActions(close);
-//        VBox box = FXMLLoader.load(getClass().getResource("UserSideTab.fxml"));
-//        JFXAlert<Void> alert = new JFXAlert<>(stage);
-//        alert.setOverlayClose(true);
-//        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//        alert.setContent(box);
-//        alert.initModality(Modality.NONE);
-////        close.setOnAction(__ -> {
-////            try {
-////                Test(event);
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-////        });
-//        alert.show();
-
-//
         String state = process.getState().toString();
         counter++;
         if (process.getState().toString().equals("RUNNING")) {
@@ -184,43 +153,7 @@ public class ControllerAdminLoginPage implements Initializable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-                if (AccStatus.equals("Inactive")){
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-                    Parent nextView = null;
-                    try {
-                        nextView = loader.load();
-                        ControllerSignUpPage controller = loader.<ControllerSignUpPage>getController();
-                        controller.passData(login.getEmail());
-                    } catch (IOException u) {
-                        u.printStackTrace();
-                    }
-                    stage.setScene(new Scene(nextView));
-                    stage.setTitle("NSPJ");
-                    stage.show();
-                }else if(AccStatus.equals("Active")){
-                    //Go to SMS OTP page
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-                    Parent nextView = null;
-                    try {
-                        nextView = loader.load();
-                        ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
-//                        controller.passData(login.getEmail());
-                    } catch (IOException u) {
-                        u.printStackTrace();
-                    }
-                    stage.setScene(new Scene(nextView));
-                    stage.setTitle("NSPJ");
-                    stage.show();
-                }else{
-                    //Not part of DB
-                    System.out.println("NOT INSIDE DB.REJECTED!!!");
-                }
-//                endTimer();
-
+                //Check DB Here
             }
         });
         process.setOnCancelled(e -> {
