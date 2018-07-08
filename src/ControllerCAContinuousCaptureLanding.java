@@ -156,6 +156,8 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
                 StartBtn.setDisable(true);
             }
         }
+        else if (phoneNumberField.getText().isEmpty())
+            System.err.println("Empty!");
         else {
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
