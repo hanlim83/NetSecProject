@@ -71,9 +71,9 @@ public class ControllerCALanding implements Initializable {
                 alert.setContentText("Ooops, Pcap4j can't find any Network Interfaces! Please check your interfaces or reinstall WinPcap to continue!");
                 alert.showAndWait();
             }
-            List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
-            ObservableList<String> intnames = FXCollections.observableList(names);
-            InterfaceChooser.setItems(intnames);
+            List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
+            ObservableList<String> intidS = FXCollections.observableList(idS);
+            InterfaceChooser.setItems(intidS);
             InterfaceChooser.setValue("Select an Interface");
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -104,7 +104,7 @@ public class ControllerCALanding implements Initializable {
     public void populateInformation(ActionEvent event) {
         device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
         List<PcapAddress> interfaceAddresses = device.getAddresses();
-        InterfaceName.setText(device.getName());
+        InterfaceName.setText(device.getDescription());
         InterfacePhysicalAddress.setText(device.getLinkLayerAddresses().get(0).toString().toUpperCase());
         InterfaceAddress1.setText(interfaceAddresses.get(0).getAddress().getHostAddress().toUpperCase());
         if (interfaceAddresses.size() >= 2){

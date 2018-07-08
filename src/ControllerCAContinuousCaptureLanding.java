@@ -67,6 +67,9 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     private JFXTextField interfaceIPAddress4;
 
     @FXML
+    private JFXTextField interfaceName;
+
+    @FXML
     private JFXDrawer drawer;
 
     @FXML
@@ -98,9 +101,9 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
                 alert.setContentText("Ooops, Pcap4j can't find any Network Interfaces! Please check your interfaces or reinstall WinPcap to continue!");
                 alert.showAndWait();
             }
-            List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
-            ObservableList<String> intnames = FXCollections.observableList(names);
-            InterfaceChooser.setItems(intnames);
+            List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
+            ObservableList<String> intidS = FXCollections.observableList(idS);
+            InterfaceChooser.setItems(intidS);
             InterfaceChooser.setValue("Select an Interface");
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -197,6 +200,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     @FXML
     public void populateInformation(ActionEvent event) {
         device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
+        interfaceName.setText(device.getDescription());
         List<PcapAddress> interfaceAddresses = device.getAddresses();
         interfaceIPAddress1.setText(interfaceAddresses.get(0).getAddress().getHostAddress().toUpperCase());
         if (interfaceAddresses.size() >= 2){

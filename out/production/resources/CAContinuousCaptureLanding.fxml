@@ -48,6 +48,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" GridPane.rowIndex="1">
@@ -89,16 +90,16 @@
                         <Font name="Lucida Sans Regular" size="22.0" />
                      </font>
                   </Text>
-                  <JFXTextField fx:id="interfaceIPAddress1" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                  <JFXTextField fx:id="interfaceIPAddress2" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                  <JFXTextField fx:id="interfaceIPAddress3" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                  <JFXTextField fx:id="interfaceIPAddress4" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interface IP Addresses:" GridPane.rowIndex="9">
+                  <JFXTextField fx:id="interfaceIPAddress1" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  <JFXTextField fx:id="interfaceIPAddress2" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                  <JFXTextField fx:id="interfaceIPAddress3" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <JFXTextField fx:id="interfaceIPAddress4" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interface IP Addresses:" GridPane.rowIndex="10">
                      <font>
                         <Font name="Lucida Sans Regular" size="22.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Threshold for average network traffic before &quot;Abnormal Surge of network Traffic&quot; Alert is raised&quot;" GridPane.rowIndex="5">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Threshold for average network traffic before &quot;Abnormal Surge of network Traffic&quot; Alert is raised" GridPane.rowIndex="5">
                      <font>
                         <Font name="Lucida Sans Regular" size="14.0" />
                      </font>
@@ -109,6 +110,12 @@
                      </font>
                   </Text>
                   <JFXComboBox fx:id="ThresholdChooser" onAction="#checkThresholdValue" prefHeight="25.0" prefWidth="502.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <JFXTextField fx:id="interfaceName" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interface Name:" GridPane.rowIndex="9">
+                     <font>
+                        <Font name="Lucida Sans Regular" size="22.0" />
+                     </font>
+                  </Text>
                </children>
             </GridPane>
          </children>
