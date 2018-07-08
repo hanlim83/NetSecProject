@@ -94,6 +94,15 @@ public class ContinuousNetworkCapture {
         }
     }
 
+    public boolean checkThreshold () {
+        if (Threshold == 0)
+            return false;
+        else if (perMinutePktCount < Threshold)
+            return false;
+        else
+            return true;
+    }
+
     public void printStat(){
         PcapStat ps;
         try {

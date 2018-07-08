@@ -252,7 +252,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
-            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem());
+            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

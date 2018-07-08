@@ -6,8 +6,11 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.nexmo.client.NexmoClient;
+import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.auth.AuthMethod;
 import com.nexmo.client.auth.TokenAuthMethod;
+import com.nexmo.client.sms.SmsSubmissionResult;
+import com.nexmo.client.sms.messages.TextMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -68,6 +71,10 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     private ScheduledFuture updateStatsFuture;
     private Runnable updateStats;
     private int Threshold;
+    private NexmoClient client;
+    private String PhoneNumber;
+    private Boolean sendOnce = false;
+    private int eventCount = 0;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
     private ScheduledExecutorService service;
@@ -78,7 +85,7 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         AuthMethod auth = new TokenAuthMethod("6198ebad", "fSNE4MWRtzpNxeGV");
-        NexmoClient client = new NexmoClient(auth);
+        client = new NexmoClient(auth);
     }
 
     @FXML
@@ -102,7 +109,7 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         stage.show();
     }
 
-    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath, String Threshold){
+    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath, String Threshold, String PhoneNumber){
         this.Odevice = nif;
         this.service = service;
         this.Ncapture = Capture;
@@ -115,6 +122,7 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         else {
             Cthreshold = Integer.parseInt(Threshold);
         }
+        this.PhoneNumber = PhoneNumber;
         this.Ccapture = new ContinuousNetworkCapture(device,exportFilePath, Cthreshold);
         updateStats = new Runnable() {
             @Override
@@ -124,6 +132,14 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                         totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
                         totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
                     });
+                    if (Ccapture.checkThreshold() && sendOnce == false ){
+                        ++eventCount;
+                        sendAlert();
+                        sendOnce = true;
+                        Platform.runLater(() -> {
+                            totalAlertsLabel.setText(Integer.toString(eventCount));
+                        });
+                    }
             }
         };
         loggingTextArea.setText(Pcaps.libVersion()+"\n"+"Starting Capture on "+device.getName()+"\n");
@@ -138,6 +154,24 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                 Ccapture.startSniffing();
             }
         }, 1, SECONDS);
+    }
+
+    public void sendAlert (){
+        System.out.println("Called!");
+        /*SmsSubmissionResult[] responses = new SmsSubmissionResult[0];
+        try {
+            responses = client.getSmsClient().submitMessage(new TextMessage(
+                    "FireE",
+                    "65"+PhoneNumber,
+                    "A spike of Network traffic activity has been detected! Please check the FireE Admin App for more information"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NexmoClientException e) {
+            e.printStackTrace();
+        }
+        for (SmsSubmissionResult response : responses) {
+            System.out.println(response);
+        }*/
     }
 
     public void hamburgerBar() {
