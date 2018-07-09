@@ -1,4 +1,5 @@
 import Model.ContinuousNetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.collections.FXCollections;
@@ -56,7 +57,7 @@ public class ControllerCALanding implements Initializable {
     private PcapNetworkInterface device;
     private Scene myScene;
     public static AnchorPane rootP;
-    private ScheduledExecutorService service;
+    private ScheduledExecutorServiceHandler handler;
     private ContinuousNetworkCapture Ccapture;
 
     @Override
@@ -91,14 +92,14 @@ public class ControllerCALanding implements Initializable {
             alert.showAndWait();
         }
     }
-    public void passVariables(ScheduledExecutorService service, ContinuousNetworkCapture Ccapture) {
-        this.service = service;
+    public void passVariables(ScheduledExecutorServiceHandler handler, ContinuousNetworkCapture Ccapture) {
+        this.handler = handler;
         this.Ccapture = Ccapture;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(null,this.service,null,Ccapture);
+            ctrl.getVariables(null,this.handler,null,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,12 +140,11 @@ public class ControllerCALanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,service,null,Ccapture);
+            controller.passVariables(device,handler,null,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
         stage.show();
     }
     public void hamburgerBar() {

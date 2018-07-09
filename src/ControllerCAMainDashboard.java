@@ -1,7 +1,4 @@
-import Model.CapturedPacket;
-import Model.ContinuousNetworkCapture;
-import Model.LineChartObject;
-import Model.NetworkCapture;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -68,7 +65,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<CapturedPacket>packets;
     private NetworkCapture Ncapture;
     private ContinuousNetworkCapture Ccapture;
-    private ScheduledExecutorService service;
+    private ScheduledExecutorServiceHandler handler;
     private XYChart.Series series;
     private NumberAxis chartXAxis;
     private NumberAxis chartYAxis;
@@ -118,9 +115,9 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture){
         this.device = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = NCapture;
         this.Ccapture = Ccapture;
         if (Ncapture == null){
@@ -135,7 +132,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,12 +149,18 @@ public class ControllerCAMainDashboard implements Initializable {
     public void startCapturing(){
         if (Ncapture == null)
             Ncapture = new NetworkCapture(device);
-        service.schedule(new Runnable() {
+        handler.setCcaptureRunnable(handler.getService().schedule(new Runnable() {
             @Override
             public void run() {
                 Ncapture.startSniffing();
             }
-        }, 1, SECONDS);
+        }, 1, SECONDS));
+        /*service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                Ncapture.startSniffing();
+            }
+        }, 1, SECONDS);*/
         play();
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
@@ -199,7 +202,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,7 +265,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+                ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -276,7 +279,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service,this.Ccapture);
+                controller.passVariables(handler,this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }

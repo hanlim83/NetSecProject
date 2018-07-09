@@ -162,4 +162,11 @@ public class NetworkCapture {
         return Phandle.isOpen();
     }
 
+    public boolean hasExistingPackets(){
+        if (!packets.isEmpty())
+            return true;
+        else
+            return false;
+    }
+
 }

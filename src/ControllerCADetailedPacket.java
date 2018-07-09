@@ -1,6 +1,7 @@
 import Model.CapturedPacket;
 import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -39,7 +40,7 @@ public class ControllerCADetailedPacket implements Initializable {
     private JFXButton returnCaptureBtn;
     public static AnchorPane rootP;
 
-    private ScheduledExecutorService service;
+    private ScheduledExecutorServiceHandler handler;
     private NetworkCapture Ncapture;
     private ContinuousNetworkCapture Ccapture;
     private PcapNetworkInterface device;
@@ -51,9 +52,9 @@ public class ControllerCADetailedPacket implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture){
         this.device = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = Ncapture;
         this.Ccapture = Ccapture;
         this.packet = packet;
@@ -61,7 +62,7 @@ public class ControllerCADetailedPacket implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,7 +106,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,service,Ncapture,Ccapture);
+            controller.passVariables(device,handler,Ncapture,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }

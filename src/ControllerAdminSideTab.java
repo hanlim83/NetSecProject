@@ -1,5 +1,6 @@
 import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,13 +38,13 @@ public class ControllerAdminSideTab {
 
     private Scene myScene;
     private static PcapNetworkInterface device;
-    private static ScheduledExecutorService service;
+    private static ScheduledExecutorServiceHandler handler;
     private static NetworkCapture Ncapture;
     private static ContinuousNetworkCapture Ccapture;
 
-    public void getVariables (PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
+    public void getVariables (PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
         this.device = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = Ncapture;
         this.Ccapture = Ccapture;
     }
@@ -58,7 +59,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service,Ccapture);
+                controller.passVariables(handler,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -73,7 +74,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device,service,null,Ccapture);
+                controller.passVariables(device,handler,null,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -88,7 +89,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device,service,Ncapture,Ccapture);
+                controller.passVariables(device,handler,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -107,7 +108,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service,Ccapture);
+                controller.passVariables(handler,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -122,7 +123,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device,service,Ncapture,Ccapture);
+                controller.passVariables(device,handler,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -137,7 +138,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device,service,Ncapture,Ccapture);
+                controller.passVariables(device,handler,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -210,7 +211,7 @@ public class ControllerAdminSideTab {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureLanding controller = loader.<ControllerCAContinuousCaptureLanding>getController();
-            controller.passVariables(device,service,Ncapture);
+            controller.passVariables(device,handler,Ncapture);
         } catch (IOException e) {
             e.printStackTrace();
         }

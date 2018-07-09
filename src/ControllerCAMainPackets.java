@@ -1,6 +1,7 @@
 import Model.CapturedPacket;
 import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -95,8 +96,8 @@ public class ControllerCAMainPackets implements Initializable {
     private ArrayList<CapturedPacket>packets;
     private ObservableList<CapturedPacket> OLpackets;
     private NetworkCapture Ncapture;
-    private ScheduledExecutorService service;
-    private ScheduledFuture tableviewRunnable;
+    private ScheduledExecutorServiceHandler handler;
+//    private ScheduledFuture tableviewRunnable;
     private ContinuousNetworkCapture Ccapture;
 
 
@@ -123,9 +124,9 @@ public class ControllerCAMainPackets implements Initializable {
             }
         });
     }
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture){
         this.device = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = NCapture;
         this.Ccapture = Ccapture;
         if (Ncapture == null){
@@ -143,7 +144,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,7 +153,7 @@ public class ControllerCAMainPackets implements Initializable {
     public void startCapturing(){
         if (Ncapture == null)
             Ncapture = new NetworkCapture(device);
-        tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
+        handler.setTableviewRunnable(handler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -164,19 +165,39 @@ public class ControllerCAMainPackets implements Initializable {
                     }
                 });
             }
-        }, 2, 1, TimeUnit.SECONDS);
-        service.schedule(new Runnable() {
+        }, 2, 1, TimeUnit.SECONDS));
+        /*tableviewRunnable = service.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        packets = Ncapture.packets;
+                        OLpackets = FXCollections.observableArrayList(packets);
+                        packetstable.setItems(OLpackets);
+                        packetstable.refresh();
+                    }
+                });
+            }
+        }, 2, 1, TimeUnit.SECONDS);*/
+        handler.setNcaptureRunnable(handler.getService().schedule(new Runnable() {
             @Override
             public void run() {
                 Ncapture.startSniffing();
             }
-        }, 1, SECONDS);
+        }, 1, SECONDS));
+        /*service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                Ncapture.startSniffing();
+            }
+        }, 1, SECONDS);*/
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
     public void stopCapturing(){
         Ncapture.stopSniffing();
-        tableviewRunnable.cancel(true);
+        handler.cancelTableviewRunnable();
+//        tableviewRunnable.cancel(true);
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -211,7 +232,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -270,7 +291,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
-                    controller.passVariables(device, service, Ncapture, selected,this.Ccapture);
+                    controller.passVariables(device, handler, Ncapture, selected,this.Ccapture);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -312,7 +333,7 @@ public class ControllerCAMainPackets implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
+                ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -329,7 +350,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service,this.Ccapture);
+                controller.passVariables(handler,this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }

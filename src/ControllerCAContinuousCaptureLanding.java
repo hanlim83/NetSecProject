@@ -1,4 +1,5 @@
 import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -84,7 +85,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     private PcapNetworkInterface device;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
-    private ScheduledExecutorService service;
+    private ScheduledExecutorServiceHandler handler;
     private NetworkCapture Ncapture;
 
     @Override
@@ -144,9 +145,9 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         interfaceIPAddress4.setFocusTraversable(false);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture){
         this.Odevice = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = Ncapture;
     }
 
@@ -258,7 +259,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
-            controller.startCapture(Odevice,service,Ncapture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
+            controller.startCapture(Odevice,handler,Ncapture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

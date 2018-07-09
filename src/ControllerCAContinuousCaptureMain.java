@@ -1,5 +1,6 @@
 import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -24,12 +25,11 @@ import javafx.stage.Stage;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,43 +37,34 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAContinuousCaptureMain implements Initializable {
 
+    public static AnchorPane rootP;
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private JFXHamburger hamburger;
-
     @FXML
     private JFXDrawer drawer;
-
     @FXML
     private JFXButton StopBtn;
-
     @FXML
     private Label totalPacketsLabel;
-
     @FXML
     private Label totalDroppedLabel;
-
     @FXML
     private Label totalAlertsLabel;
-
     @FXML
     private JFXTextArea loggingTextArea;
-
     private Scene myScene;
-    public static AnchorPane rootP;
     private ContinuousNetworkCapture Ccapture;
     private String exportFilePath;
-    private ScheduledFuture updateStatsFuture;
+    //    private ScheduledFuture updateStatsFuture;
     private Runnable updateStats;
     private int Threshold;
     private NexmoClient client;
     private String PhoneNumber;
-    private int eventCount = 0;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
-    private ScheduledExecutorService service;
+    private ScheduledExecutorServiceHandler handler;
     private NetworkCapture Ncapture;
     private PcapNetworkInterface device;
 
@@ -87,7 +78,8 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     @FXML
     public void stopCapture(ActionEvent event) {
         Ccapture.stopSniffing();
-        updateStatsFuture.cancel(true);
+        handler.cancelUpdateStatsFuture();
+//        updateStatsFuture.cancel(true);
         StopBtn.setDisable(true);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("CAContinuousCaptureLanding.fxml"));
@@ -97,7 +89,7 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureLanding controller = loader.<ControllerCAContinuousCaptureLanding>getController();
-            controller.passVariables(device,service,Ncapture);
+            controller.passVariables(device, handler, Ncapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,54 +97,61 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         stage.show();
     }
 
-    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, PcapNetworkInterface device, String filePath, String Threshold, String PhoneNumber){
+    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, PcapNetworkInterface device, String filePath, String Threshold, String PhoneNumber) {
         this.Odevice = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = Ncapture;
         this.device = device;
         this.exportFilePath = filePath;
         int Cthreshold;
-        if (Threshold.equals("None")){
+        if (Threshold.equals("None")) {
             Cthreshold = 0;
-        }
-        else {
+        } else {
             Cthreshold = Integer.parseInt(Threshold);
         }
         this.PhoneNumber = PhoneNumber;
-        this.Ccapture = new ContinuousNetworkCapture(device,exportFilePath, Cthreshold);
+        this.Ccapture = new ContinuousNetworkCapture(device, exportFilePath, Cthreshold);
         updateStats = new Runnable() {
             @Override
             public void run() {
-                    Ccapture.printStat();
-                    Platform.runLater(() -> {
-                        totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
-                        totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
-                    });
-                    if (Ccapture.checkThreshold()){
-                        sendAlert();
-                        Platform.runLater(() -> {
-                            totalAlertsLabel.setText(Integer.toString(Ccapture.getEvents()));
-                        });
-                    }
+                Ccapture.printStat();
+                if (Ccapture.checkThreshold())
+                    sendAlert();
+                try {
+                Platform.runLater(() -> {
+                    totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
+                    totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
+                    totalAlertsLabel.setText(Integer.toString(Ccapture.getEvents()));
+                });
+            } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         };
-        loggingTextArea.setText(Pcaps.libVersion()+"\n"+"Starting Capture on "+device.getName()+"\n");
+        loggingTextArea.setText(Pcaps.libVersion() + "\n" + "Starting Capture on " + device.getName() + "\n");
         List<PcapAddress> addresses = device.getAddresses();
-        for (PcapAddress p: addresses){
-            loggingTextArea.setText(loggingTextArea.getText()+"IP Address Assigned on Interface: "+p.toString()+"\n");
+        for (PcapAddress p : addresses) {
+            loggingTextArea.setText(loggingTextArea.getText() + "IP Address Assigned on Interface: " + p.toString() + "\n");
         }
-        updateStatsFuture = service.scheduleAtFixedRate(updateStats,2,1,SECONDS);
-        service.schedule(new Runnable() {
+        handler.setUpdateStatsFuture(handler.getService().scheduleAtFixedRate(updateStats, 2, 1, SECONDS));
+//        updateStatsFuture = service.scheduleAtFixedRate(updateStats,2,1,SECONDS);
+        handler.setCcaptureRunnable(handler.getService().schedule(new Runnable() {
             @Override
             public void run() {
                 Ccapture.startSniffing();
             }
-        }, 1, SECONDS);
+        }, 1, SECONDS));
+        /*service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                Ccapture.startSniffing();
+            }
+        }, 1, SECONDS);*/
     }
 
-    public void passVariables (PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
         this.Odevice = nif;
-        this.service = service;
+        this.handler = handler;
         this.Ncapture = Ncapture;
         this.Ccapture = Ccapture;
         updateStats = new Runnable() {
@@ -163,7 +162,7 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                     totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
                     totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
                 });
-                if (Ccapture.checkThreshold()){
+                if (Ccapture.checkThreshold()) {
                     sendAlert();
                     Platform.runLater(() -> {
                         totalAlertsLabel.setText(Integer.toString(Ccapture.getEvents()));
@@ -171,10 +170,10 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                 }
             }
         };
-        updateStatsFuture = service.scheduleAtFixedRate(updateStats,1,1,SECONDS);
+        handler.setUpdateStatsFuture(handler.getService().scheduleAtFixedRate(updateStats, 2, 1, SECONDS));
     }
 
-    public void sendAlert (){
+    public void sendAlert() {
         System.out.println("Called!");
         /*SmsSubmissionResult[] responses = new SmsSubmissionResult[0];
         try {
