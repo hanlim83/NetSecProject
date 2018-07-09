@@ -139,6 +139,11 @@ public class OAuth2Login {
         return userinfo.getEmail();
     }
 
+    public String getName() throws IOException {
+        Userinfoplus userinfo = oauth2.userinfo().get().execute();
+        return userinfo.getGivenName();
+    }
+
     static void header(String name) {
         System.out.println();
         System.out.println("================== " + name + " ==================");

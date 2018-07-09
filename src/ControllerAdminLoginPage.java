@@ -41,7 +41,7 @@ public class ControllerAdminLoginPage implements Initializable {
     private Scene myScene;
 
     private OAuth2Login login = new OAuth2Login();
-    private WindowsUtils utils = new WindowsUtils();
+//    private WindowsUtils utils = new WindowsUtils();
 
     private Credential credential;
     private String email = "";
@@ -239,7 +239,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     }
                     //Check with another DB
                     if (!email.equals("")) {
-                        AccStatus = utils.getAccStatus(email);
+//                        AccStatus = utils.getAccStatus(email);
                     }
                     return null;
                 }

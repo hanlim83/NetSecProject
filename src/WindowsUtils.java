@@ -71,6 +71,7 @@ public class WindowsUtils implements Runnable{
         return windowsApproved;
     }
 
+    //TODO Migrate this to the otherDB
     public void CheckSupportedVersion() throws SQLException {
         // TODO: fill this in
         // The instance connection name can be obtained from the instance overview page in Cloud Console
@@ -124,62 +125,62 @@ public class WindowsUtils implements Runnable{
         }
     }
 
-    //For testing move this somewhere else next time
-    public String getAccStatus(String email) throws SQLException {
-        // TODO: fill this in
-        // The instance connection name can be obtained from the instance overview page in Cloud Console
-        // or by running "gcloud sql instances describe <instance> | grep connectionName".
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-
-        // TODO: fill this in
-        // The database from which to list tables.
-        String databaseName = "user_info";
-
-        String username = "root";
-
-        // TODO: fill this in
-        // This is the password that was set via the Cloud Console or empty if never set
-        // (not recommended).
-        String password = "root";
-
-        String state = "";
-        if (instanceConnectionName.equals("user_info")) {
-            System.err.println("Please update the sample to specify the instance connection name.");
-            System.exit(1);
-        }
-
-        if (password.equals("<insert_password>")) {
-            System.err.println("Please update the sample to specify the mysql password.");
-            System.exit(1);
-        }
-
-        //[START doc-example]
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
-
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //same
-        System.out.println(jdbcUrl);
-
-        //check this
-        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
-
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT status FROM entries WHERE email='"+email+"'");
-            while (resultSet.next()) {
-                //System.out.println(resultSet.getString(1));
-                state=resultSet.getString(1);
-            }
-        }
-//        if (state==)
-        System.out.println(state);
-        return state;
-    }
+    //TODO MIGRATE TO User_InfoDB For testing move this somewhere else next time
+//    public String getAccStatus(String email) throws SQLException {
+//        // TODO: fill this in
+//        // The instance connection name can be obtained from the instance overview page in Cloud Console
+//        // or by running "gcloud sql instances describe <instance> | grep connectionName".
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//
+//        // TODO: fill this in
+//        // The database from which to list tables.
+//        String databaseName = "user_info";
+//
+//        String username = "root";
+//
+//        // TODO: fill this in
+//        // This is the password that was set via the Cloud Console or empty if never set
+//        // (not recommended).
+//        String password = "root";
+//
+//        String state = "";
+//        if (instanceConnectionName.equals("user_info")) {
+//            System.err.println("Please update the sample to specify the instance connection name.");
+//            System.exit(1);
+//        }
+//
+//        if (password.equals("<insert_password>")) {
+//            System.err.println("Please update the sample to specify the mysql password.");
+//            System.exit(1);
+//        }
+//
+//        //[START doc-example]
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+//        //same
+//        System.out.println(jdbcUrl);
+//
+//        //check this
+//        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+//        //[END doc-example]
+//
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//            ResultSet resultSet = statement.executeQuery("SELECT status FROM entries WHERE email='"+email+"'");
+//            while (resultSet.next()) {
+//                //System.out.println(resultSet.getString(1));
+//                state=resultSet.getString(1);
+//            }
+//        }
+////        if (state==)
+//        System.out.println(state);
+//        return state;
+//    }
 
     public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String email) throws SQLException {
         //maybe change to boolean next time

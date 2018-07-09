@@ -55,7 +55,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
     }
 
     private static Timer timer;
-    TimerTask Task;
+    private TimerTask Task;
 
     public void startTimer() {
         timer = new Timer();
