@@ -32,6 +32,9 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton continuousCapture;
 
+    @FXML
+    private JFXButton deviceButton;
+
     private Scene myScene;
     private static PcapNetworkInterface device;
     private static ScheduledExecutorService service;
@@ -164,7 +167,7 @@ public class ControllerAdminSideTab {
     @FXML
     void onClickLogs(MouseEvent event) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BucketsPage.fxml"));
+        loader.setLocation(getClass().getResource("LoggingPage.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = null;
@@ -176,6 +179,24 @@ public class ControllerAdminSideTab {
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("Logging Page");
+        stage.show();
+    }
+
+    @FXML
+    void onClickDevice(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Device Build Number Page");
         stage.show();
     }
 
@@ -197,5 +218,7 @@ public class ControllerAdminSideTab {
         stage.setScene(new Scene(nextView));
         stage.show();
     }
+
+
 
 }
