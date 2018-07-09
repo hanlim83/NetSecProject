@@ -97,6 +97,9 @@ public class ControllerSecureCloudStorage implements Initializable {
         String email = login.getEmail();
         Scanner s = new Scanner(email).useDelimiter("@");
         String emailFront = s.next();
+        // Extra algo
+        emailFront = emailFront.replace(".", "");
+        // Extra algo
         String bucketname = emailFront + "nspj";
 //        String bucketname="hugochiaxyznspj";
         Page<Blob> blobList = storage.list(bucketname);
