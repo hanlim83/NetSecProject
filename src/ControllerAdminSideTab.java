@@ -70,7 +70,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device,service,null);
+                controller.passVariables(device,service,null,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,7 +85,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device,service,Ncapture);
+                controller.passVariables(device,service,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }

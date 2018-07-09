@@ -270,7 +270,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
-                    controller.passVariables(device, service, Ncapture, selected);
+                    controller.passVariables(device, service, Ncapture, selected,this.Ccapture);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

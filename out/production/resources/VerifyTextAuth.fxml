@@ -28,6 +28,6 @@
          </font>
       </Label>
       <JFXButton fx:id="verifyMe" layoutX="571.0" layoutY="512.0" onAction="#verifyConfirm" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: green;" text="Verify me!" textFill="WHITE" />
-      <JFXButton layoutX="358.0" layoutY="512.0" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
+      <JFXButton layoutX="358.0" layoutY="512.0" onAction="#resendText" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
     </children>
 </AnchorPane>

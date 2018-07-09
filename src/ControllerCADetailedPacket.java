@@ -1,4 +1,5 @@
 import Model.CapturedPacket;
+import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -39,7 +40,8 @@ public class ControllerCADetailedPacket implements Initializable {
     public static AnchorPane rootP;
 
     private ScheduledExecutorService service;
-    private NetworkCapture capture;
+    private NetworkCapture Ncapture;
+    private ContinuousNetworkCapture Ccapture;
     private PcapNetworkInterface device;
     private CapturedPacket packet;
     private Scene myScene;
@@ -49,16 +51,16 @@ public class ControllerCADetailedPacket implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, CapturedPacket packet){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture){
         this.device = nif;
         this.service = service;
-        this.capture = Capture;
+        this.Ncapture = Ncapture;
         this.packet = packet;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.service,this.capture);
+            ctrl.getVariables(this.device,this.service,this.Ncapture,this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +104,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,service,capture);
+            controller.passVariables(device,service,Ncapture,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }

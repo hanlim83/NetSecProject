@@ -139,7 +139,7 @@ public class ControllerCALanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,service,null);
+            controller.passVariables(device,service,null,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
