@@ -4,6 +4,8 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -22,8 +24,15 @@
             <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
          </children>
       </AnchorPane>
-      <JFXButton fx:id="TestButton" layoutX="746.0" layoutY="165.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="150.0" prefWidth="184.0" text="Specific bucket testing button" />
+      <JFXButton fx:id="TestButton" layoutX="870.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="150.0" prefWidth="184.0" text="Specific bucket testing button" />
+      <JFXTreeTableView fx:id="JFXTreeTableView" layoutX="737.0" layoutY="206.0" prefHeight="150.0" prefWidth="317.0" />
+      <TableView layoutX="827.0" layoutY="387.0" prefHeight="200.0" prefWidth="234.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <AnchorPane fx:id="TableAnchorPane" layoutX="126.0" layoutY="76.0" prefHeight="513.0" prefWidth="602.0" />
       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXTreeTableView layoutX="368.0" layoutY="118.0" prefHeight="394.0" prefWidth="248.0" />
    </children>
 </AnchorPane>
