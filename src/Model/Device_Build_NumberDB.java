@@ -34,12 +34,13 @@ public class Device_Build_NumberDB {
 
         try (Statement statement = connection.createStatement()) {
 //            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT versionNumber FROM entries");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
             while (resultSet.next()) {
                 OSVersion osVersion = new OSVersion();
                 osVersion.setVersionName(resultSet.getString("versionName"));
                 osVersion.setVersionNumber(resultSet.getString("versionNumber"));
                 osVersion.setEntryID(resultSet.getInt("entryID"));
+                OSVersionList.add(osVersion);
 //                    SupportedVersions.add(resultSet.getString(1));
             }
         }
