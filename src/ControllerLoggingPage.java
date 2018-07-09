@@ -5,15 +5,18 @@ import com.google.api.gax.paging.Page;
 import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -22,6 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +34,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+//HI I AM HERE
 public class ControllerLoggingPage implements Initializable {
 
     @FXML
@@ -89,6 +94,9 @@ public class ControllerLoggingPage implements Initializable {
     @FXML
     private Label severity1;
 
+    @FXML
+    private JFXSpinner spinner;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -97,54 +105,101 @@ public class ControllerLoggingPage implements Initializable {
     LoggingOptions options;
     LogsExtract logsextract = new LogsExtract();
 
+    private int spinnerchecker;
+
+    private String filters;
+
     private ArrayList<LogsExtract> logsList;
     private ObservableList<LogsExtract> logsObservableList;
 
     private ArrayList<Integer> globalCheckerList2 = new ArrayList<Integer>();
 
+    Service process1 = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    loggingsnippets = new LoggingSnippets();
+                    Platform.runLater(() -> {
+                        options = LoggingOptions.getDefaultInstance();
+
+                        popupanchor.setVisible(false);
+                        logsTable.setVisible(true);
+                        spinner.setVisible(false);
+
+                        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+                        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
+                        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
+                        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
+                        globalCheckerList2 = logsextract.getGlobalChckerList();
+//                      user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+                        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+
+//                      globalCheckerList2 = logsextract.getGlobalChckerList();
+//                      int check = logsextract.getGlobalchecker();
+//                        System.out.println("MY CHECKER IS NOW " + check);
+//                         if (check==-1) {
+            //            System.out.println("MY CHECKER IS NOW " + check);
+            //            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+            //
+            //        } else {
+            //            System.out.println("MY CHECKER IS NOW " + check);
+            //            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+            //
+            //        }
+                        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
+                        logsList = loggingsnippets.getLogsExtractList();
+                    });
+                    return null;
+                }
+            };
+        }
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        loggingsnippets = new LoggingSnippets();
-        options = LoggingOptions.getDefaultInstance();
-
-        popupanchor.setVisible(false);
-        logsTable.setVisible(true);
-
-
-        //test inputfilter to trigger loglist
-        //  loggingsnippets.listLogEntries("one two");
-
-        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
-        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
-        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
-        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
-        globalCheckerList2 = logsextract.getGlobalChckerList();
-//        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-
-
+        spinner.setVisible(false);
+        process1.start();
+//        loggingsnippets = new LoggingSnippets();
+//        options = LoggingOptions.getDefaultInstance();
+//
+//        popupanchor.setVisible(false);
+//        logsTable.setVisible(true);
+//        spinner.setVisible(false);
+//
+//        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+//        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
+//        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
+//        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
 //        globalCheckerList2 = logsextract.getGlobalChckerList();
-//        int check = logsextract.getGlobalchecker();
-//        System.out.println("MY CHECKER IS NOW " + check);
-//        if (check==-1) {
-//            System.out.println("MY CHECKER IS NOW " + check);
-//            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+////        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+//        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
 //
-//        } else {
-//            System.out.println("MY CHECKER IS NOW " + check);
-//            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-//
-//        }
-        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
-        logsList = loggingsnippets.getLogsExtractList();
+////        globalCheckerList2 = logsextract.getGlobalChckerList();
+////        int check = logsextract.getGlobalchecker();
+////        System.out.println("MY CHECKER IS NOW " + check);
+////        if (check==-1) {
+////            System.out.println("MY CHECKER IS NOW " + check);
+////            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+////
+////        } else {
+////            System.out.println("MY CHECKER IS NOW " + check);
+////            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+////
+////        }
+//        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
+//        logsList = loggingsnippets.getLogsExtractList();
     }
+
 
     @FXML
     public void clickItem(MouseEvent event) {
         try {
             if (event.getClickCount() == 2) //Checking double click
             {
+                spinner.setVisible(false);
                 logsTable.setVisible(false);
                 popupanchor.setVisible(true);
                 timestamp1.setText(logsTable.getSelectionModel().getSelectedItem().getTimestamp());
@@ -153,61 +208,143 @@ public class ControllerLoggingPage implements Initializable {
                 bucketName1.setText(logsTable.getSelectionModel().getSelectedItem().getBucketName());
                 user1.setText(logsTable.getSelectionModel().getSelectedItem().getFinalEmail());
             }
-        }catch (com.google.cloud.logging.LoggingException e1) {
+        } catch (com.google.cloud.logging.LoggingException e1) {
             e1.printStackTrace();
-        } catch(io.grpc.StatusRuntimeException e2) {
+        } catch (io.grpc.StatusRuntimeException e2) {
             e2.printStackTrace();
         }
     }
 
     @FXML
     void handledeleted(MouseEvent event) {
-        popupanchor.setVisible(false);
+        logsTable.getItems().clear();
+        createdlogs.setDisable(true);
+        general.setDisable(true);
+        deletedlogs.setDisable(true);
+        spinner.setVisible(true);
         logsTable.setVisible(true);
-        try (Logging logging = options.getService()) {
-            System.out.println(options.getProjectId());
-            loggingsnippets.listLogEntries("delete");
-        } catch (com.google.cloud.logging.LoggingException e1) {
-            e1.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        logsObservableList = FXCollections.observableList(logsList);
-        logsTable.setItems(logsObservableList);
+        popupanchor.setVisible(false);
+        filters = "delete";
+        process.start();
+
+        process.setOnSucceeded(e -> {
+            spinner.setVisible(false);
+            popupanchor.setVisible(false);
+            createdlogs.setDisable(false);
+            general.setDisable(false);
+            deletedlogs.setDisable(false);
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
     }
+
 
     @FXML
     void handlecreated(MouseEvent event) {
-        popupanchor.setVisible(false);
+        logsTable.getItems().clear();
+        createdlogs.setDisable(true);
+        deletedlogs.setDisable(true);
+        general.setDisable(true);
+        spinner.setVisible(true);
         logsTable.setVisible(true);
-        try (Logging logging = options.getService()) {
-            System.out.println(options.getProjectId());
-            loggingsnippets.listLogEntries("create");
-        } catch (com.google.cloud.logging.LoggingException e1) {
-            e1.printStackTrace();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        logsObservableList = FXCollections.observableList(logsList);
-        logsTable.setItems(logsObservableList);
+        popupanchor.setVisible(false);
+        filters = "create";
+        process.start();
+
+        process.setOnSucceeded(e -> {
+            spinner.setVisible(false);
+            createdlogs.setDisable(false);
+            popupanchor.setVisible(false);
+            deletedlogs.setDisable(false);
+            general.setDisable(false);
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+//        try (Logging logging = options.getService()) {
+//            System.out.println(options.getProjectId());
+//            loggingsnippets.listLogEntries("create");
+//        } catch (com.google.cloud.logging.LoggingException e1) {
+//            e1.printStackTrace();
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        logsObservableList = FXCollections.observableList(logsList);
+//        logsTable.setItems(logsObservableList);
     }
 
 
     @FXML
     void handleonetwo(MouseEvent event) {
-        popupanchor.setVisible(false);
+        logsTable.getItems().clear();
+        general.setDisable(true);
+        deletedlogs.setDisable(true);
+        createdlogs.setDisable(true);
+        spinner.setVisible(true);
         logsTable.setVisible(true);
-        try (Logging logging = options.getService()) {
-            System.out.println(options.getProjectId());
-            loggingsnippets.listLogEntries("one two");
-        } catch (com.google.cloud.logging.LoggingException e1) {
-            e1.printStackTrace();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        logsObservableList = FXCollections.observableList(logsList);
-        logsTable.setItems(logsObservableList);
+        popupanchor.setVisible(false);
+        filters = "one two";
+        process.start();
+
+        process.setOnSucceeded(e -> {
+            general.setDisable(false);
+            deletedlogs.setDisable(false);
+            createdlogs.setDisable(false);
+            spinner.setVisible(false);
+            popupanchor.setVisible(false);
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+//        try (Logging logging = options.getService()) {
+//            System.out.println(options.getProjectId());
+//            loggingsnippets.listLogEntries("one two");
+//        } catch (com.google.cloud.logging.LoggingException e1) {
+//            e1.printStackTrace();
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        logsObservableList = FXCollections.observableList(logsList);
+//        logsTable.setItems(logsObservableList);
     }
+
+    //Service method
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    try (Logging logging = options.getService()) {
+                        System.out.println(options.getProjectId());
+                        loggingsnippets.listLogEntries(filters);
+                    } catch (com.google.cloud.logging.LoggingException e1) {
+                        e1.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        logsObservableList = FXCollections.observableList(logsList);
+                        logsTable.setItems(logsObservableList);
+                    });
+                    return null;
+                }
+            };
+        }
+    };
 
     public void hamburgerBar() {
         rootP = anchorPane;

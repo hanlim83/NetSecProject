@@ -36,6 +36,8 @@ public class LoggingSnippets {
 
     private Logging logging;
     ArrayList<LogsExtract> logsExtractList = new ArrayList<LogsExtract>();
+    private int spinnerchecker;
+
 
     public LoggingSnippets() {
         Credential credential;
