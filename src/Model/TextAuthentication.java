@@ -17,6 +17,7 @@ public class TextAuthentication {
 
         try {
 
+
             AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
             NexmoClient client = new NexmoClient(auth);
 

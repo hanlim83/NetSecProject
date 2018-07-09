@@ -49,19 +49,32 @@ public class ControllerVerifyText {
     private JFXButton verifyMe;
 
     @FXML
-    private JFXButton backButton;
+    private JFXButton resendText;
 
     public void sendNew(String phoneNo){
 
         TextAuthentication auth = new TextAuthentication();
         auth.sendAuth(phoneNo);
-        System.out.println("Message resent!");
+        numberViewer.setText(phoneNo);
+        System.out.println(" Correct phone number input");
 
     }
 
+//    public void newCheck(String requestId) throws NexmoClientException {
+//
+//        TextAuthentication check = new TextAuthentication();
+//        check.checkAuth(requestId);
+//        System.out.println("Check cleared");
+//
+//    }
+
 
     @FXML
-    void backToNumber(ActionEvent event) {
+    void resendText(ActionEvent event) {
+
+        ControllerVerifyText resend = new ControllerVerifyText();
+        String phoneNo = numberViewer.getText();
+        resend.sendNew(phoneNo);
 
     }
 

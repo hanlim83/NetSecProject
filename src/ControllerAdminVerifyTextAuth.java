@@ -32,6 +32,10 @@ public class ControllerAdminVerifyTextAuth {
     @FXML
     void adminResend(ActionEvent event) {
 
+        ControllerVerifyText resend = new ControllerVerifyText();
+        String phoneNo = numberViewer.getText();
+        resend.sendNew(phoneNo);
+
     }
 
     @FXML
@@ -45,7 +49,7 @@ public class ControllerAdminVerifyTextAuth {
 
         if (check == true) {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("DeviceCheck.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminDeviceCheck.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
