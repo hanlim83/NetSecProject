@@ -1,7 +1,8 @@
+import Model.Device_Build_NumberDB;
 import Model.MyBlob;
 import Model.OAuth2Login;
+import Model.OSVersion;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.util.DateTime;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -9,23 +10,24 @@ import com.google.cloud.storage.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
-import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +36,7 @@ import java.util.logging.Logger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class ControllerUserHome implements Initializable{
+public class ControllerUserHome implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
@@ -53,26 +55,71 @@ public class ControllerUserHome implements Initializable{
     @FXML
     private JFXButton RSAButton;
 
+    @FXML
+    private Label LastFileModifiedLabel;
+
+    @FXML
+    private Label TimeLabel;
+
+    @FXML
+    private Label GreetingsLabel;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
 
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
-    WindowsUtils utils=new WindowsUtils();
+    WindowsUtils utils = new WindowsUtils();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        updateTimer();
+        try {
+            credential = login.login();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            getLatestFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(BlobList);
+        System.out.println("=======================LATEST FILE/TIME===============================");
+        System.out.println(BlobList.get(0).toString());
+        System.out.println(convertTime(BlobList.get(0).getTime()));
+        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
+        try {
+            GreetingsLabel.setText("Good afternoon "+login.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    ArrayList<MyBlob> BlobList=new ArrayList<MyBlob>();
+    private void updateTimer(){
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
+                Platform.runLater(() -> {
+                    TimeLabel.setText(string);
+                });
+            }
+        }, 0, 100);
+    }
+
+
+    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+
     private void getLatestFile() throws IOException {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email=login.getEmail();
+        String email = login.getEmail();
         Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront=s.next();
-        String bucketname=emailFront+"nspj";
+        String emailFront = s.next();
+        String bucketname = emailFront + "nspj";
 //        String bucketname="hugochiaxyznspj";
         Page<Blob> blobs = storage.list(bucketname);
         for (Blob blob : blobs.iterateAll()) {
@@ -88,68 +135,34 @@ public class ControllerUserHome implements Initializable{
         }
     }
 
-    public String convertTime(long time){
+    public String convertTime(long time) {
         Date date = new Date(time);
-        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return format.format(date);
     }
 
-
-//    @Override
-//    public int compareTo(Blob o) {
-//        return 0;
-//    }
-
-
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    //To migrate codes here for efficency
+                    return null;
+                }
+            };
+        }
+    };
 
 
     //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
-        try {
-            credential=login.login();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        getLatestFile();
-        Collections.sort(BlobList);
-        System.out.println("=======================LATEST FILE/TIME===============================");
-        System.out.println(BlobList.get(0).toString());
-        System.out.println(convertTime(BlobList.get(0).getTime()));
-//        int count=1;
-//        String DomainFirewall = null;
-//        String PrivateFirewall = null;
-//        String PublicFirewall = null;
-//        StringBuilder output = new StringBuilder();
-////        String term="state";
-//        Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
-//        p.waitFor(); //Wait for the process to finish before continuing the Java program.
-//
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        String line = "";
-//        while ((line = reader.readLine()) != null) {
-//            //Scanner s = new Scanner(line).useDelimiter();
-//            if (line.startsWith("State")){
-//                Scanner s = new Scanner(line).useDelimiter("                                 ");
-//                String firstLine=s.next();
-//                String firewallStatus=s.next();
-////                output.append(line + "\n");
-//                System.out.println(line);
-//                System.out.println(firewallStatus);
-//                //System.out.println("Delimit here next time");
-//                if(count==1){
-//                    DomainFirewall=firewallStatus;
-//                }else if(count==2){
-//                    PrivateFirewall=firewallStatus;
-//                }else if(count==3){
-//                    PublicFirewall=firewallStatus;
-//                }
-//                count++;
-//            }
-//            output.append(line + "\n");
-//        }
-//
+        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
+//        device_build_numberDB.deleteOSVersion("8");
+        ArrayList<OSVersion> osList=device_build_numberDB.CheckSupportedVersion();
+        System.out.println(osList.size());
 ////        Scanner s = new Scanner(osName).useDelimiter("                ");
 ////        String firstLine=s.next();
 ////        String osBuildNoStr=s.next();
@@ -246,8 +259,7 @@ public class ControllerUserHome implements Initializable{
                 } else {
                     uploadFile(file.getName(), file.getAbsolutePath());
                 }
-            }
-            else{
+            } else {
                 System.out.println("No file selected");
             }
         } catch (Throwable t) {

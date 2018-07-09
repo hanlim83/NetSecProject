@@ -76,7 +76,12 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     @FXML
     void onActionResendButton(ActionEvent event) {
+        SignUpPage signUpPage=new SignUpPage();
+        this.email=signUpPage.getEmail();
+        this.password=signUpPage.getPassword();
+        this.phoneNo=signUpPage.getPhoneNo();
         //verifyText.sendAuth();
+        System.out.println(email+password+phoneNo);
     }
 
     @FXML
