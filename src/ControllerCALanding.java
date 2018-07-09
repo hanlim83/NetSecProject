@@ -1,3 +1,4 @@
+import Model.ContinuousNetworkCapture;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.collections.FXCollections;
@@ -56,6 +57,7 @@ public class ControllerCALanding implements Initializable {
     private Scene myScene;
     public static AnchorPane rootP;
     private ScheduledExecutorService service;
+    private ContinuousNetworkCapture Ccapture;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,13 +91,14 @@ public class ControllerCALanding implements Initializable {
             alert.showAndWait();
         }
     }
-    public void passVariables(ScheduledExecutorService service) {
+    public void passVariables(ScheduledExecutorService service, ContinuousNetworkCapture Ccapture) {
         this.service = service;
+        this.Ccapture = Ccapture;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(null,this.service,null);
+            ctrl.getVariables(null,this.service,null,Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }

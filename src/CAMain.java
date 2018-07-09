@@ -20,7 +20,7 @@ public class CAMain extends Application {
             ControllerCALanding controller = loader.<ControllerCALanding>getController();
             int cores = Runtime.getRuntime().availableProcessors();
             service = Executors.newScheduledThreadPool(cores);
-            controller.passVariables(service);
+            controller.passVariables(service,null);
             Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);

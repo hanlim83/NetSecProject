@@ -5,6 +5,8 @@ import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ContinuousNetworkCapture {
     //Pre-Defined Variables
@@ -17,18 +19,28 @@ public class ContinuousNetworkCapture {
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
     private PcapDumper dumper;
-    private int pktCount = 0;
+    private Timer timer = new Timer(true);
+    private TimerTask sendExpiry;
 
     //Data Variables
     private long PacketsReceived,PacketsDropped;
     private String filePath;
     private int Threshold,perMinutePktCount = 0;
     private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null;
+    private int eventCount = 0;
+    private boolean sendLimit = false;
+    private int pktCount = 0;
 
     public ContinuousNetworkCapture(PcapNetworkInterface nif, String filePath, int Threshold) {
         this.Netinterface = nif;
         this.filePath = filePath;
         this.Threshold = Threshold;
+        sendExpiry = new TimerTask() {
+            @Override
+            public void run() {
+                sendLimit = false;
+            }
+        };
     }
 
     //Overrides default packet handling
@@ -70,6 +82,16 @@ public class ContinuousNetworkCapture {
         return pktCount;
     }
 
+    //Events count increment
+    synchronized private void incrementEvents(){
+        ++eventCount;
+    }
+
+    //get the event count
+    synchronized public int getEvents(){
+        return eventCount;
+    }
+
     public int getPerMinutePktCount() {
         return perMinutePktCount;
     }
@@ -99,8 +121,13 @@ public class ContinuousNetworkCapture {
             return false;
         else if (perMinutePktCount < Threshold)
             return false;
-        else
+        else if (sendLimit == true)
+            return false;
+        else {
+            sendLimit = true;
+            timer.schedule(sendExpiry,600000);
             return true;
+        }
     }
 
     public void printStat(){

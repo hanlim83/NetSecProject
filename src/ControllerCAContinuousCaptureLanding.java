@@ -85,7 +85,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
     private ScheduledExecutorService service;
-    private NetworkCapture capture;
+    private NetworkCapture Ncapture;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -144,10 +144,10 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         interfaceIPAddress4.setFocusTraversable(false);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture){
         this.Odevice = nif;
         this.service = service;
-        this.capture = Capture;
+        this.Ncapture = Ncapture;
     }
 
     public void checkPhoneNumber() {
@@ -258,7 +258,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
-            controller.startCapture(Odevice,service,capture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
+            controller.startCapture(Odevice,service,Ncapture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

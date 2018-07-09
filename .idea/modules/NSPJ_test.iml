@@ -25,7 +25,7 @@
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.api-client:google-api-client:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client-jetty:1.11.0-beta" level="project" />
-    <orderEntry type="library" name="Gradle: com.nexmo:client:3.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.nexmo:client:3.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.5" level="project" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.postgresql:postgresql:9.4-1200-jdbc41" level="project" />

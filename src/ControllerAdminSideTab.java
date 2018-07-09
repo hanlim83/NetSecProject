@@ -1,3 +1,4 @@
+import Model.ContinuousNetworkCapture;
 import Model.NetworkCapture;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
@@ -34,12 +35,14 @@ public class ControllerAdminSideTab {
     private Scene myScene;
     private static PcapNetworkInterface device;
     private static ScheduledExecutorService service;
-    private static NetworkCapture capture;
+    private static NetworkCapture Ncapture;
+    private static ContinuousNetworkCapture Ccapture;
 
-    public void getVariables (PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture capture) {
+    public void getVariables (PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
         this.device = nif;
         this.service = service;
-        this.capture = capture;
+        this.Ncapture = Ncapture;
+        this.Ccapture = Ccapture;
     }
 
     @FXML
@@ -52,14 +55,14 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service);
+                controller.passVariables(service,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
             stage.show();
         }
-        else if (capture == null) {
+        else if (Ncapture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
@@ -82,7 +85,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device,service,capture);
+                controller.passVariables(device,service,Ncapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -101,14 +104,14 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(service);
+                controller.passVariables(service,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
             stage.show();
         }
-         else if (capture == null) {
+         else if (Ncapture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
@@ -116,7 +119,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device,service,null);
+                controller.passVariables(device,service,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -131,7 +134,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device,service,capture);
+                controller.passVariables(device,service,Ncapture,Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -186,7 +189,7 @@ public class ControllerAdminSideTab {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureLanding controller = loader.<ControllerCAContinuousCaptureLanding>getController();
-            controller.passVariables(device,service,capture);
+            controller.passVariables(device,service,Ncapture);
         } catch (IOException e) {
             e.printStackTrace();
         }

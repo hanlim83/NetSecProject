@@ -70,7 +70,6 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     private int Threshold;
     private NexmoClient client;
     private String PhoneNumber;
-    private Boolean sendOnce = false;
     private int eventCount = 0;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
@@ -106,10 +105,10 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         stage.show();
     }
 
-    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Capture, PcapNetworkInterface device, String filePath, String Threshold, String PhoneNumber){
+    public void startCapture(PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, PcapNetworkInterface device, String filePath, String Threshold, String PhoneNumber){
         this.Odevice = nif;
         this.service = service;
-        this.Ncapture = Capture;
+        this.Ncapture = Ncapture;
         this.device = device;
         this.exportFilePath = filePath;
         int Cthreshold;
@@ -129,12 +128,10 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                         totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
                         totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
                     });
-                    if (Ccapture.checkThreshold() && sendOnce == false ){
-                        ++eventCount;
+                    if (Ccapture.checkThreshold()){
                         sendAlert();
-                        sendOnce = true;
                         Platform.runLater(() -> {
-                            totalAlertsLabel.setText(Integer.toString(eventCount));
+                            totalAlertsLabel.setText(Integer.toString(Ccapture.getEvents()));
                         });
                     }
             }
@@ -151,6 +148,30 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                 Ccapture.startSniffing();
             }
         }, 1, SECONDS);
+    }
+
+    public void passVariables (PcapNetworkInterface nif, ScheduledExecutorService service, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
+        this.Odevice = nif;
+        this.service = service;
+        this.Ncapture = Ncapture;
+        this.Ccapture = Ccapture;
+        updateStats = new Runnable() {
+            @Override
+            public void run() {
+                Ccapture.printStat();
+                Platform.runLater(() -> {
+                    totalPacketsLabel.setText(Integer.toString(Ccapture.getPacketCount()));
+                    totalDroppedLabel.setText(Long.toString(Ccapture.getPacketsDropped()));
+                });
+                if (Ccapture.checkThreshold()){
+                    sendAlert();
+                    Platform.runLater(() -> {
+                        totalAlertsLabel.setText(Integer.toString(Ccapture.getEvents()));
+                    });
+                }
+            }
+        };
+        updateStatsFuture = service.scheduleAtFixedRate(updateStats,1,1,SECONDS);
     }
 
     public void sendAlert (){
