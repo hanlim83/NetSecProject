@@ -154,6 +154,20 @@ public class ControllerAdminLoginPage implements Initializable {
                 LoadingSpinner.setVisible(false);
             } else {
                 //Check DB Here
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
+//                    controller.passData(login.getEmail());
+                } catch (IOException u) {
+                    u.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
             }
         });
         process.setOnCancelled(e -> {
