@@ -122,6 +122,7 @@ public class ControllerCAMainDashboard implements Initializable {
         this.device = nif;
         this.service = service;
         this.Ncapture = NCapture;
+        this.Ccapture = Ccapture;
         if (Ncapture == null){
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);

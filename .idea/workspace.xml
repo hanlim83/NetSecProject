@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list id="e95f4402-ef0a-4456-a097-720142e5b4c0" name="Refactored Packet Capturing Classes" comment="" />
-    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="">
+    <list default="true" id="bc7c78d2-63d8-403e-8cbb-10f2a14caaa4" name="Default" comment="Refactored Network Capturing Classes">
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerAdminSideTab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerCALanding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCALanding.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControllerCAMainPackets.java" afterDir="false" />
     </list>
+    <list id="e95f4402-ef0a-4456-a097-720142e5b4c0" name="Refactored Packet Capturing Classes" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -100,10 +99,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ControllerCAMainPackets.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
+            <state relative-caret-position="-673">
               <caret line="272" column="94" selection-start-line="272" selection-start-column="94" selection-end-line="272" selection-end-column="94" />
             </state>
           </provider>
@@ -130,17 +129,17 @@
       <file leaf-file-name="ControllerCADetailedPacket.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ControllerCADetailedPacket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="109" column="9" lean-forward="true" selection-start-line="109" selection-start-column="9" selection-end-line="109" selection-end-column="9" />
+            <state relative-caret-position="-669">
+              <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ControllerCAMainDashboard.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ControllerCAMainDashboard.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2465">
-              <caret line="195" column="40" lean-forward="true" selection-start-line="195" selection-start-column="40" selection-end-line="195" selection-end-column="40" />
+            <state relative-caret-position="272">
+              <caret line="124" column="33" selection-start-line="124" selection-start-column="33" selection-end-line="124" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -369,9 +368,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6118620782322" />
+        <entry key="$PROJECT_DIR$" value="6118621420338" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="4058361938" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2431614430" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2585518924" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="1862156268" />
       </map>
@@ -633,12 +632,12 @@
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureLanding.java" />
         <option value="$PROJECT_DIR$/src/Model/ContinuousNetworkCapture.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAContinuousCaptureMain.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" />
         <option value="$PROJECT_DIR$/src/ControllerCALanding.java" />
-        <option value="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" />
         <option value="$PROJECT_DIR$/src/ControllerAdminSideTab.java" />
         <option value="$PROJECT_DIR$/src/ControllerCAMainPackets.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/ControllerCADetailedPacket.java" />
+        <option value="$PROJECT_DIR$/src/ControllerCAMainDashboard.java" />
       </list>
     </option>
   </component>
@@ -682,12 +681,6 @@
               <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
               <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="NSPJ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="NetSecProject" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="Model" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -1124,11 +1117,18 @@
       <option name="project" value="LOCAL" />
       <updated>1531064374442</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Refactored Network Capturing Classes">
+      <created>1531103699370</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1531103699370</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="328919000" />
+    <option name="totallyTimeSpent" value="329399000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1145,19 +1145,19 @@
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.32897604" />
-      <window_info active="true" anchor="bottom" id="Messages" order="12" sideWeight="0.5147651" visible="true" weight="0.31766382" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.5147651" weight="0.31766382" />
       <window_info anchor="right" id="Palette&#9;" order="10" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.4852349" side_tool="true" weight="0.31766382" />
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.32955465" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.50959486" weight="0.24358974" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.50959486" visible="true" weight="0.3148148" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6007463" weight="0.35185185" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32763532" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16375838" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16375838" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4717484" weight="0.31196582" />
       <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.195629" />
@@ -1282,7 +1282,8 @@
     <MESSAGE value="Fixed Annoying Phone Number Issue In Continuous Capture Landing" />
     <MESSAGE value="Fixed Interface Selection Bug in Continouous Capture and Landing" />
     <MESSAGE value="Allowed Multiple alerts to be sent" />
-    <option name="LAST_COMMIT_MESSAGE" value="Allowed Multiple alerts to be sent" />
+    <MESSAGE value="Refactored Network Capturing Classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored Network Capturing Classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1619,31 +1620,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2465">
-          <caret line="195" column="40" lean-forward="true" selection-start-line="195" selection-start-column="40" selection-end-line="195" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCALanding.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="141" column="65" selection-start-line="141" selection-start-column="65" selection-end-line="141" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ControllerCADetailedPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="109" column="9" lean-forward="true" selection-start-line="109" selection-start-column="9" selection-end-line="109" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -1656,8 +1636,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ControllerCAMainPackets.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
+        <state relative-caret-position="-673">
           <caret line="272" column="94" selection-start-line="272" selection-start-column="94" selection-end-line="272" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCADetailedPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-669">
+          <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ControllerCAMainDashboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="124" column="33" selection-start-line="124" selection-start-column="33" selection-end-line="124" selection-end-column="33" />
         </state>
       </provider>
     </entry>

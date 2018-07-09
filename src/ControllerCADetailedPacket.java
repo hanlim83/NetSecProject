@@ -55,6 +55,7 @@ public class ControllerCADetailedPacket implements Initializable {
         this.device = nif;
         this.service = service;
         this.Ncapture = Ncapture;
+        this.Ccapture = Ccapture;
         this.packet = packet;
         try {
             FXMLLoader loader = new FXMLLoader();
