@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class User_InfoDB {
 
     //Not tested yet
-    public ArrayList<User> CheckSupportedVersion() throws SQLException {
+    public ArrayList<User> getUserList() throws SQLException {
         ArrayList<User> UserList = new ArrayList<User>();
 
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
@@ -59,8 +59,6 @@ public class User_InfoDB {
         return UserList;
     }
 
-
-    //TODO MIGRATE TO User_InfoDB For testing move this somewhere else next time
     public String getAccStatus(String email) throws SQLException {
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
         String databaseName = "user_info";
@@ -132,8 +130,6 @@ public class User_InfoDB {
         //same
         System.out.println(jdbcUrl);
 
-        //check this
-        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
         //[END doc-example]
 
         //Here no need to return any result so how?
@@ -146,7 +142,6 @@ public class User_InfoDB {
 //            }
             statement.executeUpdate("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateKey='"+encryptedPrivateKey+"', phoneNo='"+phoneNo+"' WHERE email='"+email+"'");
         }
-
     }
 
     public void DELETEUSER(String email) throws SQLException {
@@ -242,5 +237,36 @@ public class User_InfoDB {
             }
         }
         return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo, String email) throws SQLException {
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+        String databaseName = "user_info";
+        String username = "root";
+        String password = "root";
+
+//            if (instanceConnectionName.equals("<device-supported-versions>")) {
+//                System.err.println("Please update the sample to specify the instance connection name.");
+//                System.exit(1);
+//            }
+//
+//            if (password.equals("<insert_password>")) {
+//                System.err.println("Please update the sample to specify the mysql password.");
+//                System.exit(1);
+//            }
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE entries SET phoneNo='"+phoneNo+"' WHERE email='"+email+"'");
+        }
     }
 }
