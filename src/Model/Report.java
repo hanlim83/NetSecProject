@@ -8,24 +8,36 @@ import com.kanishka.virustotal.exception.UnauthorizedAccessException;
 import com.kanishka.virustotalv2.VirusTotalConfig;
 import com.kanishka.virustotalv2.VirustotalPublicV2;
 import com.kanishka.virustotalv2.VirustotalPublicV2Impl;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Report {
 
-    private static String index;
-    private static String software;
-    private static String version;
-    private static String result;
+    private static ArrayList<Integer> indexNo = new ArrayList();
+    private static ArrayList<String> avSoftware = new ArrayList();
+    private static ArrayList<String> softwareVersion = new ArrayList();
+    private static ArrayList<String> results = new ArrayList();
+    private int index;
+    private String software;
+    private String version;
+    private String result;
+    private ObservableList<Report> reportLister = FXCollections.observableArrayList();
+    public Report(int indexx, String softwaree, String versionn, String resultss) {
+        this.index = indexx;
+        this.software = softwaree;
+        this.version = versionn;
+        this.result = resultss;
+    }
 
-    public String getIndex() {
+    public Report() {
+
+    }
+
+    public int getIndex() {
         return index;
     }
 
@@ -40,22 +52,6 @@ public class Report {
     public String getResult() {
         return result;
     }
-
-    private static ArrayList<String> indexNo = new ArrayList();
-    private static ArrayList<String> avSoftware = new ArrayList();
-    private static ArrayList<String> softwareVersion = new ArrayList();
-    private static ArrayList<String> results = new ArrayList();
-
-    private ObservableList<Report> reportLister = FXCollections.observableArrayList();
-
-    public Report(String indexx, String softwaree, String versionn, String resultss) {
-
-    }
-
-    public Report() {
-
-    }
-
 
     public void assignment() {
 
@@ -79,24 +75,25 @@ public class Report {
 
                 VirusScanInfo virusInfo = scans.get(key);
 
-                this.software = key;
+                //this.software = key;
                 String this1 = key;
                 avSoftware.add(this1);
                 System.out.println(avSoftware + "\n\n\n");
 
-                this.version = virusInfo.getVersion();
-                softwareVersion.add(version);
+                //this.version = virusInfo.getVersion();
+                String this2 = virusInfo.getVersion();
+                softwareVersion.add(this2);
                 System.out.println(softwareVersion + "\n\n\n");
 
                 if (virusInfo.isDetected() == true) {
-
-                    this.result = new String("Malicious");
-                    results.add(result);
+                    //this.result = new String("Malicious");
+                    String this3 = "Malicious";
+                    results.add(this3);
                     System.out.println(results + "\n\n\n");
                 } else {
-
-                    this.result = new String("Safe");
-                    results.add(result);
+                    //this.result = new String("Safe");
+                    String this3 = "Safe";
+                    results.add(this3);
                     System.out.println(results + "\n\n\n");
 
                 }
@@ -105,7 +102,7 @@ public class Report {
             for (i = 0; i <= report.getTotal(); i++) {
 
 
-                this.index = Integer.toString(i);
+                this.index = i;
                 indexNo.add(index);
             }
 
@@ -125,18 +122,14 @@ public class Report {
     public ObservableList tryThis() {
 
         int i;
-        for (i = 1; i < indexNo.size(); i++) {
+        for (i = 0; i < indexNo.size() -1; i++) {
 
 
-            String ind = indexNo.get(i);
+            int ind = indexNo.get(i);
             String soft = avSoftware.get(i);
             String vers = softwareVersion.get(i);
             String resu = results.get(i);
-
-            reportLister.add(new Report(ind, soft, vers, resu));
-
-            return reportLister;
-
+            reportLister.add(new Report(++ind, soft, vers, resu));
         }
         return reportLister;
     }

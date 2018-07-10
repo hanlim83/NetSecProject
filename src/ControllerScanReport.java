@@ -67,14 +67,15 @@ public class ControllerScanReport implements Initializable {
 
         Report ok = new Report();
         ok.assignment();
-
-
         index.setCellValueFactory(new PropertyValueFactory<Report, String>("index"));
         antiVirus.setCellValueFactory(new PropertyValueFactory<Report, String>("software"));
         version.setCellValueFactory(new PropertyValueFactory<Report, String>("version"));
         scanResult.setCellValueFactory(new PropertyValueFactory<Report, String>("result"));
 
         hello = ok.tryThis();
+        for (Report r : hello){
+            r.toString();
+        }
         scanView.setItems(hello);
 
 
