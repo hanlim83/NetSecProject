@@ -1,5 +1,5 @@
 import Model.OAuth2Login;
-import Model.admin_DB;
+import Database.admin_DB;
 import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -15,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -148,28 +147,53 @@ public class ControllerAdminLoginPage implements Initializable {
 
         process.setOnSucceeded(e -> {
             endTimer();
+            process.reset();
+            LoginButton.setDisable(false);
+            LoadingSpinner.setVisible(false);
             System.out.println("Process succeeded");
             if (email.equals("")) {
                 System.out.println("No email");
-                process.reset();
-                LoginButton.setDisable(false);
-                LoadingSpinner.setVisible(false);
             } else {
-                //Check DB Here
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
+                if (AccStatus.equals("1")) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+                    Parent nextView = null;
+                    try {
+                        nextView = loader.load();
+                        ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
 //                    controller.passData(login.getEmail());
-                } catch (IOException u) {
-                    u.printStackTrace();
+                    } catch (IOException u) {
+                        u.printStackTrace();
+                    }
+                    stage.setScene(new Scene(nextView));
+                    stage.setTitle("NSPJ");
+                    stage.show();
+                } else{
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "Permission Invalid: You are not allowed the access the app. Please contact youradministator for more information";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
                 }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
-                stage.show();
             }
         });
         process.setOnCancelled(e -> {
@@ -205,6 +229,28 @@ public class ControllerAdminLoginPage implements Initializable {
         process.setOnFailed(e -> {
             endTimer();
             System.out.println("Failed");
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            String title = "";
+            String content = "An error occured. Please try again later";
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
             process.reset();
             LoginButton.setDisable(false);
             LoadingSpinner.setVisible(false);
@@ -242,7 +288,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     //Check with another DB
                     if (!email.equals("")) {
 //                        AccStatus = utils.getAccStatus(email);
-//                        AccStatus=admin_db.getAdminAccStatus();
+                        AccStatus=admin_db.getAdminAccStatus(email);
                     }
                     return null;
                 }

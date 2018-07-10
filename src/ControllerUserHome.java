@@ -162,8 +162,8 @@ public class ControllerUserHome implements Initializable {
     void onClickRandomButton(ActionEvent event) throws Exception {
         Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
 //        device_build_numberDB.deleteOSVersion("8");
-        ArrayList<OSVersion> osList=device_build_numberDB.CheckSupportedVersion();
-        System.out.println(osList.size());
+//        ArrayList<OSVersion> osList=device_build_numberDB.CheckSupportedVersion();
+//        System.out.println(osList.size());
 ////        Scanner s = new Scanner(osName).useDelimiter("                ");
 ////        String firstLine=s.next();
 ////        String osBuildNoStr=s.next();
@@ -190,6 +190,7 @@ public class ControllerUserHome implements Initializable {
 //        //TODO TESTING DELETE B4 PUSH
 ////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
 //        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
+        device_build_numberDB.insertNewOSVersion("From JAVA","Hello");
     }
 
     @FXML
@@ -216,83 +217,6 @@ public class ControllerUserHome implements Initializable {
     void onClickCloudStorageTestButton(ActionEvent event) throws Exception {
         System.out.println(getIp());
         MACaddrTest();
-        try {
-            // authorization
-            credential = login.login();
-            // set up global Oauth2 instance
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            //FEATURE: Add ownerWindow to block screen
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                String pathsInfo = "";
-                pathsInfo += "getPath(): " + file.getPath() + "\n";
-                pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
-
-                pathsInfo += (new File(file.getPath())).isAbsolute();
-
-                try {
-                    pathsInfo += "getCanonicalPath(): " +
-                            file.getCanonicalPath() + "\n";
-                } catch (IOException ex) {
-
-                }
-                System.out.println(pathsInfo);
-                // authorization + Get Buckets
-                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-                //Testing for storage
-                Page<Bucket> buckets = storage.list();
-                for (Bucket bucket : buckets.iterateAll()) {
-                    System.out.println(bucket.toString());
-                }
-
-                for (Bucket bucket : buckets.iterateAll()) {
-                    Page<Blob> blobs = bucket.list();
-                    for (Blob blob : blobs.iterateAll()) {
-                        // do something with the blob
-                        System.out.println(blob);
-                        System.out.println(blob.getName());
-                    }
-                }
-                //String filename= "TestFILENEW1";
-                if (checkNameTaken(file.getName()) == true) {
-                    System.out.println("Change NAME!!!!");
-                } else {
-                    uploadFile(file.getName(), file.getAbsolutePath());
-                }
-            } else {
-                System.out.println("No file selected");
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-    public boolean checkNameTaken(String fileName) {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        Page<Blob> blobs = storage.list("hr_dept");
-        for (Blob blob : blobs.iterateAll()) {
-            // do something with the blob
-            System.out.println("FROM METHOD" + blob);
-            System.out.println("FROM METHOD" + blob.getName());
-            if (fileName.equals(blob.getName())) {
-                System.out.println("Choose Different NAME!");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void uploadFile(String filename, String AbsolutePath) throws FileNotFoundException {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        Page<Bucket> buckets = storage.list();
-        for (Bucket bucket : buckets.iterateAll()) {
-            System.out.println(bucket.toString());
-            File initialFile = new File(AbsolutePath);
-            InputStream targetStream = new FileInputStream(initialFile);
-            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-            Blob blob = bucket.create(filename, targetStream, "text/plain");
-        }
     }
 
     public static String getIp() throws Exception {

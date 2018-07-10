@@ -1,11 +1,11 @@
-package Model;
+package Database;
 
 import java.sql.*;
 
 public class admin_DB {
     public String getAdminAccStatus(String email) throws SQLException {
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "user_info";
+        String databaseName = "admin_DB";
         String username = "root";
         String password = "root";
 
