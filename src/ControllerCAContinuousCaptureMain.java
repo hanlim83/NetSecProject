@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -57,11 +56,9 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     private Scene myScene;
     private ContinuousNetworkCapture Ccapture;
     private String exportFilePath;
-    //    private ScheduledFuture updateStatsFuture;
     private Runnable updateStats;
     private int Threshold;
     private NexmoClient client;
-    private String PhoneNumber;
     //Imported from previous screens
     private PcapNetworkInterface Odevice;
     private ScheduledExecutorServiceHandler handler;
@@ -79,7 +76,6 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
     public void stopCapture(ActionEvent event) {
         Ccapture.stopSniffing();
         handler.cancelUpdateStatsFuture();
-//        updateStatsFuture.cancel(true);
         StopBtn.setDisable(true);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("CAContinuousCaptureLanding.fxml"));
@@ -109,8 +105,8 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
         } else {
             Cthreshold = Integer.parseInt(Threshold);
         }
-        this.PhoneNumber = PhoneNumber;
         this.Ccapture = new ContinuousNetworkCapture(device, exportFilePath, Cthreshold);
+        this.Ccapture.setPhoneNumber(PhoneNumber);
         updateStats = new Runnable() {
             @Override
             public void run() {
@@ -141,12 +137,14 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
                 Ccapture.startSniffing();
             }
         }, 1, SECONDS));
-        /*service.schedule(new Runnable() {
-            @Override
-            public void run() {
-                Ccapture.startSniffing();
-            }
-        }, 1, SECONDS);*/
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.Odevice,this.handler,this.Ncapture,this.Ccapture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, ContinuousNetworkCapture Ccapture) {
@@ -171,23 +169,33 @@ public class ControllerCAContinuousCaptureMain implements Initializable {
             }
         };
         handler.setUpdateStatsFuture(handler.getService().scheduleAtFixedRate(updateStats, 2, 1, SECONDS));
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.Odevice,this.handler,this.Ncapture,this.Ccapture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendAlert() {
         System.out.println("Called!");
-        /*SmsSubmissionResult[] responses = new SmsSubmissionResult[0];
-        try {
-            responses = client.getSmsClient().submitMessage(new TextMessage(
-                    "FireE",
-                    "65"+PhoneNumber,
-                    "A spike of Network traffic activity has been detected! Please check the FireE Admin App for more information"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NexmoClientException e) {
-            e.printStackTrace();
-        }
-        for (SmsSubmissionResult response : responses) {
-            System.out.println(response);
+        /*if (Ccapture.getPhoneNumber() != null) {
+            SmsSubmissionResult[] responses = new SmsSubmissionResult[0];
+            try {
+                responses = client.getSmsClient().submitMessage(new TextMessage(
+                        "FireE",
+                        "65"+Ccapture.getPhoneNumber(),
+                        "A spike of Network traffic activity has been detected! Please check the FireE Admin App for more information"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NexmoClientException e) {
+                e.printStackTrace();
+            }
+            for (SmsSubmissionResult response : responses) {
+                System.out.println(response);
+            }
         }*/
     }
 

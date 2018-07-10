@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ControllerCALanding implements Initializable {
+    public static AnchorPane rootP;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -52,11 +52,9 @@ public class ControllerCALanding implements Initializable {
     private JFXTextField InterfacePhysicalAddress;
     @FXML
     private JFXDrawer drawer;
-
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
     private Scene myScene;
-    public static AnchorPane rootP;
     private ScheduledExecutorServiceHandler handler;
     private ContinuousNetworkCapture Ccapture;
 
@@ -67,7 +65,7 @@ public class ControllerCALanding implements Initializable {
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
-            if (devices == null){
+            if (devices == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("No Network Interface Found");
                 alert.setHeaderText("No Network Interface Found");
@@ -92,6 +90,7 @@ public class ControllerCALanding implements Initializable {
             alert.showAndWait();
         }
     }
+
     public void passVariables(ScheduledExecutorServiceHandler handler, ContinuousNetworkCapture Ccapture) {
         this.handler = handler;
         this.Ccapture = Ccapture;
@@ -99,11 +98,12 @@ public class ControllerCALanding implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(null,this.handler,null,Ccapture);
+            ctrl.getVariables(null, this.handler, null, Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void populateInformation(ActionEvent event) {
         device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
@@ -111,26 +111,24 @@ public class ControllerCALanding implements Initializable {
         InterfaceName.setText(device.getDescription());
         InterfacePhysicalAddress.setText(device.getLinkLayerAddresses().get(0).toString().toUpperCase());
         InterfaceAddress1.setText(interfaceAddresses.get(0).getAddress().getHostAddress().toUpperCase());
-        if (interfaceAddresses.size() >= 2){
+        if (interfaceAddresses.size() >= 2) {
             InterfaceAddress2.setText(interfaceAddresses.get(1).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             InterfaceAddress2.setText("No Address Assigned");
         }
-        if (interfaceAddresses.size() >= 3){
+        if (interfaceAddresses.size() >= 3) {
             InterfaceAddress3.setText(interfaceAddresses.get(2).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             InterfaceAddress3.setText("No Address Assigned");
         }
-        if (interfaceAddresses.size() >= 4){
+        if (interfaceAddresses.size() >= 4) {
             InterfaceAddress4.setText(interfaceAddresses.get(3).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             InterfaceAddress4.setText("No Address Assigned");
         }
         StartBtn.setDisable(false);
     }
+
     @FXML
     public void capture(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -140,13 +138,14 @@ public class ControllerCALanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,handler,null,Ccapture);
+            controller.passVariables(device, handler, null, Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
         stage.show();
     }
+
     public void hamburgerBar() {
         rootP = anchorPane;
 

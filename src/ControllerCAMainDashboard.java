@@ -33,13 +33,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAMainDashboard implements Initializable {
+    public static AnchorPane rootP;
+    private final int MAX_DATA_POINTS = 24, MAX = 39, MIN = 1;
+    public ArrayList<LineChartObject> packetsLineChart;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -53,16 +55,14 @@ public class ControllerCAMainDashboard implements Initializable {
     @FXML
     private JFXButton clearCaptureBtn;
     @FXML
-    private LineChart<Number,Number> networkTrafficChart;
+    private LineChart<Number, Number> networkTrafficChart;
     @FXML
     private PieChart protocolChart;
     @FXML
     private PieChart top10IPChart;
-
     private PcapNetworkInterface device;
     private Scene myScene;
-    public static AnchorPane rootP;
-    private ArrayList<CapturedPacket>packets;
+    private ArrayList<CapturedPacket> packets;
     private NetworkCapture Ncapture;
     private ContinuousNetworkCapture Ccapture;
     private ScheduledExecutorServiceHandler handler;
@@ -71,8 +71,6 @@ public class ControllerCAMainDashboard implements Initializable {
     private NumberAxis chartYAxis;
     private Timeline animation;
     private double y = 10;
-    private final int MAX_DATA_POINTS = 24, MAX = 39, MIN = 1;
-    public ArrayList<LineChartObject> packetsLineChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,10 +78,9 @@ public class ControllerCAMainDashboard implements Initializable {
         captureToggle.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (captureToggle.isSelected()){
+                if (captureToggle.isSelected()) {
                     startCapturing();
-                }
-                else {
+                } else {
                     stopCapturing();
                 }
             }
@@ -105,7 +102,7 @@ public class ControllerCAMainDashboard implements Initializable {
     public void plotCaptureLine() {
         LineChartObject data = Ncapture.getTrafficPerSecond();
         series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
-        System.out.println(data.getLocation()+","+data.getData());
+        System.out.println(data.getLocation() + "," + data.getData());
         if (data.getCount() > MAX_DATA_POINTS) {
             series.getData().remove(0);
         }
@@ -115,15 +112,19 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture) {
         this.device = nif;
         this.handler = handler;
         this.Ncapture = NCapture;
         this.Ccapture = Ccapture;
-        if (Ncapture == null){
+        if (Ncapture == null) {
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);
-        } else if (Ncapture != null){
+        } else if (Ncapture.isRunning()) {
+            captureToggle.setSelected(true);
+            play();
+
+        } else if (Ncapture != null) {
             clearCaptureBtn.setDisable(false);
             exportPcapBtn.setDisable(false);
             packets = Ncapture.packets;
@@ -132,7 +133,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,26 +147,31 @@ public class ControllerCAMainDashboard implements Initializable {
         animation.pause();
     }
 
-    public void startCapturing(){
+    public void startCapturing() {
         if (Ncapture == null)
             Ncapture = new NetworkCapture(device);
-        handler.setCcaptureRunnable(handler.getService().schedule(new Runnable() {
-            @Override
-            public void run() {
-                Ncapture.startSniffing();
-            }
-        }, 1, SECONDS));
-        /*service.schedule(new Runnable() {
-            @Override
-            public void run() {
-                Ncapture.startSniffing();
-            }
-        }, 1, SECONDS);*/
+        if (handler.getNcaptureRunnable() == null || !handler.getStatusNcaptureRunnable()) {
+            handler.setNcaptureRunnable(handler.getService().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    Ncapture.startSniffing();
+                }
+            }, 1, SECONDS));
+        }
         play();
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
-    public void stopCapturing(){
+
+    public void stopCapturing() {
         Ncapture.stopSniffing();
         stop();
         //Alert below
@@ -174,9 +180,9 @@ public class ControllerCAMainDashboard implements Initializable {
         String title = "Packet Capturing Summary";
         String content;
         if (com.sun.jna.Platform.isWindows())
-            content = "Packets Received By Interface: "+Ncapture.getPacketsReceived()+"\nPackets Dropped: "+Ncapture.getPacketsDropped()+"\nPackets Dropped By Interface: "+Ncapture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+Ncapture.getPacketsCaptured();
+            content = "Packets Received By Interface: " + Ncapture.getPacketsReceived() + "\nPackets Dropped: " + Ncapture.getPacketsDropped() + "\nPackets Dropped By Interface: " + Ncapture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + Ncapture.getPacketsCaptured();
         else
-            content = "Packets Received By Interface: "+Ncapture.getPacketsReceived()+"\nPackets Dropped: "+Ncapture.getPacketsDropped()+"\nPackets Dropped By Interface: "+Ncapture.getPacketsDroppedByInt()+"\nTotal Packets Captured: "+Ncapture.getPktCount();
+            content = "Packets Received By Interface: " + Ncapture.getPacketsReceived() + "\nPackets Dropped: " + Ncapture.getPacketsDropped() + "\nPackets Dropped By Interface: " + Ncapture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + Ncapture.getPktCount();
         JFXButton close = new JFXButton("Close");
         close.setButtonType(JFXButton.ButtonType.RAISED);
         close.setStyle("-fx-background-color: #00bfff;");
@@ -202,11 +208,12 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void hamburgerBar() {
         rootP = anchorPane;
 
@@ -236,6 +243,7 @@ public class ControllerCAMainDashboard implements Initializable {
             }
         });
     }
+
     @FXML
     public void ClearPackets(ActionEvent event) {
         myScene = anchorPane.getScene();
@@ -251,7 +259,7 @@ public class ControllerCAMainDashboard implements Initializable {
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label(title));
         layout.setBody(new Label(content));
-        layout.setActions(clearCapture,clearCaptureAndInt);
+        layout.setActions(clearCapture, clearCaptureAndInt);
         JFXAlert<Void> alert = new JFXAlert<>(stage);
         alert.setOverlayClose(true);
         alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
@@ -265,7 +273,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
+                ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -279,7 +287,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(handler,this.Ccapture);
+                controller.passVariables(handler, this.Ccapture);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -289,6 +297,7 @@ public class ControllerCAMainDashboard implements Initializable {
         });
         alert.showAndWait();
     }
+
     @FXML
     public void launchPcapExport(ActionEvent event) {
         myScene = anchorPane.getScene();

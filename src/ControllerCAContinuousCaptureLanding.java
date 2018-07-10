@@ -24,63 +24,49 @@ import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ControllerCAContinuousCaptureLanding implements Initializable {
 
+    public static AnchorPane rootP;
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private JFXHamburger hamburger;
-
     @FXML
     private JFXTextField phoneNumberField;
-
     @FXML
     private JFXTextField pcapFilePathField;
-
     @FXML
     private JFXTextField pcapFileNameField;
-
     @FXML
     private JFXComboBox<String> InterfaceChooser;
-
     @FXML
     private JFXTextField interfaceIPAddress1;
-
     @FXML
     private JFXTextField interfaceIPAddress2;
-
     @FXML
     private JFXTextField interfaceIPAddress3;
-
     @FXML
     private JFXTextField interfaceIPAddress4;
-
     @FXML
     private JFXTextField interfaceName;
-
     @FXML
     private JFXDrawer drawer;
-
     @FXML
     private JFXButton StartBtn;
-
     @FXML
     private JFXComboBox<String> ThresholdChooser;
-
     private Scene myScene;
-    public static AnchorPane rootP;
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
     //Imported from previous screens
@@ -95,7 +81,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
             devices = Pcaps.findAllDevs();
-            if (devices == null){
+            if (devices == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("No Network Interface Found");
                 alert.setHeaderText("No Network Interface Found");
@@ -120,7 +106,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
             alert.showAndWait();
         }
         phoneNumberField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue) {
+            if (!newValue) {
                 checkPhoneNumber();
             }
         });
@@ -145,7 +131,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         interfaceIPAddress4.setFocusTraversable(false);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture) {
         this.Odevice = nif;
         this.handler = handler;
         this.Ncapture = Ncapture;
@@ -159,8 +145,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
             else {
                 StartBtn.setDisable(true);
             }
-        }
-        else if (phoneNumberField.getText().isEmpty())
+        } else if (phoneNumberField.getText().isEmpty())
             System.err.println("Empty!");
         else {
             myScene = anchorPane.getScene();
@@ -204,22 +189,19 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         interfaceName.setText(device.getDescription());
         List<PcapAddress> interfaceAddresses = device.getAddresses();
         interfaceIPAddress1.setText(interfaceAddresses.get(0).getAddress().getHostAddress().toUpperCase());
-        if (interfaceAddresses.size() >= 2){
+        if (interfaceAddresses.size() >= 2) {
             interfaceIPAddress2.setText(interfaceAddresses.get(1).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             interfaceIPAddress2.setText("No Address Assigned");
         }
-        if (interfaceAddresses.size() >= 3){
+        if (interfaceAddresses.size() >= 3) {
             interfaceIPAddress3.setText(interfaceAddresses.get(2).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             interfaceIPAddress3.setText("No Address Assigned");
         }
-        if (interfaceAddresses.size() >= 4){
+        if (interfaceAddresses.size() >= 4) {
             interfaceIPAddress4.setText(interfaceAddresses.get(3).getAddress().getHostAddress().toUpperCase());
-        }
-        else {
+        } else {
             interfaceIPAddress4.setText("No Address Assigned");
         }
         if (checkFields())
@@ -259,7 +241,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAContinuousCaptureMain controller = loader.<ControllerCAContinuousCaptureMain>getController();
-            controller.startCapture(Odevice,handler,Ncapture,device,pcapFilePathField.getText(),ThresholdChooser.getSelectionModel().getSelectedItem(),phoneNumberField.getText());
+            controller.startCapture(Odevice, handler, Ncapture, device, pcapFilePathField.getText(), ThresholdChooser.getSelectionModel().getSelectedItem(), phoneNumberField.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -267,7 +249,7 @@ public class ControllerCAContinuousCaptureLanding implements Initializable {
         stage.show();
     }
 
-    public boolean checkFields (){
+    public boolean checkFields() {
         String regexStr = "^[0-9]{8}$";
         if (!phoneNumberField.getText().isEmpty() && phoneNumberField.getText().matches(regexStr) && (phoneNumberField.getText().charAt(0) == '8' || phoneNumberField.getText().charAt(0) == '9') && !pcapFilePathField.getText().isEmpty() && !pcapFileNameField.getText().isEmpty() && !InterfaceChooser.getSelectionModel().getSelectedItem().equals("Select an Interface") && !InterfaceChooser.getSelectionModel().getSelectedItem().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold"))
             return true;

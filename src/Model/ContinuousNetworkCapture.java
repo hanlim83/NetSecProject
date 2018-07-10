@@ -31,6 +31,7 @@ public class ContinuousNetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
+    private String PhoneNumber;
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
@@ -101,6 +102,14 @@ public class ContinuousNetworkCapture {
 
     public int getPerMinutePktCount() {
         return perMinutePktCount;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
     }
 
     public void getCurrentTimeStamp() {

@@ -22,12 +22,12 @@ import org.pcap4j.core.PcapNetworkInterface;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ControllerCADetailedPacket implements Initializable {
 
+    public static AnchorPane rootP;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -38,8 +38,6 @@ public class ControllerCADetailedPacket implements Initializable {
     private JFXDrawer drawer;
     @FXML
     private JFXButton returnCaptureBtn;
-    public static AnchorPane rootP;
-
     private ScheduledExecutorServiceHandler handler;
     private NetworkCapture Ncapture;
     private ContinuousNetworkCapture Ccapture;
@@ -52,7 +50,7 @@ public class ControllerCADetailedPacket implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture){
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture) {
         this.device = nif;
         this.handler = handler;
         this.Ncapture = Ncapture;
@@ -62,7 +60,7 @@ public class ControllerCADetailedPacket implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device,this.handler,this.Ncapture,this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +95,7 @@ public class ControllerCADetailedPacket implements Initializable {
             }
         });
     }
+
     @FXML
     void returntoCapture(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -106,7 +105,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,handler,Ncapture,Ccapture);
+            controller.passVariables(device, handler, Ncapture, Ccapture);
         } catch (IOException e) {
             e.printStackTrace();
         }
