@@ -23,12 +23,12 @@
            </children>
        </AnchorPane>
       <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="76.0" prefHeight="535.0" prefWidth="219.0" />
-      <TableView fx:id="scanView" layoutX="89.0" layoutY="196.0" prefHeight="296.0" prefWidth="890.0">
+      <TableView fx:id="scanView" layoutX="93.0" layoutY="202.0" prefHeight="284.0" prefWidth="882.0">
         <columns>
             <TableColumn fx:id="index" prefWidth="62.0" text="#" />
           <TableColumn fx:id="antiVirus" prefWidth="393.0" text="AV Software" />
-          <TableColumn fx:id="version" prefWidth="249.0" text="Version" />
-            <TableColumn fx:id="scanResult" prefWidth="202.0" text="Result" />
+          <TableColumn fx:id="version" prefWidth="161.0" text="Version" />
+            <TableColumn fx:id="scanResult" prefWidth="241.0" text="Result" />
         </columns>
       </TableView>
    </children>
