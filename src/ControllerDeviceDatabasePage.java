@@ -181,7 +181,9 @@ public class ControllerDeviceDatabasePage implements Initializable {
     @FXML
     void handleSubmit(MouseEvent event) {
         String verName = versionname.getText();
-        String verNumber = versionNumber.getText();
+        String verNumber = versionnumber.getText();
+        System.out.println("VERSION NAME IS : " + verName);
+        System.out.println("VERSION NUMBER IS : " + verNumber);
 
         try {
             deviceDB.insertNewOSVersion(verName,verNumber);

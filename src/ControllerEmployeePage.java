@@ -1,8 +1,14 @@
 import Model.IAMPermissions;
+import com.google.cloud.logging.Logging;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +37,9 @@ public class ControllerEmployeePage implements Initializable {
     @FXML
     private JFXButton listPermissions;
 
+    @FXML
+    private JFXSpinner spinner;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -44,8 +53,38 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void handleListPermissions(MouseEvent event) {
-        permissions.listPermissions();
+        process.start();
+        spinner.setVisible(true);
+
+
+        process.setOnSucceeded(e -> {
+            spinner.setVisible(false);
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+
     }
+
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    permissions.listPermissions();
+                    Platform.runLater(() -> {
+
+                    });
+                    return null;
+                }
+            };
+        }
+    };
 
     public void hamburgerBar() {
         rootP = anchorPane;
