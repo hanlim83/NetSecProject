@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class IAMPermissions implements Runnable{
- //   String line;
-
-//    Pattern p = Pattern.compile("members");
 
     ArrayList<String> permissionList = new ArrayList<>();
+    GetIAM getiam;
+
 
     public IAMPermissions(){
 
@@ -38,8 +37,12 @@ public class IAMPermissions implements Runnable{
             if (line == null) {
                 break;
             }
-           System.out.println("TRY!! " + line);
+            permissionList.add(line);
         }
+//        for(int i=0;i<permissionList.size();i++){
+//            System.out.println("TRYING NOW " + permissionList.get(i));
+//        }
+        getiam = new GetIAM(permissionList);
         return line;
     }
 

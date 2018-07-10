@@ -3,6 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -22,6 +25,17 @@
             </children>
         </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton fx:id="listPermissions" layoutX="270.0" layoutY="105.0" onMouseClicked="#handleListPermissions" text="TESTING BUTTON" />
+      <JFXButton fx:id="listPermissions" layoutX="219.0" layoutY="101.0" onMouseClicked="#handleListPermissions" text="TESTING BUTTON" />
+      <JFXSpinner fx:id="spinner" layoutX="413.0" layoutY="210.0" prefHeight="206.0" prefWidth="217.0" visible="false" />
+      <TableView fx:id="employeeTable" layoutX="74.0" layoutY="147.0" prefHeight="390.0" prefWidth="901.0">
+        <columns>
+          <TableColumn fx:id="entryID" prefWidth="88.0" text="Entry ID" />
+          <TableColumn fx:id="email" prefWidth="218.0" text="Email" />
+            <TableColumn fx:id="handphone" prefWidth="148.0" text="Handphone" />
+            <TableColumn fx:id="status" prefWidth="117.0" text="Status" />
+            <TableColumn fx:id="hashpassword" prefWidth="138.0" text="Hash Password" />
+            <TableColumn prefWidth="191.0" text="Role" />
+        </columns>
+      </TableView>
     </children>
 </AnchorPane>
