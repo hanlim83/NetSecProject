@@ -119,6 +119,7 @@ public class ControllerUserHome implements Initializable {
         String email = login.getEmail();
         Scanner s = new Scanner(email).useDelimiter("@");
         String emailFront = s.next();
+        emailFront = emailFront.replace(".", "");
         String bucketname = emailFront + "nspj";
 //        String bucketname="hugochiaxyznspj";
         Page<Blob> blobs = storage.list(bucketname);

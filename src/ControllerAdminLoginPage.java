@@ -1,4 +1,5 @@
 import Model.OAuth2Login;
+import Model.admin_DB;
 import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -42,6 +43,7 @@ public class ControllerAdminLoginPage implements Initializable {
 
     private OAuth2Login login = new OAuth2Login();
 //    private WindowsUtils utils = new WindowsUtils();
+    private admin_DB admin_db = new admin_DB();
 
     private Credential credential;
     private String email = "";
@@ -240,6 +242,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     //Check with another DB
                     if (!email.equals("")) {
 //                        AccStatus = utils.getAccStatus(email);
+//                        AccStatus=admin_db.getAdminAccStatus();
                     }
                     return null;
                 }
