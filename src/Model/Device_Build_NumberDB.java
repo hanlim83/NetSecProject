@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Device_Build_NumberDB {
+    //Stable
     public ArrayList<OSVersion> CheckSupportedVersion() throws SQLException {
         ArrayList<OSVersion> OSVersionList = new ArrayList<OSVersion>();
 
@@ -78,9 +79,7 @@ public class Device_Build_NumberDB {
 //            statement.executeUpdate("INSERT INTO entries (versionName, versionNumber) VALUES ('JAVA','JAVATEST')");
         }
     }
-
-    //TODO FINISH THIS
-    //Tested and Working
+    
     public void deleteOSVersion(String entryID) throws SQLException {
         //Test out whether needs to be int or String also can
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";

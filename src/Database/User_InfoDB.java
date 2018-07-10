@@ -1,8 +1,64 @@
-package Model;
+package Database;
+
+import Model.OSVersion;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class User_InfoDB {
+
+    //Not tested yet
+    public ArrayList<User> CheckSupportedVersion() throws SQLException {
+        ArrayList<User> UserList = new ArrayList<User>();
+
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+        String databaseName = "user_info";
+        String username = "root";
+        String password = "root";
+
+//            if (instanceConnectionName.equals("<device-supported-versions>")) {
+//                System.err.println("Please update the sample to specify the instance connection name.");
+//                System.exit(1);
+//            }
+//
+//            if (password.equals("<insert_password>")) {
+//                System.err.println("Please update the sample to specify the mysql password.");
+//                System.exit(1);
+//            }
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            while (resultSet.next()) {
+                User user= new User();
+                user.setEmail(resultSet.getString("email"));
+                user.setStatus(resultSet.getString("status"));
+                user.setHashPassword(resultSet.getString("hashPassword"));
+                user.setPublicKey(resultSet.getString("publicKey"));
+                user.setPrivateKey(resultSet.getString("privateKey"));
+                user.setPhoneNo(resultSet.getString("phoneNo"));
+                user.setEntryID(resultSet.getString("entryID"));
+                UserList.add(user);
+//                OSVersion osVersion = new OSVersion();
+//                osVersion.setVersionName(resultSet.getString("versionName"));
+//                osVersion.setVersionNumber(resultSet.getString("versionNumber"));
+//                osVersion.setEntryID(resultSet.getInt("entryID"));
+//                OSVersionList.add(osVersion);
+//                    SupportedVersions.add(resultSet.getString(1));
+            }
+        }
+        return UserList;
+    }
+
 
     //TODO MIGRATE TO User_InfoDB For testing move this somewhere else next time
     public String getAccStatus(String email) throws SQLException {

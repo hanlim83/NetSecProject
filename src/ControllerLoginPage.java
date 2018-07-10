@@ -1,5 +1,5 @@
 import Model.OAuth2Login;
-import Model.User_InfoDB;
+import Database.User_InfoDB;
 import com.google.api.client.auth.oauth2.Credential;
 
 import java.io.IOException;
