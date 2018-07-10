@@ -19,9 +19,12 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class ControllerEmployeePage implements Initializable {
 
@@ -44,7 +47,10 @@ public class ControllerEmployeePage implements Initializable {
 
     public static AnchorPane rootP;
 
+    String listPermission;
     IAMPermissions permissions = new IAMPermissions();
+//    Pattern p = Pattern.compile("members");
+    ArrayList<String> memberlist1 = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,6 +83,21 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     permissions.listPermissions();
+                    System.out.println(listPermission);
+
+                    //do regex & delimiter to get members and roles
+                    //members above of roles are the members of that role!!
+                    // got members, user, role
+                    Scanner sc;
+                    sc = new Scanner(listPermission).useDelimiter("members");
+                    System.out.println(sc.nextLine());
+                    memberlist1.add("try"+sc.nextLine());
+                    while(sc.hasNextLine()){
+                        memberlist1.add(sc.nextLine());
+                        System.out.println("try1"+sc.nextLine());
+                    }
+
+
                     Platform.runLater(() -> {
 
                     });

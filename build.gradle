@@ -33,6 +33,7 @@ dependencies {
     compile 'com.google.cloud:google-cloud-logging:1.31.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
     compile 'com.nexmo:client:3.6.0'
+    compile 'com.google.apis:google-api-services-iam:v1-rev252-1.23.0'
 }
 
 sourceSets {

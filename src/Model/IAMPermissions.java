@@ -4,9 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class IAMPermissions implements Runnable{
  //   String line;
+
+//    Pattern p = Pattern.compile("members");
+
+    ArrayList<String> permissionList = new ArrayList<>();
 
     public IAMPermissions(){
 
@@ -29,8 +35,10 @@ public class IAMPermissions implements Runnable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (line == null) { break; }
-            System.out.println(line);
+            if (line == null) {
+                break;
+            }
+           System.out.println("TRY!! " + line);
         }
         return line;
     }
