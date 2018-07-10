@@ -48,20 +48,9 @@ public class Device_Build_NumberDB {
     }
 
     public void insertNewOSVersion(String versionName, String versionNumber) throws SQLException {
-        // TODO: fill this in
-        // The instance connection name can be obtained from the instance overview page in Cloud Console
-        // or by running "gcloud sql instances describe <instance> | grep connectionName".
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-
-        // TODO: fill this in
-        // The database from which to list tables.
         String databaseName = "device_build_number";
-
         String username = "root";
-
-        // TODO: fill this in
-        // This is the password that was set via the Cloud Console or empty if never set
-        // (not recommended).
         String password = "root";
 
 //            if (instanceConnectionName.equals("<device-supported-versions>")) {
@@ -85,7 +74,8 @@ public class Device_Build_NumberDB {
         //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("INSERT INTO entries (versionName, versionNumber) VALUES ('" + versionName + "'),('" + versionNumber + "')");
+            statement.executeUpdate("INSERT INTO entries (versionName, versionNumber) VALUES ('" + versionName + "','" + versionNumber + "')");
+//            statement.executeUpdate("INSERT INTO entries (versionName, versionNumber) VALUES ('JAVA','JAVATEST')");
         }
     }
 
