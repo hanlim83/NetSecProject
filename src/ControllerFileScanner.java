@@ -2,25 +2,22 @@ import Model.FileScanner;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.kanishka.virustotal.dto.FileScanReport;
-import com.kanishka.virustotal.dto.ScanInfo;
-import com.kanishka.virustotal.dto.VirusScanInfo;
-import com.kanishka.virustotal.exception.APIKeyNotFoundException;
-import com.kanishka.virustotal.exception.UnauthorizedAccessException;
-import com.kanishka.virustotalv2.VirusTotalConfig;
-import com.kanishka.virustotalv2.VirustotalPublicV2;
-import com.kanishka.virustotalv2.VirustotalPublicV2Impl;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
+import java.io.IOException;
+
 
 public class ControllerFileScanner {
+        private Scene myScene;
 
         @FXML
         private AnchorPane anchorPane;
@@ -47,6 +44,7 @@ public class ControllerFileScanner {
         public void Scanner(ActionEvent event) {
 
             FileScanner fileScanner = new FileScanner();
+
             fileScanner.Scanner(browseLabel.getText());
 
             boolean scanValid = fileScanner.scannerReport();
@@ -145,6 +143,8 @@ public class ControllerFileScanner {
 
         public void fileBrowser(ActionEvent event) {
 
+            reportButton.setVisible(false);
+
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
             File file=fileChooser.showOpenDialog(null);
@@ -160,10 +160,25 @@ public class ControllerFileScanner {
     @FXML
     public void viewReport(ActionEvent event) {
 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ScanReport.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
 
 
     }
 
 
-    }
+        }
+
 
