@@ -39,6 +39,32 @@ public class TextAuthentication {
         }
     }
 
+    public void adminSendAuth (String phoneNo) {
+
+        try {
+
+            AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
+            NexmoClient client = new NexmoClient(auth);
+
+            String TO_NUMBER = "65" + phoneNo;
+
+            VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE Admin");
+
+            String VerifyId = ongoingVerify.getRequestId();
+
+            System.out.print("\nRequest ID: " + VerifyId);
+            System.out.print("\nMessage sent!");
+
+            this.VerifyId = VerifyId;
+
+        } catch (NexmoClientException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public boolean checkAuth(String setCode) throws NexmoClientException {
 
         AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
