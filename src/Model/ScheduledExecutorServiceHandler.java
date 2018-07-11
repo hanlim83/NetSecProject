@@ -7,9 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 public class ScheduledExecutorServiceHandler {
     private static ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
-    private ScheduledFuture NcaptureRunnable;
-    private ScheduledFuture updateStatsFuture;
-    private ScheduledFuture CcaptureRunnable;
+    private ScheduledFuture captureRunnable;
 
     public ScheduledExecutorServiceHandler () {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -19,12 +17,6 @@ public class ScheduledExecutorServiceHandler {
     public void shutdownService () {
         if (tableviewRunnable != null)
             cancelTableviewRunnable();
-        if (NcaptureRunnable != null)
-            cancelNcaptureRunnable();
-        if (updateStatsFuture != null)
-            cancelUpdateStatsFuture();
-        if(CcaptureRunnable != null)
-            cancelCcaptureRunnable();
         service.shutdown();
     }
 
@@ -52,51 +44,19 @@ public class ScheduledExecutorServiceHandler {
         tableviewRunnable.cancel(true);
     }
 
-    public ScheduledFuture getNcaptureRunnable() {
-        return NcaptureRunnable;
+    public ScheduledFuture getcaptureRunnable() {
+        return captureRunnable;
     }
 
-    public void setNcaptureRunnable(ScheduledFuture ncaptureRunnable) {
-        NcaptureRunnable = ncaptureRunnable;
+    public void setcaptureRunnable(ScheduledFuture captureRunnable) {
+        this.captureRunnable = captureRunnable;
     }
 
-    public boolean getStatusNcaptureRunnable () {
-        return !NcaptureRunnable.isDone();
+    public boolean getStatuscaptureRunnable () {
+        return !captureRunnable.isDone();
     }
 
-    public void cancelNcaptureRunnable () {
-        NcaptureRunnable.cancel(true);
-    }
-
-    public ScheduledFuture getUpdateStatsFuture() {
-        return updateStatsFuture;
-    }
-
-    public void setUpdateStatsFuture(ScheduledFuture updateStatsFuture) {
-        this.updateStatsFuture = updateStatsFuture;
-    }
-
-    public boolean getStatusUpdateStatsFuture () {
-        return !updateStatsFuture.isDone();
-    }
-
-    public void cancelUpdateStatsFuture () {
-        updateStatsFuture.cancel(true);
-    }
-
-    public ScheduledFuture getCcaptureRunnable() {
-        return CcaptureRunnable;
-    }
-
-    public void setCcaptureRunnable(ScheduledFuture ccaptureRunnable) {
-        CcaptureRunnable = ccaptureRunnable;
-    }
-
-    public boolean getStatusCcaptureRunnable () {
-        return !CcaptureRunnable.isDone();
-    }
-
-    public void cancelCcaptureRunnable () {
-        CcaptureRunnable.cancel(true);
+    public void cancelcaptureRunnable () {
+        captureRunnable.cancel(true);
     }
 }

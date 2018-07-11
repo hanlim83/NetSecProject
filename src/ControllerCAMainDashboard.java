@@ -63,9 +63,10 @@ public class ControllerCAMainDashboard implements Initializable {
     private PcapNetworkInterface device;
     private Scene myScene;
     private ArrayList<CapturedPacket> packets;
-    private NetworkCapture Ncapture;
-    private ContinuousNetworkCapture Ccapture;
+    private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
+    private String directoryPath;
+    private Integer threshold;
     private XYChart.Series series;
     private NumberAxis chartXAxis;
     private NumberAxis chartYAxis;
@@ -100,7 +101,7 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     public void plotCaptureLine() {
-        LineChartObject data = Ncapture.getTrafficPerSecond();
+        LineChartObject data = capture.getTrafficPerSecond();
         series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
         System.out.println(data.getLocation() + "," + data.getData());
         if (data.getCount() > MAX_DATA_POINTS) {
@@ -112,28 +113,29 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture NCapture, ContinuousNetworkCapture Ccapture) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture,String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
-        this.Ncapture = NCapture;
-        this.Ccapture = Ccapture;
-        if (Ncapture == null) {
+        this.capture = capture;
+        this.directoryPath = directoryPath;
+        this.threshold = threshold;
+        if (capture == null) {
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);
-        } else if (Ncapture.isRunning()) {
+        } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
             play();
 
-        } else if (Ncapture != null) {
+        } else if (capture != null) {
             clearCaptureBtn.setDisable(false);
             exportPcapBtn.setDisable(false);
-            packets = Ncapture.packets;
+            packets = capture.packets;
         }
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath,this.threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,13 +150,13 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     public void startCapturing() {
-        if (Ncapture == null)
-            Ncapture = new NetworkCapture(device);
-        if (handler.getNcaptureRunnable() == null || !handler.getStatusNcaptureRunnable()) {
-            handler.setNcaptureRunnable(handler.getService().schedule(new Runnable() {
+        if (capture == null)
+            capture = new NetworkCapture(device,directoryPath,threshold);
+        if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
+            handler.setcaptureRunnable(handler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
-                    Ncapture.startSniffing();
+                    capture.startSniffing();
                 }
             }, 1, SECONDS));
         }
@@ -163,7 +165,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath,threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -172,7 +174,7 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     public void stopCapturing() {
-        Ncapture.stopSniffing();
+        capture.stopSniffing();
         stop();
         //Alert below
         myScene = anchorPane.getScene();
@@ -180,9 +182,9 @@ public class ControllerCAMainDashboard implements Initializable {
         String title = "Packet Capturing Summary";
         String content;
         if (com.sun.jna.Platform.isWindows())
-            content = "Packets Received By Interface: " + Ncapture.getPacketsReceived() + "\nPackets Dropped: " + Ncapture.getPacketsDropped() + "\nPackets Dropped By Interface: " + Ncapture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + Ncapture.getPacketsCaptured();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketsCaptured();
         else
-            content = "Packets Received By Interface: " + Ncapture.getPacketsReceived() + "\nPackets Dropped: " + Ncapture.getPacketsDropped() + "\nPackets Dropped By Interface: " + Ncapture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + Ncapture.getPktCount();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount();
         JFXButton close = new JFXButton("Close");
         close.setButtonType(JFXButton.ButtonType.RAISED);
         close.setStyle("-fx-background-color: #00bfff;");
@@ -208,7 +210,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -266,28 +268,28 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.setContent(layout);
         alert.initModality(Modality.APPLICATION_MODAL);
         clearCapture.setOnAction(addEvent -> {
-            Ncapture = null;
+            capture = null;
             clearCaptureBtn.setDisable(true);
             exportPcapBtn.setDisable(true);
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+                ctrl.getVariables(this.device, this.handler, this.capture,directoryPath,threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             alert.hideWithAnimation();
         });
         clearCaptureAndInt.setOnAction(addEvent -> {
-            Ncapture = null;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALanding.fxml"));
+            capture = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = (Scene) ((Node) event.getSource()).getScene();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALanding controller = loader.<ControllerCALanding>getController();
-                controller.passVariables(handler, this.Ccapture);
+                ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
+                controller.passVariables(handler,null,null,0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -310,7 +312,7 @@ public class ControllerCAMainDashboard implements Initializable {
         else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
-        if (Ncapture.export(f.getAbsolutePath())) {
+        if (capture.export(f.getAbsolutePath())) {
             String title = "Packet Capture Exported Sucessfully";
             String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
             JFXButton close = new JFXButton("Close");

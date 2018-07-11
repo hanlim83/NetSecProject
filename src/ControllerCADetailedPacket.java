@@ -1,7 +1,4 @@
-import Model.CapturedPacket;
-import Model.ContinuousNetworkCapture;
-import Model.NetworkCapture;
-import Model.ScheduledExecutorServiceHandler;
+import Model.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -39,28 +36,30 @@ public class ControllerCADetailedPacket implements Initializable {
     @FXML
     private JFXButton returnCaptureBtn;
     private ScheduledExecutorServiceHandler handler;
-    private NetworkCapture Ncapture;
-    private ContinuousNetworkCapture Ccapture;
+    private NetworkCapture capture;
     private PcapNetworkInterface device;
     private CapturedPacket packet;
     private Scene myScene;
+    private String directoryPath;
+    private Integer threshold;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture Ncapture, CapturedPacket packet, ContinuousNetworkCapture Ccapture) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet,String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
-        this.Ncapture = Ncapture;
-        this.Ccapture = Ccapture;
+        this.capture = capture;
         this.packet = packet;
+        this.directoryPath = directoryPath;
+        this.threshold = threshold;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.Ncapture, this.Ccapture);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,12 +104,11 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device, handler, Ncapture, Ccapture);
+            controller.passVariables(device, handler,capture,directoryPath,threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
         stage.show();
     }
 }

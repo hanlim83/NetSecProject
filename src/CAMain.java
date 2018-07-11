@@ -16,13 +16,13 @@ public class CAMain extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("CALanding.fxml"));
-            System.out.println(getClass().getResource("CALanding.fxml"));
+            loader.setLocation(getClass().getResource("CALandingSelectInt.fxml"));
+            System.out.println(getClass().getResource("CALandingSelectInt.fxml"));
             System.out.println(getClass().getResource("CABackdrop.png"));
             Parent root = loader.load();
-            ControllerCALanding controller = loader.<ControllerCALanding>getController();
+            ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
             handler = new ScheduledExecutorServiceHandler();
-            controller.passVariables(handler, null);
+            controller.passVariables(handler, null,null,0);
             Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
