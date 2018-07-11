@@ -9,18 +9,22 @@ public class ScheduledExecutorServiceHandler {
     private ScheduledFuture tableviewRunnable;
     private ScheduledFuture captureRunnable;
 
-    public ScheduledExecutorServiceHandler () {
+    public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
-        this.service = Executors.newScheduledThreadPool(cores);
+        service = Executors.newScheduledThreadPool(cores);
     }
 
-    public void shutdownService () {
+    public static ScheduledExecutorService getService() {
+        return service;
+    }
+
+    public void shutdownService() {
         if (tableviewRunnable != null)
             cancelTableviewRunnable();
         service.shutdown();
     }
 
-    public void forceShutdownService () {
+    public void forceShutdownService() {
         service.shutdownNow();
     }
 
@@ -28,19 +32,15 @@ public class ScheduledExecutorServiceHandler {
         return tableviewRunnable;
     }
 
-    public static ScheduledExecutorService getService() {
-        return service;
-    }
-
     public void setTableviewRunnable(ScheduledFuture tableviewRunnable) {
         this.tableviewRunnable = tableviewRunnable;
     }
 
-    public boolean getStatusTableviewRunnable () {
+    public boolean getStatusTableviewRunnable() {
         return !tableviewRunnable.isDone();
     }
 
-    public void cancelTableviewRunnable () {
+    public void cancelTableviewRunnable() {
         tableviewRunnable.cancel(true);
     }
 
@@ -52,11 +52,11 @@ public class ScheduledExecutorServiceHandler {
         this.captureRunnable = captureRunnable;
     }
 
-    public boolean getStatuscaptureRunnable () {
+    public boolean getStatuscaptureRunnable() {
         return !captureRunnable.isDone();
     }
 
-    public void cancelcaptureRunnable () {
+    public void cancelcaptureRunnable() {
         captureRunnable.cancel(true);
     }
 }

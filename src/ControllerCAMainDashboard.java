@@ -108,16 +108,16 @@ public class ControllerCAMainDashboard implements Initializable {
         LineChartObject data = capture.getTrafficPerSecond();
         series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
         System.out.println(data.getLocation() + "," + data.getData());
-        if (data.getCount() > MAX_DATA_POINTS) {
+        if (LineChartObject.getCount() > MAX_DATA_POINTS) {
             series.getData().remove(0);
         }
-        if (data.getCount() > MAX_DATA_POINTS - 1) {
+        if (LineChartObject.getCount() > MAX_DATA_POINTS - 1) {
             chartXAxis.setLowerBound(chartXAxis.getLowerBound() + 1);
             chartXAxis.setUpperBound(chartXAxis.getUpperBound() + 1);
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture,String directoryPath, Integer threshold) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
@@ -138,8 +138,8 @@ public class ControllerCAMainDashboard implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath,this.threshold);
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -155,9 +155,9 @@ public class ControllerCAMainDashboard implements Initializable {
 
     public void startCapturing() {
         if (capture == null)
-            capture = new NetworkCapture(device,directoryPath,threshold);
+            capture = new NetworkCapture(device, directoryPath, threshold);
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
-            handler.setcaptureRunnable(handler.getService().schedule(new Runnable() {
+            handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     capture.startSniffing();
@@ -168,8 +168,8 @@ public class ControllerCAMainDashboard implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath,threshold);
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -213,7 +213,7 @@ public class ControllerCAMainDashboard implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
@@ -278,7 +278,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+                ControllerAdminSideTab ctrl = loader.getController();
                 ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -288,12 +288,12 @@ public class ControllerCAMainDashboard implements Initializable {
         clearCaptureAndInt.setOnAction(addEvent -> {
             capture = null;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler,null,null,0);
+                ControllerCALandingSelectInt controller = loader.getController();
+                controller.passVariables(handler, null, null, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
