@@ -27,6 +27,16 @@ import java.util.ResourceBundle;
 
 public class ControllerScanReport implements Initializable {
 
+//    private static String index;
+//    private static String software;
+//    private static String version;
+//    private static String result;
+//
+//    private static ArrayList<String> indexNo = new ArrayList();
+//    private static ArrayList<String> avSoftware = new ArrayList();
+//    private static ArrayList<String> softwareVersion = new ArrayList();
+//    private static ArrayList<String> results = new ArrayList();
+
 
     @FXML
     private JFXHamburger hamburger;
@@ -67,7 +77,6 @@ public class ControllerScanReport implements Initializable {
             r.toString();
         }
         scanView.setItems(hello);
-        System.out.println(hello);
 
 
     }

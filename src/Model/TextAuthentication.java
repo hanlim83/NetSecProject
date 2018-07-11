@@ -39,40 +39,12 @@ public class TextAuthentication {
         }
     }
 
-    public void adminAuth (String phoneNo){
-
-        try {
-
-
-            AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
-            NexmoClient client = new NexmoClient(auth);
-
-            String TO_NUMBER = "65" + phoneNo;
-
-            VerifyResult ongoingVerify = client.getVerifyClient().verify(TO_NUMBER, "FireE Admin");
-
-            String VerifyId = ongoingVerify.getRequestId();
-
-            System.out.print("\nRequest ID: " + VerifyId);
-            System.out.print("\nMessage sent!");
-
-            this.VerifyId = VerifyId;
-
-        } catch (NexmoClientException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
     public boolean checkAuth(String setCode) throws NexmoClientException {
 
         AuthMethod auth = new TokenAuthMethod("bf186834", "ZMmLKV2HNEBiphpA");
         NexmoClient client = new NexmoClient(auth);
 
-        String testId = VerifyId;
+        String testId = TextAuthentication.VerifyId;
 
         System.out.print("\n\nRequest ID: " + testId);
         System.out.print("\nCODE entered: " + setCode);

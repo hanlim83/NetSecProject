@@ -21,14 +21,11 @@ public class Report {
     private static ArrayList<String> avSoftware = new ArrayList();
     private static ArrayList<String> softwareVersion = new ArrayList();
     private static ArrayList<String> results = new ArrayList();
-
     private int index;
     private String software;
     private String version;
     private String result;
-
     private ObservableList<Report> reportLister = FXCollections.observableArrayList();
-
     public Report(int indexx, String softwaree, String versionn, String resultss) {
         this.index = indexx;
         this.software = softwaree;
@@ -37,6 +34,7 @@ public class Report {
     }
 
     public Report() {
+
     }
 
     public int getIndex() {
@@ -77,18 +75,27 @@ public class Report {
 
                 VirusScanInfo virusInfo = scans.get(key);
 
+                //this.software = key;
                 String this1 = key;
                 avSoftware.add(this1);
+                System.out.println(avSoftware + "\n\n\n");
 
+                //this.version = virusInfo.getVersion();
                 String this2 = virusInfo.getVersion();
                 softwareVersion.add(this2);
+                System.out.println(softwareVersion + "\n\n\n");
 
                 if (virusInfo.isDetected() == true) {
+                    //this.result = new String("Malicious");
                     String this3 = "Malicious";
                     results.add(this3);
+                    System.out.println(results + "\n\n\n");
                 } else {
+                    //this.result = new String("Safe");
                     String this3 = "Safe";
                     results.add(this3);
+                    System.out.println(results + "\n\n\n");
+
                 }
             }
             int i;
@@ -98,12 +105,6 @@ public class Report {
                 this.index = i;
                 indexNo.add(index);
             }
-
-            System.out.println(indexNo + "\n");
-            System.out.println(avSoftware + "\n");
-            System.out.println(softwareVersion + "\n");
-            System.out.println(results + "\n");
-
 
 
         } catch (APIKeyNotFoundException e) {
