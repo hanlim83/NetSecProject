@@ -98,8 +98,20 @@ public class ControllerUserHome implements Initializable {
         }
     }
 
+    private static Timer timer;
+    private static int counter=0;
+
+    public static void StopTimer(){
+        if (counter!=0){
+            timer.purge();
+            timer.cancel();
+        }
+    }
+
+
     private void updateTimer(){
-        Timer timer = new Timer();
+        counter++;
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

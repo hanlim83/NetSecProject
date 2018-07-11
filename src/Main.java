@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("LoginPage.fxml"));
+            loader.setLocation(getClass().getResource("UserHome.fxml"));
             System.out.println(getClass().getResource("LoginPage.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 1058, 600);
@@ -22,6 +22,12 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void stop(){
+        ControllerUserHome.StopTimer();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
