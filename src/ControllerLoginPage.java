@@ -2,6 +2,7 @@ import Model.OAuth2Login;
 import Database.User_InfoDB;
 import com.google.api.client.auth.oauth2.Credential;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.jfoenix.animation.alert.JFXAlertAnimation;
@@ -38,11 +39,14 @@ public class ControllerLoginPage implements Initializable, Runnable {
     @FXML
     private JFXButton TestButton;
 
+    @FXML
+    private JFXButton RevokeCredentialsButton;
+
     private Scene myScene;
 
     private OAuth2Login login = new OAuth2Login();
-    private WindowsUtils utils=new WindowsUtils();
-    private User_InfoDB user_infoDB=new User_InfoDB();
+    private WindowsUtils utils = new WindowsUtils();
+    private User_InfoDB user_infoDB = new User_InfoDB();
 
     private Credential credential;
     private String email = "";
@@ -124,8 +128,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
         } else if (process.getState().toString().equals("CANCELLED")) {
             process.start();
             startTimer();
-        }
-        else{
+        } else {
             System.out.println(state);
             System.out.println(process.getState());
             System.out.println("Failed to run");
@@ -157,7 +160,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                 LoginButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
-                if (AccStatus.equals("Inactive")){
+                if (AccStatus.equals("Inactive")) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();
@@ -172,7 +175,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     stage.setScene(new Scene(nextView));
                     stage.setTitle("NSPJ");
                     stage.show();
-                }else if(AccStatus.equals("Active")){
+                } else if (AccStatus.equals("Active")) {
                     //Go to SMS OTP page
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
                     myScene = anchorPane.getScene();
@@ -188,7 +191,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     stage.setScene(new Scene(nextView));
                     stage.setTitle("NSPJ");
                     stage.show();
-                }else{
+                } else {
                     process.reset();
                     LoginButton.setDisable(false);
                     LoadingSpinner.setVisible(false);
@@ -196,7 +199,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     Stage stage = (Stage) (myScene).getWindow();
 
                     String title = "";
-                    String content = "Permission Invalid: You are not allowed the access the app. Please contact youradministator for more information";
+                    String content = "Permission Invalid: You are not allowed the access the app. Please contact your administrator for more information";
 
                     JFXButton close = new JFXButton("Close");
 
@@ -282,8 +285,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
             LoginButton.setDisable(false);
             LoadingSpinner.setVisible(false);
         });
-
-//
 //        Runnable task = new Runnable() {
 //            public void run() {
 //                try {
@@ -303,6 +304,36 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            Thread thread = new Thread(worker);
 //            thread.start();
 
+    }
+
+    @FXML
+    void onClickRevokeCredentialsButton(ActionEvent event) {
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
+        file.delete();
+
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String title = "";
+        String content = "Credentials successfully revoked";
+
+        JFXButton close = new JFXButton("Close");
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
     }
 
     //Service method
@@ -334,13 +365,13 @@ public class ControllerLoginPage implements Initializable, Runnable {
                         //e.printStackTrace();
                     }
                     //after retrieve token, use that to cross check with the DB for active/inactive/null
-                    if (!email.equals("")){
+                    if (!email.equals("")) {
                         //Migrating to new codes
 //                        AccStatus=utils.getAccStatus(email);
-                        AccStatus=user_infoDB.getAccStatus(email);
+                        AccStatus = user_infoDB.getAccStatus(email);
                     }
-                    if (AccStatus.equals("Active")){
-                        phoneNo=user_infoDB.getPhoneNumber(email);
+                    if (AccStatus.equals("Active")) {
+                        phoneNo = user_infoDB.getPhoneNumber(email);
                     }
                     return null;
                 }

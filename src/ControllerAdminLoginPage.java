@@ -41,12 +41,12 @@ public class ControllerAdminLoginPage implements Initializable {
     private Scene myScene;
 
     private OAuth2Login login = new OAuth2Login();
-//    private WindowsUtils utils = new WindowsUtils();
     private admin_DB admin_db = new admin_DB();
 
     private Credential credential;
     private String email = "";
     private String AccStatus = "";
+    private String phoneNo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -162,7 +162,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     try {
                         nextView = loader.load();
                         ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
-//                    controller.passData(login.getEmail());
+//                        controller.; call Ravin method
                     } catch (IOException u) {
                         u.printStackTrace();
                     }
@@ -174,7 +174,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     Stage stage = (Stage) (myScene).getWindow();
 
                     String title = "";
-                    String content = "Permission Invalid: You are not allowed the access the app. Please contact youradministator for more information";
+                    String content = "Permission Invalid: You are not allowed the access the app. Please contact your administrator for more information";
 
                     JFXButton close = new JFXButton("Close");
 
@@ -289,6 +289,9 @@ public class ControllerAdminLoginPage implements Initializable {
                     if (!email.equals("")) {
 //                        AccStatus = utils.getAccStatus(email);
                         AccStatus=admin_db.getAdminAccStatus(email);
+                    }
+                    if (AccStatus.equals("1")){
+                        phoneNo=admin_db.getPhoneNo(email);
                     }
                     return null;
                 }
