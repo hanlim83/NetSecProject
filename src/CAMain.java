@@ -22,7 +22,7 @@ public class CAMain extends Application {
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
             handler = new ScheduledExecutorServiceHandler();
-            controller.passVariables(handler, null,null,0);
+            controller.passVariables(handler, null, null, 0);
             Scene scene = new Scene(root, 1067, 600);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);

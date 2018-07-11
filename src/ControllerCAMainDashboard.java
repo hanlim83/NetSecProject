@@ -1,4 +1,7 @@
-import Model.*;
+import Model.CapturedPacket;
+import Model.LineChartObject;
+import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -28,6 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.pcap4j.core.PcapNetworkInterface;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -275,7 +279,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device, this.handler, this.capture,directoryPath,threshold);
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -72,18 +72,18 @@ public class ControllerCALandingSetOptions implements Initializable {
         ThresholdChooser.setValue("Select Threshold");
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device,String directoryPath, Integer threshold) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold) {
         this.handler = handler;
         this.device = device;
         if (directoryPath != null) {
             this.directoryPath = directoryPath;
             pcapFilesDirectoryField.setText(this.directoryPath);
         }
-        if (threshold !=null && threshold != 0) {
+        if (threshold != null && threshold != 0) {
             ThresholdChooser.setValue(Integer.toString(threshold));
             if (checkFields())
-            nextBtn.setDisable(false);
-        else {
+                nextBtn.setDisable(false);
+            else {
                 nextBtn.setDisable(true);
             }
         }
@@ -91,7 +91,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, null,null,0);
+            ctrl.getVariables(this.device, this.handler, null, null, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,9 +123,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler,device,directoryPath,0);
+                controller.passVariables(handler, device, directoryPath, 0);
             else
-                controller.passVariables(handler,device,directoryPath,Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,9 +143,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingVerifyDetails controller = loader.<ControllerCALandingVerifyDetails>getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler,device,directoryPath,0);
+                controller.passVariables(handler, device, directoryPath, 0);
             else
-                controller.passVariables(handler,device,directoryPath,Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,6 @@
-import Model.*;
+import Model.CapturedPacket;
+import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -48,7 +50,7 @@ public class ControllerCADetailedPacket implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet,String directoryPath, Integer threshold) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
@@ -104,7 +106,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device, handler,capture,directoryPath,threshold);
+            controller.passVariables(device, handler, capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }

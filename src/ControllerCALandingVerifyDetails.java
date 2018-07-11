@@ -1,8 +1,6 @@
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,14 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,12 +59,12 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device,String directoryPath, Integer threshold) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        chosenInterface.setText(device.getName()+" ("+device.getDescription()+")");
+        chosenInterface.setText(device.getName() + " (" + device.getDescription() + ")");
         chosenDirectory.setText(directoryPath);
         if (threshold == 0)
             chosenThreshold.setText("None");
@@ -79,7 +74,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, null,null,0);
+            ctrl.getVariables(this.device, this.handler, null, null, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,7 +89,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.<ControllerCALandingSetOptions>getController();
-            controller.passVariables(handler,device,directoryPath,threshold);
+            controller.passVariables(handler, device, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,7 +106,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device,handler,null,directoryPath,threshold);
+            controller.passVariables(device, handler, null, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }

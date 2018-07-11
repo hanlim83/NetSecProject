@@ -35,13 +35,14 @@ public class ControllerAdminSideTab {
     private JFXButton deviceButton;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture,String directoryPath, Integer threshold) {
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
     }
+
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
         if (device == null) {
@@ -52,7 +53,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler,null,null,0);
+                controller.passVariables(handler, null, null, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -66,7 +67,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device, handler, null, directoryPath,threshold);
+                controller.passVariables(device, handler, null, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -80,7 +81,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device, handler, capture ,directoryPath,threshold);
+                controller.passVariables(device, handler, capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -101,7 +102,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler,null,null,0);
+                controller.passVariables(handler, null, null, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -115,7 +116,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device, handler,null,directoryPath,threshold);
+                controller.passVariables(device, handler, null, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -129,7 +130,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device, handler,capture,directoryPath,threshold);
+                controller.passVariables(device, handler, capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }

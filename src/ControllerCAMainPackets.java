@@ -1,4 +1,6 @@
-import Model.*;
+import Model.CapturedPacket;
+import Model.NetworkCapture;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -105,7 +107,7 @@ public class ControllerCAMainPackets implements Initializable {
         });
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture,String directoryPath, Integer threshold) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;
@@ -152,7 +154,7 @@ public class ControllerCAMainPackets implements Initializable {
 
     public void startCapturing() {
         if (capture == null)
-            capture = new NetworkCapture(device,directoryPath,threshold);
+            capture = new NetworkCapture(device, directoryPath, threshold);
         handler.setTableviewRunnable(handler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -181,7 +183,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath,threshold);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,7 +226,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-           ctrl.getVariables(this.device, this.handler, this.capture, directoryPath,threshold);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,7 +327,7 @@ public class ControllerCAMainPackets implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath,threshold);
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -342,7 +344,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler,null,null,0);
+                controller.passVariables(handler, null, null, 0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
