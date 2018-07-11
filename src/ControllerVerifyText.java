@@ -9,12 +9,15 @@ import com.nexmo.client.verify.VerifyResult;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -60,13 +63,6 @@ public class ControllerVerifyText {
 
     }
 
-//    public void newCheck(String requestId) throws NexmoClientException {
-//
-//        TextAuthentication check = new TextAuthentication();
-//        check.checkAuth(requestId);
-//        System.out.println("Check cleared");
-//
-//    }
 
 
     @FXML
@@ -98,7 +94,6 @@ public class ControllerVerifyText {
                 nextView = loader.load();
                 ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
                 controller.runCheck();
-//              controller.passData(login.getEmail());
 
             } catch (IOException u) {
                 u.printStackTrace();
@@ -112,9 +107,33 @@ public class ControllerVerifyText {
 
             System.out.print("Sorry, wrong pin!");
 
-
         }
 
     }
 
-}
+        @FXML
+        void backLogin (ActionEvent event) {
+
+            File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+            file.delete();
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("LoginPage.fxml"));
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ControllerLoginPage controller = loader.<ControllerLoginPage>getController();
+
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("NSPJ");
+            stage.show();
+
+        }
+
+    }
