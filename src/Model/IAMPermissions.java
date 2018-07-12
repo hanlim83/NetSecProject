@@ -14,12 +14,6 @@ public class IAMPermissions {
     GetIAM getiam;
 
     public IAMPermissions() {
-//        Credential credential;
-//        try {
-//            credential = login.login();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 
     }
 
