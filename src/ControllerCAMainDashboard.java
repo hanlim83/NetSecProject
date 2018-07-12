@@ -1,7 +1,5 @@
-import Model.CapturedPacket;
-import Model.LineChartObject;
-import Model.NetworkCapture;
-import Model.ScheduledExecutorServiceHandler;
+import Database.admin_DB;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -35,8 +33,10 @@ import org.pcap4j.core.PcapNetworkInterface;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,6 +76,9 @@ public class ControllerCAMainDashboard implements Initializable {
     private NumberAxis chartYAxis;
     private Timeline animation;
     private double y = 10;
+    private ArrayList<String> adminPN;
+    private admin_DB db;
+    private Alerts alertHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,6 +105,7 @@ public class ControllerCAMainDashboard implements Initializable {
         packetsLineChart = new ArrayList<LineChartObject>();
         networkTrafficChart.getXAxis().setAutoRanging(true);
         networkTrafficChart.getYAxis().setAutoRanging(true);
+        db = new admin_DB();
     }
 
     public void plotCaptureLine() {
@@ -117,12 +121,41 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, Alerts alertHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
+        if (alertHandler == null) {
+            try {
+                adminPN = db.getAllPhoneNo();
+                this.alertHandler = new Alerts(adminPN);
+                for (String s : adminPN) {
+                    System.out.println(s);
+                }
+                System.out.println("Alerts Created");
+            } catch (SQLException e) {
+                System.err.println("SQL Error");
+            }
+        } else {
+            this.alertHandler = alertHandler;
+            handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        adminPN = db.getAllPhoneNo();
+                        alertHandler.setAdminPN(adminPN);
+                        for (String s : adminPN) {
+                            System.out.println(s);
+                        }
+                        System.out.println("Alerts Updated!");
+                    } catch (SQLException e) {
+                        System.err.println("SQL Error");
+                    }
+                }
+            }, 1, TimeUnit.SECONDS));
+        }
         if (capture == null) {
             clearCaptureBtn.setDisable(true);
         } else if (capture.isRunning()) {
@@ -137,7 +170,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,7 +200,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -210,7 +243,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -274,7 +307,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -288,7 +321,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0);
+                controller.passVariables(handler, null, null, 0, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

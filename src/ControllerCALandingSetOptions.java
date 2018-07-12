@@ -1,3 +1,4 @@
+import Model.Alerts;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -54,6 +55,7 @@ public class ControllerCALandingSetOptions implements Initializable {
     private Scene myScene;
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
+    private Alerts alertHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,9 +74,10 @@ public class ControllerCALandingSetOptions implements Initializable {
         ThresholdChooser.setValue("Select Threshold");
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, Alerts alertHandler) {
         this.handler = handler;
         this.device = device;
+        this.alertHandler = alertHandler;
         if (directoryPath != null) {
             this.directoryPath = directoryPath;
             pcapFilesDirectoryField.setText(this.directoryPath);
@@ -90,8 +93,8 @@ public class ControllerCALandingSetOptions implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, null, null, 0);
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(this.device, this.handler, null, null, 0, this.alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,10 +110,7 @@ public class ControllerCALandingSetOptions implements Initializable {
     }
 
     public boolean checkFields() {
-        if (!pcapFilesDirectoryField.getText().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold"))
-            return true;
-        else
-            return false;
+        return !pcapFilesDirectoryField.getText().isEmpty() && !ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold");
     }
 
     @FXML
@@ -121,11 +121,11 @@ public class ControllerCALandingSetOptions implements Initializable {
         Parent nextView = null;
         try {
             nextView = loader.load();
-            ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
+            ControllerCALandingSelectInt controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0);
+                controller.passVariables(handler, device, directoryPath, 0, alertHandler);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,11 +141,11 @@ public class ControllerCALandingSetOptions implements Initializable {
         Parent nextView = null;
         try {
             nextView = loader.load();
-            ControllerCALandingVerifyDetails controller = loader.<ControllerCALandingVerifyDetails>getController();
+            ControllerCALandingVerifyDetails controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0);
+                controller.passVariables(handler, device, directoryPath, 0, alertHandler);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()));
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

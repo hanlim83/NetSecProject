@@ -1,3 +1,4 @@
+import Model.Alerts;
 import Model.NetworkCapture;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
@@ -20,6 +21,7 @@ public class ControllerAdminSideTab {
     private static NetworkCapture capture;
     private static String directoryPath;
     private static Integer threshold;
+    private static Alerts alertHandler;
 
     @FXML
     private JFXButton listCreate;
@@ -30,30 +32,29 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton logsButton;
     @FXML
-    private JFXButton continuousCapture;
-    @FXML
     private JFXButton deviceButton;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold) {
-        this.device = nif;
-        this.handler = handler;
-        this.capture = capture;
-        this.directoryPath = directoryPath;
-        this.threshold = threshold;
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, Alerts alertHandler) {
+        device = nif;
+        ControllerAdminSideTab.handler = handler;
+        ControllerAdminSideTab.capture = capture;
+        ControllerAdminSideTab.directoryPath = directoryPath;
+        ControllerAdminSideTab.threshold = threshold;
+        ControllerAdminSideTab.alertHandler = alertHandler;
     }
 
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler, null, null, 0);
+                ControllerCALandingSelectInt controller = loader.getController();
+                controller.passVariables(handler, null, null, 0, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -61,13 +62,13 @@ public class ControllerAdminSideTab {
             stage.show();
         } else if (capture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold);
+                ControllerCAMainDashboard controller = loader.getController();
+                controller.passVariables(device, handler, null, directoryPath, threshold, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -75,13 +76,13 @@ public class ControllerAdminSideTab {
             stage.show();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.<ControllerCAMainDashboard>getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold);
+                ControllerCAMainDashboard controller = loader.getController();
+                controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,13 +97,13 @@ public class ControllerAdminSideTab {
             handler.cancelTableviewRunnable();
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
-                controller.passVariables(handler, null, null, 0);
+                ControllerCALandingSelectInt controller = loader.getController();
+                controller.passVariables(handler, null, null, 0, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,13 +111,13 @@ public class ControllerAdminSideTab {
             stage.show();
         } else if (capture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold);
+                ControllerCAMainPackets controller = loader.getController();
+                controller.passVariables(device, handler, null, directoryPath, threshold, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -124,13 +125,13 @@ public class ControllerAdminSideTab {
             stage.show();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold);
+                ControllerCAMainPackets controller = loader.getController();
+                controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -143,7 +144,7 @@ public class ControllerAdminSideTab {
     void onClickBuckets(MouseEvent event) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("BucketsPage.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
+        myScene = ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = null;
         try {
@@ -161,7 +162,7 @@ public class ControllerAdminSideTab {
     void onClickLogs(MouseEvent event) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("LoggingPage.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
+        myScene = ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = null;
         try {
@@ -179,7 +180,7 @@ public class ControllerAdminSideTab {
     void onClickDevice(MouseEvent event) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
+        myScene = ((Node) event.getSource()).getScene();
         Stage stage = (Stage) (myScene).getWindow();
         Parent nextView = null;
         try {

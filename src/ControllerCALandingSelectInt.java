@@ -1,3 +1,4 @@
+import Model.Alerts;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -64,6 +65,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private Integer threshold;
+    private Alerts alertHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,7 +87,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             InterfaceChooser.setValue("Select an Interface");
             TreeItem<String> dummyRoot = new TreeItem<String>();
             for (PcapNetworkInterface i : devices) {
-                TreeItem<String> Interface = new TreeItem<String>(i.getName());
+                TreeItem<String> Interface = new TreeItem<String>(i.getDescription());
                 TreeItem<String> InterfaceID = new TreeItem<String>("Interface ID: " + i.getName());
                 TreeItem<String> InterfaceDescription = new TreeItem<String>("Interface Description: " + i.getDescription());
                 TreeItem<String> InterfaceType = null;
@@ -137,11 +139,12 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, Alerts alertHandler) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
+        this.alertHandler = alertHandler;
         if (device != null) {
             InterfaceChooser.setValue(device.getName());
             nextBtn.setDisable(false);
@@ -150,7 +153,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(null, this.handler, null, null, 0);
+            ctrl.getVariables(null, this.handler, null, null, 0, this.alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,7 +174,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold);
+            controller.passVariables(handler, device, directoryPath, threshold, alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

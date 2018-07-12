@@ -25,6 +25,7 @@ public class NetworkCapture {
     private static final int INCERMENT_LIMIT = 1;
     private static final int MINUTE_TO_MILISECONDS = 60000;
     private static final int RECORD_RANGE = 10;
+    //Data Variables
     public ArrayList<CapturedPacket> packets;
     public ArrayList<LineChartObject> PreviousTPS;
     private PcapNetworkInterface Netinterface;
@@ -33,7 +34,6 @@ public class NetworkCapture {
     private Timer timer = new Timer(true);
     private TimerTask sendExpiry;
     private TimerTask countExpiry;
-    //Data Variables
     private long PacketsReceived, PacketsDropped, PacketsDroppedByInt, PacketsCaptured;
     private String directoryPath;
     private int Threshold, perMinutePktCount = 0;
@@ -236,7 +236,7 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            PcapDumper dumper = Phandle.dumpOpen(directoryPath + "\\Partial Network Capture for Alert " + dtf.format(now) + ".pcap");
+            dumper = Phandle.dumpOpen(directoryPath + "\\Partial Network Capture for Alert " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
@@ -260,7 +260,7 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            PcapDumper dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
+            dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }

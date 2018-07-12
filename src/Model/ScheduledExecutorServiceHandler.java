@@ -8,6 +8,7 @@ public class ScheduledExecutorServiceHandler {
     private static ScheduledExecutorService service;
     private ScheduledFuture tableviewRunnable;
     private ScheduledFuture captureRunnable;
+    private ScheduledFuture getSQLRunnable;
 
     public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -58,5 +59,21 @@ public class ScheduledExecutorServiceHandler {
 
     public void cancelcaptureRunnable() {
         captureRunnable.cancel(true);
+    }
+
+    public ScheduledFuture getgetSQLRunnable() {
+        return getSQLRunnable;
+    }
+
+    public void setgetSQLRunnable(ScheduledFuture getSQLRunnable) {
+        this.getSQLRunnable = getSQLRunnable;
+    }
+
+    public boolean getStatusgetSQLRunnable() {
+        return !getSQLRunnable.isDone();
+    }
+
+    public void cancelgetSQLRunnable() {
+        getSQLRunnable.cancel(true);
     }
 }

@@ -33,8 +33,8 @@
 #intDisplay .table-view .table-cell {
     -fx-font-weight: bold;
     -fx-font-size: 20px;
-/ / the font size you asked in the comments below
-    /* -fx-text-fill:orange; */
+    /*the font size you asked in the comments below*/
+    -fx-text-fill: orange;
 
 }
 

@@ -1,3 +1,4 @@
+import Model.Alerts;
 import Model.CapturedPacket;
 import Model.NetworkCapture;
 import Model.ScheduledExecutorServiceHandler;
@@ -44,24 +45,26 @@ public class ControllerCADetailedPacket implements Initializable {
     private Scene myScene;
     private String directoryPath;
     private Integer threshold;
+    private Alerts alertHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, Alerts alertHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.packet = packet;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
+        this.alertHandler = alertHandler;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold);
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,8 +108,8 @@ public class ControllerCADetailedPacket implements Initializable {
         Parent nextView = null;
         try {
             nextView = loader.load();
-            ControllerCAMainPackets controller = loader.<ControllerCAMainPackets>getController();
-            controller.passVariables(device, handler, capture, directoryPath, threshold);
+            ControllerCAMainPackets controller = loader.getController();
+            controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
