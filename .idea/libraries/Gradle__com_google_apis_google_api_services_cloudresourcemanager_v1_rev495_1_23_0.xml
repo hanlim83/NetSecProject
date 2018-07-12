@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.apis:google-api-services-cloudresourcemanager:v1-rev495-1.23.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-cloudresourcemanager/v1-rev495-1.23.0/cdf00d40a1963df7e8321c7aac68d73199af6e7e/google-api-services-cloudresourcemanager-v1-rev495-1.23.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-cloudresourcemanager/v1-rev495-1.23.0/6f1a2fdd7923dc912a51a59eddfe2792c2deb248/google-api-services-cloudresourcemanager-v1-rev495-1.23.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

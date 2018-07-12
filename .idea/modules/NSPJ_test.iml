@@ -24,6 +24,7 @@
     <orderEntry type="library" name="Gradle: com.google.cloud.sql:jdbc-socket-factory-core:1.0.8" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-sqladmin:v1beta4-rev56-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-iam:v1-rev252-1.23.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-cloudresourcemanager:v1-rev495-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.api-client:google-api-client:1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.oauth-client:google-oauth-client-jetty:1.11.0-beta" level="project" />
     <orderEntry type="library" name="Gradle: com.nexmo:client:3.6.0" level="project" />

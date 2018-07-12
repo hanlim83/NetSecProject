@@ -1,21 +1,29 @@
 package Model;
 
+import com.google.api.client.auth.oauth2.Credential;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
-public class IAMPermissions implements Runnable{
+public class IAMPermissions {
 
+    private OAuth2Login login = new OAuth2Login();
     ArrayList<String> permissionList = new ArrayList<>();
     GetIAM getiam;
 
-
-    public IAMPermissions(){
+    public IAMPermissions() {
+//        Credential credential;
+//        try {
+//            credential = login.login();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
+
+
     public String listPermissions() {
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe","/c", "gcloud projects get-iam-policy netsecpj");
@@ -39,9 +47,6 @@ public class IAMPermissions implements Runnable{
             }
             permissionList.add(line);
         }
-//        for(int i=0;i<permissionList.size();i++){
-//            System.out.println("TRYING NOW " + permissionList.get(i));
-//        }
         getiam = new GetIAM(permissionList);
         return line;
     }
@@ -52,8 +57,4 @@ public class IAMPermissions implements Runnable{
         permissions.listPermissions();
     }
 
-    @Override
-    public void run() {
-
-    }
 }

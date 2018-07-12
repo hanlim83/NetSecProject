@@ -78,12 +78,17 @@ public class ControllerEmployeePage implements Initializable {
     private ArrayList<User> userList;
     private ObservableList<User> userObservableList;
 
+    IAMPermissions permissions = new IAMPermissions();
     GetIAM getiam = new GetIAM();
 
     String listPermission;
-    IAMPermissions permissions = new IAMPermissions();
+
     ArrayList<String> getiamlist = new ArrayList<>();
-    ArrayList<String> memberlist1 = new ArrayList<>();
+    ArrayList<String> cloudsqladminLIST = new ArrayList<>();
+
+    ArrayList<ArrayList<String>> lists = new ArrayList<ArrayList<String>>();
+
+    ArrayList<String> list1 = new ArrayList<>();
     String allInformation;
 
 //    ArrayList<GetIAM> getIAMLists;
@@ -136,26 +141,92 @@ public class ControllerEmployeePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    permissions.listPermissions();
+                   permissions.listPermissions();
                     getiamlist = getiam.getTempPermissionList();
                     System.out.println("HIHI " + getiamlist);
-//                    for (int i=0;i<getiamlist.size();i++){
-//                        System.out.println("Controller trying to print permissions from getiamlist " + getiamlist.get(i));
-//                    }
-                    for (String s : getiamlist){
-                        allInformation += s+"\n";
+                    for (int i=0;i<getiamlist.size();i++){
+                        System.out.println("Controller trying to print permissions from getiamlist :" + getiamlist.get(i));
                     }
-                    System.out.println("Controller getting from JOINER (1 STRING) : " + allInformation);
-                    //do regex & delimiter to get members and roles
-                    //members above of roles are the members of that role!!
-                    // got members, user, role
-                        Scanner sc = new Scanner(allInformation).useDelimiter("members");
-                        System.out.println("HERE===" + sc.nextLine());
-                        memberlist1.add(sc.nextLine());
-                        while(sc.hasNextLine()){
-                            memberlist1.add(sc.next());
-                            System.out.println("try1"+sc.next());
+                    //1 line by 1 line inside of getiamlist
+
+//                    for (int q=0;q<getiamlist.size();q++){
+//                        if(getiamlist.get(q).equals("role: roles/cloudsql.admin")){
+//                            cloudsqladminLIST.add(getiamlist.get(q));
+//                            System.out.println("People under role of CLOUDSQL ADMIN added into cloudsqladminLIST");
+//                            break;
+//                        }
+//                    }
+
+//                    for (int o=0;o<getiamlist.size();o++){
+//                        String s = getiamlist.get(o);
+//                        cloudsqladminLIST.add(getiamlist.get(o));
+//                        System.out.println("Adding into cloudsql list : " + s);
+//                        if(getiamlist.get(o).contains("role: roles/cloudsql.admin")){
+//                            System.out.println("FOUND THIS LA");
+//                            break;
+//                        }
+//                    }
+
+//                    for (int p=0;p<cloudsqladminLIST.size();p++){
+//                        System.out.println("Inside of CLOUDSQLADMINLIST : " + cloudsqladminLIST.get(p));
+//                    }
+
+                    //set a boolean -> to know whether it already find a member string
+                    //set if -> if a string detects a member string
+                    // inside the if statement, set boolean to true
+                    //another if else, if boolean = true; inside that if -> Start recording the lines of code
+                    // if string contains role, record this line also, SET BOOLEAN TO FALSE;
+
+                    for (int n=0;n<getiamlist.size();n++){
+                        list1.add(getiamlist.get(n));
+                        if(getiamlist.get(n).contains("role:")){
+                            break;
                         }
+                    }
+
+                    for (int p = 0; p < list1.size(); p++) {
+                        System.out.println("Inside of CLOUDSQLADMINLIST : " + list1.get(p));
+                        System.out.println(list1.size());
+                    }
+
+                    boolean checker = false;
+                    for (int k=0;k<getiamlist.size();k++){
+                        if(checker==true){
+                            //create arraylist with dynamic naming eg. list1, list2
+                            //use that arraylist created to add
+                            cloudsqladminLIST.add(getiamlist.get(k));
+
+//                            getiamlist.remove(getiamlist.get(k));
+                            if(getiamlist.get(k).contains("role:")){
+                                checker=false;
+                            }
+                        }
+
+                        if(getiamlist.get(k).contains("members")){
+                            checker=true;
+                        }
+                    }
+
+
+
+
+
+
+
+//                    for (String s : getiamlist){
+//                        allInformation += s+"\n";
+//                    }
+//                    System.out.println("Controller getting from JOINER (1 STRING) : " + allInformation);
+//                    //do regex & delimiter to get members and roles
+//                    //members above of roles are the members of that role!!
+//                    // got members, user, role
+//                        Scanner sc = new Scanner(allInformation).useDelimiter("members");
+//                        System.out.println("HERE===" + sc.nextLine());
+//                        memberlist1.add(sc.nextLine());
+//                        while(sc.hasNextLine()){
+//                            memberlist1.add(sc.next());
+//                            System.out.println("try1"+sc.next());
+//                        }
 
 
 

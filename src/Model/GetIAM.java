@@ -9,11 +9,7 @@ public class GetIAM {
     public GetIAM(){}
 
     public GetIAM(ArrayList<String> permissionList){
-        this.tempPermissionList=permissionList;
-        for (int i = 0; i < tempPermissionList.size(); i++) {
-            System.out.println("TRYING NOW " + tempPermissionList.get(i));
-        }
-
+        tempPermissionList=permissionList;
     }
 
     public ArrayList<String> getTempPermissionList() {

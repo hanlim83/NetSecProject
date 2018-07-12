@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//HI I AM HERE
+//HI XD
 public class ControllerLoggingPage implements Initializable {
 
     @FXML
