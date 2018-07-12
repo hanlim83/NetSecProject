@@ -5,6 +5,7 @@ import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.jfoenix.controls.*;
@@ -15,7 +16,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
@@ -27,10 +27,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -41,12 +41,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     private AnchorPane anchorPane;
-
-//    @FXML
-//    private JFXTreeView<?> JFXTreeView;
 
     @FXML
     private com.jfoenix.controls.JFXTreeTableView<TableBlob> JFXTreeTableView;
@@ -60,12 +59,19 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     private JFXDrawer drawer;
 
+    @FXML
+    private JFXTextField filterField;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
 
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
+
+    private String privateBucketName;
+    private ObservableList<TableBlob> blobs;
+    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,43 +81,16 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        TableMethod();
     }
 
     @FXML
     private JFXButton TestButton;
 
-    ObservableList<TableBlob> blobs;
-    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
-        blobs = FXCollections.observableArrayList();
-//        users.add(new TreeTableDemo.User(COMPUTER_DEPARTMENT, "23", "CD 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "22", "Employee 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "24", "Employee 2"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "25", "Employee 4"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "27", "Employee 5"));
-//        users.add(new TreeTableDemo.User(IT_DEPARTMENT, "42", "ID 2"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "21", "HR 1"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "28", "HR 2"));
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email = login.getEmail();
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        // Extra algo
-        emailFront = emailFront.replace(".", "");
-        // Extra algo
-        String bucketname = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobList = storage.list(bucketname);
-        for (Blob blob : blobList.iterateAll()) {
-//            BlobList.add(new MyBlob(blob));
-            blobs.add(new TableBlob(blob.getName(),blob.getCreateTime().toString()));
-        }
-
-        blobs.add(new TableBlob("Testing 1", "7/8/2018"));
-        blobs.add(new TableBlob("Testing 2", "7/7/2018"));
-        TableMethod();
-
 //        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
 //        String email=login.getEmail();
 //        Scanner s = new Scanner(email).useDelimiter("@");
@@ -130,11 +109,131 @@ public class ControllerSecureCloudStorage implements Initializable {
 ////                return true;
 ////            }
 //        }
+        UploadFileTest();
+        TableMethod();
     }
 
+    public String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
+    }
+
+    public void UploadFileTest(){
+        try {
+            // authorization
+            credential = login.login();
+            // set up global Oauth2 instance
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            //FEATURE: Add ownerWindow to block screen
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null) {
+                String pathsInfo = "";
+                pathsInfo += "getPath(): " + file.getPath() + "\n";
+                pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
+
+                pathsInfo += (new File(file.getPath())).isAbsolute();
+
+                try {
+                    pathsInfo += "getCanonicalPath(): " +
+                            file.getCanonicalPath() + "\n";
+                } catch (IOException ex) {
+
+                }
+                System.out.println(pathsInfo);
+                // authorization + Get Buckets
+                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+                //Testing for storage
+                Page<Bucket> buckets = storage.list();
+                for (Bucket bucket : buckets.iterateAll()) {
+                    System.out.println(bucket.toString());
+                }
+
+                for (Bucket bucket : buckets.iterateAll()) {
+                    Page<Blob> blobs = bucket.list();
+                    for (Blob blob : blobs.iterateAll()) {
+                        // do something with the blob
+                        System.out.println(blob);
+                        System.out.println(blob.getName());
+                    }
+                }
+                //String filename= "TestFILENEW1";
+                //Actual Codes
+                if (checkNameTaken(file.getName()) == true) {
+                    System.out.println("Change NAME!!!!");
+                } else {
+                    uploadFile(file.getName(), file.getAbsolutePath());
+                }
+            } else {
+                System.out.println("No file selected");
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    public boolean checkNameTaken(String fileName) {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        Page<Blob> blobs = storage.list("hr_dept");
+        for (Blob blob : blobs.iterateAll()) {
+            // do something with the blob
+            System.out.println("FROM METHOD" + blob);
+            System.out.println("FROM METHOD" + blob.getName());
+            if (fileName.equals(blob.getName())) {
+                System.out.println("Choose Different NAME!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void uploadFile(String filename, String AbsolutePath) throws FileNotFoundException {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        Page<Bucket> buckets = storage.list();
+        for (Bucket bucket : buckets.iterateAll()) {
+            if (bucket.toString().contains(privateBucketName)){
+                System.out.println(bucket.toString());
+                File initialFile = new File(AbsolutePath);
+                InputStream targetStream = new FileInputStream(initialFile);
+//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
+                Blob blob = bucket.create(filename, targetStream, "text/plain");
+            }
+        }
+    }
+
+
     private void TableMethod() {
+        blobs = FXCollections.observableArrayList();
+//        users.add(new TreeTableDemo.User(COMPUTER_DEPARTMENT, "23", "CD 1"));
+//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "22", "Employee 1"));
+//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "24", "Employee 2"));
+//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "25", "Employee 4"));
+//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "27", "Employee 5"));
+//        users.add(new TreeTableDemo.User(IT_DEPARTMENT, "42", "ID 2"));
+//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "21", "HR 1"));
+//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "28", "HR 2"));
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        String email = null;
+        try {
+            email = login.getEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront = s.next();
+        emailFront = emailFront.replace(".", "");
+        privateBucketName = emailFront + "nspj";
+//        String bucketname="hugochiaxyznspj";
+        Page<Blob> blobList = storage.list(privateBucketName);
+        for (Blob blob : blobList.iterateAll()) {
+//            BlobList.add(new MyBlob(blob));
+            blobs.add(new TableBlob(blob.getName(),convertTime(blob.getCreateTime())));
+        }
+
+
         JFXTreeTableColumn<TableBlob, String> fileColumn = new JFXTreeTableColumn<>("File Name");
-        fileColumn.setPrefWidth(301);
+        fileColumn.setPrefWidth(522);
         fileColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (fileColumn.validateValue(param)) {
                 return param.getValue().getValue().blobName;
@@ -144,7 +243,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableColumn<TableBlob, String> dateColumn = new JFXTreeTableColumn<>("Date");
-        dateColumn.setPrefWidth(301);
+        dateColumn.setPrefWidth(522);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (dateColumn.validateValue(param)) {
                 return param.getValue().getValue().date;
@@ -184,6 +283,32 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        FlowPane main = new FlowPane();
 //        main.setPadding(new Insets(10));
 //        anchorPane.getChildren().add(JFXTreeTableView);
+
+        filterField.textProperty().addListener((o, oldVal, newVal) -> {
+            JFXTreeTableView.setPredicate(userProp -> {
+                final TableBlob blob = userProp.getValue();
+                return blob.blobName.get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.date.get().toLowerCase().contains(newVal.toLowerCase())
+//                        || blob.blobName.get().toUpperCase().contains(newVal)
+//                        || blob.date.get().toUpperCase().contains(newVal)
+                        || blob.blobName.get().contains(newVal)
+                        || blob.date.get().contains(newVal);
+            });
+        });
+
+        JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            if (e.isSecondaryButtonDown()){
+                onEdit();
+            }
+        });
+    }
+
+    private void onEdit(){
+        if(JFXTreeTableView.getSelectionModel().getSelectedItem() != null){
+            TableBlob tableBlob=JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
+            System.out.println(tableBlob.getBlobName());
+            System.out.println(tableBlob.getDate());
+        }
     }
 
     private static final class TableBlob extends RecursiveTreeObject<TableBlob> {
@@ -194,12 +319,22 @@ public class ControllerSecureCloudStorage implements Initializable {
             this.blobName = new SimpleStringProperty(blobName);
             this.date = new SimpleStringProperty(date);
         }
-    }
 
-    public String convertTime(long time) {
-        Date date = new Date(time);
-        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
-        return format.format(date);
+        public String getBlobName() {
+            return blobName.get();
+        }
+
+        public StringProperty blobNameProperty() {
+            return blobName;
+        }
+
+        public String getDate() {
+            return date.get();
+        }
+
+        public StringProperty dateProperty() {
+            return date;
+        }
     }
 
     public void hamburgerBar() {
