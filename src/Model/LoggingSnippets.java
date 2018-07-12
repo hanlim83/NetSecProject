@@ -518,36 +518,6 @@ public class LoggingSnippets {
         return entries;
     }
 
-    /**
-     * Example of asynchronously listing log entries for a specific log.
-     */
-    // [TARGET listLogEntriesAsync(EntryListOption...)]
-    // [VARIABLE "logName=projects/my_project_id/logs/my_log_name"]
-    public Page<LogEntry> listLogEntriesAsync(String filter)
-            throws ExecutionException, InterruptedException {
-        // [START listLogEntriesAsync]
-        Future<AsyncPage<LogEntry>> future =
-                logging.listLogEntriesAsync(EntryListOption.filter(filter));
-        // ...
-        AsyncPage<LogEntry> entries = future.get();
-        for (LogEntry entry : entries.iterateAll()) {
-            // do something with the entry
-        }
-        // [END listLogEntriesAsync]
-        return entries;
-    }
-
-//    public Page<LogEntry> listLogEntries(EntryListOption filter) {
-//        // [START listLogEntries]
-//        Page<LogEntry> entries = logging.listLogEntries(filter);
-//        for (LogEntry entry : entries.iterateAll()) {
-//            System.out.println("PRINTING MY LOGS");
-//
-//        }
-//        // [END listLogEntries]
-//        return entries;
-//    }
-
     public ArrayList<LogsExtract> getLogsExtractList(){
         return logsExtractList;
     }

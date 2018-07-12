@@ -45,11 +45,6 @@ public class LogsExtract {
     int globalchecker = 0;
     ArrayList<Integer> globalChckerList = new ArrayList<>();
 
-//    Object obj = new JSONObject();
-//    Payload.JsonPayload jsonPayload;
-//
-//    Object o = new Object();
-
     public LogsExtract() {
 
     }

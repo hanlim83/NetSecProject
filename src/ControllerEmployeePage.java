@@ -1,6 +1,7 @@
 import Database.User;
 import Database.User_InfoDB;
 import Model.GetIAM;
+import Model.IAMExtract;
 import Model.IAMPermissions;
 import com.google.cloud.logging.Logging;
 import com.jfoenix.controls.*;
@@ -72,13 +73,13 @@ public class ControllerEmployeePage implements Initializable {
     private JFXComboBox<String> jfxcombobox;
 
     @FXML
-    private TableView<String> rolesTable;
+    private TableView<IAMExtract> rolesTable;
 
     @FXML
-    private TableColumn<String,String> roleColumn;
+    private TableColumn<IAMExtract,String> roleColumn;
 
     @FXML
-    private TableColumn<String,String> userColumn;
+    private TableColumn<IAMExtract,String> userColumn;
 
     @FXML
     private AnchorPane secondAnchor;
@@ -93,45 +94,33 @@ public class ControllerEmployeePage implements Initializable {
     private ArrayList<User> userList;
     private ObservableList<User> userObservableList;
 
-    IAMPermissions permissions = new IAMPermissions();
+    IAMPermissions permissions;
     GetIAM getiam = new GetIAM();
+    IAMExtract iamExtract = new IAMExtract();
 
-    private static int w;
+    static int globalChecker;
 
     private String chosenRole;
 
-    private String globalRole;
-    private String globalUser;
-
     String listPermission;
 
-    ArrayList<String> getiamlist = new ArrayList<>();
-    ArrayList<String> cloudsqladminLIST = new ArrayList<>();
-    private ObservableList<String> cloudsqlObservableList;
-    ArrayList<String> ownerList = new ArrayList<>();
-    private ObservableList<String> ownerObservableList;
-    ArrayList<String> editorList = new ArrayList<>();
-    private ObservableList<String> editorObservableList;
-    ArrayList<String> viewerList = new ArrayList<>();
-    private ObservableList<String> viewerObservableList;
-    ArrayList<String> firebaseList = new ArrayList<>();
-    private ObservableList<String> firebaseObservableList;
-    ArrayList<String> computeEngineList = new ArrayList<>();
-    private ObservableList<String> computeengineObservableList;
-    ArrayList<String> loggingadminList = new ArrayList<>();
-    private ObservableList<String> loggingadminObservableList;
-    ArrayList<String> monitoringadminList = new ArrayList<>();
-    private ObservableList<String> monitoringadminObservableList;
-    ArrayList<String> apikeysadminList = new ArrayList<>();
-    private ObservableList<String> apikeysadminObservableList;
-    ArrayList<String> storageadminList = new ArrayList<>();
-    private ObservableList<String> storageadminObservableList;
+    ArrayList<IAMExtract> getIAMLists;
+
+    private ObservableList<IAMExtract> cloudsqlObservableList;
+    private ObservableList<IAMExtract> ownerObservableList;
+    private ObservableList<IAMExtract> editorObservableList;
+    private ObservableList<IAMExtract> viewerObservableList;
+    private ObservableList<IAMExtract> firebaseObservableList;
+    private ObservableList<IAMExtract> computeengineObservableList;
+    private ObservableList<IAMExtract> loggingadminObservableList;
+    private ObservableList<IAMExtract> monitoringadminObservableList;
+    private ObservableList<IAMExtract> apikeysadminObservableList;
+    private ObservableList<IAMExtract> storageadminObservableList;
 
 
     ArrayList<String> list1 = new ArrayList<>();
     String allInformation;
 
-    //    ArrayList<GetIAM> getIAMLists;
     public User user(User user) {
         users = user;
         return users;
@@ -157,16 +146,354 @@ public class ControllerEmployeePage implements Initializable {
 
         jfxcombobox.getItems().addAll("Owner","Editor","Viewer","CloudSQL Admin","Firebase Rules System","Compute Engine Service","Logging Admin","Storage Admin", "Monitoring Admin", "API Keys Admin");
 
-        userColumn.setCellValueFactory(new PropertyValueFactory<String,String>("globalUser"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<String,String>("globalRole"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract,String>("globalUser"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract,String>("globalRole"));
 
-
+        getIAMLists = getiam.getExtractingIAM();
     }
 
     @FXML
     void handleListPermissions(MouseEvent event) {
+        secondAnchor.setVisible(true);
+        employeeTable.setVisible(false);
+
+
+
+
+    }
+
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    permissions = new IAMPermissions();
+                    permissions.listPermissions();
+
+//                    getiamlist = getiam.getTempPermissionList();
+//                    System.out.println("HIHI " + getiamlist);
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("Controller trying to print permissions from getiamlist :" + getiamlist.get(i));
+//                    }
+//
+//                    //START OF CloudSQL List
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        cloudsqladminLIST.add(getiamlist.get(o));
+//                        System.out.println("Adding into cloudsql list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/cloudsql.admin")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < cloudsqladminLIST.size(); p++) {
+//                        System.out.println("Inside of CLOUDSQLADMINLIST : " + cloudsqladminLIST.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF CLOUDSQL LIST
+//
+//                    //START OF COMPUTE ENGINE LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        computeEngineList.add(getiamlist.get(o));
+//                        System.out.println("Adding into compute engine list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/compute.serviceAgent")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < computeEngineList.size(); p++) {
+//                        System.out.println("Inside of COMPUTE ENGINE LIST : " + computeEngineList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF COMPUTE ENGINE LIST
+//
+//                    //START OF EDITOR LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        editorList.add(getiamlist.get(o));
+//                        System.out.println("Adding into editor list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/editor")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < editorList.size(); p++) {
+//                        System.out.println("Inside of EDITOR LIST : " + editorList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF EDITOR LIST
+//
+//                    //START OF FIREBASE LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        firebaseList.add(getiamlist.get(o));
+//                        System.out.println("Adding into firebase list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/firebaserules.system")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < firebaseList.size(); p++) {
+//                        System.out.println("Inside of FIRE BASE LIST : " + firebaseList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF FIREBASE LIST
+//
+//                    //START OF LOGGING ADMIN LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        loggingadminList.add(getiamlist.get(o));
+//                        System.out.println("Adding into logging admin list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/logging.admin")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < loggingadminList.size(); p++) {
+//                        System.out.println("Inside of LOGGING ADMIN LIST : " + loggingadminList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF LOGGING ADMIN LIST
+//
+//                    //START OF MONITORING ADMIN LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        monitoringadminList.add(getiamlist.get(o));
+//                        System.out.println("Adding into monitoring admin list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/monitoring.admin")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < monitoringadminList.size(); p++) {
+//                        System.out.println("Inside of MONITORING ADMIN LIST : " + monitoringadminList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF MONITORING ADMIN LIST
+//
+//                    //START OF OWNER LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        ownerList.add(getiamlist.get(o));
+//                        System.out.println("Adding into owner list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/owner")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < ownerList.size(); p++) {
+//                        System.out.println("Inside of OWNER LIST : " + ownerList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF OWNER LIST
+//
+//                    //START OF API KEYS ADMIN
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        apikeysadminList.add(getiamlist.get(o));
+//                        System.out.println("Adding into api keys admin list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/serviceusage.apiKeysAdmin")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < apikeysadminList.size(); p++) {
+//                        System.out.println("Inside of API KEYS ADMIN LIST : " + apikeysadminList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF API KEYS ADMIN
+//
+//                    //START OF STORAGE ADMIN LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        storageadminList.add(getiamlist.get(o));
+//                        System.out.println("Adding into storage admin list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/storage.admin")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < storageadminList.size(); p++) {
+//                        System.out.println("Inside of STORAGE ADMIN LIST : " + storageadminList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF STORAGE ADMIN LIST
+//
+//                    //START OF VIEWER LIST
+//                    for (int o = 0; o < getiamlist.size(); o++) {
+//                        String s = getiamlist.get(o);
+//                        viewerList.add(getiamlist.get(o));
+//                        System.out.println("Adding into viewer list : " + s);
+//                        if (getiamlist.get(o).contains("role: roles/viewer")) {
+//                            w = getiamlist.indexOf(getiamlist.get(o));
+//                            System.out.println("INDEX OF ROLE LINE : " + w);
+//                            System.out.println("FOUND THIS");
+//                            break;
+//                        }
+//                    }
+//                    for (int p = 0; p < viewerList.size(); p++) {
+//                        System.out.println("Inside of VIEWER LIST : " + viewerList.get(p));
+//                    }
+//                    while (w != -1) {
+//                        getiamlist.remove(w);
+//                        w--;
+//                    }
+//                    for (int i = 0; i < getiamlist.size(); i++) {
+//                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+//                    }
+//                    //END OF VIEWER LIST
+
+                    Platform.runLater(() -> {
+
+                    });
+                    return null;
+                }
+            };
+        }
+    };
+
+    @FXML
+    void handlejfxcombobox(ActionEvent event) {
         process.start();
         spinner.setVisible(true);
+        chosenRole = jfxcombobox.getSelectionModel().getSelectedItem();
+        System.out.println(chosenRole);
+
+        if(chosenRole.equals("Owner")){
+           globalChecker=1;
+            System.out.println(globalChecker);
+            getiam.takeinGlobalChecker(globalChecker);
+           ownerObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(ownerObservableList);
+        }
+        else if(chosenRole=="Editor"){
+            globalChecker=2;
+            getiam.takeinGlobalChecker(globalChecker);
+            editorObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(editorObservableList);
+        }
+        else if (chosenRole=="Viewer"){
+            globalChecker=3;
+            getiam.takeinGlobalChecker(globalChecker);
+            viewerObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(viewerObservableList);
+        }
+        else if (chosenRole=="CloudSQL Admin"){
+            globalChecker=4;
+            getiam.takeinGlobalChecker(globalChecker);
+            cloudsqlObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(cloudsqlObservableList);
+        }
+        else if (chosenRole=="Firebase Rules System"){
+            globalChecker=5;
+            getiam.takeinGlobalChecker(globalChecker);
+            firebaseObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(firebaseObservableList);
+        }
+        else if (chosenRole=="Compute Engine Service"){
+            globalChecker=6;
+            getiam.takeinGlobalChecker(globalChecker);
+            computeengineObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(computeengineObservableList);
+        }
+        else if (chosenRole=="Logging Admin"){
+            globalChecker=7;
+            getiam.takeinGlobalChecker(globalChecker);
+            loggingadminObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(loggingadminObservableList);
+        }
+        else if (chosenRole=="Storage Admin"){
+            globalChecker=8;
+            getiam.takeinGlobalChecker(globalChecker);
+            storageadminObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(storageadminObservableList);
+        }
+        else if (chosenRole=="Monitoring Admin"){
+            globalChecker=9;
+            getiam.takeinGlobalChecker(globalChecker);
+            monitoringadminObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(monitoringadminObservableList);
+        }
+        else{
+            globalChecker=10;
+            getiam.takeinGlobalChecker(globalChecker);
+            apikeysadminObservableList = FXCollections.observableList(getIAMLists);
+            rolesTable.setItems(apikeysadminObservableList);
+        }
 
         process.setOnSucceeded(e -> {
             spinner.setVisible(false);
@@ -178,285 +505,6 @@ public class ControllerEmployeePage implements Initializable {
         process.setOnFailed(e -> {
             process.reset();
         });
-
-
-    }
-
-    Service process = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    permissions.listPermissions();
-
-                    getiamlist = getiam.getTempPermissionList();
-                    System.out.println("HIHI " + getiamlist);
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("Controller trying to print permissions from getiamlist :" + getiamlist.get(i));
-                    }
-
-                    //START OF CloudSQL List
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        cloudsqladminLIST.add(getiamlist.get(o));
-                        System.out.println("Adding into cloudsql list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/cloudsql.admin")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < cloudsqladminLIST.size(); p++) {
-                        System.out.println("Inside of CLOUDSQLADMINLIST : " + cloudsqladminLIST.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF CLOUDSQL LIST
-
-                    //START OF COMPUTE ENGINE LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        computeEngineList.add(getiamlist.get(o));
-                        System.out.println("Adding into compute engine list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/compute.serviceAgent")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < computeEngineList.size(); p++) {
-                        System.out.println("Inside of COMPUTE ENGINE LIST : " + computeEngineList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF COMPUTE ENGINE LIST
-
-                    //START OF EDITOR LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        editorList.add(getiamlist.get(o));
-                        System.out.println("Adding into editor list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/editor")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < editorList.size(); p++) {
-                        System.out.println("Inside of EDITOR LIST : " + editorList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF EDITOR LIST
-
-                    //START OF FIREBASE LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        firebaseList.add(getiamlist.get(o));
-                        System.out.println("Adding into firebase list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/firebaserules.system")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < firebaseList.size(); p++) {
-                        System.out.println("Inside of FIRE BASE LIST : " + firebaseList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF FIREBASE LIST
-
-                    //START OF LOGGING ADMIN LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        loggingadminList.add(getiamlist.get(o));
-                        System.out.println("Adding into logging admin list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/logging.admin")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < loggingadminList.size(); p++) {
-                        System.out.println("Inside of LOGGING ADMIN LIST : " + loggingadminList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF LOGGING ADMIN LIST
-
-                    //START OF MONITORING ADMIN LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        monitoringadminList.add(getiamlist.get(o));
-                        System.out.println("Adding into monitoring admin list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/monitoring.admin")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < monitoringadminList.size(); p++) {
-                        System.out.println("Inside of MONITORING ADMIN LIST : " + monitoringadminList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF MONITORING ADMIN LIST
-
-                    //START OF OWNER LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        ownerList.add(getiamlist.get(o));
-                        System.out.println("Adding into owner list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/owner")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < ownerList.size(); p++) {
-                        System.out.println("Inside of OWNER LIST : " + ownerList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF OWNER LIST
-
-                    //START OF API KEYS ADMIN
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        apikeysadminList.add(getiamlist.get(o));
-                        System.out.println("Adding into api keys admin list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/serviceusage.apiKeysAdmin")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < apikeysadminList.size(); p++) {
-                        System.out.println("Inside of API KEYS ADMIN LIST : " + apikeysadminList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF API KEYS ADMIN
-
-                    //START OF STORAGE ADMIN LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        storageadminList.add(getiamlist.get(o));
-                        System.out.println("Adding into storage admin list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/storage.admin")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < storageadminList.size(); p++) {
-                        System.out.println("Inside of STORAGE ADMIN LIST : " + storageadminList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF STORAGE ADMIN LIST
-
-                    //START OF VIEWER LIST
-                    for (int o = 0; o < getiamlist.size(); o++) {
-                        String s = getiamlist.get(o);
-                        viewerList.add(getiamlist.get(o));
-                        System.out.println("Adding into viewer list : " + s);
-                        if (getiamlist.get(o).contains("role: roles/viewer")) {
-                            w = getiamlist.indexOf(getiamlist.get(o));
-                            System.out.println("INDEX OF ROLE LINE : " + w);
-                            System.out.println("FOUND THIS");
-                            break;
-                        }
-                    }
-                    for (int p = 0; p < viewerList.size(); p++) {
-                        System.out.println("Inside of VIEWER LIST : " + viewerList.get(p));
-                    }
-                    while (w != -1) {
-                        getiamlist.remove(w);
-                        w--;
-                    }
-                    for (int i = 0; i < getiamlist.size(); i++) {
-                        System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-                    }
-                    //END OF VIEWER LIST
-
-                    Platform.runLater(() -> {
-                    secondAnchor.setVisible(true);
-                    employeeTable.setVisible(false);
-                    });
-                    return null;
-                }
-            };
-        }
-    };
-
-    @FXML
-    void handlejfxcombobox(ActionEvent event) {
-        chosenRole = jfxcombobox.getSelectionModel().getSelectedItem();
-        System.out.println(chosenRole);
-
-        if(chosenRole.equals("Owner")){
-            //role is the same as the jfxcombobox
-            //user follow arraylist -> search google on how to display in a single column
-            ownerObservableList = FXCollections.observableList(ownerList);
-            rolesTable.setItems(ownerObservableList);
-        }
     }
 
 

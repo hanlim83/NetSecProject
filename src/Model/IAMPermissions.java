@@ -12,6 +12,7 @@ public class IAMPermissions {
     private OAuth2Login login = new OAuth2Login();
     ArrayList<String> permissionList = new ArrayList<>();
     GetIAM getiam;
+    ArrayList<GetIAM> iamobjectList = new ArrayList<>();
 
     public IAMPermissions() {
 
@@ -42,9 +43,13 @@ public class IAMPermissions {
             permissionList.add(line);
         }
         getiam = new GetIAM(permissionList);
+        iamobjectList.add(getiam);
         return line;
     }
 
+    public ArrayList<GetIAM> getIAMArrayList(){
+        return iamobjectList;
+    }
 
     public static void main (String args[]){
         IAMPermissions permissions = new IAMPermissions();
