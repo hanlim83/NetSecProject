@@ -9,6 +9,10 @@ public class NIFSelector {
         PcapNetworkInterface device = null;
         try {
             device = new NifSelector().selectNetworkInterface();
+            System.out.println(device.isRunning());
+            System.out.println(device.isLocal());
+            System.out.println(device.isLoopBack());
+            System.out.println(device.isUp());
         } catch (IOException e) {
             e.printStackTrace();
         }

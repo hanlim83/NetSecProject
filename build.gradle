@@ -35,6 +35,7 @@ dependencies {
     compile 'com.nexmo:client:3.6.0'
     compile 'com.google.apis:google-api-services-iam:v1-rev252-1.23.0'
     compile 'com.google.apis:google-api-services-cloudresourcemanager:v1-rev495-1.23.0'
+    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.9.0'
 
 }
 

@@ -88,13 +88,30 @@ public class ControllerCALandingSelectInt implements Initializable {
                 TreeItem<String> Interface = new TreeItem<String>(i.getName());
                 TreeItem<String> InterfaceID = new TreeItem<String>("Interface ID: " + i.getName());
                 TreeItem<String> InterfaceDescription = new TreeItem<String>("Interface Description: " + i.getDescription());
+                TreeItem<String> InterfaceType = null;
+                if (i.isLocal())
+                    InterfaceType = new TreeItem<String>("Is a Local Network Adapter");
+                else if (i.isLoopBack())
+                    InterfaceType = new TreeItem<String>("Is a Loopback Network Adapter");
+                TreeItem<String> InterfaceStatus = null;
+                if (i.isUp() && i.isRunning())
+                    InterfaceStatus = new TreeItem<String>("Network Adapter is enabled and connected to a network");
+                else if (i.isRunning())
+                    InterfaceStatus = new TreeItem<String>("Network Adapter is enabled but not connected to a network");
                 TreeItem<String> InterfaceAddressesHeader = new TreeItem<String>("Assigned IP Addresses");
                 List<PcapAddress> interfaceAddresses = i.getAddresses();
                 for (PcapAddress a : interfaceAddresses) {
                     TreeItem<String> InterfaceAddress = new TreeItem<String>(a.getAddress().getHostAddress().toUpperCase());
                     InterfaceAddressesHeader.getChildren().add(InterfaceAddress);
                 }
-                Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceAddressesHeader);
+                if (InterfaceType == null && InterfaceStatus == null)
+                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceAddressesHeader);
+                else if (InterfaceStatus == null)
+                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceType, InterfaceAddressesHeader);
+                else if (InterfaceType == null)
+                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceStatus, InterfaceAddressesHeader);
+                else
+                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceType, InterfaceStatus, InterfaceAddressesHeader);
                 dummyRoot.getChildren().add(Interface);
             }
             intDisplay.setRoot(dummyRoot);
@@ -132,7 +149,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(null, this.handler, null, null, 0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,7 +170,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         Parent nextView = null;
         try {
             nextView = loader.load();
-            ControllerCALandingSetOptions controller = loader.<ControllerCALandingSetOptions>getController();
+            ControllerCALandingSetOptions controller = loader.getController();
             controller.passVariables(handler, device, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();

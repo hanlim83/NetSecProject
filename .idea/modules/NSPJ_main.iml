@@ -39,6 +39,7 @@
     <orderEntry type="library" name="Gradle: org.pcap4j:pcap4j-core:1.7.3" level="project" />
     <orderEntry type="library" name="Gradle: com.github.vatbub:VirustotalPublicV2.0:1.1.rB" level="project" />
     <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.richtext:richtextfx:0.9.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.apis:google-api-services-storage:v1-rev131-1.23.0" level="project" />
     <orderEntry type="library" name="Gradle: io.grpc:grpc-auth:1.10.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.auth:google-auth-library-credentials:0.9.1" level="project" />
@@ -80,6 +81,10 @@
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Gradle: com.auth0:java-jwt:2.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.undo:undofx:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.flowless:flowless:0.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.reactfx:reactfx:2.0-M5" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.wellbehaved:wellbehavedfx:0.3.3" level="project" />
     <orderEntry type="library" name="Gradle: joda-time:joda-time:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.api.grpc:proto-google-common-protos:1.11.0" level="project" />

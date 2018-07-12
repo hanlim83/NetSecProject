@@ -71,9 +71,9 @@ public class ControllerCAMainPackets implements Initializable {
     @FXML
     private JFXToggleButton captureToggle;
     @FXML
-    private JFXButton exportPcapBtn;
-    @FXML
     private JFXButton clearCaptureBtn;
+    @FXML
+    private Label alertCount;
     private PcapNetworkInterface device;
     private Scene myScene;
     private ArrayList<CapturedPacket> packets;
@@ -112,13 +112,12 @@ public class ControllerCAMainPackets implements Initializable {
         this.handler = handler;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        if (capture == null) {
+        if (capture == null)
             clearCaptureBtn.setDisable(true);
-            exportPcapBtn.setDisable(true);
-        } else if (capture.isRunning()) {
+        else if (capture.isRunning()) {
             this.capture = capture;
             captureToggle.setSelected(true);
-            handler.setTableviewRunnable(handler.getService().scheduleAtFixedRate(new Runnable() {
+            handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
                     Platform.runLater(new Runnable() {
@@ -136,7 +135,6 @@ public class ControllerCAMainPackets implements Initializable {
         } else if (capture != null) {
             this.capture = capture;
             clearCaptureBtn.setDisable(false);
-            exportPcapBtn.setDisable(false);
             packets = capture.packets;
             OLpackets = FXCollections.observableArrayList(packets);
             packetstable.setItems(OLpackets);
@@ -145,7 +143,7 @@ public class ControllerCAMainPackets implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold);
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,7 +153,7 @@ public class ControllerCAMainPackets implements Initializable {
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
-        handler.setTableviewRunnable(handler.getService().scheduleAtFixedRate(new Runnable() {
+        handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -170,19 +168,18 @@ public class ControllerCAMainPackets implements Initializable {
             }
         }, 2, 1, TimeUnit.SECONDS));
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
-            handler.setcaptureRunnable(handler.getService().schedule(new Runnable() {
+            handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     capture.startSniffing();
                 }
             }, 1, SECONDS));
         }
-        exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
@@ -221,11 +218,10 @@ public class ControllerCAMainPackets implements Initializable {
         });
         alert.show();
         clearCaptureBtn.setDisable(false);
-        exportPcapBtn.setDisable(false);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+            ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
         } catch (IOException e) {
             e.printStackTrace();
@@ -283,7 +279,7 @@ public class ControllerCAMainPackets implements Initializable {
                 Parent nextView = null;
                 try {
                     nextView = loader.load();
-                    ControllerCADetailedPacket controller = loader.<ControllerCADetailedPacket>getController();
+                    ControllerCADetailedPacket controller = loader.getController();
                     //controller.passVariables(device, handler, capture, selected, this.Ccapture);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -322,11 +318,10 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(null);
             packetstable.refresh();
             clearCaptureBtn.setDisable(true);
-            exportPcapBtn.setDisable(true);
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                ControllerAdminSideTab ctrl = loader.<ControllerAdminSideTab>getController();
+                ControllerAdminSideTab ctrl = loader.getController();
                 ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -339,11 +334,11 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(null);
             packetstable.refresh();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
+            myScene = ((Node) event.getSource()).getScene();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.<ControllerCALandingSelectInt>getController();
+                ControllerCALandingSelectInt controller = loader.getController();
                 controller.passVariables(handler, null, null, 0);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -356,7 +351,7 @@ public class ControllerCAMainPackets implements Initializable {
     }
 
     @FXML
-    public void launchPcapExport(ActionEvent event) {
+    public void launchPcapExport() {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         FileChooser choose = new FileChooser();

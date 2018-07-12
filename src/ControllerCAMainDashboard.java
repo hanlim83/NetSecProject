@@ -55,9 +55,9 @@ public class ControllerCAMainDashboard implements Initializable {
     @FXML
     private JFXToggleButton captureToggle;
     @FXML
-    private JFXButton exportPcapBtn;
-    @FXML
     private JFXButton clearCaptureBtn;
+    @FXML
+    private Label alertCount;
     @FXML
     private LineChart<Number, Number> networkTrafficChart;
     @FXML
@@ -125,14 +125,12 @@ public class ControllerCAMainDashboard implements Initializable {
         this.threshold = threshold;
         if (capture == null) {
             clearCaptureBtn.setDisable(true);
-            exportPcapBtn.setDisable(true);
         } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
             play();
 
         } else if (capture != null) {
             clearCaptureBtn.setDisable(false);
-            exportPcapBtn.setDisable(false);
             packets = capture.packets;
         }
         try {
@@ -173,7 +171,6 @@ public class ControllerCAMainDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        exportPcapBtn.setDisable(true);
         clearCaptureBtn.setDisable(true);
     }
 
@@ -209,7 +206,6 @@ public class ControllerCAMainDashboard implements Initializable {
         });
         alert.show();
         clearCaptureBtn.setDisable(false);
-        exportPcapBtn.setDisable(false);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -274,7 +270,6 @@ public class ControllerCAMainDashboard implements Initializable {
         clearCapture.setOnAction(addEvent -> {
             capture = null;
             clearCaptureBtn.setDisable(true);
-            exportPcapBtn.setDisable(true);
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -305,7 +300,7 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     @FXML
-    public void launchPcapExport(ActionEvent event) {
+    public void launchPcapExport() {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         FileChooser choose = new FileChooser();
