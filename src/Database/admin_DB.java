@@ -1,6 +1,7 @@
 package Database;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class admin_DB {
     public String getAdminAccStatus(String email) throws SQLException {
@@ -24,7 +25,6 @@ public class admin_DB {
         //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
             ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
             while (resultSet.next()) {
                 //System.out.println(resultSet.getString(1));
@@ -34,6 +34,33 @@ public class admin_DB {
 //        if (state==)
         System.out.println(state);
         return state;
+    }
+
+    public ArrayList<String> getAllPhoneNo() throws SQLException {
+        ArrayList<String> phoneNoList=new ArrayList<String>();
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+        String databaseName = "admin_DB";
+        String username = "root";
+        String password = "root";
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+            while (resultSet.next()) {
+                phoneNoList.add(resultSet.getString(1));
+            }
+        }
+        return phoneNoList;
     }
 
     public String getPhoneNo(String email) throws SQLException {
