@@ -45,7 +45,7 @@ sourceSets {
             srcDirs = ['src']
         }
         resources {
-            srcDirs = ['src/View','src/Media']
+            srcDirs = ['src/View']
         }
     }
 }

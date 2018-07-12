@@ -18,7 +18,6 @@ public class CAMain extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("CALandingSelectInt.fxml"));
             System.out.println(getClass().getResource("CALandingSelectInt.fxml"));
-            System.out.println(getClass().getResource("CABackdrop.png"));
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             handler = new ScheduledExecutorServiceHandler();

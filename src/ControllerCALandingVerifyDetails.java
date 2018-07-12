@@ -119,7 +119,6 @@ public class ControllerCALandingVerifyDetails implements Initializable {
 
     public void hamburgerBar() {
         rootP = anchorPane;
-
         try {
             VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
