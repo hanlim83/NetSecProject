@@ -6,6 +6,8 @@ import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
@@ -19,7 +21,10 @@ public class NetworkCapture {
     private static final int READ_TIMEOUT = Integer.getInteger(READ_TIMEOUT_KEY, 100); // [ms]
     private static final String SNAPLEN_KEY = NetworkCapture.class.getName() + ".snaplen";
     private static final int SNAPLEN = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
-    private static final int RECORDRANGE = 5;
+    private static final int ALERT_LIMIT = 10;
+    private static final int INCERMENT_LIMIT = 1;
+    private static final int MINUTE_TO_MILISECONDS = 60000;
+    private static final int RECORD_RANGE = 10;
     public ArrayList<CapturedPacket> packets;
     public ArrayList<LineChartObject> PreviousTPS;
     private PcapNetworkInterface Netinterface;
@@ -32,7 +37,7 @@ public class NetworkCapture {
     private long PacketsReceived, PacketsDropped, PacketsDroppedByInt, PacketsCaptured;
     private String directoryPath;
     private int Threshold, perMinutePktCount = 0;
-    private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null;
+    private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null, alertBeforeTimeStamp = null, alertAfterTimeStamp = null;
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
@@ -152,22 +157,31 @@ public class NetworkCapture {
             System.out.println("Incremented");
             incrementEvents();
             renewCount = false;
-            timer.schedule(countExpiry, 60000);
+            timer.schedule(countExpiry, (INCERMENT_LIMIT * MINUTE_TO_MILISECONDS));
             return false;
         } else if (sendLimit == true && renewCount == false)
             return false;
         else if (sendLimit == false && renewCount == false) {
             System.out.println("Sent Alert");
             sendLimit = true;
-            timer.schedule(sendExpiry, 600000);
+            timer.schedule(sendExpiry, (ALERT_LIMIT * MINUTE_TO_MILISECONDS));
             return true;
         } else {
             System.out.println("Incremented and sent alert");
             incrementEvents();
             sendLimit = true;
             renewCount = false;
-            timer.schedule(sendExpiry, 600000);
-            timer.schedule(countExpiry, 60000);
+            timer.schedule(sendExpiry, (ALERT_LIMIT * MINUTE_TO_MILISECONDS));
+            timer.schedule(countExpiry, (INCERMENT_LIMIT * MINUTE_TO_MILISECONDS));
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.MINUTE, RECORD_RANGE);
+            alertAfterTimeStamp = new Timestamp(cal.getTime().getTime());
+            cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.MINUTE, -RECORD_RANGE);
+            alertBeforeTimeStamp = new Timestamp(cal.getTime().getTime());
+            Specficexport();
             return true;
         }
     }
@@ -183,7 +197,6 @@ public class NetworkCapture {
                 PacketsCaptured = ps.getNumPacketsCaptured();
             }
         } catch (PcapNativeException | NotOpenException e) {
-            // Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -216,12 +229,38 @@ public class NetworkCapture {
         }
     }
 
-    //Export to pcap file
-    public boolean export(String filepath) {
+    //Specific Export to pcap file
+    public boolean Specficexport() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            PcapDumper dumper = Phandle.dumpOpen(filepath);
+            PcapDumper dumper = Phandle.dumpOpen(directoryPath + "\\Partial Network Capture for Alert " + dtf.format(now) + ".pcap");
+            for (CapturedPacket p : packets) {
+                if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
+                    dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
+            }
+            dumper.close();
+            Phandle.close();
+            return true;
+        } catch (PcapNativeException e) {
+            e.printStackTrace();
+            return false;
+        } catch (NotOpenException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //General Export to pcap file
+    public boolean Generalexport() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            if (!Phandle.isOpen())
+                Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            PcapDumper dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
@@ -261,10 +300,7 @@ public class NetworkCapture {
     }
 
     public boolean hasExistingPackets() {
-        if (!packets.isEmpty())
-            return true;
-        else
-            return false;
+        return !packets.isEmpty();
     }
 
 }

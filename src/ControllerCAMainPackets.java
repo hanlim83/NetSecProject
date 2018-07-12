@@ -280,7 +280,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.getController();
-                    //controller.passVariables(device, handler, capture, selected, this.Ccapture);
+                    controller.passVariables(device, handler, capture, selected, directoryPath, threshold);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -350,7 +350,6 @@ public class ControllerCAMainPackets implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
     public void launchPcapExport() {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -362,7 +361,7 @@ public class ControllerCAMainPackets implements Initializable {
         else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
-        if (capture.export(f.getAbsolutePath())) {
+        if (capture.Generalexport()) {
             String title = "Packet Capture Exported Sucessfully";
             String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
             JFXButton close = new JFXButton("Close");

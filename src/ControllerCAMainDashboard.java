@@ -299,7 +299,6 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
     public void launchPcapExport() {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -311,7 +310,7 @@ public class ControllerCAMainDashboard implements Initializable {
         else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
-        if (capture.export(f.getAbsolutePath())) {
+        if (capture.Generalexport()) {
             String title = "Packet Capture Exported Sucessfully";
             String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
             JFXButton close = new JFXButton("Close");
