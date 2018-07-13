@@ -75,41 +75,26 @@ public class ControllerUserHome implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        updateTimer();
+        timerrprocess.start();
         try {
-            credential = login.login();
+            InfoUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            getLatestFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Collections.sort(BlobList);
-        System.out.println("=======================LATEST FILE/TIME===============================");
-        System.out.println(BlobList.get(0).toString());
-        System.out.println(convertTime(BlobList.get(0).getTime()));
-        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
-        try {
-            GreetingsLabel.setText("Good afternoon "+login.getName());
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static Timer timer;
-    private static int counter=0;
+    private static int counter = 0;
 
-    public static void StopTimer(){
-        if (counter!=0){
+    public static void StopTimer() {
+        if (counter != 0) {
             timer.purge();
             timer.cancel();
         }
     }
 
 
-    private void updateTimer(){
+    private void updateTimer() {
         counter++;
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -154,19 +139,74 @@ public class ControllerUserHome implements Initializable {
         return format.format(date);
     }
 
-    Service process = new Service() {
+    Service timerrprocess = new Service() {
         @Override
         protected Task createTask() {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    //To migrate codes here for efficency
+                    updateTimer();
                     return null;
                 }
             };
         }
     };
 
+    private void InfoUpdate() throws Exception {
+        credential = login.login();
+        getLatestFile();
+        Collections.sort(BlobList);
+        System.out.println("=======================LATEST FILE/TIME===============================");
+        System.out.println(BlobList.get(0).toString());
+        System.out.println(convertTime(BlobList.get(0).getTime()));
+        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
+        GreetingsLabel.setText(getGreetings() + login.getName());
+    }
+
+    private String getGreetings() {
+        String greetings = null;
+        int hours = Integer.parseInt(new SimpleDateFormat("HH").format(new Date()));
+        if(hours>=1 && hours<=12){
+            greetings="Good morning ";
+        }else if(hours>=12 && hours<=16){
+            greetings="Good afternoon ";
+        }else if(hours>=16 && hours<=21){
+            greetings="Good evening ";
+        }else if(hours>=21 && hours<=24){
+            greetings="Good night ";
+        }
+        return greetings;
+    }
+
+//    Service process = new Service() {
+//        @Override
+//        protected Task createTask() {
+//            return new Task() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    try {
+//                        credential = login.login();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    getLatestFile();
+//                    Collections.sort(BlobList);
+//                    System.out.println("=======================LATEST FILE/TIME===============================");
+//                    System.out.println(BlobList.get(0).toString());
+//                    System.out.println(convertTime(BlobList.get(0).getTime()));
+//                    Platform.runLater(() -> {
+//                        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
+//                        try {
+//                            GreetingsLabel.setText("Good afternoon "+login.getName());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    });
+//                    return null;
+//                }
+//            };
+//        }
+//    };
 
     //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
     //To be removed soon
@@ -202,7 +242,7 @@ public class ControllerUserHome implements Initializable {
 //        //TODO TESTING DELETE B4 PUSH
 ////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
 //        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
-        device_build_numberDB.insertNewOSVersion("From JAVA","Hello");
+        device_build_numberDB.insertNewOSVersion("From JAVA", "Hello");
     }
 
     @FXML

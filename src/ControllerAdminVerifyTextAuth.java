@@ -73,11 +73,17 @@ public class ControllerAdminVerifyTextAuth {
             stage.show();
 
         } else {
-
             System.out.print("Sorry, wrong pin!");
-
-
         }
+
+    }
+
+    public void adminAuth(String phoneNo){
+
+        TextAuthentication auth = new TextAuthentication();
+        auth.sendAuth(phoneNo);
+        numberViewer.setText(phoneNo);
+        System.out.println(" Correct phone number input");
 
     }
 

@@ -162,7 +162,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     try {
                         nextView = loader.load();
                         ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
-//                        controller.; call Ravin method
+                        controller.adminAuth(phoneNo);
                     } catch (IOException u) {
                         u.printStackTrace();
                     }
