@@ -1,3 +1,4 @@
+import Database.User_InfoDB;
 import Model.Device_Build_NumberDB;
 import Model.MyBlob;
 import Model.OAuth2Login;
@@ -213,9 +214,7 @@ public class ControllerUserHome implements Initializable {
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
         Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
-//        device_build_numberDB.deleteOSVersion("8");
-//        ArrayList<OSVersion> osList=device_build_numberDB.CheckSupportedVersion();
-//        System.out.println(osList.size());
+        User_InfoDB user_infoDB=new User_InfoDB();
 ////        Scanner s = new Scanner(osName).useDelimiter("                ");
 ////        String firstLine=s.next();
 ////        String osBuildNoStr=s.next();
@@ -232,17 +231,11 @@ public class ControllerUserHome implements Initializable {
 //        System.out.println(PrivateFirewall);
 //        System.out.println(PublicFirewall);
 
-//        WindowsUtils utils=new WindowsUtils();
-//        ResultSet resultset=utils.handleSQLCommands("device_build_number");
-//        while (resultset.next()) {
-//            System.out.println(resultset.getString(1));
-////            SupportedVersions.add(resultSet.getString(1));
-//        }
 
 //        //TODO TESTING DELETE B4 PUSH
 ////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
 //        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
-        device_build_numberDB.insertNewOSVersion("From JAVA", "Hello");
+        user_infoDB.createUser("hugochiaxyz8@gmail.com");
     }
 
     @FXML

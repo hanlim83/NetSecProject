@@ -36,7 +36,7 @@ public class admin_DB {
         return state;
     }
 
-    public ArrayList<String> getAllPhoneNo() throws SQLException {
+    public ArrayList<String> getAllPhoneNo(){
         ArrayList<String> phoneNoList=new ArrayList<String>();
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
         String databaseName = "admin_DB";
@@ -50,7 +50,9 @@ public class admin_DB {
                 databaseName,
                 instanceConnectionName);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(jdbcUrl, username, password);
         //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
@@ -59,6 +61,9 @@ public class admin_DB {
             while (resultSet.next()) {
                 phoneNoList.add(resultSet.getString(1));
             }
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return phoneNoList;
     }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class User_InfoDB {
 
-    //Not tested yet
     public ArrayList<User> getUserList() throws SQLException {
         ArrayList<User> UserList = new ArrayList<User>();
 
@@ -144,7 +143,7 @@ public class User_InfoDB {
         }
     }
 
-    public void DELETEUSER(String email) throws SQLException {
+    public void deleteUser(String email) throws SQLException {
         //maybe change to boolean next time
         // TODO: fill this in
         // The instance connection name can be obtained from the instance overview page in Cloud Console
@@ -201,23 +200,41 @@ public class User_InfoDB {
         }
     }
 
-    //TODO FINISH UP THIS
+    public void createUser(String email) throws SQLException {
+        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+        String databaseName = "user_info";
+        String username = "root";
+        String password = "root";
+
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+
+        //[END doc-example]
+
+        //Here no need to return any result so how?
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//            ResultSet resultSet = statement.executeQuery("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateLKey='"+privateKey+"' WHERE email='"+email+"'");
+//            while (resultSet.next()) {
+//                //System.out.println(resultSet.getString(1));
+//                state=resultSet.getString(1);
+//            }
+            statement.executeUpdate("INSERT INTO entries (email,status) values ('"+email+"','Inactive')");
+        }
+    }
+
     public String getPhoneNumber(String email) throws SQLException {
         String phoneNo = null;
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
         String databaseName = "user_info";
         String username = "root";
         String password = "root";
-
-//            if (instanceConnectionName.equals("<device-supported-versions>")) {
-//                System.err.println("Please update the sample to specify the instance connection name.");
-//                System.exit(1);
-//            }
-//
-//            if (password.equals("<insert_password>")) {
-//                System.err.println("Please update the sample to specify the mysql password.");
-//                System.exit(1);
-//            }
 
         //[START doc-example]
         String jdbcUrl = String.format(
