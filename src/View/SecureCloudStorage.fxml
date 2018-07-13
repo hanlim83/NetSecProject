@@ -26,7 +26,7 @@
       <JFXButton fx:id="TestButton" layoutX="873.0" layoutY="76.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="61.0" prefWidth="184.0" text="Upload file" />
       <AnchorPane fx:id="TableAnchorPane" layoutX="9.0" layoutY="138.0" prefHeight="451.0" prefWidth="1044.0" />
       <JFXTextField fx:id="filterField" layoutX="688.0" layoutY="88.0" prefHeight="31.0" prefWidth="184.0" promptText="Search" />
-      <HBox layoutX="93.0" layoutY="75.0" prefHeight="54.0" prefWidth="200.0">
+      <HBox fx:id="FileButtonsHbox" layoutX="93.0" layoutY="75.0" prefHeight="54.0" prefWidth="200.0" visible="false">
          <children>
             <JFXButton prefHeight="54.0" prefWidth="120.0" text="Download" />
             <JFXButton prefHeight="76.0" prefWidth="109.0" text="Delete" />

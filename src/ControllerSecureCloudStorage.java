@@ -1,13 +1,9 @@
-import Model.MyBlob;
-import Model.OAuth2Login;
+import Model.*;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
@@ -16,8 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.event.ActionEvent;
@@ -27,8 +22,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 
 import java.io.*;
 import java.net.URL;
@@ -38,10 +35,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ControllerSecureCloudStorage implements Initializable {
     @FXML
@@ -58,6 +54,9 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     @FXML
     private JFXDrawer drawer;
+
+    @FXML
+    private HBox FileButtonsHbox;
 
     @FXML
     private JFXTextField filterField;
@@ -91,26 +90,9 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        String email=login.getEmail();
-//        Scanner s = new Scanner(email).useDelimiter("@");
-//        String emailFront=s.next();
-//        String bucketname=emailFront+"nspj";
-////        String bucketname="hugochiaxyznspj";
-//        Page<Blob> blobs = storage.list(bucketname);
-//        for (Blob blob : blobs.iterateAll()) {
-//            // do something with the blob
-//            System.out.println("FROM METHOD" + blob);
-//            System.out.println(convertTime(blob.getCreateTime()));
-//            System.out.println("FROM METHOD" + blob.getName());
-//
-////            if (fileName.equals(blob.getName())) {
-////                System.out.println("Choose Different NAME!");
-////                return true;
-////            }
-//        }
-        UploadFileTest();
-        TableMethod();
+        deleteFile("hugochiaxyznspj","42149.py");
+//        UploadFileTest();
+//        TableMethod();
     }
 
     public String convertTime(long time) {
@@ -119,7 +101,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         return format.format(date);
     }
 
-    public void UploadFileTest(){
+    public void UploadFileTest() {
         try {
             // authorization
             credential = login.login();
@@ -192,7 +174,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         Page<Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
-            if (bucket.toString().contains(privateBucketName)){
+            if (bucket.toString().contains(privateBucketName)) {
                 System.out.println(bucket.toString());
                 File initialFile = new File(AbsolutePath);
                 InputStream targetStream = new FileInputStream(initialFile);
@@ -202,6 +184,36 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
+    public void deleteFile(String bucketName, String blobName){
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        boolean deleted = storage.delete(blobId);
+        if(deleted)
+
+        {
+            // the blob was deleted
+            System.out.println("Deleted");
+        } else
+
+        {
+            // the blob was not found
+            System.out.println("Not deleted not found");
+        }
+    }
+
+
+    OSVersion osvers = new OSVersion();
+
+    private ArrayList<OSVersion> osList;
+    private ObservableList<OSVersion> osObservableList;
+
+    private int entry1;
+    private String entryid;
+
+    public OSVersion osversion(OSVersion osversion) {
+        osvers = osversion;
+        return osvers;
+    }
 
     private void TableMethod() {
         blobs = FXCollections.observableArrayList();
@@ -228,7 +240,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         Page<Blob> blobList = storage.list(privateBucketName);
         for (Blob blob : blobList.iterateAll()) {
 //            BlobList.add(new MyBlob(blob));
-            blobs.add(new TableBlob(blob.getName(),convertTime(blob.getCreateTime())));
+            blobs.add(new TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
         }
 
 
@@ -243,7 +255,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableColumn<TableBlob, String> dateColumn = new JFXTreeTableColumn<>("Date");
-        dateColumn.setPrefWidth(522);
+        dateColumn.setPrefWidth(300);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (dateColumn.validateValue(param)) {
                 return param.getValue().getValue().date;
@@ -251,6 +263,63 @@ public class ControllerSecureCloudStorage implements Initializable {
                 return dateColumn.getComputedValue(param);
             }
         });
+
+//        JFXTreeTableColumn<JFXButton, String> settingsColumn = new JFXTreeTableColumn<>("Others");
+//        settingsColumn.setPrefWidth(12);
+//        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<JFXButton, String> param) -> {
+//            if (settingsColumn.validateValue(param)) {
+////                return param.getValue().getValue().;
+//                return settingsColumn.getComputedValue(param);
+//            } else {
+//                return settingsColumn.getComputedValue(param);
+//            }
+//        });
+
+        JFXTreeTableColumn<ActionButtonTableCell, OSVersion> settingsColumn = new JFXTreeTableColumn<>("Others");
+        settingsColumn.setPrefWidth(12);
+
+//        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, JFXButton> param) -> {
+//            if (settingsColumn.validateValue(param)) {
+//                return param.getValue().getValue().getButton();
+////                return settingsColumn.getComputedValue(param);
+//            } else {
+//                return settingsColumn.getComputedValue(param);
+//            }
+//        });
+//        settingsColumn.setCellFactory(JFXButtonTableCell.<TableBlob>forTableColumn("More", (TableBlob tableBlob) -> {
+//            //get entry id first
+//            TableBlob tableBlob1=tableBlob;
+////            osversion(tableBlob);
+////            entry1 = OSVERSIONS.getEntryID();
+////
+////            doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
+////            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+////            CHECKING=checker2;
+////            System.out.println("CHECKER NOW IS " + CHECKING);
+////
+////            System.out.println("Entry id " + entry1);
+////            entryid = Integer.toString(entry1);
+//
+//            return tableBlob1;
+//        }));
+
+//        TableBlob tableBlob=new TableBlob();
+
+//        settingsColumn.setCellFactory(ActionButtonTableCell.<OSVersion>forTableColumn("Revoke", (OSVersion OSVERSIONS) -> {
+//            //get entry id first
+//            osversion(OSVERSIONS);
+//            entry1 = OSVERSIONS.getEntryID();
+//
+////            doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
+////            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+////            CHECKING=checker2;
+////            System.out.println("CHECKER NOW IS " + CHECKING);
+//
+//            System.out.println("Entry id " + entry1);
+//            entryid = Integer.toString(entry1);
+//
+//            return OSVERSIONS;
+//        }));
 
         dateColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
                 new TextFieldEditorBuilder()));
@@ -266,12 +335,29 @@ public class ControllerSecureCloudStorage implements Initializable {
                         .getRow())
                 .getValue().blobName.set(t.getNewValue()));
 
+//        settingsColumn.setCellFactory((TreeTableColumn<JFXButton, String> param) -> new GenericEditableTreeTableCell<>(
+//                new TextFieldEditorBuilder()));
+//        settingsColumn.setOnEditCommit((CellEditEvent<JFXButton, String> t) -> t.getTreeTableView()
+//                .getTreeItem(t.getTreeTablePosition()
+//                        .getRow())
+//                .getValue().blobName.set(t.getNewValue()));
+
+//        settingsColumn.setCellFactory((TreeTableColumn<CustomCell, JFXButton> param) -> new GenericEditableTreeTableCell<>(
+//                        new TextFieldEditorBuilder()));
+////        settingsColumn.setOnEditCommit((CellEditEvent<TableBlob, JFXButton> t) -> t.getTreeTableView()
+////                .getTreeItem(t.getTreeTablePosition()
+////                        .getRow())
+////                .getValue().s;
+////                .blobName.set(t.getNewValue()));
+
+
         final TreeItem<TableBlob> root = new RecursiveTreeItem<>(blobs, RecursiveTreeObject::getChildren);
 
         JFXTreeTableView = new JFXTreeTableView<>(root);
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
         JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn);
+//        JFXTreeTableView.
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
 //        JFXTreeTableView<TableBlob> treeView = new JFXTreeTableView<>(root);
@@ -297,15 +383,16 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            if (e.isSecondaryButtonDown()){
+            if (e.isPrimaryButtonDown()) {
                 onEdit();
             }
         });
     }
 
-    private void onEdit(){
-        if(JFXTreeTableView.getSelectionModel().getSelectedItem() != null){
-            TableBlob tableBlob=JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
+    private void onEdit() {
+        FileButtonsHbox.setVisible(true);
+        if (JFXTreeTableView.getSelectionModel().getSelectedItem() != null) {
+            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
             System.out.println(tableBlob.getBlobName());
             System.out.println(tableBlob.getDate());
         }
@@ -336,6 +423,82 @@ public class ControllerSecureCloudStorage implements Initializable {
             return date;
         }
     }
+
+//    public static class JFXButtonTableCell<S> extends TableCell<S, JFXButton> {
+//
+//        private final Button actionButton;
+//
+//        public JFXButtonTableCell(String label, Function< S, S> function) {
+//            this.getStyleClass().add("action-button-table-cell");
+//
+//            this.actionButton = new JFXButton(label);
+//            this.actionButton.setOnAction((ActionEvent e) -> {
+//                function.apply(getCurrentItem());
+//            });
+//            this.actionButton.setMaxWidth(Double.MAX_VALUE);
+//        }
+//
+//        public S getCurrentItem() {
+//            return (S) getTableView().getItems().get(getIndex());
+//        }
+//
+//        public static <S> Callback<TreeTableColumn<JFXButtonTableCell, JFXButton>, TreeTableCell<JFXButtonTableCell, JFXButton>> forTableColumn(String label, Function< S, S> function) {
+//            return param -> new JFXButtonTableCell<>(label, function);
+//        }
+//
+//        @Override
+//        public void updateItem(JFXButton item, boolean empty) {
+//            super.updateItem(item, empty);
+//
+//            if (empty) {
+//                setGraphic(null);
+//            } else {
+//                setGraphic(actionButton);
+//            }
+//        }
+//    }
+
+//    /**
+//     * A custom cell that shows a checkbox, label and button in the
+//     * TreeCell.
+//     */
+//    class CustomCell extends TreeTableCell<String> {
+//        @Override
+//        protected void updateItem(String item, boolean empty) {
+//            super.updateItem(item, empty);
+//
+//            // If the cell is empty we don't show anything.
+//            if (isEmpty()) {
+//                setGraphic(null);
+//                setText(null);
+//            } else {
+//                // We only show the custom cell if it is a leaf, meaning it has
+//                // no children.
+//                if (this.getTreeTableItem().isLeaf()) {
+//
+//                    // A custom HBox that will contain your check box, label and
+//                    // button.
+//                    HBox cellBox = new HBox(10);
+//
+////                    CheckBox checkBox = new CheckBox();
+////                    Label label = new Label(item);
+//                    JFXButton button = new JFXButton("Press!");
+//                    // Here we bind the pref height of the label to the height of the checkbox. This way the label and the checkbox will have the same size.
+////                    label.prefHeightProperty().bind(checkBox.heightProperty());
+//
+//                    cellBox.getChildren().addAll(button);
+//
+//                    // We set the cellBox as the graphic of the cell.
+//                    setGraphic(cellBox);
+//                    setText(null);
+//                } else {
+//                    // If this is the root we just display the text.
+//                    setGraphic(null);
+//                    setText(item);
+//                }
+//            }
+//        }
+//    }
 
     public void hamburgerBar() {
         rootP = anchorPane;
