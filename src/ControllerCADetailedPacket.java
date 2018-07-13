@@ -1,6 +1,6 @@
-import Model.Alerts;
 import Model.CapturedPacket;
 import Model.NetworkCapture;
+import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -45,26 +45,26 @@ public class ControllerCADetailedPacket implements Initializable {
     private Scene myScene;
     private String directoryPath;
     private Integer threshold;
-    private Alerts alertHandler;
+    private SMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, SMS SMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.packet = packet;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        this.alertHandler = alertHandler;
+        this.SMSHandler = SMSHandler;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,7 +109,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.getController();
-            controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
+            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

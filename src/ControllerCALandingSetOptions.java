@@ -1,4 +1,4 @@
-import Model.Alerts;
+import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -55,7 +55,7 @@ public class ControllerCALandingSetOptions implements Initializable {
     private Scene myScene;
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
-    private Alerts alertHandler;
+    private SMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,10 +74,10 @@ public class ControllerCALandingSetOptions implements Initializable {
         ThresholdChooser.setValue("Select Threshold");
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler) {
         this.handler = handler;
         this.device = device;
-        this.alertHandler = alertHandler;
+        this.SMSHandler = SMSHandler;
         if (directoryPath != null) {
             this.directoryPath = directoryPath;
             pcapFilesDirectoryField.setText(this.directoryPath);
@@ -94,7 +94,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, null, 0, this.alertHandler);
+            ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,9 +123,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, alertHandler);
+                controller.passVariables(handler, device, directoryPath, 0, SMSHandler);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), alertHandler);
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,9 +143,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingVerifyDetails controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, alertHandler);
+                controller.passVariables(handler, device, directoryPath, 0, SMSHandler);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), alertHandler);
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

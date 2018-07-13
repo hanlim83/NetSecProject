@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0"
+            xmlns="http://javafx.com/javafx/8.0.141" fx:controller="ControllerCAMainAlertDashboard">
+    <children>
+        <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0"/>
+                <Text layoutX="301.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="FireE - Network Capture" wrappingWidth="465.13671875">
+                    <font>
+                        <Font name="Marlett" size="40.0"/>
+                    </font>
+                </Text>
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8"/>
+            </children>
+        </AnchorPane>
+        <ScrollPane layoutY="66.0" prefHeight="535.0" prefWidth="1069.0">
+            <content>
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                    <children>
+                        <LineChart fx:id="networkTrafficChart" layoutX="-1.0" layoutY="1.0" prefHeight="334.0"
+                                   prefWidth="1051.0" title="Network Traffic When Alert Occurred">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT"/>
+                            </yAxis>
+                        </LineChart>
+                        <PieChart fx:id="protocolChart" layoutY="325.0"/>
+                        <PieChart fx:id="top10IPChart" layoutX="538.0" layoutY="325.0"/>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
+    </children>
+</AnchorPane>

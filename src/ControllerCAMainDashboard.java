@@ -3,10 +3,7 @@ import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -28,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
@@ -79,7 +75,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private double y = 10;
     private ArrayList<String> adminPN;
     private admin_DB db;
-    private Alerts alertHandler;
+    private SMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -94,11 +90,11 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }
         });
-        animation = new Timeline();
+        /*animation = new Timeline();
         animation.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(10000),
                         (ActionEvent actionEvent) -> plotCaptureLine()));
-        animation.setCycleCount(Animation.INDEFINITE);
+        animation.setCycleCount(Animation.INDEFINITE);*/
         chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 10);
         chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 25);
         networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
@@ -122,23 +118,23 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        if (alertHandler == null) {
+        if (SMSHandler == null) {
             try {
                 adminPN = db.getAllPhoneNo();
-                this.alertHandler = new Alerts(adminPN);
+                this.SMSHandler = new SMS(adminPN);
                 for (String s : adminPN) {
                     System.out.println(s);
                 }
-                System.out.println("Alerts Created");
+                System.out.println("SMS Created");
             } catch (SQLException e) {
                 System.err.println("SQL Error");
-                handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                /*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                     @Override
                     public void run() {
                         Platform.runLater(new Runnable() {
@@ -146,7 +142,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             public void run() {
                                 myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Alerts not available";
+                                String title = "SMS Alerts are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
@@ -170,20 +166,20 @@ public class ControllerCAMainDashboard implements Initializable {
                             }
                         });
                     }
-                }, 1, TimeUnit.SECONDS));
+                }, 1, TimeUnit.SECONDS));*/
             }
         } else {
-            this.alertHandler = alertHandler;
+            this.SMSHandler = SMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         adminPN = db.getAllPhoneNo();
-                        alertHandler.setAdminPN(adminPN);
+                        SMSHandler.setAdminPN(adminPN);
                         for (String s : adminPN) {
                             System.out.println(s);
                         }
-                        System.out.println("Alerts Updated!");
+                        System.out.println("SMS Updated!");
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
 
@@ -195,7 +191,7 @@ public class ControllerCAMainDashboard implements Initializable {
             clearCaptureBtn.setDisable(true);
         } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
-            play();
+            //play();
 
         } else if (capture != null) {
             clearCaptureBtn.setDisable(false);
@@ -205,19 +201,19 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void play() {
+    /*public void play() {
         animation.play();
     }
 
     public void stop() {
         animation.pause();
-    }
+    }*/
 
     public void startCapturing() {
         if (capture == null)
@@ -230,12 +226,12 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }, 1, SECONDS));
         }
-        play();
+        //play();
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -244,7 +240,7 @@ public class ControllerCAMainDashboard implements Initializable {
 
     public void stopCapturing() {
         capture.stopSniffing();
-        stop();
+        //stop();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -278,7 +274,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -342,7 +338,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -356,7 +352,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, alertHandler);
+                controller.passVariables(handler, null, null, 0, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

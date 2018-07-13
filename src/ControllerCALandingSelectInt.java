@@ -1,4 +1,4 @@
-import Model.Alerts;
+import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -65,7 +65,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private Integer threshold;
-    private Alerts alertHandler;
+    private SMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -139,12 +139,12 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        this.alertHandler = alertHandler;
+        this.SMSHandler = SMSHandler;
         if (device != null) {
             InterfaceChooser.setValue(device.getName());
             nextBtn.setDisable(false);
@@ -153,7 +153,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(null, this.handler, null, null, 0, this.alertHandler);
+            ctrl.getVariables(null, this.handler, null, null, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, alertHandler);
+            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

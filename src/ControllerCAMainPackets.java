@@ -1,7 +1,7 @@
 import Database.admin_DB;
-import Model.Alerts;
 import Model.CapturedPacket;
 import Model.NetworkCapture;
+import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -87,7 +87,7 @@ public class ControllerCAMainPackets implements Initializable {
     private Integer threshold;
     private ArrayList<String> adminPN;
     private admin_DB db;
-    private Alerts alertHandler;
+    private SMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,22 +113,22 @@ public class ControllerCAMainPackets implements Initializable {
         db = new admin_DB();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
-        if (alertHandler == null) {
+        if (SMSHandler == null) {
             try {
                 adminPN = db.getAllPhoneNo();
-                this.alertHandler = new Alerts(adminPN);
+                this.SMSHandler = new SMS(adminPN);
                 for (String s : adminPN) {
                     System.out.println(s);
                 }
-                System.out.println("Alerts Created");
+                System.out.println("SMS Created");
             } catch (SQLException e) {
                 System.err.println("SQL Error");
-                handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                /*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                     @Override
                     public void run() {
                         Platform.runLater(new Runnable() {
@@ -136,7 +136,7 @@ public class ControllerCAMainPackets implements Initializable {
                             public void run() {
                                 myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Alerts not available";
+                                String title = "SMS Alerts are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
@@ -160,20 +160,20 @@ public class ControllerCAMainPackets implements Initializable {
                             }
                         });
                     }
-                }, 1, TimeUnit.SECONDS));
+                }, 1, TimeUnit.SECONDS));*/
             }
         } else {
-            this.alertHandler = alertHandler;
+            this.SMSHandler = SMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         adminPN = db.getAllPhoneNo();
-                        alertHandler.setAdminPN(adminPN);
+                        SMSHandler.setAdminPN(adminPN);
                         for (String s : adminPN) {
                             System.out.println(s);
                         }
-                        System.out.println("Alerts Updated!");
+                        System.out.println("SMS Updated!");
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
 
@@ -213,7 +213,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -225,6 +225,8 @@ public class ControllerCAMainPackets implements Initializable {
         handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                if (capture.checkThreshold())
+                    SMSHandler.sendAlert();
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -232,6 +234,7 @@ public class ControllerCAMainPackets implements Initializable {
                         OLpackets = FXCollections.observableArrayList(packets);
                         packetstable.setItems(OLpackets);
                         packetstable.refresh();
+                        alertCount.setText(Integer.toString(capture.getEvents()));
                     }
                 });
             }
@@ -249,7 +252,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -296,7 +299,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -354,7 +357,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.getController();
-                    controller.passVariables(device, handler, capture, selected, directoryPath, threshold, alertHandler);
+                    controller.passVariables(device, handler, capture, selected, directoryPath, threshold, SMSHandler);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -396,7 +399,7 @@ public class ControllerCAMainPackets implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, alertHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -413,7 +416,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, alertHandler);
+                controller.passVariables(handler, null, null, 0, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

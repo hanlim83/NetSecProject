@@ -37,7 +37,7 @@ public class CAMain extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (ScheduledExecutorServiceHandler.getService().isShutdown())
+        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
     }
 }

@@ -1,5 +1,5 @@
-import Model.Alerts;
 import Model.NetworkCapture;
+import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
@@ -21,7 +21,7 @@ public class ControllerAdminSideTab {
     private static NetworkCapture capture;
     private static String directoryPath;
     private static Integer threshold;
-    private static Alerts alertHandler;
+    private static SMS SMSHandler;
 
     @FXML
     private JFXButton listCreate;
@@ -35,13 +35,13 @@ public class ControllerAdminSideTab {
     private JFXButton deviceButton;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, Alerts alertHandler) {
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
         device = nif;
         ControllerAdminSideTab.handler = handler;
         ControllerAdminSideTab.capture = capture;
         ControllerAdminSideTab.directoryPath = directoryPath;
         ControllerAdminSideTab.threshold = threshold;
-        ControllerAdminSideTab.alertHandler = alertHandler;
+        ControllerAdminSideTab.SMSHandler = SMSHandler;
     }
 
     @FXML
@@ -54,7 +54,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, alertHandler);
+                controller.passVariables(handler, null, null, 0, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,7 +68,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, alertHandler);
+                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,7 +82,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
+                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,7 +103,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, alertHandler);
+                controller.passVariables(handler, null, null, 0, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -117,7 +117,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, alertHandler);
+                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -131,7 +131,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, alertHandler);
+                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
