@@ -23,13 +23,16 @@ public class GetIAM {
     static ArrayList<String> apikeysadminList = new ArrayList<>();
     static ArrayList<String> storageadminList = new ArrayList<>();
 
+    static ArrayList<Integer> indexList = new ArrayList<>();
+
     private static int w;
     private static int g;
     private static int wg = 100;
+    int diff;
 
     static int globalChecker;
 
-    ArrayList<IAMExtract> extractingIAM = new ArrayList<>();
+    static ArrayList<IAMExtract> extractingIAM = new ArrayList<>();
     IAMExtract iamExtract;
 
     public GetIAM() {
@@ -49,56 +52,47 @@ public class GetIAM {
         if (globalChecker == 4) {
             for (int o = 0; o < getiamlist.size(); o++) {
                 if (getiamlist.get(o).contains("role: roles/cloudsql.admin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o));
+                    w = getiamlist.indexOf(getiamlist.get(o))+1;
                     System.out.println("W is : " + w);
                 }
             }
+            //getiamlist.get(i).contains("members:")
             //nearest "member" from w
-            for (int i=0;i<getiamlist.size();i++){
-                if (getiamlist.get(i).contains("members:")) {
-                    g = getiamlist.indexOf(getiamlist.get(i));
-                    System.out.println("first G is : " + g);
-                    //g is members
-                    //w is roles
-                    int wg1 = w-g;
-                    while(wg1<wg && wg1>0){
-                        wg=wg1;
-                    }
-                    g = w - wg;
-                    System.out.println("second G is :" + g);
+            for(int z=0;z<getiamlist.size();z++){
+                if(getiamlist.get(z).contains("members:")) {
+                    g=z;
+                    indexList.add(g);
+                    System.out.println("G is : " + g);
                 }
+            }
+            diff=indexList.get(0);
+            int smallDifference = w-diff;
+            System.out.println("SMALL DIFF = " + smallDifference);
+            for (int m=1;m<indexList.size();m++){
+                int difference = w-indexList.get(m);
+                System.out.println("DIFFERENCE  = " + difference);
+                if(difference<smallDifference && difference>0){
+                    smallDifference=difference;
+                    diff=indexList.get(m);
+                    System.out.println("DIFF is : " + diff);
+                }else if(difference>0){
+                    diff=indexList.get(0);
+                    System.out.println("DIFF is : " + diff);
                 }
-            cloudsqladminLIST = new ArrayList<String>(getiamlist.subList(g,w));
+            }
+            System.out.println("MEMBER IS : " + diff);
+            System.out.println("ROLE IS : " + w);
+            cloudsqladminLIST = new ArrayList<String>(getiamlist.subList(diff,w));
 
-
-//            for (int o = 0; o < getiamlist.size(); o++) {
-//                String s = getiamlist.get(o);
-//                cloudsqladminLIST.add(getiamlist.get(o));
-//                System.out.println("Adding into cloudsql list : " + s);
-//                if (getiamlist.get(o).contains("role: roles/cloudsql.admin")) {
-//                    w = getiamlist.indexOf(getiamlist.get(o));
-//                    System.out.println("INDEX OF ROLE LINE : " + w);
-//                    System.out.println("FOUND THIS");
-//                    break;
-//                }
-//            }
-//            cloudsqladminLIST.remove(0);
+            getiamlist.subList(diff,w).clear();
             for (int p = 0; p < cloudsqladminLIST.size(); p++) {
                 System.out.println("Inside of CLOUDSQLADMINLIST : " + cloudsqladminLIST.get(p));
-            }
-            iamExtract = new IAMExtract(cloudsqladminLIST);
-            extractingIAM.add(iamExtract);
-//            globalRole = cloudsqladminLIST.get(cloudsqladminLIST.size());
-//            for (int n = 0; n < cloudsqladminLIST.size() - 1; n++) {
-//                globalUser = cloudsqladminLIST.get(n);
-//            }
-            while (w != -1) {
-                getiamlist.remove(w);
-                w--;
             }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
+            iamExtract = new IAMExtract(cloudsqladminLIST);
+            extractingIAM.add(iamExtract);
             //END OF CLOUDSQL LIST
         } else if (globalChecker == 6) {
             //START OF COMPUTE ENGINE LIST

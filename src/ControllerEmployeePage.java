@@ -76,10 +76,10 @@ public class ControllerEmployeePage implements Initializable {
     private TableView<IAMExtract> rolesTable;
 
     @FXML
-    private TableColumn<IAMExtract,String> roleColumn;
+    private TableColumn<IAMExtract, String> roleColumn;
 
     @FXML
-    private TableColumn<IAMExtract,String> userColumn;
+    private TableColumn<IAMExtract, String> userColumn;
 
     @FXML
     private AnchorPane secondAnchor;
@@ -144,10 +144,10 @@ public class ControllerEmployeePage implements Initializable {
         userObservableList = FXCollections.observableList(userList);
         employeeTable.setItems(userObservableList);
 
-        jfxcombobox.getItems().addAll("Owner","Editor","Viewer","CloudSQL Admin","Firebase Rules System","Compute Engine Service","Logging Admin","Storage Admin", "Monitoring Admin", "API Keys Admin");
+        jfxcombobox.getItems().addAll("Owner", "Editor", "Viewer", "CloudSQL Admin", "Firebase Rules System", "Compute Engine Service", "Logging Admin", "Storage Admin", "Monitoring Admin", "API Keys Admin");
 
-        userColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract,String>("globalUser"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract,String>("globalRole"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract, String>("globalUser"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract, String>("globalRole"));
 
         getIAMLists = getiam.getExtractingIAM();
     }
@@ -156,10 +156,6 @@ public class ControllerEmployeePage implements Initializable {
     void handleListPermissions(MouseEvent event) {
         secondAnchor.setVisible(true);
         employeeTable.setVisible(false);
-
-
-
-
     }
 
     Service process = new Service() {
@@ -169,8 +165,49 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     permissions = new IAMPermissions();
-                    permissions.listPermissions();
 
+                    if (chosenRole.equals("Owner")) {
+                        globalChecker = 1;
+                        System.out.println(globalChecker);
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Editor") {
+                        globalChecker = 2;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Viewer") {
+                        globalChecker = 3;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "CloudSQL Admin") {
+                        globalChecker = 4;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Firebase Rules System") {
+                        globalChecker = 5;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Compute Engine Service") {
+                        globalChecker = 6;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Logging Admin") {
+                        globalChecker = 7;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Storage Admin") {
+                        globalChecker = 8;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else if (chosenRole == "Monitoring Admin") {
+                        globalChecker = 9;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    } else {
+                        globalChecker = 10;
+                        getiam.takeinGlobalChecker(globalChecker);
+                        permissions.listPermissions();
+                    }
 //                    getiamlist = getiam.getTempPermissionList();
 //                    System.out.println("HIHI " + getiamlist);
 //                    for (int i = 0; i < getiamlist.size(); i++) {
@@ -418,7 +455,48 @@ public class ControllerEmployeePage implements Initializable {
 //                    //END OF VIEWER LIST
 
                     Platform.runLater(() -> {
-
+                        if (globalChecker == 1){
+                            System.out.println(globalChecker);
+                            ownerObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(ownerObservableList);
+                        }
+                        else if (globalChecker == 2) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            editorObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(editorObservableList);
+                        } else if (globalChecker == 3) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            viewerObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(viewerObservableList);
+                        } else if (globalChecker == 4) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            cloudsqlObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(cloudsqlObservableList);
+                        } else if (globalChecker == 5) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            firebaseObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(firebaseObservableList);
+                        } else if (globalChecker == 6) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            computeengineObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(computeengineObservableList);
+                        } else if (globalChecker == 7) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            loggingadminObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(loggingadminObservableList);
+                        } else if (globalChecker == 8) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            storageadminObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(storageadminObservableList);
+                        } else if (globalChecker == 9) {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            monitoringadminObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(monitoringadminObservableList);
+                        } else {
+                            getiam.takeinGlobalChecker(globalChecker);
+                            apikeysadminObservableList = FXCollections.observableList(getIAMLists);
+                            rolesTable.setItems(apikeysadminObservableList);
+                        }
                     });
                     return null;
                 }
@@ -428,72 +506,10 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void handlejfxcombobox(ActionEvent event) {
-        process.start();
         spinner.setVisible(true);
         chosenRole = jfxcombobox.getSelectionModel().getSelectedItem();
         System.out.println(chosenRole);
-
-        if(chosenRole.equals("Owner")){
-           globalChecker=1;
-            System.out.println(globalChecker);
-            getiam.takeinGlobalChecker(globalChecker);
-           ownerObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(ownerObservableList);
-        }
-        else if(chosenRole=="Editor"){
-            globalChecker=2;
-            getiam.takeinGlobalChecker(globalChecker);
-            editorObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(editorObservableList);
-        }
-        else if (chosenRole=="Viewer"){
-            globalChecker=3;
-            getiam.takeinGlobalChecker(globalChecker);
-            viewerObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(viewerObservableList);
-        }
-        else if (chosenRole=="CloudSQL Admin"){
-            globalChecker=4;
-            getiam.takeinGlobalChecker(globalChecker);
-            cloudsqlObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(cloudsqlObservableList);
-        }
-        else if (chosenRole=="Firebase Rules System"){
-            globalChecker=5;
-            getiam.takeinGlobalChecker(globalChecker);
-            firebaseObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(firebaseObservableList);
-        }
-        else if (chosenRole=="Compute Engine Service"){
-            globalChecker=6;
-            getiam.takeinGlobalChecker(globalChecker);
-            computeengineObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(computeengineObservableList);
-        }
-        else if (chosenRole=="Logging Admin"){
-            globalChecker=7;
-            getiam.takeinGlobalChecker(globalChecker);
-            loggingadminObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(loggingadminObservableList);
-        }
-        else if (chosenRole=="Storage Admin"){
-            globalChecker=8;
-            getiam.takeinGlobalChecker(globalChecker);
-            storageadminObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(storageadminObservableList);
-        }
-        else if (chosenRole=="Monitoring Admin"){
-            globalChecker=9;
-            getiam.takeinGlobalChecker(globalChecker);
-            monitoringadminObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(monitoringadminObservableList);
-        }
-        else{
-            globalChecker=10;
-            getiam.takeinGlobalChecker(globalChecker);
-            apikeysadminObservableList = FXCollections.observableList(getIAMLists);
-            rolesTable.setItems(apikeysadminObservableList);
-        }
+        process.start();
 
         process.setOnSucceeded(e -> {
             spinner.setVisible(false);
