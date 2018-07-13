@@ -128,29 +128,39 @@ public class ControllerCAMainPackets implements Initializable {
                 System.out.println("Alerts Created");
             } catch (SQLException e) {
                 System.err.println("SQL Error");
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                String title = "Alerts not available";
-                String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
-                JFXButton close = new JFXButton("Close");
-                close.setButtonType(JFXButton.ButtonType.RAISED);
-                close.setStyle("-fx-background-color: #00bfff;");
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading(new Label(title));
-                layout.setBody(new Label(content));
-                layout.setActions(close);
-                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                alert.setOverlayClose(true);
-                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                alert.setContent(layout);
-                alert.initModality(Modality.NONE);
-                close.setOnAction(new EventHandler<ActionEvent>() {
+                handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                     @Override
-                    public void handle(ActionEvent __) {
-                        alert.hideWithAnimation();
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                myScene = anchorPane.getScene();
+                                Stage stage = (Stage) (myScene).getWindow();
+                                String title = "Alerts not available";
+                                String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
+                                JFXButton close = new JFXButton("Close");
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                                close.setStyle("-fx-background-color: #00bfff;");
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(close);
+                                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                alert.setOverlayClose(true);
+                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert.setContent(layout);
+                                alert.initModality(Modality.NONE);
+                                close.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent __) {
+                                        alert.hideWithAnimation();
+                                    }
+                                });
+                                alert.showAndWait();
+                            }
+                        });
                     }
-                });
-                alert.showAndWait();
+                }, 1, TimeUnit.SECONDS));
             }
         } else {
             this.alertHandler = alertHandler;
