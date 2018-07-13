@@ -77,6 +77,9 @@ public class ControllerCAMainPackets implements Initializable {
     private JFXButton clearCaptureBtn;
     @FXML
     private Label alertCount;
+    @FXML
+    private JFXSpinner spinner;
+
     private PcapNetworkInterface device;
     private Scene myScene;
     private ArrayList<CapturedPacket> packets;
@@ -111,15 +114,85 @@ public class ControllerCAMainPackets implements Initializable {
             }
         });
         db = new admin_DB();
+        hamburger.setDisable(true);
+        captureToggle.setDisable(true);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
+        this.SMSHandler = USMSHandler;
         if (SMSHandler == null) {
-            try {
+            handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        adminPN = db.getAllPhoneNo();
+                        SMSHandler = new SMS(adminPN);
+                        for (String s : adminPN) {
+                            System.out.println(s);
+                        }
+                        System.out.println("SMS Created");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+                    } catch (SQLException e) {
+                        System.err.println("SQL Error");
+                /*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                myScene = anchorPane.getScene();
+                                Stage stage = (Stage) (myScene).getWindow();
+                                String title = "SMS Alerts are not available";
+                                String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
+                                JFXButton close = new JFXButton("Close");
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                                close.setStyle("-fx-background-color: #00bfff;");
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(close);
+                                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                alert.setOverlayClose(true);
+                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert.setContent(layout);
+                                alert.initModality(Modality.NONE);
+                                close.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent __) {
+                                        alert.hideWithAnimation();
+                                    }
+                                });
+                                alert.showAndWait();
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+                    }
+                }, 1, TimeUnit.SECONDS));*/
+                    }
+                    try {
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                        ControllerAdminSideTab ctrl = loader.getController();
+                        ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 2, TimeUnit.SECONDS));
+            /*try {
                 adminPN = db.getAllPhoneNo();
                 this.SMSHandler = new SMS(adminPN);
                 for (String s : adminPN) {
@@ -128,7 +201,7 @@ public class ControllerCAMainPackets implements Initializable {
                 System.out.println("SMS Created");
             } catch (SQLException e) {
                 System.err.println("SQL Error");
-                /*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                *//*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                     @Override
                     public void run() {
                         Platform.runLater(new Runnable() {
@@ -160,8 +233,8 @@ public class ControllerCAMainPackets implements Initializable {
                             }
                         });
                     }
-                }, 1, TimeUnit.SECONDS));*/
-            }
+                }, 1, TimeUnit.SECONDS));*//*
+            }*/
         } else {
             this.SMSHandler = SMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
@@ -174,9 +247,23 @@ public class ControllerCAMainPackets implements Initializable {
                             System.out.println(s);
                         }
                         System.out.println("SMS Updated!");
+                        spinner.setVisible(false);
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
+                        spinner.setVisible(false);
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
 
+                    }
+                    try {
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                        ControllerAdminSideTab ctrl = loader.getController();
+                        ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }, 1, TimeUnit.SECONDS));
@@ -209,14 +296,14 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(OLpackets);
             packetstable.refresh();
         }
-        try {
+        /*try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void startCapturing() {
