@@ -32,9 +32,9 @@ public class ControllerAdminVerifyTextAuth {
     @FXML
     void adminResend(ActionEvent event) {
 
-        ControllerVerifyText resend = new ControllerVerifyText();
-        String phoneNo = numberViewer.getText();
-        resend.sendNew(phoneNo);
+        TextAuthentication resend = new TextAuthentication();
+        resend.sendNew();
+
 
     }
 
@@ -56,7 +56,7 @@ public class ControllerAdminVerifyTextAuth {
 
             try {
                 nextView = loader.load();
-                ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+                ControllerAdminDeviceCheck controller = loader.<ControllerAdminDeviceCheck>getController();
                 controller.runCheck();
 //              controller.passData(login.getEmail());
 
@@ -81,7 +81,7 @@ public class ControllerAdminVerifyTextAuth {
     public void adminAuth(String phoneNo){
 
         TextAuthentication auth = new TextAuthentication();
-        auth.sendAuth(phoneNo);
+        auth.adminSendAuth(phoneNo);
         numberViewer.setText(phoneNo);
         System.out.println(" Correct phone number input");
 

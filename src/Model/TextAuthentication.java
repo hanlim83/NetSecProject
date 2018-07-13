@@ -11,7 +11,15 @@ import java.io.IOException;
 public class TextAuthentication {
 
     private static String VerifyId;
+    private static String phoneNo;
 
+    public static String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public static void setPhoneNo(String phoneNo) {
+        TextAuthentication.phoneNo = phoneNo;
+    }
 
     public void sendAuth(String phoneNo) {
 
@@ -31,6 +39,7 @@ public class TextAuthentication {
             System.out.print("\nMessage sent!");
 
             this.VerifyId = VerifyId;
+            this.phoneNo = phoneNo;
 
         } catch (NexmoClientException e) {
             e.printStackTrace();
@@ -56,6 +65,7 @@ public class TextAuthentication {
             System.out.print("\nMessage sent!");
 
             this.VerifyId = VerifyId;
+            this.phoneNo = phoneNo;
 
         } catch (NexmoClientException e) {
             e.printStackTrace();
@@ -95,6 +105,12 @@ public class TextAuthentication {
         }
 
         return false;
+    }
+
+    public void sendNew () {
+
+        sendAuth(phoneNo);
+
     }
 
 
