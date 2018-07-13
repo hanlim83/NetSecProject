@@ -15,7 +15,9 @@ public class SMS {
     private AuthMethod auth;
     private NexmoClient client;
     private ArrayList<String> adminPN;
-    private boolean GeneralUse;
+    private boolean GeneralUse, permitUse = false;
+
+    //PermitUse Boolean is used to prevent accidental charges to NEXMO balance. Please set as necessary
 
     public SMS(ArrayList<String> phoneNumbers) {
         adminPN = phoneNumbers;
@@ -48,7 +50,11 @@ public class SMS {
     public void sendAlert() {
         if (GeneralUse = true) {
             return;
-        } else {
+        } else if (permitUse == false)
+            System.err.println("Please enable PermitUse Boolean first!");
+        else if (adminPN == null)
+            System.err.println("Set Admin Phone Number(s) first!");
+        else {
             for (String s : adminPN) {
                 try {
                     client.getSmsClient().submitMessage(new TextMessage(
@@ -65,16 +71,21 @@ public class SMS {
     }
 
     public void sendSMS(String phoneNumber, String Message) {
-        try {
-            client.getSmsClient().submitMessage(new TextMessage(
-                    "FireE",
-                    phoneNumber,
-                    Message));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NexmoClientException e) {
-            e.printStackTrace();
+        if (permitUse = false)
+            System.err.println("Please enable PermitUse Boolean first!");
+        else if (phoneNumber.isEmpty() || Message.isEmpty())
+            System.err.println("Missing Parameters!");
+        else {
+            try {
+                client.getSmsClient().submitMessage(new TextMessage(
+                        "FireE",
+                        phoneNumber,
+                        Message));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NexmoClientException e) {
+                e.printStackTrace();
+            }
         }
     }
-
 }
