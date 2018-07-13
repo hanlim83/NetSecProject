@@ -192,49 +192,6 @@ public class ControllerCAMainPackets implements Initializable {
                     }
                 }
             }, 2, TimeUnit.SECONDS));
-            /*try {
-                adminPN = db.getAllPhoneNo();
-                this.SMSHandler = new SMS(adminPN);
-                for (String s : adminPN) {
-                    System.out.println(s);
-                }
-                System.out.println("SMS Created");
-            } catch (SQLException e) {
-                System.err.println("SQL Error");
-                *//*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "SMS Alerts are not available";
-                                String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
-                                alert.showAndWait();
-                            }
-                        });
-                    }
-                }, 1, TimeUnit.SECONDS));*//*
-            }*/
         } else {
             this.SMSHandler = SMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
@@ -296,14 +253,6 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(OLpackets);
             packetstable.refresh();
         }
-        /*try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-            ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void startCapturing() {
@@ -321,7 +270,7 @@ public class ControllerCAMainPackets implements Initializable {
                         OLpackets = FXCollections.observableArrayList(packets);
                         packetstable.setItems(OLpackets);
                         packetstable.refresh();
-                        alertCount.setText(Integer.toString(capture.getEvents()));
+                        alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                     }
                 });
             }
@@ -482,6 +431,7 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(null);
             packetstable.refresh();
             clearCaptureBtn.setDisable(true);
+            alertCount.setText("Suspicious Events Count: 0");
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
