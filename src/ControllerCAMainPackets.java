@@ -27,12 +27,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -478,65 +476,5 @@ public class ControllerCAMainPackets implements Initializable {
             stage.show();
         });
         alert.showAndWait();
-        launchPcapExport();
-    }
-
-    public void launchPcapExport() {
-        myScene = anchorPane.getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        FileChooser choose = new FileChooser();
-        choose.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network Packet Capture File (*.pcap)", "*.pcap"));
-        File f = choose.showSaveDialog(stage);
-        if (f == null)
-            return;
-        else if (!f.getName().contains(".")) {
-            f = new File(f.getAbsolutePath() + ".pcap");
-        }
-        System.out.println(f.getAbsolutePath());
-        if (capture.Generalexport()) {
-            String title = "Packet Capture Exported Sucessfully";
-            String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";
-            JFXButton close = new JFXButton("Close");
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-            close.setStyle("-fx-background-color: #00bfff;");
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
-        } else {
-            String title = "Packet Capture Exported Failed";
-            String content = "Oops something happened and the export failed.";
-            JFXButton close = new JFXButton("Close");
-            close.setButtonType(JFXButton.ButtonType.RAISED);
-            close.setStyle("-fx-background-color: #00bfff;");
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent __) {
-                    alert.hideWithAnimation();
-                }
-            });
-            alert.show();
-        }
     }
 }
