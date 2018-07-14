@@ -245,7 +245,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
 
         JFXTreeTableColumn<TableBlob, String> fileColumn = new JFXTreeTableColumn<>("File Name");
-        fileColumn.setPrefWidth(522);
+        fileColumn.setPrefWidth(525);
         fileColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (fileColumn.validateValue(param)) {
                 return param.getValue().getValue().blobName;
@@ -255,7 +255,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableColumn<TableBlob, String> dateColumn = new JFXTreeTableColumn<>("Date");
-        dateColumn.setPrefWidth(300);
+        dateColumn.setPrefWidth(350);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (dateColumn.validateValue(param)) {
                 return param.getValue().getValue().date;
@@ -275,8 +275,40 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            }
 //        });
 
-        JFXTreeTableColumn<ActionButtonTableCell, OSVersion> settingsColumn = new JFXTreeTableColumn<>("Others");
-        settingsColumn.setPrefWidth(12);
+        JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Others");
+        settingsColumn.setPrefWidth(175);
+        Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
+                = //
+                new Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>>() {
+                    @Override
+                    public TreeTableCell call(final TreeTableColumn<TableBlob, String> param) {
+                        final TreeTableCell<TableBlob, String> cell = new TreeTableCell<TableBlob, String>() {
+
+                            final JFXButton btn = new JFXButton("Others");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
+                                    btn.setOnAction(event -> {
+//                                        TableBlob person = getTableView().getItems().get(getIndex());
+//                                        System.out.println(person.getFirstName()
+//                                                + "   " + person.getLastName());
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        settingsColumn.setCellFactory(cellFactory);
 
 //        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, JFXButton> param) -> {
 //            if (settingsColumn.validateValue(param)) {
@@ -356,7 +388,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView = new JFXTreeTableView<>(root);
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
-        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn);
+        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
 //        JFXTreeTableView.
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
