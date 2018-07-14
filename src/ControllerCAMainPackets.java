@@ -242,6 +242,10 @@ public class ControllerCAMainPackets implements Initializable {
             handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (capture.checkThreshold()) {
+                        capture.Specficexport();
+                        SMSHandler.sendAlert();
+                    }
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -249,6 +253,7 @@ public class ControllerCAMainPackets implements Initializable {
                             OLpackets = FXCollections.observableArrayList(packets);
                             packetstable.setItems(OLpackets);
                             packetstable.refresh();
+                            alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                         }
                     });
                 }
@@ -270,8 +275,10 @@ public class ControllerCAMainPackets implements Initializable {
         handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if (capture.checkThreshold())
+                if (capture.checkThreshold()) {
+                    capture.Specficexport();
                     SMSHandler.sendAlert();
+                }
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -471,6 +478,7 @@ public class ControllerCAMainPackets implements Initializable {
             stage.show();
         });
         alert.showAndWait();
+        launchPcapExport();
     }
 
     public void launchPcapExport() {
@@ -484,6 +492,7 @@ public class ControllerCAMainPackets implements Initializable {
         else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
+        System.out.println(f.getAbsolutePath());
         if (capture.Generalexport()) {
             String title = "Packet Capture Exported Sucessfully";
             String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";

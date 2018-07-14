@@ -1,9 +1,11 @@
 import Database.admin_DB;
-import Model.*;
+import Model.LineChartObject;
+import Model.NetworkCapture;
+import Model.SMS;
+import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -42,7 +44,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAMainDashboard implements Initializable {
     public static AnchorPane rootP;
-    private final int MAX_DATA_POINTS = 24, MAX = 39, MIN = 1;
+    private final int MAX_DATA_POINTS = 25, MAX = 9999, MIN = 11;
     public ArrayList<LineChartObject> packetsLineChart;
     @FXML
     private AnchorPane anchorPane;
@@ -67,7 +69,7 @@ public class ControllerCAMainDashboard implements Initializable {
 
     private PcapNetworkInterface device;
     private Scene myScene;
-    private ArrayList<CapturedPacket> packets;
+    private ArrayList<LineChartObject> TPS;
     private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
@@ -75,7 +77,6 @@ public class ControllerCAMainDashboard implements Initializable {
     private XYChart.Series series;
     private NumberAxis chartXAxis;
     private NumberAxis chartYAxis;
-    private Timeline animation;
     private double y = 10;
     private ArrayList<String> adminPN;
     private admin_DB db;
@@ -94,18 +95,17 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }
         });
-        /*animation = new Timeline();
-        animation.getKeyFrames()
-                .add(new KeyFrame(Duration.millis(10000),
-                        (ActionEvent actionEvent) -> plotCaptureLine()));
-        animation.setCycleCount(Animation.INDEFINITE);*/
-        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 10);
-        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 25);
+        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 1);
+        chartXAxis.setLabel("Duration");
+        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 50);
+        chartYAxis.setLabel("Packets Captured");
         networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
         series = new XYChart.Series();
+        series.setName("Data");
         packetsLineChart = new ArrayList<LineChartObject>();
         networkTrafficChart.getXAxis().setAutoRanging(true);
         networkTrafficChart.getYAxis().setAutoRanging(true);
+        networkTrafficChart.getData().add(series);
         db = new admin_DB();
         hamburger.setDisable(true);
         captureToggle.setDisable(true);
@@ -123,6 +123,20 @@ public class ControllerCAMainDashboard implements Initializable {
             chartXAxis.setUpperBound(chartXAxis.getUpperBound() + 1);
         }
     }
+
+    /*public void plotExisitingData() {
+        if (TPS.size() > MAX_DATA_POINTS) {
+            int startingIndex = TPS.size() - MAX_DATA_POINTS;
+            for (int i = startingIndex; i < TPS.size(); i++) {
+                series.getData().add(new XYChart.Data<Number, Number>(TPS.get(i).getLocation(), TPS.get(i).getData()));
+            }
+        }
+        else if (TPS.size() < MAX_DATA_POINTS && TPS.size() != 0) {
+            for (LineChartObject O : TPS) {
+                series.getData().add(new XYChart.Data<Number, Number>(O.getLocation(), O.getData()));
+            }
+        }
+    }*/
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
         this.device = nif;
@@ -153,12 +167,12 @@ public class ControllerCAMainDashboard implements Initializable {
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
                         handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                spinner.setVisible(false);
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        spinner.setVisible(false);
                                 /*myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "SMS Alerts are not available";
@@ -182,11 +196,11 @@ public class ControllerCAMainDashboard implements Initializable {
                                     }
                                 });
                                 alert.showAndWait();*/
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
+                                        captureToggle.setDisable(false);
+                                        hamburger.setDisable(false);
+                                    }
+                                });
                             }
-                        });
-                    }
                         }, 1, TimeUnit.SECONDS));
                     }
                     try {
@@ -238,11 +252,22 @@ public class ControllerCAMainDashboard implements Initializable {
             clearCaptureBtn.setDisable(true);
         } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
-            //play();
-
+            TPS = capture.PreviousTPS;
+            //plotExisitingData();
+            handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    plotCaptureLine();
+                    if (capture.checkThreshold()) {
+                        capture.Specficexport();
+                        SMSHandler.sendAlert();
+                    }
+                }
+            }, 1, 10, TimeUnit.SECONDS));
         } else if (capture != null) {
             clearCaptureBtn.setDisable(false);
-            packets = capture.packets;
+            TPS = capture.PreviousTPS;
+            //plotExisitingData();
         }
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -254,17 +279,21 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-    /*public void play() {
-        animation.play();
-    }
-
-    public void stop() {
-        animation.pause();
-    }*/
-
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
+        if (handler.getchartDataRunnable() == null) {
+            handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    plotCaptureLine();
+                    if (capture.checkThreshold()) {
+                        capture.Specficexport();
+                        SMSHandler.sendAlert();
+                    }
+                }
+            }, 1, 10, TimeUnit.SECONDS));
+        }
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -273,7 +302,6 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }, 1, SECONDS));
         }
-        //play();
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -287,7 +315,7 @@ public class ControllerCAMainDashboard implements Initializable {
 
     public void stopCapturing() {
         capture.stopSniffing();
-        //stop();
+        handler.cancelchartDataRunnable();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -382,6 +410,7 @@ public class ControllerCAMainDashboard implements Initializable {
             capture = null;
             clearCaptureBtn.setDisable(true);
             alertCount.setText("Suspicious Events Count: 0");
+            networkTrafficChart.getData().removeAll();
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -422,6 +451,7 @@ public class ControllerCAMainDashboard implements Initializable {
         else if (!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".pcap");
         }
+        System.out.println(f.getAbsolutePath());
         if (capture.Generalexport()) {
             String title = "Packet Capture Exported Sucessfully";
             String content = "Packet Capture has been exported sucessfully! You may open this export file with WireShark or other tools for further analysis.";

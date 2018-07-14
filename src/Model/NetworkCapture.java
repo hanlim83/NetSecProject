@@ -25,6 +25,7 @@ public class NetworkCapture {
     private static final int INCERMENT_LIMIT = 1;
     private static final int MINUTE_TO_MILISECONDS = 60000;
     private static final int RECORD_RANGE = 10;
+    private static final int TPSRange = 10;
     //Data Variables
     public ArrayList<CapturedPacket> packets;
     public ArrayList<LineChartObject> PreviousTPS;
@@ -181,7 +182,7 @@ public class NetworkCapture {
             cal.setTimeInMillis(System.currentTimeMillis());
             cal.add(Calendar.MINUTE, -RECORD_RANGE);
             alertBeforeTimeStamp = new Timestamp(cal.getTime().getTime());
-            Specficexport();
+            //Specficexport();
             return true;
         }
     }
@@ -231,12 +232,12 @@ public class NetworkCapture {
 
     //Specific Export to pcap file
     public boolean Specficexport() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
         LocalDateTime now = LocalDateTime.now();
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            dumper = Phandle.dumpOpen(directoryPath + "\\Partial Network Capture for Alert " + dtf.format(now) + ".pcap");
+            dumper = Phandle.dumpOpen(directoryPath + "\\Partial Capture for Alert " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
@@ -255,11 +256,12 @@ public class NetworkCapture {
 
     //General Export to pcap file
     public boolean Generalexport() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
         LocalDateTime now = LocalDateTime.now();
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            System.out.println(directoryPath + "\\CompleteNetworkCapture(" + dtf.format(now) + ").pcap");
             dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
@@ -280,14 +282,14 @@ public class NetworkCapture {
         Timestamp original = new Timestamp(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(original.getTime());
-        cal.add(Calendar.SECOND, 9);
+        cal.add(Calendar.SECOND, TPSRange);
         Timestamp later = new Timestamp(cal.getTime().getTime());
         int packetCount = 0;
         for (CapturedPacket packet : packets) {
             if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
-                packetCount++;
+                ++packetCount;
             else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
-                packetCount++;
+                ++packetCount;
         }
         LineChartObject TPS = new LineChartObject(packetCount);
         PreviousTPS.add(TPS);

@@ -46,6 +46,10 @@ public class ControllerAdminSideTab {
 
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
+        if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
+            handler.cancelTableviewRunnable();
+        if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
+            handler.cancelchartDataRunnable();
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();
@@ -95,6 +99,8 @@ public class ControllerAdminSideTab {
     void goToPacketCapture(ActionEvent event) {
         if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
             handler.cancelTableviewRunnable();
+        if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
+            handler.cancelchartDataRunnable();
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();
