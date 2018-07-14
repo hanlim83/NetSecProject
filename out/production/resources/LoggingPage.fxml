@@ -11,13 +11,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -30,13 +29,9 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-      <HBox layoutX="46.0" layoutY="92.0" prefHeight="53.0" prefWidth="408.0">
-         <children>
-            <JFXButton fx:id="general" onMouseClicked="#handleonetwo" prefHeight="68.0" prefWidth="143.0" text="Cloud SQL Logs" textFill="#1100ff" />
-            <JFXButton fx:id="createdlogs" onMouseClicked="#handlecreated" prefHeight="70.0" prefWidth="146.0" text="Created Logs" textFill="#1100ff" />
-            <JFXButton fx:id="deletedlogs" onMouseClicked="#handledeleted" prefHeight="75.0" prefWidth="145.0" style="-fx-background-color: #042c6#a8c9ffd;" text="Deleted Logs" textFill="#1100ff" />
-         </children>
-      </HBox>
+      <JFXButton fx:id="general" layoutX="52.0" layoutY="107.0" onMouseClicked="#handleonetwo" text="Cloud SQL Logs" />
+      <JFXButton fx:id="createdlogs" layoutX="198.0" layoutY="107.0" onMouseClicked="#handlecreated" text="Created Logs" />
+      <JFXButton fx:id="deletedlogs" layoutX="345.0" layoutY="107.0" onMouseClicked="#handledeleted" text="Deleted Logs" />
       <TableView fx:id="logsTable" layoutX="46.0" layoutY="170.0" onMouseClicked="#clickItem" prefHeight="400.0" prefWidth="962.0">
         <columns>
           <TableColumn fx:id="timestamp" prefWidth="96.86665344238281" text="Timestamp" />
