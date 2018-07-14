@@ -133,13 +133,13 @@ public class ControllerAdminDeviceCheck implements Initializable {
                 });
             } else{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
+            loader.setLocation(getClass().getResource("AdminHome.fxml"));
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerUserHome controller = loader.<ControllerUserHome>getController();
+                ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
             } catch (IOException u) {
                 u.printStackTrace();
             }

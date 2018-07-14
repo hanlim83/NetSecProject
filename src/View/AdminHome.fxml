@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminHome">
+    <children>
+        <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
+                <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+                    <font>
+                        <Font size="40.0" />
+                    </font>
+                </Text>
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            </children>
+        </AnchorPane>
+      <JFXButton fx:id="randomButton" layoutX="844.0" layoutY="505.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="67.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="CloudStorageTestButton" layoutX="485.0" layoutY="478.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="94.0" prefWidth="201.0" text="Cloud Storage Test" />
+      <JFXButton fx:id="RSAButton" layoutX="126.0" layoutY="514.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="67.0" prefWidth="219.0" text="RSA Test Button" />
+      <Label fx:id="LastFileModifiedLabel" alignment="CENTER" layoutX="145.0" layoutY="361.0" prefHeight="84.0" prefWidth="779.0">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label fx:id="TimeLabel" alignment="CENTER" layoutX="319.0" layoutY="140.0" prefHeight="135.0" prefWidth="431.0" text="17:10">
+         <font>
+            <Font size="110.0" />
+         </font>
+      </Label>
+      <Label fx:id="GreetingsLabel" alignment="CENTER" layoutX="160.0" layoutY="273.0" prefHeight="94.0" prefWidth="749.0" text="Good evening, XXX">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+    </children>
+</AnchorPane>
