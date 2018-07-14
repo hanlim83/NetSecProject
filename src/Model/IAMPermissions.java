@@ -41,15 +41,16 @@ public class IAMPermissions {
                 break;
             }
             permissionList.add(line);
+//            System.out.println("ADDED INTO PERMISSION LIST!!!!!!!!!!!!!!!!!!!");
         }
         getiam = new GetIAM(permissionList);
-        iamobjectList.add(getiam);
+//        iamobjectList.add(getiam);
         return line;
     }
 
-    public ArrayList<GetIAM> getIAMArrayList(){
-        return iamobjectList;
-    }
+//    public ArrayList<GetIAM> getIAMArrayList(){
+//        return iamobjectList;
+//    }
 
     public static void main (String args[]){
         IAMPermissions permissions = new IAMPermissions();
