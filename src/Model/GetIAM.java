@@ -27,113 +27,64 @@ public class GetIAM {
 
     private static int w;
     private static int g;
+    private static int wg = 100;
     int diff;
 
     static int globalChecker;
 
     static ArrayList<IAMExtract> extractingIAM = new ArrayList<>();
     IAMExtract iamExtract;
-    static int difference;
 
     public GetIAM() {
     }
 
-    public void setwg() {
-        this.w = 0;
-        this.g = 0;
-    }
-
-    public void setEmptyList(){
-
-    }
-
     public GetIAM(ArrayList<String> permissionList) {
-//        if(!getiamlist.isEmpty()){
-//            getiamlist.clear();
-//        }
-//        else if(!indexList.isEmpty()){
-//            indexList.clear();
-//        }
-//        else if(!cloudsqladminLIST.isEmpty()) {
-//            cloudsqladminLIST.clear();
-//        }
-//        else if(!ownerList.isEmpty()){
-//            ownerList.clear();
-//        }
-//        else if(!editorList.isEmpty()){
-//            editorList.clear();
-//        }
-//        else if(!viewerList.isEmpty()){
-//            viewerList.clear();
-//        }
-//        else if(!firebaseList.isEmpty()){
-//            firebaseList.clear();
-//        }
-//        else if(!computeEngineList.isEmpty()){
-//            computeEngineList.clear();
-//        }
-//        else if(!loggingadminList.isEmpty()){
-//            loggingadminList.clear();
-//        }
-//        else if(!monitoringadminList.isEmpty()){
-//            monitoringadminList.clear();
-//        }
-//        else if(!apikeysadminList.isEmpty()){
-//            apikeysadminList.clear();
-//        }
-//        else if(!storageadminList.isEmpty()){
-//            storageadminList.clear();
-//        }
-//        else{
-//            System.out.println("ALL LISTS IS ALREADY EMPTY!");
-//        }
-
         tempPermissionList = permissionList;
-        System.out.println("PASSED IN PERMISSION LIST!! " + tempPermissionList);
-        splitDiffArrayList();
-    }
+        getiamlist = tempPermissionList;
+        getiamlist.remove(0);
 
-    public void splitDiffArrayList(){
+        System.out.println("HIHI " + getiamlist);
+        for (int i = 0; i < getiamlist.size(); i++) {
+            System.out.println("GetIAM Model trying to print permissions from getiamlist :" + tempPermissionList.get(i));
+        }
+
         //START OF CloudSQL List
         if (globalChecker == 4) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             for (int o = 0; o < getiamlist.size(); o++) {
                 if (getiamlist.get(o).contains("role: roles/cloudsql.admin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
+                    w = getiamlist.indexOf(getiamlist.get(o))+1;
                     System.out.println("W is : " + w);
                 }
             }
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
+            //getiamlist.get(i).contains("members:")
+            //nearest "member" from w
+            for(int z=0;z<getiamlist.size();z++){
+                if(getiamlist.get(z).contains("members:")) {
+                    g=z;
                     indexList.add(g);
                     System.out.println("G is : " + g);
                 }
             }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
+            diff=indexList.get(0);
+            int smallDifference = w-diff;
             System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                difference = w - indexList.get(m);
+            for (int m=1;m<indexList.size();m++){
+                int difference = w-indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
+                if(difference<smallDifference && difference>0){
+                    smallDifference=difference;
+                    diff=indexList.get(m);
                     System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
+                }else if(difference>0){
+                    diff=indexList.get(0);
+                    System.out.println("DIFF is : " + diff);
                 }
             }
             System.out.println("MEMBER IS : " + diff);
             System.out.println("ROLE IS : " + w);
-            cloudsqladminLIST = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
-            cloudsqladminLIST.remove(0);
+            cloudsqladminLIST = new ArrayList<String>(getiamlist.subList(diff,w));
+
+            getiamlist.subList(diff,w).clear();
             for (int p = 0; p < cloudsqladminLIST.size(); p++) {
                 System.out.println("Inside of CLOUDSQLADMINLIST : " + cloudsqladminLIST.get(p));
             }
@@ -144,483 +95,286 @@ public class GetIAM {
             extractingIAM.add(iamExtract);
             //END OF CLOUDSQL LIST
         } else if (globalChecker == 6) {
-            System.out.println("CALLED COMPUTE ENGINE IF ELSE!!!!!!");
             //START OF COMPUTE ENGINE LIST
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                computeEngineList.add(getiamlist.get(o));
+                System.out.println("Adding into compute engine list : " + s);
                 if (getiamlist.get(o).contains("role: roles/compute.serviceAgent")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            computeEngineList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             computeEngineList.remove(0);
             for (int p = 0; p < computeEngineList.size(); p++) {
                 System.out.println("Inside of COMPUTE ENGINE LIST : " + computeEngineList.get(p));
             }
+            iamExtract = new IAMExtract(computeEngineList);
+            extractingIAM.add(iamExtract);
+//            globalRole = computeEngineList.get(computeEngineList.size());
+//            for (int n = 0; n < computeEngineList.size() - 1; n++) {
+//                globalUser = computeEngineList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(computeEngineList);
-            extractingIAM.add(iamExtract);
             //END OF COMPUTE ENGINE LIST
-
         } else if (globalChecker == 2) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF EDITOR LIST
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                editorList.add(getiamlist.get(o));
+                System.out.println("Adding into editor list : " + s);
                 if (getiamlist.get(o).contains("role: roles/editor")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            editorList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             editorList.remove(0);
             for (int p = 0; p < editorList.size(); p++) {
                 System.out.println("Inside of EDITOR LIST : " + editorList.get(p));
             }
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
-            }
             iamExtract = new IAMExtract(editorList);
             extractingIAM.add(iamExtract);
-            //END OF EDITOR LIST
-
-
-        } else if (globalChecker == 5) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
-            //START OF FIREBASE LIST
-            for (int o = 0; o < getiamlist.size(); o++) {
-                if (getiamlist.get(o).contains("role: roles/firebaserules.system")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
-                }
-            }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            firebaseList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
-            firebaseList.remove(0);
-            for (int p = 0; p < firebaseList.size(); p++) {
-                System.out.println("Inside of FIREBASE RULES LIST : " + firebaseList.get(p));
+//            globalRole = editorList.get(editorList.size());
+//            for (int n = 0; n < editorList.size() - 1; n++) {
+//                globalUser = editorList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
             }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
+            }
+            //END OF EDITOR LIST
+        } else if (globalChecker == 5) {
+            //START OF FIREBASE LIST
+            for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                firebaseList.add(getiamlist.get(o));
+                System.out.println("Adding into firebase list : " + s);
+                if (getiamlist.get(o).contains("role: roles/firebaserules.system")) {
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
+                }
+            }
+            firebaseList.remove(0);
+            for (int p = 0; p < firebaseList.size(); p++) {
+                System.out.println("Inside of FIRE BASE LIST : " + firebaseList.get(p));
             }
             iamExtract = new IAMExtract(firebaseList);
             extractingIAM.add(iamExtract);
-            //END OF FIREBASE LIST
-
-
-        } else if (globalChecker == 7) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
+//            globalRole = firebaseList.get(firebaseList.size());
+//            for (int n = 0; n < firebaseList.size() - 1; n++) {
+//                globalUser = firebaseList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
+                System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
+            //END OF FIREBASE LIST
+        } else if (globalChecker == 7) {
             //START OF LOGGING ADMIN LIST
-
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                loggingadminList.add(getiamlist.get(o));
+                System.out.println("Adding into logging admin list : " + s);
                 if (getiamlist.get(o).contains("role: roles/logging.admin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            loggingadminList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             loggingadminList.remove(0);
             for (int p = 0; p < loggingadminList.size(); p++) {
                 System.out.println("Inside of LOGGING ADMIN LIST : " + loggingadminList.get(p));
             }
+            iamExtract = new IAMExtract(loggingadminList);
+            extractingIAM.add(iamExtract);
+//            globalRole = loggingadminList.get(loggingadminList.size());
+//            for (int n = 0; n < loggingadminList.size() - 1; n++) {
+//                globalUser = loggingadminList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(loggingadminList);
-            extractingIAM.add(iamExtract);
         }
         //END OF LOGGING ADMIN LIST
-
-
         else if (globalChecker == 9) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF MONITORING ADMIN LIST
-
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                monitoringadminList.add(getiamlist.get(o));
+                System.out.println("Adding into monitoring admin list : " + s);
                 if (getiamlist.get(o).contains("role: roles/monitoring.admin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            monitoringadminList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             monitoringadminList.remove(0);
             for (int p = 0; p < monitoringadminList.size(); p++) {
                 System.out.println("Inside of MONITORING ADMIN LIST : " + monitoringadminList.get(p));
             }
+            iamExtract = new IAMExtract(monitoringadminList);
+            extractingIAM.add(iamExtract);
+//            globalRole = monitoringadminList.get(monitoringadminList.size());
+//            for (int n = 0; n < monitoringadminList.size() - 1; n++) {
+//                globalUser = monitoringadminList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(monitoringadminList);
-            extractingIAM.add(iamExtract);
         }
         //END OF MONITORING ADMIN LIST
-
-
         else if (globalChecker == 1) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF OWNER LIST
-
+            System.out.println("CHOSE OWNER LIST");
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                ownerList.add(getiamlist.get(o));
+                System.out.println("Adding into owner list : " + s);
                 if (getiamlist.get(o).contains("role: roles/owner")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            ownerList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             ownerList.remove(0);
             for (int p = 0; p < ownerList.size(); p++) {
                 System.out.println("Inside of OWNER LIST : " + ownerList.get(p));
             }
+            iamExtract = new IAMExtract(ownerList);
+            extractingIAM.add(iamExtract);
+//            globalRole = ownerList.get(ownerList.size());
+//            for (int n = 0; n < ownerList.size() - 1; n++) {
+//                globalUser = ownerList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(ownerList);
-            extractingIAM.add(iamExtract);
             //END OF OWNER LIST
         } else if (globalChecker == 10) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF API KEYS ADMIN
-
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                apikeysadminList.add(getiamlist.get(o));
+                System.out.println("Adding into api keys admin list : " + s);
                 if (getiamlist.get(o).contains("role: roles/serviceusage.apiKeysAdmin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            apikeysadminList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             apikeysadminList.remove(0);
             for (int p = 0; p < apikeysadminList.size(); p++) {
                 System.out.println("Inside of API KEYS ADMIN LIST : " + apikeysadminList.get(p));
             }
+            iamExtract = new IAMExtract(apikeysadminList);
+            extractingIAM.add(iamExtract);
+//            globalRole = apikeysadminList.get(apikeysadminList.size());
+//            for (int n = 0; n < apikeysadminList.size() - 1; n++) {
+//                globalUser = apikeysadminList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(apikeysadminList);
-            extractingIAM.add(iamExtract);
             //END OF API KEYS ADMIN
-
-
         } else if (globalChecker == 8) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF STORAGE ADMIN LIST
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                storageadminList.add(getiamlist.get(o));
+                System.out.println("Adding into storage admin list : " + s);
                 if (getiamlist.get(o).contains("role: roles/storage.admin")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            storageadminList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             storageadminList.remove(0);
             for (int p = 0; p < storageadminList.size(); p++) {
                 System.out.println("Inside of STORAGE ADMIN LIST : " + storageadminList.get(p));
             }
+            iamExtract = new IAMExtract(storageadminList);
+            extractingIAM.add(iamExtract);
+//            globalRole = storageadminList.get(storageadminList.size());
+//            for (int n = 0; n < storageadminList.size() - 1; n++) {
+//                globalUser = storageadminList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(storageadminList);
-            extractingIAM.add(iamExtract);
             //END OF STORAGE ADMIN LIST
-
-
         } else if (globalChecker == 3) {
-            getiamlist = tempPermissionList;
-            getiamlist.remove(0);
-            System.out.println("HIHI " + getiamlist);
-            for (int i = 0; i < getiamlist.size(); i++) {
-                System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
-            }
             //START OF VIEWER LIST
             for (int o = 0; o < getiamlist.size(); o++) {
+                String s = getiamlist.get(o);
+                viewerList.add(getiamlist.get(o));
+                System.out.println("Adding into viewer list : " + s);
                 if (getiamlist.get(o).contains("role: roles/viewer")) {
-                    w = getiamlist.indexOf(getiamlist.get(o)) + 1;
-                    System.out.println("W is : " + w);
+                    w = getiamlist.indexOf(getiamlist.get(o));
+                    System.out.println("INDEX OF ROLE LINE : " + w);
+                    System.out.println("FOUND THIS");
+                    break;
                 }
             }
-            //getiamlist.get(i).contains("members:")
-            //nearest "member" from w
-            for (int z = 0; z < getiamlist.size(); z++) {
-                if (getiamlist.get(z).contains("members:")) {
-                    g = z;
-                    indexList.add(g);
-                    System.out.println("G is : " + g);
-                }
-            }
-            diff = indexList.get(0);
-            int smallDifference = w - diff;
-            System.out.println("SMALL DIFF = " + smallDifference);
-            for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
-                System.out.println("DIFFERENCE  = " + difference);
-                if (difference < smallDifference && difference > 0) {
-                    smallDifference = difference;
-                    diff = w-smallDifference;
-                    System.out.println("DIFF is : " + diff);
-                } else if (difference > 0) {
-                    System.out.println("DIFF is : " + indexList.get(0));
-                }
-            }
-            System.out.println("MEMBER IS : " + diff);
-            System.out.println("ROLE IS : " + w);
-            viewerList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             viewerList.remove(0);
             for (int p = 0; p < viewerList.size(); p++) {
                 System.out.println("Inside of VIEWER LIST : " + viewerList.get(p));
             }
+            iamExtract = new IAMExtract(viewerList);
+            extractingIAM.add(iamExtract);
+//            globalRole = viewerList.get(viewerList.size());
+//            for (int n = 0; n < viewerList.size() - 1; n++) {
+//                globalUser = viewerList.get(n);
+//            }
+            while (w != -1) {
+                getiamlist.remove(w);
+                w--;
+            }
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("CHECKING GETIAMLIST AGAIN: " + getiamlist.get(i));
             }
-            iamExtract = new IAMExtract(viewerList);
-            extractingIAM.add(iamExtract);
             //END OF VIEWER LIST
         }
     }

@@ -4,19 +4,22 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXToggleButton?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCAMainDashboard">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
                 <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-                <Text layoutX="301.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="FireE - Network Capture" wrappingWidth="465.13671875">
+                <Text layoutX="301.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Packet Capture" wrappingWidth="465.13671875">
                     <font>
                         <Font name="Marlett" size="40.0" />
                     </font>
@@ -29,6 +32,11 @@
                 <Font name="Lucida Sans Regular" size="20.0" />
             </font>
         </JFXToggleButton>
+        <JFXButton fx:id="exportPcapBtn" layoutX="153.0" layoutY="84.0" onAction="#launchPcapExport" text="Export Packets" textFill="RED">
+            <font>
+                <Font name="Lucida Sans Regular" size="20.0" />
+            </font>
+        </JFXButton>
         <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets" text="Clear Current Capture" textFill="RED">
             <font>
                 <Font name="Lucida Sans Regular" size="20.0" />
@@ -51,12 +59,6 @@
                     </children></AnchorPane>
             </content>
         </ScrollPane>
-        <Label fx:id="alertCount" layoutX="11.0" layoutY="93.0" prefHeight="26.0" prefWidth="353.0"
-               text="Suspicious Events Count: &lt;Number&gt;">
-            <font>
-                <Font name="Lucida Sans Regular" size="18.0"/>
-            </font>
-        </Label>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>
 </AnchorPane>
