@@ -152,14 +152,14 @@ public class ControllerCAMainDashboard implements Initializable {
                         });
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
-                /*handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                        handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                     @Override
                     public void run() {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 spinner.setVisible(false);
-                                myScene = anchorPane.getScene();
+                                /*myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "SMS Alerts are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
@@ -181,13 +181,13 @@ public class ControllerCAMainDashboard implements Initializable {
                                         alert.hideWithAnimation();
                                     }
                                 });
-                                alert.showAndWait();
+                                alert.showAndWait();*/
                                 captureToggle.setDisable(false);
                                 hamburger.setDisable(false);
                             }
                         });
                     }
-                }, 1, TimeUnit.SECONDS));*/
+                        }, 1, TimeUnit.SECONDS));
                     }
                     try {
                         FXMLLoader loader = new FXMLLoader();
@@ -211,14 +211,24 @@ public class ControllerCAMainDashboard implements Initializable {
                             System.out.println(s);
                         }
                         System.out.println("SMS Updated!");
-                        spinner.setVisible(false);
-                        captureToggle.setDisable(false);
-                        hamburger.setDisable(false);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
-                        spinner.setVisible(false);
-                        captureToggle.setDisable(false);
-                        hamburger.setDisable(false);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
 
                     }
                 }
