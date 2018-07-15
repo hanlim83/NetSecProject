@@ -89,6 +89,11 @@ public class ControllerCAMainPackets implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private SMS SMSHandler;
+    /*private Timer timer = new Timer(true);
+    private TimerTask exportTask;
+    private boolean timerTaskinProgress = false;
+    private static final int RECORD_DURATION = 1;
+    private static final int MINUITE_TO_MILISECONDS = 60000;*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,6 +119,14 @@ public class ControllerCAMainPackets implements Initializable {
         db = new admin_DB();
         hamburger.setDisable(true);
         captureToggle.setDisable(true);
+        /*exportTask = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Running");
+                capture.Specficexport();
+                timerTaskinProgress = false;
+            }
+        };*/
     }
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
@@ -241,8 +254,12 @@ public class ControllerCAMainPackets implements Initializable {
                 @Override
                 public void run() {
                     if (capture.checkThreshold()) {
-                        capture.Specficexport();
                         SMSHandler.sendAlert();
+                        capture.Specficexport();
+                        /*if (!timerTaskinProgress) {
+                            timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                            timerTaskinProgress = true;
+                        }*/
                     }
                     Platform.runLater(new Runnable() {
                         @Override
@@ -274,8 +291,12 @@ public class ControllerCAMainPackets implements Initializable {
             @Override
             public void run() {
                 if (capture.checkThreshold()) {
-                    capture.Specficexport();
                     SMSHandler.sendAlert();
+                   /* if (!timerTaskinProgress) {
+                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                        timerTaskinProgress = true;
+                    }*/
+                    capture.Specficexport();
                 }
                 Platform.runLater(new Runnable() {
                     @Override

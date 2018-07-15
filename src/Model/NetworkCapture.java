@@ -238,6 +238,9 @@ public class NetworkCapture {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             dumper = Phandle.dumpOpen(directoryPath + "\\Partial Capture for Alert " + dtf.format(now) + ".pcap");
+            /*for (CapturedPacket p : packets) {
+                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
+            }*/
             for (CapturedPacket p : packets) {
                 if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
@@ -261,7 +264,6 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            System.out.println(directoryPath + "\\CompleteNetworkCapture(" + dtf.format(now) + ").pcap");
             dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());

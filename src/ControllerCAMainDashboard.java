@@ -34,6 +34,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +81,11 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private SMS SMSHandler;
+    private static final int RECORD_DURATION = 5;
+    private static final int MINUITE_TO_MILISECONDS = 60000;
+    private Timer timer = new Timer(true);
+    private TimerTask exportTask;
+    private boolean timerTaskinProgress = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -107,6 +114,13 @@ public class ControllerCAMainDashboard implements Initializable {
         db = new admin_DB();
         hamburger.setDisable(true);
         captureToggle.setDisable(true);
+        exportTask = new TimerTask() {
+            @Override
+            public void run() {
+                capture.Specficexport();
+                timerTaskinProgress = false;
+            }
+        };
     }
 
     public void plotCaptureLine() {
@@ -257,8 +271,11 @@ public class ControllerCAMainDashboard implements Initializable {
                 public void run() {
                     plotCaptureLine();
                     if (capture.checkThreshold()) {
-                        capture.Specficexport();
                         SMSHandler.sendAlert();
+                        if (!timerTaskinProgress) {
+                            timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                            timerTaskinProgress = true;
+                        }
                     }
                 }
             }, 1, 10, TimeUnit.SECONDS));
@@ -286,8 +303,11 @@ public class ControllerCAMainDashboard implements Initializable {
                 public void run() {
                     plotCaptureLine();
                     if (capture.checkThreshold()) {
-                        capture.Specficexport();
                         SMSHandler.sendAlert();
+                        if (!timerTaskinProgress) {
+                            timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                            timerTaskinProgress = true;
+                        }
                     }
                 }
             }, 1, 10, TimeUnit.SECONDS));
