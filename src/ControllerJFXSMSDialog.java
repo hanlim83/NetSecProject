@@ -74,7 +74,7 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     @FXML
     void onActionResendButton(ActionEvent event) {
-        verifyText.sendNew();
+//        verifyText.sendNew();
 //        SignUpPage signUpPage=new SignUpPage();
 //        this.email=signUpPage.getEmail();
 //        this.password=signUpPage.getPassword();
