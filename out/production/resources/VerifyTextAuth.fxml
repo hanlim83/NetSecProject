@@ -27,7 +27,8 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <JFXButton fx:id="verifyMe" layoutX="571.0" layoutY="512.0" onAction="#verifyConfirm" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: green;" text="Verify me!" textFill="WHITE" />
-      <JFXButton layoutX="358.0" layoutY="512.0" onAction="#resendText" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
+      <JFXButton fx:id="verifyMe" layoutX="709.0" layoutY="456.0" onAction="#verifyConfirm" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: green;" text="Verify me!" textFill="WHITE" />
+      <JFXButton layoutX="465.0" layoutY="456.0" onAction="#resendText" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
+      <JFXButton layoutX="220.0" layoutY="456.0" onAction="#backLogin" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: red;" text="Back To Login" />
     </children>
 </AnchorPane>
