@@ -4,6 +4,7 @@ import com.nexmo.client.NexmoClientException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 
 public class ControllerAdminVerifyTextAuth {
@@ -30,11 +32,10 @@ public class ControllerAdminVerifyTextAuth {
     private Label numberViewer;
 
     @FXML
-    void adminResend(ActionEvent event) {
+    void adminResend(ActionEvent event) throws MalformedURLException {
 
         TextAuthentication resend = new TextAuthentication();
-        resend.sendNew();
-
+        resend.adminSendNew();
 
     }
 

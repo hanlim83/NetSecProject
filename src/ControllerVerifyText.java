@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 //import Model.TextAuthentication.checkAuth;
 //import Model.TextAuthentication.sendAuth;
@@ -53,6 +55,7 @@ public class ControllerVerifyText {
 
     @FXML
     private JFXButton resendText;
+
 
     public void sendNew(String phoneNo){
 
