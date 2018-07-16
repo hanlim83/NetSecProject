@@ -2,7 +2,11 @@ import Model.SignUpPage;
 import Model.TextAuthentication;
 import Database.User_InfoDB;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -54,16 +60,38 @@ public class ControllerJFXSMSDialog implements Initializable {
     private String password;
     private String phoneNo;
 
+    private SignUpPage signUpPage=new SignUpPage();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        SignUpPage signUpPage=new SignUpPage();
-        PhoneNumberLabel.setText("96588071");
+//        SignUpPage signUpPage=new SignUpPage();
+//        String phoneNo=signUpPage.getPhoneNo();
+//        PhoneNumberLabel.setText("96588071");
+//        PhoneNumberLabel.setText(phoneNo);
+        process.start();
     }
 
 //    public void setPhoneNo(){
 //        SignUpPage signUpPage=new SignUpPage();
 //        PhoneNumberLabel.setText(signUpPage.getPhoneNo());
 //    }
+
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    String phoneNo=signUpPage.getPhoneNo();
+        //        PhoneNumberLabel.setText("96588071");
+                    Platform.runLater(() -> {
+                        PhoneNumberLabel.setText(phoneNo);
+                    });
+                    return null;
+                }
+            };
+        }
+    };
 
     @FXML
     void onActionCancelButton(ActionEvent event) {
@@ -73,8 +101,8 @@ public class ControllerJFXSMSDialog implements Initializable {
     }
 
     @FXML
-    void onActionResendButton(ActionEvent event) {
-//        verifyText.sendNew();
+    void onActionResendButton(ActionEvent event) throws MalformedURLException {
+        verifyText.sendNew();
 //        SignUpPage signUpPage=new SignUpPage();
 //        this.email=signUpPage.getEmail();
 //        this.password=signUpPage.getPassword();
@@ -88,7 +116,6 @@ public class ControllerJFXSMSDialog implements Initializable {
         if (verifyText.checkAuth(OTPField.getText()) == true) {
 //            ControllerSignUpPage signUpPage = new ControllerSignUpPage();
 //            signUpPage.changePage();
-            SignUpPage signUpPage=new SignUpPage();
             this.email=signUpPage.getEmail();
             this.password=signUpPage.getPassword();
             this.phoneNo=signUpPage.getPhoneNo();
