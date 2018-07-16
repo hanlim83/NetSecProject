@@ -167,7 +167,7 @@ public class ControllerUserHome implements Initializable {
     private String getGreetings() {
         String greetings = null;
         int hours = Integer.parseInt(new SimpleDateFormat("HH").format(new Date()));
-        if(hours>=1 && hours<=12){
+        if(hours>=0 && hours<=12){
             greetings="Good morning ";
         }else if(hours>=12 && hours<=16){
             greetings="Good afternoon ";
