@@ -340,25 +340,64 @@ public class ControllerEmployeePage implements Initializable {
         }
     };
 
+    Service process2 = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        userList = userinfodb.getUserList();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    Platform.runLater(() -> {
+                        userObservableList = FXCollections.observableList(userList);
+                        employeeTable.setItems(userObservableList);
+
+                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.show("Updating The Database", 3000);
+                    });
+                    return null;
+                }
+
+            };
+        }
+    };
+
+    public void newProcess(){
+        process2.start();
+        employeeButton.setDisable(true);
+
+        process2.setOnSucceeded(e -> {
+            employeeButton.setDisable(false);
+            userObservableList = FXCollections.observableList(userList);
+            employeeTable.setItems(userObservableList);
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+
+    }
+
 
     @FXML
     void onClickEmployee(MouseEvent event) {
         secondAnchor.setVisible(false);
         employeeTable.setVisible(true);
-//        try {
-//            userList = userinfodb.getUserList();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 
-//        userObservableList = FXCollections.observableList(userList);
-//        employeeTable.setItems(userObservableList);
         process1.start();
+        employeeButton.setDisable(true);
 
-
-        process.setOnSucceeded(e -> {
-            userObservableList = FXCollections.observableList(userList);
-            employeeTable.setItems(userObservableList);
+        process1.setOnSucceeded(e -> {
+            employeeButton.setDisable(false);
+//            userObservableList = FXCollections.observableList(userList);
+//            employeeTable.setItems(userObservableList);
             process.reset();
         });
         process.setOnCancelled(e -> {
@@ -485,6 +524,7 @@ public class ControllerEmployeePage implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                newProcess();
                 successfulMessage="This user "+CreateUser+ " was created and added into the cloud.";
                 successfulMessage(anchorPane.getScene(),successfulMessage, "Close");
                 alert.hideWithAnimation();
