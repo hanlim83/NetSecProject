@@ -137,8 +137,8 @@ public class ControllerSignUpPage implements Initializable {
             alert.setContent(layout);
             alert.initModality(Modality.NONE);
             alert.show();
-//            ControllerJFXSMSDialog jfxsmsDialog=new ControllerJFXSMSDialog();
-//            jfxsmsDialog.passData(email,PasswordField.getText(),PhoneNoField.getText());
+            ControllerJFXSMSDialog jfxsmsDialog=new ControllerJFXSMSDialog();
+//            jfxsmsDialog.setPhoneNo();
         }
         counter++;
     }

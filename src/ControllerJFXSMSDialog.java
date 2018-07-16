@@ -56,8 +56,14 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        SignUpPage signUpPage=new SignUpPage();
+        PhoneNumberLabel.setText("96588071");
     }
+
+//    public void setPhoneNo(){
+//        SignUpPage signUpPage=new SignUpPage();
+//        PhoneNumberLabel.setText(signUpPage.getPhoneNo());
+//    }
 
     @FXML
     void onActionCancelButton(ActionEvent event) {

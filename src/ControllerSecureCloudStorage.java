@@ -3,6 +3,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
@@ -29,6 +30,11 @@ import javafx.util.Callback;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,7 +96,9 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
-        deleteFile("hugochiaxyznspj","42149.py");
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
+//        deleteFile("hugochiaxyznspj","42149.py");
 //        UploadFileTest();
 //        TableMethod();
     }
@@ -99,6 +107,22 @@ public class ControllerSecureCloudStorage implements Initializable {
         Date date = new Date(time);
         Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
         return format.format(date);
+    }
+
+    private Path saveFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+//        System.out.println(pic.getId());
+        File file = fileChooser.showSaveDialog(null);
+        return Paths.get(file.getName());
+//        if (file != null) {
+//            try {
+//                ImageIO.write(SwingFXUtils.fromFXImage(pic.getImage(),
+//                        null), "png", file);
+//            } catch (IOException ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//        }
     }
 
     public void UploadFileTest() {
@@ -184,6 +208,41 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
+    //To test
+    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws IOException {
+        BlobId blobId = BlobId.of(bucketName, objectName);
+        Blob blob = storage.get(blobId);
+        if (blob == null) {
+            System.out.println("No such object");
+            return;
+        }
+        PrintStream writeTo = System.out;
+        if (downloadTo != null) {
+            writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
+        }
+        if (blob.getSize() < 1_000_000) {
+            // Blob is small read all its content in one request
+            byte[] content = blob.getContent();
+            writeTo.write(content);
+        } else {
+            // When Blob size is big or unknown use the blob's channel reader.
+            try (ReadChannel reader = blob.reader()) {
+                WritableByteChannel channel = Channels.newChannel(writeTo);
+                ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                while (reader.read(bytes) > 0) {
+                    bytes.flip();
+                    channel.write(bytes);
+                    bytes.clear();
+                }
+            }
+        }
+        if (downloadTo == null) {
+            writeTo.println();
+        } else {
+            writeTo.close();
+        }
+    }
+
     public void deleteFile(String bucketName, String blobName){
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         BlobId blobId = BlobId.of(bucketName, blobName);
@@ -245,7 +304,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
 
         JFXTreeTableColumn<TableBlob, String> fileColumn = new JFXTreeTableColumn<>("File Name");
-        fileColumn.setPrefWidth(522);
+        fileColumn.setPrefWidth(525);
         fileColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (fileColumn.validateValue(param)) {
                 return param.getValue().getValue().blobName;
@@ -255,7 +314,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableColumn<TableBlob, String> dateColumn = new JFXTreeTableColumn<>("Date");
-        dateColumn.setPrefWidth(300);
+        dateColumn.setPrefWidth(350);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (dateColumn.validateValue(param)) {
                 return param.getValue().getValue().date;
@@ -275,8 +334,40 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            }
 //        });
 
-        JFXTreeTableColumn<ActionButtonTableCell, OSVersion> settingsColumn = new JFXTreeTableColumn<>("Others");
-        settingsColumn.setPrefWidth(12);
+        JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Others");
+        settingsColumn.setPrefWidth(175);
+        Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
+                = //
+                new Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>>() {
+                    @Override
+                    public TreeTableCell call(final TreeTableColumn<TableBlob, String> param) {
+                        final TreeTableCell<TableBlob, String> cell = new TreeTableCell<TableBlob, String>() {
+
+                            final JFXButton btn = new JFXButton("Others");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
+                                    btn.setOnAction(event -> {
+//                                        TableBlob person = getTableView().getItems().get(getIndex());
+//                                        System.out.println(person.getFirstName()
+//                                                + "   " + person.getLastName());
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        settingsColumn.setCellFactory(cellFactory);
 
 //        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, JFXButton> param) -> {
 //            if (settingsColumn.validateValue(param)) {
@@ -356,7 +447,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView = new JFXTreeTableView<>(root);
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
-        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn);
+        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
 //        JFXTreeTableView.
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
