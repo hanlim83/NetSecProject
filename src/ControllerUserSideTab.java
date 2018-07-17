@@ -45,6 +45,9 @@ public class ControllerUserSideTab {
 
     @FXML
     void onClickSecureCloudStorageButton(ActionEvent event) throws IOException {
+        //go back to user home and reference the observablelist
+        //pass data to next page
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SecureCloudStorage.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -53,6 +56,7 @@ public class ControllerUserSideTab {
 
 
         ControllerSecureCloudStorage controller = loader.<ControllerSecureCloudStorage>getController();
+        controller.passData(ControllerUserHome.blobs);
         //controller.passData(admin);
 
         stage.setScene(new Scene(nextView));
