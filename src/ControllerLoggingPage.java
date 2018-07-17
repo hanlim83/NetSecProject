@@ -136,19 +136,6 @@ public class ControllerLoggingPage implements Initializable {
 //                      user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
                         user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
 
-//                      globalCheckerList2 = logsextract.getGlobalChckerList();
-//                      int check = logsextract.getGlobalchecker();
-//                        System.out.println("MY CHECKER IS NOW " + check);
-//                         if (check==-1) {
-            //            System.out.println("MY CHECKER IS NOW " + check);
-            //            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-            //
-            //        } else {
-            //            System.out.println("MY CHECKER IS NOW " + check);
-            //            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-            //
-            //        }
-                        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
                         logsList = loggingsnippets.getLogsExtractList();
                     });
                     return null;
@@ -162,35 +149,7 @@ public class ControllerLoggingPage implements Initializable {
         hamburgerBar();
         spinner.setVisible(false);
         process1.start();
-//        loggingsnippets = new LoggingSnippets();
-//        options = LoggingOptions.getDefaultInstance();
-//
-//        popupanchor.setVisible(false);
-//        logsTable.setVisible(true);
-//        spinner.setVisible(false);
-//
-//        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
-//        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
-//        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
-//        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
-//        globalCheckerList2 = logsextract.getGlobalChckerList();
-////        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-//        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-//
-////        globalCheckerList2 = logsextract.getGlobalChckerList();
-////        int check = logsextract.getGlobalchecker();
-////        System.out.println("MY CHECKER IS NOW " + check);
-////        if (check==-1) {
-////            System.out.println("MY CHECKER IS NOW " + check);
-////            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-////
-////        } else {
-////            System.out.println("MY CHECKER IS NOW " + check);
-////            user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-////
-////        }
-//        //       projectID.setCellValueFactory(new PropertyValueFactory<LogsExtract,String>("projectID"));
-//        logsList = loggingsnippets.getLogsExtractList();
+
     }
 
 
@@ -270,16 +229,6 @@ public class ControllerLoggingPage implements Initializable {
         process.setOnFailed(e -> {
             process.reset();
         });
-//        try (Logging logging = options.getService()) {
-//            System.out.println(options.getProjectId());
-//            loggingsnippets.listLogEntries("create");
-//        } catch (com.google.cloud.logging.LoggingException e1) {
-//            e1.printStackTrace();
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        logsObservableList = FXCollections.observableList(logsList);
-//        logsTable.setItems(logsObservableList);
     }
 
 
@@ -309,16 +258,6 @@ public class ControllerLoggingPage implements Initializable {
         process.setOnFailed(e -> {
             process.reset();
         });
-//        try (Logging logging = options.getService()) {
-//            System.out.println(options.getProjectId());
-//            loggingsnippets.listLogEntries("one two");
-//        } catch (com.google.cloud.logging.LoggingException e1) {
-//            e1.printStackTrace();
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        logsObservableList = FXCollections.observableList(logsList);
-//        logsTable.setItems(logsObservableList);
     }
 
     //Service method

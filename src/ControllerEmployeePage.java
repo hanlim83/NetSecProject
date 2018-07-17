@@ -260,43 +260,33 @@ public class ControllerEmployeePage implements Initializable {
 
                     Platform.runLater(() -> {
                         if (globalChecker == 1) {
-//                            rolesTable.getItems().clear();
                             ownerObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(ownerObservableList);
                         } else if (globalChecker == 2) {
-//                            rolesTable.getItems().clear();
                             editorObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(editorObservableList);
                         } else if (globalChecker == 3) {
-//                            rolesTable.getItems().clear();
                             viewerObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(viewerObservableList);
                         } else if (globalChecker == 4) {
-//                            rolesTable.getItems().clear();
                             cloudsqlObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(cloudsqlObservableList);
                         } else if (globalChecker == 5) {
-//                            rolesTable.getItems().clear();
                             firebaseObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(firebaseObservableList);
                         } else if (globalChecker == 6) {
-//                            rolesTable.getItems().clear();
                             computeengineObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(computeengineObservableList);
                         } else if (globalChecker == 7) {
-//                            rolesTable.getItems().clear();
                             loggingadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(loggingadminObservableList);
                         } else if (globalChecker == 8) {
-//                            rolesTable.getItems().clear();
                             storageadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(storageadminObservableList);
                         } else if (globalChecker == 9) {
-//                            rolesTable.getItems().clear();
                             monitoringadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(monitoringadminObservableList);
                         } else {
-//                            rolesTable.getItems().clear();
                             apikeysadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(apikeysadminObservableList);
                         }
@@ -377,7 +367,7 @@ public class ControllerEmployeePage implements Initializable {
         }
     };
 
-    public void newProcess(){
+    public void newProcess() {
         process2.start();
         employeeButton.setDisable(true);
 
@@ -421,7 +411,7 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void onClickCreate(MouseEvent event) {
-        creatingUSERS(anchorPane.getScene(),"No", "Yes");
+        creatingUSERS(anchorPane.getScene(), "No", "Yes");
         CHECKING = checker2;
         System.out.println("CHECKER NOW IS " + CHECKING);
     }
@@ -467,7 +457,7 @@ public class ControllerEmployeePage implements Initializable {
                 e.printStackTrace();
             }
             employeeTable.getItems().remove(users);
-            successfulMessage = "This user " + email1 +" was successfully removed.";
+            successfulMessage = "This user " + email1 + " was successfully removed.";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
             alert.hideWithAnimation();
         });
@@ -498,7 +488,7 @@ public class ControllerEmployeePage implements Initializable {
         String message1 = "Enter email: ";
 
         JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setPrefSize(546,299);
+        layout.setPrefSize(546, 299);
         layout.setHeading(new Label(title));
 
         GridPane grid = new GridPane();
@@ -510,8 +500,8 @@ public class ControllerEmployeePage implements Initializable {
         inputUser.setPrefWidth(250);
         inputUser.setPromptText("Type Email Here");
 
-        grid.add(new Label(message1),0,0);
-        grid.add(inputUser,1,0);
+        grid.add(new Label(message1), 0, 0);
+        grid.add(inputUser, 1, 0);
         layout.setBody(grid);
 
         layout.setActions(no, yes);
@@ -529,20 +519,20 @@ public class ControllerEmployeePage implements Initializable {
             CHECKING = checker2;
             CreateUser = inputUser.getText();
             System.out.println("INPUT NAME IS : " + CreateUser);
-            if(CreateUser.contains("@gmail.com")) {
+            if (CreateUser.contains("@gmail.com")) {
                 try {
                     userinfodb.createUser(CreateUser);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 newProcess();
-                successfulMessage="This user "+CreateUser+ " was created and added into the cloud.";
-                successfulMessage(anchorPane.getScene(),successfulMessage, "Close");
+                successfulMessage = "This user " + CreateUser + " was created and added into the cloud.";
+                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
                 alert.hideWithAnimation();
-            }else{
+            } else {
                 System.out.println("NOT ACCEPTED AS NOT A VALID EMAIL");
-                errorMessage="Please try again. Email was not accepted.";
-                errorMessagePopOut(anchorPane.getScene(),errorMessage, "Close");
+                errorMessage = "Please try again. Email was not accepted.";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
         });
         no.setOnAction(__addEvent -> {
