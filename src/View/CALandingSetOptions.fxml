@@ -1,93 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCALandingSetOptions">
-   <children>
-      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
-         <children>
-            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-            <Text layoutX="489.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
-               <font>
-                  <Font size="40.0" />
-               </font>
-            </Text>
-            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
-         </children>
-      </AnchorPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutY="67.0" stroke="#e1e1e1" strokeType="INSIDE" width="359.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="356.0" layoutY="67.0" stroke="#e1e1e1" strokeType="INSIDE" width="358.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="711.0" layoutY="67.0" stroke="#e1e1e1" strokeType="INSIDE" width="358.0" />
-      <Text layoutX="20.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 1: Choose Interface">
-         <font>
-            <Font name="Lucida Sans Regular" size="27.0" />
-         </font>
-      </Text>
-      <JFXProgressBar fx:id="progressBar" layoutX="1.0" layoutY="129.0" prefHeight="12.0" prefWidth="1069.0" progress="0.53" />
-      <Text layoutX="409.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 2: Set Options">
-         <font>
-            <Font name="Lucida Sans Regular" size="27.0" />
-         </font>
-      </Text>
-      <Text layoutX="753.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 3: Verify Details">
-         <font>
-            <Font name="Lucida Sans Regular" size="27.0" />
-         </font>
-      </Text>
-      <GridPane layoutX="153.0" layoutY="209.0" prefHeight="209.0" prefWidth="765.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0" minWidth="10.0" prefWidth="319.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="599.0" minWidth="10.0" prefWidth="446.0" />
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pcap Files Directory:" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Lucida Sans Regular" size="22.0" />
-               </font>
-            </Text>
-            <JFXTextField fx:id="pcapFilesDirectoryField" editable="false" onMouseClicked="#selectPcapLocation" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a location where the pcap files will be saved">
-               <font>
-                  <Font name="Lucida Sans Regular" size="14.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Threshold for average network traffic before &quot;Abnormal Surge of network Traffic&quot; Alert is raised" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Lucida Sans Regular" size="14.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold (Per Minute):" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Lucida Sans Regular" size="22.0" />
-               </font>
-            </Text>
-            <JFXComboBox fx:id="ThresholdChooser" onAction="#checkThresholdValue" prefHeight="25.0" prefWidth="502.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-         </children>
-      </GridPane>
-      <JFXButton fx:id="previousBtn" layoutX="207.0" layoutY="504.0" onAction="#goBackPreviousScreen" text="Previous" textFill="#e86363">
-         <font>
-            <Font name="Lucida Sans Regular" size="28.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="nextBtn" layoutX="671.0" layoutY="504.0" onAction="#goToNextScreen" text="Next" textFill="#e86363">
-         <font>
-            <Font name="Lucida Sans Regular" size="28.0" />
-         </font>
-      </JFXButton>
-       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
-   </children>
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCALandingSetOptions">
+    <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0"/>
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8"/>
+                <Label layoutX="577.0" layoutY="28.0" text="Admin">
+                    <font>
+                        <Font name="Vladimir Script" size="18.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
+                    <font>
+                        <Font name="Serif Regular" size="40.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutY="67.0" stroke="#e1e1e1"
+                   strokeType="INSIDE" width="359.0"/>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="356.0" layoutY="67.0"
+                   stroke="#e1e1e1" strokeType="INSIDE" width="358.0"/>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="711.0" layoutY="67.0"
+                   stroke="#e1e1e1" strokeType="INSIDE" width="358.0"/>
+        <Text layoutX="20.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 1: Choose Interface">
+            <font>
+                <Font name="Lucida Sans Regular" size="27.0"/>
+            </font>
+        </Text>
+        <JFXProgressBar fx:id="progressBar" layoutX="1.0" layoutY="129.0" prefHeight="12.0" prefWidth="1069.0"
+                        progress="0.53"/>
+        <Text layoutX="409.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 2: Set Options">
+            <font>
+                <Font name="Lucida Sans Regular" size="27.0"/>
+            </font>
+        </Text>
+        <Text layoutX="753.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 3: Verify Details">
+            <font>
+                <Font name="Lucida Sans Regular" size="27.0"/>
+            </font>
+        </Text>
+        <GridPane layoutX="153.0" layoutY="209.0" prefHeight="209.0" prefWidth="765.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0" minWidth="10.0" prefWidth="319.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="599.0" minWidth="10.0" prefWidth="446.0"/>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pcap Files Directory:" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="22.0"/>
+                    </font>
+                </Text>
+                <JFXTextField fx:id="pcapFilesDirectoryField" editable="false" onMouseClicked="#selectPcapLocation"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Select a location where the pcap files will be saved">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="14.0"/>
+                    </font>
+                </Text>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Select a Threshold for average network traffic before &quot;Abnormal Surge of network Traffic&quot; Alert is raised"
+                      GridPane.rowIndex="2">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="14.0"/>
+                    </font>
+                </Text>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold (Per Minute):" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="22.0"/>
+                    </font>
+                </Text>
+                <JFXComboBox fx:id="ThresholdChooser" onAction="#checkThresholdValue" prefHeight="25.0"
+                             prefWidth="502.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </children>
+        </GridPane>
+        <JFXButton fx:id="previousBtn" layoutX="207.0" layoutY="504.0" onAction="#goBackPreviousScreen" text="Previous"
+                   textFill="#e86363">
+            <font>
+                <Font name="Lucida Sans Regular" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="nextBtn" layoutX="671.0" layoutY="504.0" onAction="#goToNextScreen" text="Next"
+                   textFill="#e86363">
+            <font>
+                <Font name="Lucida Sans Regular" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
+    </children>
 </AnchorPane>

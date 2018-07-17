@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAMainDashboard implements Initializable {
+    private static final int RECORD_DURATION = 5;
+    private static final int MINUITE_TO_MILISECONDS = 60000;
     public static AnchorPane rootP;
     private final int MAX_DATA_POINTS = 25, MAX = 9999, MIN = 11;
     public ArrayList<LineChartObject> packetsLineChart;
@@ -66,7 +68,6 @@ public class ControllerCAMainDashboard implements Initializable {
     private PieChart top10IPChart;
     @FXML
     private JFXSpinner spinner;
-
     private PcapNetworkInterface device;
     private Scene myScene;
     private ArrayList<LineChartObject> TPS;
@@ -81,8 +82,6 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private SMS SMSHandler;
-    private static final int RECORD_DURATION = 5;
-    private static final int MINUITE_TO_MILISECONDS = 60000;
     private Timer timer = new Timer(true);
     private TimerTask exportTask;
     private boolean timerTaskinProgress = false;
@@ -447,7 +446,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler,null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

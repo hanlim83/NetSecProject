@@ -157,12 +157,12 @@ public class ControllerCAMainPackets implements Initializable {
                     } catch (SQLException e) {
                         System.err.println("SQL Error");
                         handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                spinner.setVisible(false);
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        spinner.setVisible(false);
                                 /*myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "SMS Alerts are not available";
@@ -186,11 +186,11 @@ public class ControllerCAMainPackets implements Initializable {
                                     }
                                 });
                                 alert.showAndWait();*/
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
+                                        captureToggle.setDisable(false);
+                                        hamburger.setDisable(false);
+                                    }
+                                });
                             }
-                        });
-                    }
                         }, 1, TimeUnit.SECONDS));
                     }
                     try {
@@ -488,7 +488,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler,null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

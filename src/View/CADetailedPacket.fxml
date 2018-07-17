@@ -4,43 +4,53 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCADetailedPacket">
-   <children>
-      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
-         <children>
-            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-             <Text layoutX="301.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE - Network Capture"
-                   wrappingWidth="465.13671875">
-               <font>
-                  <Font name="Marlett" size="40.0" />
-               </font>
-            </Text>
-            <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
-         </children>
-      </AnchorPane>
-      <StackPane layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="1069.0">
-         <children>
-            <JFXTreeTableView fx:id="packetDetailsTable">
-               <columns>
-                  <TreeTableColumn editable="false" prefWidth="1068.0" sortable="false" text="Packet Layers" />
-               </columns></JFXTreeTableView>
-         </children>
-      </StackPane>
-      <Text layoutX="443.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packet Details">
-         <font>
-            <Font name="Lucida Sans Regular" size="27.0" />
-         </font>
-      </Text>
-      <JFXButton fx:id="returnCaptureBtn" layoutX="407.0" layoutY="530.0" onAction="#returntoCapture" text="Return to Capture Page">
-         <font>
-            <Font name="Lucida Sans Regular" size="20.0" />
-         </font>
-      </JFXButton>
-      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-   </children>
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCADetailedPacket">
+    <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0"/>
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8"/>
+                <Label layoutX="577.0" layoutY="28.0" text="Admin">
+                    <font>
+                        <Font name="Vladimir Script" size="18.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
+                    <font>
+                        <Font name="Serif Regular" size="40.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <StackPane layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                   prefHeight="394.0" prefWidth="1069.0">
+            <children>
+                <JFXTreeTableView fx:id="packetDetailsTable">
+                    <columns>
+                        <TreeTableColumn editable="false" prefWidth="1068.0" sortable="false" text="Packet Layers"/>
+                    </columns>
+                </JFXTreeTableView>
+            </children>
+        </StackPane>
+        <Text layoutX="443.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packet Details">
+            <font>
+                <Font name="Lucida Sans Regular" size="27.0"/>
+            </font>
+        </Text>
+        <JFXButton fx:id="returnCaptureBtn" layoutX="407.0" layoutY="530.0" onAction="#returntoCapture"
+                   text="Return to Capture Page">
+            <font>
+                <Font name="Lucida Sans Regular" size="20.0"/>
+            </font>
+        </JFXButton>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
+    </children>
 </AnchorPane>
