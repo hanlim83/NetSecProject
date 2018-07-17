@@ -55,7 +55,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private String directoryPath;
     private int threshold;
     private SMS SMSHandler;
-    private String intDiplayName;
+    private String intDisplayName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,14 +68,14 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
-        chosenInterface.setText(this.intDiplayName);
+        chosenInterface.setText(intDisplayName);
 //        chosenInterface.setText(device.getName() + " (" + this.intDiplayName + ")");
         chosenDirectory.setText(directoryPath);
         if (threshold == 0)
             chosenThreshold.setText("None");
         else
             chosenThreshold.setText(Integer.toString(threshold));
-        this.intDiplayName = intDisplayName;
+        this.intDisplayName = intDisplayName;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -95,11 +95,12 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDiplayName);
+            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName);
         } catch (IOException e) {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
+        stage.setTitle("Set Options");
         stage.show();
     }
 
@@ -117,6 +118,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
+        stage.setTitle("Capture - Packets View");
         stage.show();
     }
 

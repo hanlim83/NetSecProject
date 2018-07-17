@@ -27,7 +27,7 @@ public class CAMain extends Application {
             scene.getStylesheets().add(css);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("NSPJ");
+            primaryStage.setTitle("Interface Selection");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

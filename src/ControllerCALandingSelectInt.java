@@ -86,7 +86,7 @@ public class ControllerCALandingSelectInt implements Initializable {
                 TreeItem<String> Interface = new TreeItem<String>(i.getDescription());
                 for (int j = 1; j < names.size(); j++) {
                     if (i.getDescription().equals(names.get(j)) && !i.getName().equals(idS.get(j))) {
-                        Interface.setValue(i.getDescription() +" "+duplicate);
+                        Interface.setValue(i.getDescription() + " " + duplicate);
                         ++duplicate;
                     }
                 }
@@ -156,11 +156,9 @@ public class ControllerCALandingSelectInt implements Initializable {
             for (PcapNetworkInterface p : devices) {
                 if (p.getName().equals(intID.getValue().substring(14))) {
                     device = p;
-                    System.out.println(p.getName());
                     intDisplayedName = selected.getValue();
                 }
             }
-            System.out.println(intDisplay.getSelectionModel().getFocusedIndex());
             nextBtn.setDisable(false);
         }
     }
@@ -174,8 +172,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         if (intDisplayedName != null || intDisplayedName == null) {
             this.device = null;
             nextBtn.setDisable(true);
-        }
-        else if (device != null) {
+        } else if (device != null) {
             this.device = device;
             nextBtn.setDisable(false);
         }
@@ -224,7 +221,6 @@ public class ControllerCALandingSelectInt implements Initializable {
                 alert.hideWithAnimation();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSetOptions.fxml"));
                 myScene = anchorPane.getScene();
-                //Stage stage = (Stage) (myScene).getWindow();
                 Parent nextView = null;
                 try {
                     nextView = loader.load();
@@ -234,6 +230,7 @@ public class ControllerCALandingSelectInt implements Initializable {
                     e.printStackTrace();
                 }
                 stage.setScene(new Scene(nextView));
+                stage.setTitle("Set Options");
                 stage.show();
             }
         });

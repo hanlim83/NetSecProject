@@ -433,7 +433,7 @@ public class ControllerCAMainPackets implements Initializable {
                     e.printStackTrace();
                 }
                 stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
+                stage.setTitle("Detailed Packet View");
                 stage.show();
             }
         }

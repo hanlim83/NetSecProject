@@ -132,6 +132,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
+        stage.setTitle("Interface Selection");
         stage.show();
     }
 
@@ -152,6 +153,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
+        stage.setTitle("Verify Options");
         stage.show();
     }
 

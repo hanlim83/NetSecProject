@@ -114,6 +114,7 @@ public class ControllerCADetailedPacket implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(new Scene(nextView));
+        stage.setTitle("Capture - Packets View");
         stage.show();
     }
 }

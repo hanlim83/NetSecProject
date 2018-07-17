@@ -63,6 +63,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Interface Selection");
             stage.show();
         } else if (capture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
@@ -77,6 +78,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Statistics View");
             stage.show();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
@@ -91,6 +93,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Statistics View");
             stage.show();
         }
     }
@@ -114,6 +117,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Interface Selection");
             stage.show();
         } else if (capture == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -128,6 +132,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Packet View");
             stage.show();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -142,6 +147,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Packet View");
             stage.show();
         }
     }
