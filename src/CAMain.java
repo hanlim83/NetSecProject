@@ -22,7 +22,7 @@ public class CAMain extends Application {
             ControllerCALandingSelectInt controller = loader.getController();
             handler = new ScheduledExecutorServiceHandler();
             controller.passVariables(handler, null, null, 0, null,null);
-            Scene scene = new Scene(root, 1067, 600);
+            Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
             primaryStage.setResizable(false);
