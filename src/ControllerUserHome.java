@@ -14,8 +14,6 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -78,13 +76,12 @@ public class ControllerUserHome implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        timerprocess.start();
+        timerrprocess.start();
         try {
             InfoUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        processTable.start();
     }
 
     private static Timer timer;
@@ -112,51 +109,6 @@ public class ControllerUserHome implements Initializable {
         }, 0, 100);
     }
 
-    private Service processTable = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    getObservableList();
-                    return null;
-                }
-            };
-        }
-    };
-
-    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
-    public void getObservableList(){
-         blobs = FXCollections.observableArrayList();
-//        users.add(new TreeTableDemo.User(COMPUTER_DEPARTMENT, "23", "CD 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "22", "Employee 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "24", "Employee 2"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "25", "Employee 4"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "27", "Employee 5"));
-//        users.add(new TreeTableDemo.User(IT_DEPARTMENT, "42", "ID 2"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "21", "HR 1"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "28", "HR 2"));
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email = null;
-        try {
-            email = login.getEmail();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        emailFront = emailFront.replace(".", "");
-        String privateBucketName = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobList = storage.list(privateBucketName);
-        for (Blob blob : blobList.iterateAll()) {
-//            BlobList.add(new MyBlob(blob));
-            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
-        }
-
-//        ControllerSecureCloudStorage controllerSecureCloudStorage=new ControllerSecureCloudStorage();
-//        controllerSecureCloudStorage.passData(blobs);
-    }
 
     ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
@@ -188,7 +140,7 @@ public class ControllerUserHome implements Initializable {
         return format.format(date);
     }
 
-    private Service timerprocess = new Service() {
+    Service timerrprocess = new Service() {
         @Override
         protected Task createTask() {
             return new Task() {
@@ -215,11 +167,11 @@ public class ControllerUserHome implements Initializable {
     private String getGreetings() {
         String greetings = null;
         int hours = Integer.parseInt(new SimpleDateFormat("HH").format(new Date()));
-        if(hours>=0 && hours<12){
+        if(hours>=0 && hours<=12){
             greetings="Good morning ";
-        }else if(hours>=12 && hours<16){
+        }else if(hours>=12 && hours<=16){
             greetings="Good afternoon ";
-        }else if(hours>=16 && hours<21){
+        }else if(hours>=16 && hours<=21){
             greetings="Good evening ";
         }else if(hours>=21 && hours<=24){
             greetings="Good night ";
