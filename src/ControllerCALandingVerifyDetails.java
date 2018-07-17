@@ -55,24 +55,27 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private String directoryPath;
     private int threshold;
     private SMS SMSHandler;
+    private String intDiplayName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
-        chosenInterface.setText(device.getName() + " (" + device.getDescription() + ")");
+        chosenInterface.setText(this.intDiplayName);
+//        chosenInterface.setText(device.getName() + " (" + this.intDiplayName + ")");
         chosenDirectory.setText(directoryPath);
         if (threshold == 0)
             chosenThreshold.setText("None");
         else
             chosenThreshold.setText(Integer.toString(threshold));
+        this.intDiplayName = intDisplayName;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -92,7 +95,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler);
+            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDiplayName);
         } catch (IOException e) {
             e.printStackTrace();
         }

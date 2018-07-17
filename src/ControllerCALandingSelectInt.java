@@ -1,24 +1,22 @@
 import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.pcap4j.core.PcapAddress;
@@ -55,10 +53,8 @@ public class ControllerCALandingSelectInt implements Initializable {
     private TreeTableColumn<String, String> intDisplayCol;
 
     @FXML
-    private JFXComboBox<String> InterfaceChooser;
-
-    @FXML
     private JFXButton nextBtn;
+
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
     private Scene myScene;
@@ -66,6 +62,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private String directoryPath;
     private Integer threshold;
     private SMS SMSHandler;
+    private String intDisplayedName = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,39 +78,46 @@ public class ControllerCALandingSelectInt implements Initializable {
                 alert.setContentText("Ooops, Pcap4j can't find any Network Interfaces! Please check your interfaces or reinstall WinPcap to continue!");
                 alert.showAndWait();
             }
-            List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
-            ObservableList<String> intidS = FXCollections.observableList(idS);
-            InterfaceChooser.setItems(intidS);
-            InterfaceChooser.setValue("Select an Interface");
             TreeItem<String> dummyRoot = new TreeItem<String>();
+            List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
+            List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
             for (PcapNetworkInterface i : devices) {
                 TreeItem<String> Interface = new TreeItem<String>(i.getDescription());
+                for (int j = 1; j < names.size(); j++) {
+                    if (i.getDescription().equals(names.get(j)) && !i.getName().equals(idS.get(j)))
+                        Interface.setValue(i.getDescription() + " 1");
+                }
                 TreeItem<String> InterfaceID = new TreeItem<String>("Interface ID: " + i.getName());
                 TreeItem<String> InterfaceDescription = new TreeItem<String>("Interface Description: " + i.getDescription());
                 TreeItem<String> InterfaceType = null;
                 if (i.isLocal())
-                    InterfaceType = new TreeItem<String>("Is a Local Network Adapter");
+                    InterfaceType = new TreeItem<String>("Interface Type: Local Network Adapter");
                 else if (i.isLoopBack())
-                    InterfaceType = new TreeItem<String>("Is a Loopback Network Adapter");
+                    InterfaceType = new TreeItem<String>("Interface Type: Loopback Network Adapter");
                 TreeItem<String> InterfaceStatus = null;
                 if (i.isUp() && i.isRunning())
                     InterfaceStatus = new TreeItem<String>("Network Adapter is enabled and connected to a network");
                 else if (i.isRunning())
                     InterfaceStatus = new TreeItem<String>("Network Adapter is enabled but not connected to a network");
-                TreeItem<String> InterfaceAddressesHeader = new TreeItem<String>("Assigned IP Addresses");
+                Interface.getChildren().add(InterfaceID);
+                if (InterfaceType == null && InterfaceStatus == null)
+                    Interface.getChildren().add(InterfaceDescription);
+                else if (InterfaceStatus == null) {
+                    Interface.getChildren().add(InterfaceDescription);
+                    Interface.getChildren().add(InterfaceType);
+                } else if (InterfaceType == null) {
+                    Interface.getChildren().add(InterfaceDescription);
+                    Interface.getChildren().add(InterfaceStatus);
+                } else {
+                    Interface.getChildren().add(InterfaceDescription);
+                    Interface.getChildren().add(InterfaceType);
+                    Interface.getChildren().add(InterfaceStatus);
+                }
                 List<PcapAddress> interfaceAddresses = i.getAddresses();
                 for (PcapAddress a : interfaceAddresses) {
-                    TreeItem<String> InterfaceAddress = new TreeItem<String>(a.getAddress().getHostAddress().toUpperCase());
-                    InterfaceAddressesHeader.getChildren().add(InterfaceAddress);
+                    TreeItem<String> InterfaceAddress = new TreeItem<String>("Assigned IP Address: " + a.getAddress().getHostAddress().toUpperCase());
+                    Interface.getChildren().add(InterfaceAddress);
                 }
-                if (InterfaceType == null && InterfaceStatus == null)
-                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceAddressesHeader);
-                else if (InterfaceStatus == null)
-                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceType, InterfaceAddressesHeader);
-                else if (InterfaceType == null)
-                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceStatus, InterfaceAddressesHeader);
-                else
-                    Interface.getChildren().setAll(InterfaceID, InterfaceDescription, InterfaceType, InterfaceStatus, InterfaceAddressesHeader);
                 dummyRoot.getChildren().add(Interface);
             }
             intDisplay.setRoot(dummyRoot);
@@ -139,14 +143,37 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler) {
+    @FXML
+    void getSelectInt(MouseEvent event) {
+        TreeItem<String> selected = intDisplay.getSelectionModel().getSelectedItem();
+        if (selected == null || selected.getValue().contains("Interface ID: ") || selected.getValue().contains("Interface Description: ") || selected.getValue().contains("Interface Type: ") || selected.getValue().contains("Network Adapter is enabled") || selected.getValue().contains("Assigned IP Address:"))
+            return;
+        else {
+            TreeItem<String> intID = selected.getChildren().get(0);
+            for (PcapNetworkInterface p : devices) {
+                if (p.getName().equals(intID.getValue().substring(14))) {
+                    device = p;
+                    System.out.println(p.getName());
+                    intDisplayedName = selected.getValue();
+                }
+            }
+            System.out.println(intDisplay.getSelectionModel().getFocusedIndex());
+            nextBtn.setDisable(false);
+        }
+    }
+
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayedName) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
-        if (device != null) {
-            InterfaceChooser.setValue(device.getName());
+        if (intDisplayedName != null || intDisplayedName == null) {
+            this.device = null;
+            nextBtn.setDisable(true);
+        }
+        else if (device != null) {
+            this.device = device;
             nextBtn.setDisable(false);
         }
         try {
@@ -160,26 +187,54 @@ public class ControllerCALandingSelectInt implements Initializable {
     }
 
     @FXML
-    public void enableNextBtn(ActionEvent event) {
-        device = devices.get(InterfaceChooser.getSelectionModel().getSelectedIndex());
-        nextBtn.setDisable(false);
-    }
-
-    @FXML
     public void goToNextScreen(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSetOptions.fxml"));
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-            ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setScene(new Scene(nextView));
-        stage.show();
+        String title = "Comfirmation of Selection";
+        String content = "You have selected " + intDisplayedName + ", are you sure you this is adapter that you have selected?";
+        JFXButton close = new JFXButton("Yes");
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+        close.setStyle("-fx-background-color: #00bfff;");
+        JFXButton selectAgain = new JFXButton("Select Again");
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+        close.setStyle("-fx-background-color: #00bfff;");
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(selectAgain, close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        selectAgain.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent __) {
+                alert.hideWithAnimation();
+                device = null;
+                nextBtn.setDisable(true);
+            }
+        });
+        close.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                alert.hideWithAnimation();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSetOptions.fxml"));
+                myScene = anchorPane.getScene();
+                //Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerCALandingSetOptions controller = loader.getController();
+                    controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayedName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.show();
+            }
+        });
+        alert.showAndWait();
     }
 
     public void hamburgerBar() {

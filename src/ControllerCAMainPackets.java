@@ -488,7 +488,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler);
+                controller.passVariables(handler, null, null, 0, SMSHandler,null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
