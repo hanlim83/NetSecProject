@@ -182,7 +182,7 @@ public class ControllerEmployeePage implements Initializable {
         userColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract, String>("globalUser"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract, String>("globalRole"));
 
-        getIAMLists = getiam.getExtractingIAM();
+        getIAMLists = IAMExtract.iamobjlist;
     }
 
     @FXML
@@ -260,33 +260,43 @@ public class ControllerEmployeePage implements Initializable {
 
                     Platform.runLater(() -> {
                         if (globalChecker == 1) {
+//                            rolesTable.getItems().clear();
                             ownerObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(ownerObservableList);
                         } else if (globalChecker == 2) {
+//                            rolesTable.getItems().clear();
                             editorObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(editorObservableList);
                         } else if (globalChecker == 3) {
+//                            rolesTable.getItems().clear();
                             viewerObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(viewerObservableList);
                         } else if (globalChecker == 4) {
+//                            rolesTable.getItems().clear();
                             cloudsqlObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(cloudsqlObservableList);
                         } else if (globalChecker == 5) {
+//                            rolesTable.getItems().clear();
                             firebaseObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(firebaseObservableList);
                         } else if (globalChecker == 6) {
+//                            rolesTable.getItems().clear();
                             computeengineObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(computeengineObservableList);
                         } else if (globalChecker == 7) {
+//                            rolesTable.getItems().clear();
                             loggingadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(loggingadminObservableList);
                         } else if (globalChecker == 8) {
+//                            rolesTable.getItems().clear();
                             storageadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(storageadminObservableList);
                         } else if (globalChecker == 9) {
+//                            rolesTable.getItems().clear();
                             monitoringadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(monitoringadminObservableList);
                         } else {
+//                            rolesTable.getItems().clear();
                             apikeysadminObservableList = FXCollections.observableList(getIAMLists);
                             rolesTable.setItems(apikeysadminObservableList);
                         }
@@ -303,6 +313,7 @@ public class ControllerEmployeePage implements Initializable {
         spinner.setVisible(true);
         chosenRole = jfxcombobox.getSelectionModel().getSelectedItem();
         System.out.println(chosenRole);
+        rolesTable.getItems().clear();
         process.start();
 
         process.setOnSucceeded(e -> {

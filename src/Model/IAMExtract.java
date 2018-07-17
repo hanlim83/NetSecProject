@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class IAMExtract {
-    private static String globalRole;
-    private static String globalUser;
+    private String globalRole;
+    private String globalUser;
     ArrayList<String> bringiamlist = new ArrayList<>();
+   public static ArrayList<IAMExtract> iamobjlist = new ArrayList<>();
+
     int index1 = 0;
+
 
     public IAMExtract() {
 
@@ -22,19 +25,34 @@ public class IAMExtract {
         System.out.println("IAM EXTRACT ROLE IS : " + bringiamlist.size());
         int index = bringiamlist.size() - 1;
         globalRole = bringiamlist.get(index);
-//        globalRole="YOYOYO";
         System.out.println("IAMEXTRACT GLOBALROLE IS : " + globalRole);
-        Iterator it = bringiamlist.iterator();
+
+        takeIAMList();
+
         for (int n = 0; n < getiamlist.size() - 1; n++) {
             globalUser = getiamlist.get(n);
             System.out.println("IAMEXTRACT GLOBALUSER IS : " + globalUser);
         }
-//        while(it.hasNext()){
-//            globalUser = getiamlist.get(index1);
-//            index1++;
-//            System.out.println("IAMEXTRACT GLOBALUSER IS : " + globalUser);
-//        }
     }
+
+    public IAMExtract(String role, String user){
+        this.globalUser=user;
+        this.globalRole=role;
+    }
+
+    public ArrayList<IAMExtract> takeIAMList(){
+//        for (int k = 0; k < getiamlist.size(); k++) {
+//            bringiamlist.add(getiamlist.get(k));
+//        }
+
+
+        for(int i=0;i<bringiamlist.size()-1;i++){
+            iamobjlist.add(new IAMExtract(globalRole,bringiamlist.get(i)));
+        }
+
+        return iamobjlist;
+    }
+
 
     public String getGlobalRole() {
         return globalRole;
