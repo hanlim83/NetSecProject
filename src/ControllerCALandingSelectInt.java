@@ -81,11 +81,14 @@ public class ControllerCALandingSelectInt implements Initializable {
             TreeItem<String> dummyRoot = new TreeItem<String>();
             List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
             List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
+            int duplicate = 1;
             for (PcapNetworkInterface i : devices) {
                 TreeItem<String> Interface = new TreeItem<String>(i.getDescription());
                 for (int j = 1; j < names.size(); j++) {
-                    if (i.getDescription().equals(names.get(j)) && !i.getName().equals(idS.get(j)))
-                        Interface.setValue(i.getDescription() + " 1");
+                    if (i.getDescription().equals(names.get(j)) && !i.getName().equals(idS.get(j))) {
+                        Interface.setValue(i.getDescription() +" "+duplicate);
+                        ++duplicate;
+                    }
                 }
                 TreeItem<String> InterfaceID = new TreeItem<String>("Interface ID: " + i.getName());
                 TreeItem<String> InterfaceDescription = new TreeItem<String>("Interface Description: " + i.getDescription());
