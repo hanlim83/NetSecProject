@@ -34,6 +34,36 @@ public class admin_DB {
         return AdminList;
     }
 
+    public void createAdmin(String email,String phoneNo) throws SQLException {
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("INSERT INTO entries (email,phoneNumber) VALUES ('"+email+"','"+phoneNo+"')");
+        }
+    }
+
+    public void deleteAdmin(String email,String phoneNo) throws SQLException {
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
+        }
+    }
+
     public String getAdminAccStatus(String email) throws SQLException {
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
         String databaseName = "admin_DB";
