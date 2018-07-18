@@ -1,3 +1,5 @@
+import Model.OAuth2Login;
+import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
@@ -16,9 +18,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -47,7 +52,7 @@ public class ControllerDeviceCheck implements Initializable {
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
-//    private boolean WindowsStatus=true;
+    //    private boolean WindowsStatus=true;
     private boolean WindowsStatus;
 
 
@@ -88,7 +93,7 @@ public class ControllerDeviceCheck implements Initializable {
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
-            if (AllFirewallStatus==false){
+            if (AllFirewallStatus == false) {
                 LoadingSpinner.setVisible(false);
                 RestartDeviceCheckButton.setVisible(true);
                 RestartDeviceCheckButton.setDisable(false);
@@ -117,7 +122,7 @@ public class ControllerDeviceCheck implements Initializable {
                     close.setOnAction(__ -> alert.hideWithAnimation());
                     alert.show();
                 });
-            }else if(WindowsStatus==false){
+            } else if (WindowsStatus == false) {
                 LoadingSpinner.setVisible(false);
                 RestartDeviceCheckButton.setVisible(true);
                 RestartDeviceCheckButton.setDisable(false);
@@ -146,21 +151,41 @@ public class ControllerDeviceCheck implements Initializable {
                     close.setOnAction(__ -> alert.hideWithAnimation());
                     alert.show();
                 });
-            } else{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerUserHome controller = loader.<ControllerUserHome>getController();
-            } catch (IOException u) {
-                u.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+            } else {
+                OAuth2Login auth = new OAuth2Login();
+                String mail = null;
+
+                try {
+                    Credential credential = auth.login();
+                    mail = auth.getEmail();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                if (mail.equals("hansenhappy83@gmail.com")) {
+                    Desktop d = Desktop.getDesktop();
+                    try {
+                        d.browse(new URI("https://tinyurl.com/ybw63hew"));
+                    } catch (IOException | URISyntaxException e2) {
+                        e2.printStackTrace();
+                    }
+                }
+
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("UserHome.fxml"));
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerUserHome controller = loader.<ControllerUserHome>getController();
+                } catch (IOException u) {
+                    u.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
             }
         });
         process.setOnCancelled(e -> {
@@ -197,34 +222,34 @@ public class ControllerDeviceCheck implements Initializable {
             RestartDeviceCheckButton.setVisible(true);
         });
         process.setOnFailed(e -> {
-                    LoadingSpinner.setVisible(false);
-                    RestartDeviceCheckButton.setVisible(true);
-                    RestartDeviceCheckButton.setDisable(false);
-                    Platform.runLater(() -> {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            Platform.runLater(() -> {
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
 
-                                String title = "";
-                                String content = "An error occurred. Please try again later";
+                String title = "";
+                String content = "An error occurred. Please try again later";
 
-                                JFXButton close = new JFXButton("Close");
+                JFXButton close = new JFXButton("Close");
 
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                close.setButtonType(JFXButton.ButtonType.RAISED);
 
-                                close.setStyle("-fx-background-color: #00bfff;");
+                close.setStyle("-fx-background-color: #00bfff;");
 
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(__ -> alert.hideWithAnimation());
-                                alert.show();
-                            });
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
             process.reset();
             System.out.println("Failed");
             RestartDeviceCheckButton.setVisible(true);
@@ -298,17 +323,17 @@ public class ControllerDeviceCheck implements Initializable {
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
 
-        if (!DomainFirewall.equals("ON")||!PrivateFirewall.equals("ON")||!PublicFirewall.equals("ON")){
-            AllFirewallStatus=false;
-        }else{
-            AllFirewallStatus=true;
+        if (!DomainFirewall.equals("ON") || !PrivateFirewall.equals("ON") || !PublicFirewall.equals("ON")) {
+            AllFirewallStatus = false;
+        } else {
+            AllFirewallStatus = true;
         }
 
 
     }
 
     private void checkWindowsApproved() throws SQLException {
-        if (utils.checkWindowsApproved()==true) {
+        if (utils.checkWindowsApproved() == true) {
 //            FXMLLoader loader = new FXMLLoader();
 //            loader.setLocation(getClass().getResource("UserHome.fxml"));
 //            myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -323,7 +348,7 @@ public class ControllerDeviceCheck implements Initializable {
 //            stage.setTitle("NSPJ");
 //            stage.show();
             System.out.println("SUPPORTED VERSION");
-            WindowsStatus=true;
+            WindowsStatus = true;
 
 //            FXMLLoader loader = new FXMLLoader();
 //            loader.setLocation(getClass().getResource("UserHome.fxml"));
@@ -339,8 +364,8 @@ public class ControllerDeviceCheck implements Initializable {
 //            stage.setScene(new Scene(nextView));
 //            stage.setTitle("NSPJ");
 //            stage.show();
-        }else{
-            WindowsStatus=false;
+        } else {
+            WindowsStatus = false;
             System.out.println("Not supported VERSION!");
         }
     }

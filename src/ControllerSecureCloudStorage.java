@@ -5,6 +5,7 @@ import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
@@ -14,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -23,10 +25,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.*;
@@ -366,20 +371,57 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                                + "   " + person.getLastName());
 //                                        calculateEmail();
 //                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
-                                        AnchorPane anchorPane=new AnchorPane();
-                                        anchorPane.setLayoutX(0);
-                                        anchorPane.setLayoutY(0);
-                                        anchorPane.setPrefWidth(200);
+//                                        AnchorPane anchorPane=new AnchorPane();
+//                                        anchorPane.setLayoutX(0);
+//                                        anchorPane.setLayoutY(0);
+//                                        anchorPane.setPrefWidth(200);
+//                                        anchorPane.setPrefHeight(300);
+//                                        anchorPane.setAccessibleText("TESTINGGGGGG");
+                                        VBox vBox=new VBox();
+                                        Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
+                                        vBox.setLayoutX(boundsInScene.getMinX());
+                                        vBox.setLayoutY(boundsInScene.getMinY());
+//                                        vbox.set
+//                                        vBox.setLayoutX(0);
+//                                        vBox.setLayoutY(0);
+                                        vBox.setMinSize(30,100);
+//                                        Label lbl = new Label("VBox");
+//                                        lbl.setFont(Font.font("Amble CN", FontWeight.BOLD, 24));
+//                                        vBox.getChildren().add(lbl);
+                                        Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
+                                        vBox.setBackground(unfocusBackground);
+                                        JFXButton jfxButton=new JFXButton();
+                                        jfxButton.setText("Download");
+                                        vBox.getChildren().add(jfxButton);
+                                        anchorPane.getChildren().add(vBox);
+                                        vBox.setVisible(true);
+                                        System.out.println(boundsInScene.toString());
+                                        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
 
-//                                        VBox vBox=new VBox();
-//                                        Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-//                                        vBox.setMinWidth(200);
-//                                        vBox.setLayoutX(boundsInScene.getMaxX());
-//                                        vBox.setLayoutY(boundsInScene.getMaxY());
-//                                        JFXButton jfxButton=new JFXButton();
-//                                        vBox.getChildren().add(0,jfxButton);
-//                                        System.out.println(boundsInScene.toString());
-//                                        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
+//                                        myScene = anchorPane.getScene();
+//                                        Stage stage = (Stage) (myScene).getWindow();
+//
+//                                        String title = "";
+//                                        String content = "Credentials successfully revoked";
+//
+//                                        JFXButton close = new JFXButton("Close");
+//
+//                                        close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                                        close.setStyle("-fx-background-color: #00bfff;");
+//
+//                                        JFXDialogLayout layout = new JFXDialogLayout();
+//                                        layout.setHeading(new Label(title));
+//                                        layout.setBody(new Label(content));
+//                                        layout.setActions(close);
+//                                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                                        alert.setOverlayClose(true);
+//                                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                                        alert.setContent(layout);
+//                                        alert.initModality(Modality.NONE);
+//                                        close.setOnAction(__ -> alert.hideWithAnimation());
+//                                        alert.show();
+
                                     });
                                     setGraphic(btn);
                                     setText(null);

@@ -10,17 +10,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSecureCloudStorage">
    <children>
-      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #29ddf4;">
          <children>
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-            <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+            <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                <font>
-                  <Font size="40.0" />
+                  <Font name="Serif Regular" size="40.0" />
                </font>
-            </Text>
-            <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            </Label>
          </children>
       </AnchorPane>
       <JFXButton fx:id="TestButton" layoutX="873.0" layoutY="76.0" mnemonicParsing="false" onAction="#onClickTestButton" prefHeight="61.0" prefWidth="184.0" text="Upload file" />
