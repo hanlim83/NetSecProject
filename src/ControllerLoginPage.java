@@ -111,7 +111,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
         System.out.println("TIMER CANCELLEDDD");
     }
 
-
     private int counter = 0;
 
     @FXML
@@ -133,22 +132,7 @@ public class ControllerLoginPage implements Initializable, Runnable {
             System.out.println(process.getState());
             System.out.println("Failed to run");
         }
-//        process.start();
-//        startTimer();
 
-//        Platform.runLater(() -> {
-//            try {
-//        if (!thread.isAlive()) {
-//        if( thread != null ) {
-//            System.out.println("Destroying thread");
-//            thread.getId();
-//            thread.interrupt();
-//            thread = new Thread(task);
-//            thread.start();
-//        }else{
-//            thread = new Thread(task);
-//            thread.start();
-        //if(process.)
         LoginButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
@@ -343,7 +327,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    //After 2nd click spinner dosen't appear
                     LoadingSpinner.setVisible(true);
                     try {
                         credential = login.login();

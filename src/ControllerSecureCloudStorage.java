@@ -264,12 +264,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-
-    OSVersion osvers = new OSVersion();
-
-    private ArrayList<OSVersion> osList;
-    private ObservableList<OSVersion> osObservableList;
-
     private int entry1;
     private String entryid;
 
@@ -335,17 +329,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
         });
 
-//        JFXTreeTableColumn<JFXButton, String> settingsColumn = new JFXTreeTableColumn<>("Others");
-//        settingsColumn.setPrefWidth(12);
-//        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<JFXButton, String> param) -> {
-//            if (settingsColumn.validateValue(param)) {
-////                return param.getValue().getValue().;
-//                return settingsColumn.getComputedValue(param);
-//            } else {
-//                return settingsColumn.getComputedValue(param);
-//            }
-//        });
-
         JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Others");
         settingsColumn.setPrefWidth(175);
         Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
@@ -355,7 +338,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                     public TreeTableCell call(final TreeTableColumn<TableBlob, String> param) {
                         final TreeTableCell<TableBlob, String> cell = new TreeTableCell<TableBlob, String>() {
 
-                            final JFXButton btn = new JFXButton("Others");
+                            JFXButton btn = new JFXButton("Others");
 
                             @Override
                             public void updateItem(String item, boolean empty) {
@@ -385,14 +368,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         settingsColumn.setCellFactory(cellFactory);
 
-//        settingsColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, JFXButton> param) -> {
-//            if (settingsColumn.validateValue(param)) {
-//                return param.getValue().getValue().getButton();
-////                return settingsColumn.getComputedValue(param);
-//            } else {
-//                return settingsColumn.getComputedValue(param);
-//            }
-//        });
 //        settingsColumn.setCellFactory(JFXButtonTableCell.<TableBlob>forTableColumn("More", (TableBlob tableBlob) -> {
 //            //get entry id first
 //            TableBlob tableBlob1=tableBlob;
@@ -448,7 +423,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
         JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
-//        JFXTreeTableView.
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
 //        JFXTreeTableView<TableBlob> treeView = new JFXTreeTableView<>(root);
@@ -481,20 +455,28 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     VBox vBox=new VBox();
+    JFXButton jfxDownloadButton=new JFXButton();
+    JFXButton jfxDeleteButton=new JFXButton();
     private int vBoxCounter=0;
     private void showVbox(double minX,double maxY){
+        double minWidth=100;
+        double minHeight=200;
         if (vBoxCounter==0){
             vBox.setLayoutX(minX);
             vBox.setLayoutY(maxY);
-//                                        vbox.set
-//                                        vBox.setLayoutX(0);
-//                                        vBox.setLayoutY(0);
-            vBox.setMinSize(30,90);
+            vBox.setMinSize(minWidth,minHeight);
             Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
             vBox.setBackground(unfocusBackground);
-            JFXButton jfxButton=new JFXButton();
-            jfxButton.setText("Download");
-            vBox.getChildren().add(jfxButton);
+            jfxDownloadButton.setText("Download");
+            jfxDeleteButton.setText("Delete");
+            jfxDownloadButton.setMinSize(vBox.getMinWidth(),vBox.getMinHeight()/2);
+            jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight()/2);
+
+            //Update this to show confirmation pop-up
+            jfxDeleteButton.setOnAction(__ -> System.out.println("ONCLICK DELETE File"));
+
+            vBox.getChildren().addAll(jfxDownloadButton,jfxDeleteButton);
+//            vBox.getChildren().add(jfxDeleteButton);
             anchorPane.getChildren().add(vBox);
             vBoxCounter++;
 //            vBox.setFocusTraversable(true);
@@ -503,35 +485,26 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                    vBox.setVisible(false);
 //                }
 //            });
-
+            vBox.setVisible(true);
         }else {
             vBox.setLayoutX(minX);
             vBox.setLayoutY(maxY);
-//                                        vbox.set
-//                                        vBox.setLayoutX(0);
-//                                        vBox.setLayoutY(0);
-            vBox.setMinSize(30, 90);
+//            vBox.setMinSize(100, 200);
             Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
             vBox.setBackground(unfocusBackground);
             vBox.setVisible(true);
-//            JFXButton jfxButton = new JFXButton();
-//            jfxButton.setText("Download");
-//            vBox.getChildren().add(jfxButton);
-//            anchorPane.getChildren().add(vBox);
-//        vBox.setVisible(true);
-//                                        System.out.println(boundsInScene.toString());
-//        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
         }
         myScene=anchorPane.getScene();
         myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("mouse click detected! " + mouseEvent.getSource());
-                if(mouseEvent.getX()>=minX && mouseEvent.getX()<=minX+30 && mouseEvent.getY()>=maxY && mouseEvent.getY()<=maxY+90){
+                if(mouseEvent.getX()>=minX && mouseEvent.getX()<=minX+100 && mouseEvent.getY()>=maxY && mouseEvent.getY()<=maxY+200){
                     System.out.println("Inside the vbox");
-                }else{
-                    vBox.setVisible(false);
                 }
+//                else{
+//                    vBox.setVisible(false);
+//                }
             }
         });
     }

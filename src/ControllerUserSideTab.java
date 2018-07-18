@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -79,6 +80,18 @@ public class ControllerUserSideTab {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    @FXML
+    void onHoverTest(MouseEvent event) {
+        SecureCloudStorageButton.setButtonType(JFXButton.ButtonType.RAISED);
+        System.out.println("Hovering");
+    }
+
+    @FXML
+    void onHoverExitTest(MouseEvent event) {
+        SecureCloudStorageButton.setButtonType(JFXButton.ButtonType.FLAT);
+        System.out.println("Unhovering");
     }
 
     @FXML
