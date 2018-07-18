@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -65,6 +66,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     private JFXHamburger hamburger;
 
     @FXML
+    private JFXButton UploadButton;
+
+    @FXML
     private JFXDrawer drawer;
 
     @FXML
@@ -84,6 +88,15 @@ public class ControllerSecureCloudStorage implements Initializable {
     private ObservableList<TableBlob> blobs;
 //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
+    @FXML
+    void onClickUploadButton(ActionEvent event) {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
+//        deleteFile("hugochiaxyznspj","42149.py");
+        UploadFileTest();
+        TableMethod();
+    }
+
     public void passData(ObservableList<TableBlob> blobs){
         this.blobs=blobs;
         TableMethod();
@@ -96,19 +109,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private JFXButton TestButton;
-
-
-    @FXML
-    void onClickTestButton(ActionEvent event) throws IOException {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
-//        deleteFile("hugochiaxyznspj","42149.py");
-        UploadFileTest();
-        TableMethod();
     }
 
     public String convertTime(long time) {
@@ -364,64 +364,15 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     setGraphic(null);
                                     setText(null);
                                 } else {
-                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
+//                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
                                     btn.setOnAction(event -> {
 //                                        TableBlob person = getTableView().getItems().get(getIndex());
 //                                        System.out.println(person.getFirstName()
 //                                                + "   " + person.getLastName());
 //                                        calculateEmail();
 //                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
-//                                        AnchorPane anchorPane=new AnchorPane();
-//                                        anchorPane.setLayoutX(0);
-//                                        anchorPane.setLayoutY(0);
-//                                        anchorPane.setPrefWidth(200);
-//                                        anchorPane.setPrefHeight(300);
-//                                        anchorPane.setAccessibleText("TESTINGGGGGG");
-                                        VBox vBox=new VBox();
                                         Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                        vBox.setLayoutX(boundsInScene.getMinX());
-                                        vBox.setLayoutY(boundsInScene.getMinY());
-//                                        vbox.set
-//                                        vBox.setLayoutX(0);
-//                                        vBox.setLayoutY(0);
-                                        vBox.setMinSize(30,100);
-//                                        Label lbl = new Label("VBox");
-//                                        lbl.setFont(Font.font("Amble CN", FontWeight.BOLD, 24));
-//                                        vBox.getChildren().add(lbl);
-                                        Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
-                                        vBox.setBackground(unfocusBackground);
-                                        JFXButton jfxButton=new JFXButton();
-                                        jfxButton.setText("Download");
-                                        vBox.getChildren().add(jfxButton);
-                                        anchorPane.getChildren().add(vBox);
-                                        vBox.setVisible(true);
-                                        System.out.println(boundsInScene.toString());
-                                        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
-
-//                                        myScene = anchorPane.getScene();
-//                                        Stage stage = (Stage) (myScene).getWindow();
-//
-//                                        String title = "";
-//                                        String content = "Credentials successfully revoked";
-//
-//                                        JFXButton close = new JFXButton("Close");
-//
-//                                        close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//                                        close.setStyle("-fx-background-color: #00bfff;");
-//
-//                                        JFXDialogLayout layout = new JFXDialogLayout();
-//                                        layout.setHeading(new Label(title));
-//                                        layout.setBody(new Label(content));
-//                                        layout.setActions(close);
-//                                        JFXAlert<Void> alert = new JFXAlert<>(stage);
-//                                        alert.setOverlayClose(true);
-//                                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//                                        alert.setContent(layout);
-//                                        alert.initModality(Modality.NONE);
-//                                        close.setOnAction(__ -> alert.hideWithAnimation());
-//                                        alert.show();
-
+                                        showVbox(boundsInScene.getMinX(),boundsInScene.getMaxY());
                                     });
                                     setGraphic(btn);
                                     setText(null);
@@ -491,22 +442,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                         .getRow())
                 .getValue().blobName.set(t.getNewValue()));
 
-//        settingsColumn.setCellFactory((TreeTableColumn<JFXButton, String> param) -> new GenericEditableTreeTableCell<>(
-//                new TextFieldEditorBuilder()));
-//        settingsColumn.setOnEditCommit((CellEditEvent<JFXButton, String> t) -> t.getTreeTableView()
-//                .getTreeItem(t.getTreeTablePosition()
-//                        .getRow())
-//                .getValue().blobName.set(t.getNewValue()));
-
-//        settingsColumn.setCellFactory((TreeTableColumn<CustomCell, JFXButton> param) -> new GenericEditableTreeTableCell<>(
-//                        new TextFieldEditorBuilder()));
-////        settingsColumn.setOnEditCommit((CellEditEvent<TableBlob, JFXButton> t) -> t.getTreeTableView()
-////                .getTreeItem(t.getTreeTablePosition()
-////                        .getRow())
-////                .getValue().s;
-////                .blobName.set(t.getNewValue()));
-
-
         final TreeItem<TableBlob> root = new RecursiveTreeItem<>(blobs, RecursiveTreeObject::getChildren);
 
         JFXTreeTableView = new JFXTreeTableView<>(root);
@@ -541,6 +476,62 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
             if (e.isPrimaryButtonDown()) {
                 onEdit();
+            }
+        });
+    }
+
+    VBox vBox=new VBox();
+    private int vBoxCounter=0;
+    private void showVbox(double minX,double maxY){
+        if (vBoxCounter==0){
+            vBox.setLayoutX(minX);
+            vBox.setLayoutY(maxY);
+//                                        vbox.set
+//                                        vBox.setLayoutX(0);
+//                                        vBox.setLayoutY(0);
+            vBox.setMinSize(30,90);
+            Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
+            vBox.setBackground(unfocusBackground);
+            JFXButton jfxButton=new JFXButton();
+            jfxButton.setText("Download");
+            vBox.getChildren().add(jfxButton);
+            anchorPane.getChildren().add(vBox);
+            vBoxCounter++;
+//            vBox.setFocusTraversable(true);
+//            vBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+//                if (isNowFocused) {
+//                    vBox.setVisible(false);
+//                }
+//            });
+
+        }else {
+            vBox.setLayoutX(minX);
+            vBox.setLayoutY(maxY);
+//                                        vbox.set
+//                                        vBox.setLayoutX(0);
+//                                        vBox.setLayoutY(0);
+            vBox.setMinSize(30, 90);
+            Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
+            vBox.setBackground(unfocusBackground);
+            vBox.setVisible(true);
+//            JFXButton jfxButton = new JFXButton();
+//            jfxButton.setText("Download");
+//            vBox.getChildren().add(jfxButton);
+//            anchorPane.getChildren().add(vBox);
+//        vBox.setVisible(true);
+//                                        System.out.println(boundsInScene.toString());
+//        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
+        }
+        myScene=anchorPane.getScene();
+        myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click detected! " + mouseEvent.getSource());
+                if(mouseEvent.getX()>=minX && mouseEvent.getX()<=minX+30 && mouseEvent.getY()>=maxY && mouseEvent.getY()<=maxY+90){
+                    System.out.println("Inside the vbox");
+                }else{
+                    vBox.setVisible(false);
+                }
             }
         });
     }
