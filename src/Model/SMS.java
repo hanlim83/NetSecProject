@@ -48,7 +48,7 @@ public class SMS {
     }
 
     public void sendAlert() {
-        if (GeneralUse = true) {
+        if (GeneralUse == true) {
             return;
         } else if (permitUse == false)
             System.err.println("Please enable PermitUse Boolean first!");
@@ -59,8 +59,9 @@ public class SMS {
                 try {
                     client.getSmsClient().submitMessage(new TextMessage(
                             "FireE",
-                            s,
+                            "65" + s,
                             "A suspicious network event has been detected! Please check the FireE Admin App for more information"));
+                    System.out.println("Sent");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (NexmoClientException e) {
@@ -79,7 +80,7 @@ public class SMS {
             try {
                 client.getSmsClient().submitMessage(new TextMessage(
                         "FireE",
-                        phoneNumber,
+                        "65" + phoneNumber,
                         Message));
             } catch (IOException e) {
                 e.printStackTrace();

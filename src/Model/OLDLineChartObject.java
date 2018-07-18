@@ -1,14 +1,18 @@
 package Model;
 
-public class LineChartObject implements Comparable <LineChartObject> {
+public class OLDLineChartObject implements Comparable<OLDLineChartObject> {
     private static int count = 0;
     private int location;
     private int data;
 
-    public LineChartObject(int data){
+    public OLDLineChartObject(int data) {
         this.location = count;
         this.data = data;
         ++count;
+    }
+
+    public static int getCount() {
+        return count;
     }
 
     public int getLocation() {
@@ -23,16 +27,12 @@ public class LineChartObject implements Comparable <LineChartObject> {
         return data;
     }
 
-    public static int getCount() {
-        return count;
-    }
-
     public void setData(int data) {
         this.data = data;
     }
 
     @Override
-    public int compareTo(LineChartObject l) {
+    public int compareTo(OLDLineChartObject l) {
         if (this.location > l.location)
             return 1;
         else if (this.location < l.location)

@@ -28,7 +28,13 @@ public class NetworkCapture {
     private static final int TPSRange = 10;
     //Data Variables
     public ArrayList<CapturedPacket> packets;
-    public ArrayList<LineChartObject> PreviousTPS;
+    /*public ArrayList<OLDLineChartObject> PreviousTPS;
+    public ArrayList<OLDPieChartDataObject>ProtocolMakeup;
+    public ArrayList<OLDPieChartDataObject>Top5IPMakeup;*/
+    public ArrayList<Integer> PreviousTPS;
+    public ArrayList<Integer> ProtocolMakeupData;
+    public ArrayList<String> ProtocolMakeupProtocols;
+    public ArrayList<Integer> Top5IPMakeup;
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
     private PcapDumper dumper;
@@ -42,6 +48,9 @@ public class NetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
+    private int commonIndex = 0;
+    private String GeneralExportFileName;
+    private String SpecificExportFileName;
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
@@ -67,7 +76,7 @@ public class NetworkCapture {
         this.directoryPath = directoryPath;
         this.Threshold = Threshold;
         packets = new ArrayList<CapturedPacket>();
-        PreviousTPS = new ArrayList<LineChartObject>();
+        PreviousTPS = new ArrayList<Integer>();
         sendExpiry = new TimerTask() {
             @Override
             public void run() {
@@ -80,6 +89,9 @@ public class NetworkCapture {
                 renewCount = true;
             }
         };
+        ProtocolMakeupData = new ArrayList<Integer>();
+        ProtocolMakeupProtocols = new ArrayList<String>();
+        Top5IPMakeup = new ArrayList<Integer>();
     }
 
     public long getPacketsReceived() {
@@ -128,6 +140,14 @@ public class NetworkCapture {
 
     public long getPacketsCaptured() {
         return PacketsCaptured;
+    }
+
+    public String getGeneralExportFileName() {
+        return GeneralExportFileName;
+    }
+
+    public String getSpecificExportFileName() {
+        return SpecificExportFileName;
     }
 
     public void getCurrentTimeStamp() {
@@ -187,6 +207,53 @@ public class NetworkCapture {
         }
     }
 
+    /*public void ProtocolMakeup() {
+        OLDPieChartDataObject tempt = null;
+        int recordedIndex = 0;
+        for (CapturedPacket p : packets) {
+            if (ProtocolMakeup.isEmpty())
+                ProtocolMakeup.add(new OLDPieChartDataObject(p.identifyProtocol(),1));
+            else {
+                for (int i = 0; i < ProtocolMakeup.size(); i++){
+                    OLDPieChartDataObject d = ProtocolMakeup.get(i);
+                    if (d.getKey().equals(p.identifyProtocol())) {
+                        tempt = new OLDPieChartDataObject(d.getKey(),d.getValue()+1);
+                        recordedIndex = i;
+                        break;
+                    }
+                }
+                if (tempt != null){
+                    ProtocolMakeup.set(recordedIndex,tempt);
+                    recordedIndex = 0;
+                    tempt = null;
+                }
+            }
+        }
+    }*/
+
+    public void ProtocolMakeup() {
+        boolean found = false;
+        for (CapturedPacket p : packets) {
+            if (ProtocolMakeupData.isEmpty() && ProtocolMakeupProtocols.isEmpty()) {
+                ProtocolMakeupData.add(1);
+                ProtocolMakeupProtocols.add(p.identifyProtocol());
+            } else {
+                for (int i = 0; i < ProtocolMakeupProtocols.size(); i++) {
+                    String proto = ProtocolMakeupProtocols.get(i);
+                    if (proto.equals(p.identifyProtocol())) {
+                        ProtocolMakeupData.set(i, ProtocolMakeupData.get(i) + 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+                    ProtocolMakeupData.add(1);
+                    ProtocolMakeupProtocols.add(p.identifyProtocol());
+                }
+            }
+        }
+    }
+
     public void printStat() {
         PcapStat ps;
         try {
@@ -237,7 +304,8 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            dumper = Phandle.dumpOpen(directoryPath + "\\Partial Capture for Alert " + dtf.format(now) + ".pcap");
+            SpecificExportFileName = "Partial Capture for Alert " + dtf.format(now) + ".pcap";
+            dumper = Phandle.dumpOpen(directoryPath + "\\" + SpecificExportFileName);
             /*for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }*/
@@ -246,7 +314,6 @@ public class NetworkCapture {
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
             dumper.close();
-            Phandle.close();
             return true;
         } catch (PcapNativeException e) {
             e.printStackTrace();
@@ -264,7 +331,8 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            dumper = Phandle.dumpOpen(directoryPath + "\\Complete Network Capture " + dtf.format(now) + ".pcap");
+            GeneralExportFileName = "Complete Network Capture " + dtf.format(now) + ".pcap";
+            dumper = Phandle.dumpOpen(directoryPath + "\\" + GeneralExportFileName);
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
@@ -280,7 +348,7 @@ public class NetworkCapture {
         }
     }
 
-    public LineChartObject getTrafficPerSecond() {
+    /*public OLDLineChartObject getTrafficPerSecond() {
         Timestamp original = new Timestamp(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(original.getTime());
@@ -293,11 +361,11 @@ public class NetworkCapture {
             else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
                 ++packetCount;
         }
-        LineChartObject TPS = new LineChartObject(packetCount);
+        OLDLineChartObject TPS = new OLDLineChartObject(packetCount);
         PreviousTPS.add(TPS);
         lastTimeStamp = later;
         return TPS;
-    }
+    }*/
 
     public boolean isRunning() {
         return Phandle.isOpen();

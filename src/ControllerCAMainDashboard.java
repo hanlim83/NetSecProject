@@ -1,14 +1,13 @@
 import Database.admin_DB;
-import Model.LineChartObject;
-import Model.NetworkCapture;
-import Model.SMS;
-import Model.ScheduledExecutorServiceHandler;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,10 +31,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +43,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private static final int MINUITE_TO_MILISECONDS = 60000;
     public static AnchorPane rootP;
     private final int MAX_DATA_POINTS = 25, MAX = 9999, MIN = 11;
-    public ArrayList<LineChartObject> packetsLineChart;
+    public ArrayList<OLDLineChartObject> packetsLineChart;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -70,7 +66,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private JFXSpinner spinner;
     private PcapNetworkInterface device;
     private Scene myScene;
-    private ArrayList<LineChartObject> TPS;
+    private ArrayList<OLDLineChartObject> TPS;
     private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
@@ -85,6 +81,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private Timer timer = new Timer(true);
     private TimerTask exportTask;
     private boolean timerTaskinProgress = false;
+    private ArrayList<OLDPieChartDataObject> data;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,7 +103,7 @@ public class ControllerCAMainDashboard implements Initializable {
         networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
         series = new XYChart.Series();
         series.setName("Data");
-        packetsLineChart = new ArrayList<LineChartObject>();
+        packetsLineChart = new ArrayList<OLDLineChartObject>();
         networkTrafficChart.getXAxis().setAutoRanging(true);
         networkTrafficChart.getYAxis().setAutoRanging(true);
         networkTrafficChart.getData().add(series);
@@ -123,13 +120,13 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     public void plotCaptureLine() {
-        LineChartObject data = capture.getTrafficPerSecond();
+        /*OLDLineChartObject data = capture.getTrafficPerSecond();
         series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
-        System.out.println(data.getLocation() + "," + data.getData());
-        if (LineChartObject.getCount() > MAX_DATA_POINTS) {
+        System.out.println(data.getLocation() + "," + data.getData());*/
+        if (OLDLineChartObject.getCount() > MAX_DATA_POINTS) {
             series.getData().remove(0);
         }
-        if (LineChartObject.getCount() > MAX_DATA_POINTS - 1) {
+        if (OLDLineChartObject.getCount() > MAX_DATA_POINTS - 1) {
             chartXAxis.setLowerBound(chartXAxis.getLowerBound() + 1);
             chartXAxis.setUpperBound(chartXAxis.getUpperBound() + 1);
         }
@@ -143,7 +140,7 @@ public class ControllerCAMainDashboard implements Initializable {
             }
         }
         else if (TPS.size() < MAX_DATA_POINTS && TPS.size() != 0) {
-            for (LineChartObject O : TPS) {
+            for (OLDLineChartObject O : TPS) {
                 series.getData().add(new XYChart.Data<Number, Number>(O.getLocation(), O.getData()));
             }
         }
@@ -176,14 +173,10 @@ public class ControllerCAMainDashboard implements Initializable {
                             }
                         });
                     } catch (SQLException e) {
-                        System.err.println("SQL Error");
-                        handler.setalertsNotAvailRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                        Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        spinner.setVisible(false);
+                                spinner.setVisible(false);
                                 /*myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "SMS Alerts are not available";
@@ -207,12 +200,10 @@ public class ControllerCAMainDashboard implements Initializable {
                                     }
                                 });
                                 alert.showAndWait();*/
-                                        captureToggle.setDisable(false);
-                                        hamburger.setDisable(false);
-                                    }
-                                });
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
                             }
-                        }, 1, TimeUnit.SECONDS));
+                        });
                     }
                     try {
                         FXMLLoader loader = new FXMLLoader();
@@ -263,24 +254,28 @@ public class ControllerCAMainDashboard implements Initializable {
             clearCaptureBtn.setDisable(true);
         } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
-            TPS = capture.PreviousTPS;
+            //TPS = capture.PreviousTPS;
             //plotExisitingData();
             handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    plotCaptureLine();
-                    if (capture.checkThreshold()) {
-                        SMSHandler.sendAlert();
-                        if (!timerTaskinProgress) {
-                            timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
-                            timerTaskinProgress = true;
+                    try {
+                        plotCaptureLine();
+                        if (capture.checkThreshold()) {
+                            SMSHandler.sendAlert();
+                            if (!timerTaskinProgress) {
+                                timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                                timerTaskinProgress = true;
+                            }
                         }
+                    } catch (ConcurrentModificationException e) {
+                        System.err.println("Concurrent MModificationException Detected!");
                     }
                 }
             }, 1, 10, TimeUnit.SECONDS));
         } else if (capture != null) {
             clearCaptureBtn.setDisable(false);
-            TPS = capture.PreviousTPS;
+            //TPS = capture.PreviousTPS;
             //plotExisitingData();
         }
         try {
@@ -293,6 +288,26 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
+    public void setPieChart() {
+        int max = 0, index = 0;
+        capture.ProtocolMakeup();
+        ArrayList<Integer> data = capture.ProtocolMakeupData;
+        ArrayList<String> protocols = capture.ProtocolMakeupProtocols;
+        if (data.size() != protocols.size())
+            return;
+        max = data.size();
+        ObservableList<PieChart.Data> insertData = FXCollections.observableArrayList();
+        for (index = 0; index < max; index++) {
+            insertData.add(new PieChart.Data(protocols.get(index), data.get(index)));
+        }
+        protocolChart.setData(insertData);
+        ObservableList<PieChart.Data> retrievedData = protocolChart.getData();
+        for (PieChart.Data Data : retrievedData) {
+            System.out.println(Data.getPieValue());
+            System.out.println(Data.getName());
+        }
+    }
+
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
@@ -300,16 +315,29 @@ public class ControllerCAMainDashboard implements Initializable {
             handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    plotCaptureLine();
-                    if (capture.checkThreshold()) {
-                        SMSHandler.sendAlert();
-                        if (!timerTaskinProgress) {
-                            timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
-                            timerTaskinProgress = true;
+                    try {
+                        //plotCaptureLine();
+                        setPieChart();
+                        if (capture.checkThreshold()) {
+                            SMSHandler.sendAlert();
+                            if (!timerTaskinProgress) {
+                                timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                                timerTaskinProgress = true;
+                            }
                         }
+                    } catch (ConcurrentModificationException e) {
+                        System.err.println("Concurrent ModificationException Detected!");
+                        capture.stopSniffing();
+                        setPieChart();
+                        handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                capture.startSniffing();
+                            }
+                        }, 1, SECONDS));
                     }
                 }
-            }, 1, 10, TimeUnit.SECONDS));
+            }, 3, 5, TimeUnit.SECONDS));
         }
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
