@@ -7,7 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class User_InfoDB {
-
     public ArrayList<User> getUserList() throws SQLException {
         ArrayList<User> UserList = new ArrayList<User>();
 

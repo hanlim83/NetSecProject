@@ -4,6 +4,36 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class admin_DB {
+    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+    private static String databaseName = "admin_DB";
+    private static String username = "root";
+    private static String password = "root";
+
+    public ArrayList<Admin> getAdminList() throws SQLException {
+        ArrayList<Admin> AdminList = new ArrayList<Admin>();
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            while (resultSet.next()) {
+                Admin admin=new Admin();
+                admin.setEmail(resultSet.getString("email"));
+                admin.setPhoneNo(resultSet.getString("phoneNumber"));
+                admin.setEntryID(resultSet.getString("entryID"));
+                AdminList.add(admin);
+            }
+        }
+        return AdminList;
+    }
+
     public String getAdminAccStatus(String email) throws SQLException {
         String instanceConnectionName = "netsecpj:us-central1:nspj-project";
         String databaseName = "admin_DB";
