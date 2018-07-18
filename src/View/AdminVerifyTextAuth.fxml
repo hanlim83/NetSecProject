@@ -10,18 +10,21 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminVerifyTextAuth">
    <children>
-      <AnchorPane fx:id="anchorPane" layoutX="10.0" layoutY="10.0" prefHeight="600.0" prefWidth="1067.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
          <children>
-            <AnchorPane prefHeight="65.0" prefWidth="1066.0">
-               <children>
-                  <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Text>
-                  <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
-               </children>
-            </AnchorPane>
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+            <Label layoutX="577.0" layoutY="28.0" text="Admin">
+               <font>
+                  <Font name="Vladimir Script" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
+               <font>
+                  <Font name="Serif Regular" size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
             <JFXTextField fx:id="adminverifyField" alignment="CENTER" layoutX="450.0" layoutY="328.0" promptText="Enter OTP here" />
             <Label fx:id="viewerText" alignment="CENTER" layoutX="358.0" layoutY="165.0" prefHeight="93.0" prefWidth="351.0" text="Check your phone for the OTP - Admin" />
             <Label fx:id="numberViewer" alignment="CENTER" layoutX="399.0" layoutY="258.0" prefHeight="43.0" prefWidth="273.0">
@@ -33,5 +36,4 @@
             <JFXButton layoutX="358.0" layoutY="512.0" onAction="#adminResend" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
          </children>
       </AnchorPane>
-   </children>
-</AnchorPane>
+

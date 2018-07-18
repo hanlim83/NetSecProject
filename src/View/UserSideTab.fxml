@@ -5,9 +5,10 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserSideTab">
    <children>
-      <JFXButton fx:id="testButton" onAction="#onClickTestButton" prefHeight="126.0" prefWidth="219.0" text="Change Page" />
+      <JFXButton fx:id="testButton" onAction="#onClickTestButton" prefHeight="106.0" prefWidth="219.0" text="Change Page" />
       <JFXButton fx:id="SecureCloudStorageButton" onAction="#onClickSecureCloudStorageButton" prefHeight="114.0" prefWidth="278.0" text="Secure Cloud Storage" />
       <JFXButton fx:id="SecureCloudTransferButton" onAction="#onClickSecureCloudTransferButton" prefHeight="112.0" prefWidth="311.0" text="Secure Cloud Transfer" />
+      <JFXButton onAction="#onClickUserSettings" prefHeight="101.0" prefWidth="219.0" text="Settings" />
       <JFXButton fx:id="LogoutButton" onAction="#onClickLogoutButton" prefHeight="114.0" prefWidth="254.0" text="Logout" />
    </children>
 </VBox>

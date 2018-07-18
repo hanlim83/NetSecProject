@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -43,23 +45,28 @@ public class ControllerFileScanner {
         @FXML
         public void Scanner(ActionEvent event) {
 
+
+
             FileScanner fileScanner = new FileScanner();
 
-            fileScanner.Scanner(browseLabel.getText());
+            boolean type = fileScanner.extensionCheck(browseLabel.getText());
 
-            boolean scanValid = fileScanner.scannerReport();
-            if (scanValid == true){
-
-                System.out.print("Valid scan = true\n");
-                reportButton.setVisible(true);
-
+            System.out.println("test "+ type);
+            if (type == true) {
+                System.out.print("Insufficient permission to push this extension: " + FilenameUtils.getExtension(browseLabel.getText()));
             } else {
 
-                System.out.print("Valid scan = false");
-                reportButton.setVisible(false);
+                fileScanner.Scanner(browseLabel.getText());
+
+                boolean scanValid = fileScanner.scannerReport();
+                if (scanValid == true) {
+
+                    System.out.print("Valid scan = true\n");
+                    reportButton.setVisible(true);
+
+                }
 
             }
-
 
         }
 

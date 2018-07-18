@@ -3,12 +3,18 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBaseLayoutNew">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserSettings">
     <children>
         <AnchorPane prefHeight="65.0" prefWidth="1066.0">
             <children>
@@ -21,9 +27,27 @@
                 <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
             </children>
         </AnchorPane>
-        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton layoutX="459.0" layoutY="247.0" text="Number" />
-      <JFXButton layoutX="455.0" layoutY="301.0" text="Password" />
-      <JFXButton layoutX="464.0" layoutY="359.0" text="Cloud" />
+        <JFXDrawer fx:id="drawer" layoutX="14.0" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXButton layoutX="403.0" layoutY="73.0" onAction="#newNumber" prefHeight="46.0" prefWidth="263.0" text="Change number" />
+      <JFXButton fx:id="executeChange" layoutX="679.0" layoutY="301.0" onAction="#newChange" prefHeight="41.0" prefWidth="202.0" text="Change now!" visible="false"/>
+      <GridPane fx:id="changeNumber" layoutX="338.0" layoutY="171.0" prefHeight="122.0" prefWidth="394.0" visible="false">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="105.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="307.0" minWidth="10.0" prefWidth="294.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="42.0" prefWidth="132.0" style="-fx-alignment: center;" text="Password:" />
+            <Label prefHeight="30.0" prefWidth="132.0" style="-fx-alignment: center;" text="Old number:" GridPane.rowIndex="1" />
+            <Label prefHeight="38.0" prefWidth="130.0" style="-fx-alignment: center;" text="New number:" GridPane.rowIndex="2" />
+            <JFXPasswordField fx:id="password" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="oldNumber" prefHeight="31.0" prefWidth="248.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="newNumber" prefHeight="35.0" prefWidth="177.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
     </children>
 </AnchorPane>

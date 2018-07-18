@@ -24,7 +24,24 @@ public class ControllerUserSideTab {
     @FXML
     private JFXButton LogoutButton;
 
+
     private Scene myScene;
+
+    @FXML
+    void onClickUserSettings (ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UserSettings.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerUserSettings controller = loader.<ControllerUserSettings>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+    }
 
     @FXML
     void onClickTestButton(ActionEvent event) throws IOException {
