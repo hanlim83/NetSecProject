@@ -20,6 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogsExtract {
+    String severitycolour;
+    static int colorchecker=0;
+
     public LogEntry logentry;
     private String timestamp;
     private String action;
@@ -57,7 +60,9 @@ public class LogsExtract {
         String dateFormatted = formatter.format(date);
         this.timestamp = dateFormatted;
         // Get Severity
-        this.severity = logentry.getSeverity().toString();
+        severitycolour = logentry.getSeverity().toString();
+        this.severity = severitycolour;
+
         // Get type of action -> GCS Bucket / CloudSQL / Project
         this.action = logentry.getResource().getType();
         // Get label -> Location, ProjectID, Bucketname
@@ -65,20 +70,6 @@ public class LogsExtract {
 
         this.user = logentry.getPayload().getData().toString();
 
-
-//        //Service method
-//        Service process = new Service() {
-//            @Override
-//            protected Task createTask() {
-//                return new Task() {
-//                    @Override
-//                    protected Void call() throws Exception {
-//
-//                        return null;
-//                    }
-//                };
-//            }
-//        };
         Scanner sc1 = new Scanner(user);
         stringList.add(sc1.nextLine());
         while (sc1.hasNextLine()) {
@@ -150,6 +141,10 @@ public class LogsExtract {
             }
         }
 
+    }
+
+    public int getColorchecker() {
+        return colorchecker;
     }
 
     public ArrayList<Integer> getGlobalChckerList() {

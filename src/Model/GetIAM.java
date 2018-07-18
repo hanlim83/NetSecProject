@@ -23,7 +23,6 @@ public class GetIAM {
     static ArrayList<String> apikeysadminList = new ArrayList<>();
     static ArrayList<String> storageadminList = new ArrayList<>();
 
-    static ArrayList<Integer> indexList = new ArrayList<>();
 
     private static int w;
     private static int g;
@@ -48,46 +47,6 @@ public class GetIAM {
     }
 
     public GetIAM(ArrayList<String> permissionList) {
-//        if(!getiamlist.isEmpty()){
-//            getiamlist.clear();
-//        }
-//        else if(!indexList.isEmpty()){
-//            indexList.clear();
-//        }
-//        else if(!cloudsqladminLIST.isEmpty()) {
-//            cloudsqladminLIST.clear();
-//        }
-//        else if(!ownerList.isEmpty()){
-//            ownerList.clear();
-//        }
-//        else if(!editorList.isEmpty()){
-//            editorList.clear();
-//        }
-//        else if(!viewerList.isEmpty()){
-//            viewerList.clear();
-//        }
-//        else if(!firebaseList.isEmpty()){
-//            firebaseList.clear();
-//        }
-//        else if(!computeEngineList.isEmpty()){
-//            computeEngineList.clear();
-//        }
-//        else if(!loggingadminList.isEmpty()){
-//            loggingadminList.clear();
-//        }
-//        else if(!monitoringadminList.isEmpty()){
-//            monitoringadminList.clear();
-//        }
-//        else if(!apikeysadminList.isEmpty()){
-//            apikeysadminList.clear();
-//        }
-//        else if(!storageadminList.isEmpty()){
-//            storageadminList.clear();
-//        }
-//        else{
-//            System.out.println("ALL LISTS IS ALREADY EMPTY!");
-//        }
-
         tempPermissionList = permissionList;
         System.out.println("PASSED IN PERMISSION LIST!! " + tempPermissionList);
         splitDiffArrayList();
@@ -96,6 +55,7 @@ public class GetIAM {
     public void splitDiffArrayList(){
         //START OF CloudSQL List
         if (globalChecker == 4) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -144,8 +104,8 @@ public class GetIAM {
             extractingIAM.add(iamExtract);
             //END OF CLOUDSQL LIST
         } else if (globalChecker == 6) {
-            System.out.println("CALLED COMPUTE ENGINE IF ELSE!!!!!!");
             //START OF COMPUTE ENGINE LIST
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -171,7 +131,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -195,15 +155,15 @@ public class GetIAM {
             iamExtract = new IAMExtract(computeEngineList);
             extractingIAM.add(iamExtract);
             //END OF COMPUTE ENGINE LIST
-
         } else if (globalChecker == 2) {
+            //START OF EDITOR LIST
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
             for (int i = 0; i < getiamlist.size(); i++) {
                 System.out.println("GetIAM Model trying to print permissions from getiamlist :" + getiamlist.get(i));
             }
-            //START OF EDITOR LIST
             for (int o = 0; o < getiamlist.size(); o++) {
                 if (getiamlist.get(o).contains("role: roles/editor")) {
                     w = getiamlist.indexOf(getiamlist.get(o)) + 1;
@@ -223,7 +183,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -250,6 +210,7 @@ public class GetIAM {
 
 
         } else if (globalChecker == 5) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -276,7 +237,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -303,6 +264,7 @@ public class GetIAM {
 
 
         } else if (globalChecker == 7) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -330,7 +292,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -358,6 +320,7 @@ public class GetIAM {
 
 
         else if (globalChecker == 9) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -385,7 +348,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -413,6 +376,7 @@ public class GetIAM {
 
 
         else if (globalChecker == 1) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -440,7 +404,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -465,6 +429,7 @@ public class GetIAM {
             extractingIAM.add(iamExtract);
             //END OF OWNER LIST
         } else if (globalChecker == 10) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -492,7 +457,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -519,6 +484,7 @@ public class GetIAM {
 
 
         } else if (globalChecker == 8) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -545,7 +511,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -572,6 +538,7 @@ public class GetIAM {
 
 
         } else if (globalChecker == 3) {
+            ArrayList<Integer> indexList = new ArrayList<>();
             getiamlist = tempPermissionList;
             getiamlist.remove(0);
             System.out.println("HIHI " + getiamlist);
@@ -598,7 +565,7 @@ public class GetIAM {
             int smallDifference = w - diff;
             System.out.println("SMALL DIFF = " + smallDifference);
             for (int m = 1; m < indexList.size(); m++) {
-                int difference = w - indexList.get(m);
+                difference = w - indexList.get(m);
                 System.out.println("DIFFERENCE  = " + difference);
                 if (difference < smallDifference && difference > 0) {
                     smallDifference = difference;
@@ -611,7 +578,6 @@ public class GetIAM {
             System.out.println("MEMBER IS : " + diff);
             System.out.println("ROLE IS : " + w);
             viewerList = new ArrayList<String>(getiamlist.subList(diff, w));
-//            getiamlist.subList(diff, w).clear();
             viewerList.remove(0);
             for (int p = 0; p < viewerList.size(); p++) {
                 System.out.println("Inside of VIEWER LIST : " + viewerList.get(p));

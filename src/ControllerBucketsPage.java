@@ -2,11 +2,15 @@ import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,27 +46,6 @@ public class ControllerBucketsPage implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private JFXButton ListBuckets;
-
-    @FXML
-    private Label listedBuckets;
-
-    @FXML
-    private JFXButton CreateBuckets;
-
-    @FXML
-    private AnchorPane CreatingBuckets;
-
-    @FXML
-    private JFXButton deletingBuckets;
-
-    @FXML
-    private JFXTextField bucketName;
-
-    @FXML
-    private JFXButton enterButton;
-
-    @FXML
     private TableView<CloudBuckets> bucketsTable1;
 
     @FXML
@@ -69,15 +53,6 @@ public class ControllerBucketsPage implements Initializable {
 
     @FXML
     private TableColumn<CloudBuckets, Button> deleteBuckets1;
-
-    @FXML
-    private TableView<CloudBuckets> bucketsTable;
-
-    @FXML
-    private TableColumn<CloudBuckets, String> tableColBucketName;
-
-    @FXML
-    private TableColumn<CloudBuckets, Button> deleteBuckets;
 
     private Scene myScene;
 
@@ -88,6 +63,7 @@ public class ControllerBucketsPage implements Initializable {
     StorageSnippets storagesnippets;
     CloudBuckets cldB2 = new CloudBuckets();
 
+    String inputBUCKETNAME;
 
     String errorMessage = "";
     String successfulMessage = "";
@@ -99,97 +75,81 @@ public class ControllerBucketsPage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
+//        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
         tableColBucketName1.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
         storagesnippets = new StorageSnippets();
         storagesnippets.listBuckets();
         objectArrayList = storagesnippets.getCloudbucketsList();
-//        CHECKING=-1;
-//        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {//DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
-//            CHECKING=checker2;
-//            bucketsTable1.getItems().remove(cldB);
-//            String allBucketNames = "";
-//            System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
-//            String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
-//            System.out.println(NAMEBUCKET);
-//            checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
-//        return cldB;
-//        }));
-        }
-
-    @FXML
-    void handleCreateBuckets(MouseEvent event) {
-        CreatingBuckets.setVisible(true);
-    }
-
-    public CloudBuckets cldBucket(CloudBuckets cldB){
-        cldB2 = cldB;
-        return cldB2;
-    }
-
-    @FXML
-    void handleDeleteBuckets(MouseEvent event) {
-        CHECKING=-1;
-        //TABLE OF BUCKETS
-        objectList = FXCollections.observableList(objectArrayList);
-        bucketsTable1.setItems(objectList);
-
         //DELETION OF BUCKETS
         deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
             cldBucket(cldB);
             //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
             doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + " will be permanently deleted from the cloud. Are you sure to delete it?";
             doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-            CHECKING=checker2;
+            CHECKING = checker2;
             System.out.println("CHECKER NOW IS " + CHECKING);
 
-//            if (CHECKING == 1) {
-//                bucketsTable1.getItems().remove(cldB);
-//                String allBucketNames = "";
-//                System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
-//                String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
-//                System.out.println(NAMEBUCKET);
-//                checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
-//                System.out.println("CHECKER IS : " + checker);
-//                System.out.println("Deleted :" + NAMEBUCKET);
-//                System.out.println("THE CHECKER IS NOW : " + storagesnippets.getChecker());
-//            }
-
-
-
             return cldB;
-
         }));
 
-
-        System.out.println("After success msg");
+        objectList = FXCollections.observableList(objectArrayList);
+        bucketsTable1.setItems(objectList);
     }
 
     @FXML
-    void handleListBuckets(MouseEvent event) {
-        String allBucketNames = "";
-        for (CloudBuckets b : objectArrayList) {
-            allBucketNames = allBucketNames + "\n" + b.getBucketName();
-        }
-        listedBuckets.setText(allBucketNames);
+    void handleCreateBuckets(MouseEvent event) {
+        creatingBUCKETS(anchorPane.getScene(), "No", "Yes");
     }
+
+    public CloudBuckets cldBucket(CloudBuckets cldB) {
+        cldB2 = cldB;
+        return cldB2;
+    }
+
+//    @FXML
+//    void handleDeleteBuckets(MouseEvent event) {
+//        CHECKING = -1;
+//        //TABLE OF BUCKETS
+//        objectList = FXCollections.observableList(objectArrayList);
+//        bucketsTable1.setItems(objectList);
+//
+////        //DELETION OF BUCKETS
+////        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+////            cldBucket(cldB);
+////            //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
+////            doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + " will be permanently deleted from the cloud. Are you sure to delete it?";
+////            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+////            CHECKING = checker2;
+////            System.out.println("CHECKER NOW IS " + CHECKING);
+////
+////            return cldB;
+////
+////        }));
+//
+//
+//        System.out.println("After success msg");
+//    }
+
+//    @FXML
+//    void handleListBuckets(MouseEvent event) {
+////        String allBucketNames = "";
+////        for (CloudBuckets b : objectArrayList) {
+////            allBucketNames = allBucketNames + "\n" + b.getBucketName();
+////        }
+////        listedBuckets.setText(allBucketNames);
+//        objectList = FXCollections.observableList(objectArrayList);
+//        bucketsTable1.setItems(objectList);
+//    }
 
 
     private boolean checkEligible(String bucketname) {
         System.out.println("Checking if bucket name is accepted...");
-        //The bucket name should at least be 3 to 63 characters (DONE)
-        //start and end with a number or letter. (DONE)
-        //Bucket names must contain only lowercase letters (DONE)
-        // numbers, dashes (-), underscores (_), and dots (.). (DONE)
-        //Bucket names cannot begin with the "goog" prefix. (DONE)
-        //Bucket names cannot contain "google" or close misspellings, such as "g00gle". (DONE)
         boolean hasUppercase = !bucketname.equals(bucketname.toLowerCase());
         final String SPECIAL_CHARACTERS = " .[,~,!,@,#,$,%,^,&,,(,),-,_,/,=,+,[,{,],},|,;,:,<,>,/,?].*$)\"\'\\ ";
         final String FIRST_SPECIAL = "goog";
         Pattern pattern = Pattern.compile("^[^<>{}\"/|;:,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©+]*$");
         Matcher matcher = pattern.matcher(bucketname);
-//        Pattern pattern1 = Pattern.compile("google,g00gle,g00g1e,goog1e,g0ogle,go0gle,g0og1e,go0g1e,g00g,g0og,go0g");
-//        Matcher matcher1 = pattern1.matcher(bucketname);
+
 
         if ((bucketname.length() < 3) || (bucketname.length() > 63)) {
             errorMessage = "Invalid bucket name - Too short / Too Long";
@@ -221,63 +181,119 @@ public class ControllerBucketsPage implements Initializable {
     }
 
 
-    @FXML
-    void handleEnter(MouseEvent event) {
-        String bucketname = bucketName.getText();
-        System.out.println(bucketname);
-
-        //Checking for eligibilty - NOT ACCEPTED
-        try {
-            storagesnippets.createBucketWithStorageClassAndLocation(bucketname);
-        } catch (com.google.cloud.storage.StorageException e) {
-            errorMessage = "-";
-            checkEligible(bucketname);
-            if (errorMessage.equals("-")) {
-                errorMessage = "Bucket with this name already exist";
-                System.out.println(errorMessage);
-                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            } else {
-                System.out.println(errorMessage);
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.show(errorMessage, 3000);
-                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-        }
-
-        if (errorMessage.equals("")) {
-            objectArrayList = storagesnippets.getCloudbucketsList();
-            successfulMessage = "Successful Creation - Bucket has been created";
-            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-        }
-
-        //TABLE OF BUCKETS
-        objectList = FXCollections.observableList(objectArrayList);
-        bucketsTable.setItems(objectList);
-
-//        //DELETION OF BUCKETS
-//        deleteBuckets.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
-//            bucketsTable.getItems().remove(cldB);
-//            String allBucketNames = "";
-//            System.out.println("DELETING THIS BUCKET: " + cldB.getBucketName());
-//            String NAMEBUCKET = cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1);
-//            System.out.println(NAMEBUCKET);
-//            checker = storagesnippets.deleteGcsBucket(NAMEBUCKET);
-//            System.out.println("CHECKER IS : " + checker);
-//            System.out.println("Deleted :" + NAMEBUCKET);
-//            return cldB;
-//        }));
-
-//        if (checker == 1) {
-//            successfulMessage = "Bucket Deleted Successfully";
-//            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+//    Service process = new Service() {
+//        @Override
+//        protected Task createTask() {
+//            return new Task() {
+//                @Override
+//                protected Void call() throws Exception {
+//
+//
+//                    Platform.runLater(() -> {
+//
+//                    });
+//                    return null;
+//                }
+//            };
 //        }
+//    };
 
 
+    private void creatingBUCKETS(Scene scene, String buttonContent, String buttonContent2) {
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String message = "Please input the follow required data to create buckets.";
+        String title = "Creating Buckets" + "\n" + message;
+
+        JFXButton no = new JFXButton(buttonContent);
+        no.setButtonType(JFXButton.ButtonType.RAISED);
+        no.setStyle("-fx-background-color: #00bfff;");
+
+        JFXButton yes = new JFXButton(buttonContent2);
+        yes.setButtonType(JFXButton.ButtonType.RAISED);
+        yes.setStyle("-fx-background-color: #ff2828");
+
+        String message1 = "Enter Bucket Name: ";
+
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setPrefSize(600, 270);
+        layout.setHeading(new Label(title));
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 100, 10, 0));
+
+        JFXTextField inputBucketName = new JFXTextField();
+        inputBucketName.setPrefWidth(250);
+        inputBucketName.setPromptText("Type Bucket Name Here");
+
+        grid.add(new Label(message1), 0, 0);
+        grid.add(inputBucketName, 1, 0);
+
+        layout.setBody(grid);
+
+        layout.setActions(no, yes);
+
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+
+        yes.setOnAction(__addEvent -> {
+            checker2 = 1;
+            CHECKING = -1;
+            System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
+            CHECKING = checker2;
+            inputBUCKETNAME=inputBucketName.getText();
+            System.out.println("Bucket name is : " + inputBUCKETNAME);
+
+            //Checking for eligibilty - NOT ACCEPTED
+            try {
+                storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.show("Updating The Database", 3000);
+            } catch (com.google.cloud.storage.StorageException e) {
+                errorMessage = "-";
+                checkEligible(inputBUCKETNAME);
+                if (errorMessage.equals("-")) {
+                    errorMessage = "Bucket with this name already exist";
+                    System.out.println(errorMessage);
+                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+                } else {
+                    System.out.println(errorMessage);
+                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+                }
+            }
+
+            if (errorMessage.equals("")) {
+                objectArrayList = storagesnippets.getCloudbucketsList();
+                successfulMessage = "Successful Creation - Bucket has been created";
+                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+
+                objectList = FXCollections.observableList(objectArrayList);
+                bucketsTable1.setItems(objectList);
+
+                alert.hideWithAnimation();
+            }
+
+
+
+        });
+        no.setOnAction(__addEvent -> {
+            checker2 = 0;
+            System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
+            alert.hideWithAnimation();
+        });
+
+        alert.show();
     }
 
-
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
-        checker2=-1;
+        checker2 = -1;
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -313,7 +329,7 @@ public class ControllerBucketsPage implements Initializable {
 
 //        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {//DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
 
-            CHECKING=checker2;
+            CHECKING = checker2;
             bucketsTable1.getItems().remove(cldB2);
             String allBucketNames = "";
             System.out.println("DELETING THIS BUCKET: " + cldB2.getBucketName());
@@ -325,6 +341,7 @@ public class ControllerBucketsPage implements Initializable {
 
             successfulMessage = "Bucket Deleted Successfully";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+
             alert.hideWithAnimation();
         });
         no.setOnAction(__addEvent -> {
@@ -389,11 +406,6 @@ public class ControllerBucketsPage implements Initializable {
         alert.show();
     }
 
-
-    @FXML
-    void handleExit(MouseEvent event) {
-        CreatingBuckets.setVisible(false);
-    }
 
     public void hamburgerBar() {
         rootP = anchorPane;

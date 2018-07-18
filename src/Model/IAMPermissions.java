@@ -9,19 +9,21 @@ import java.util.ArrayList;
 
 public class IAMPermissions {
 
-    private OAuth2Login login = new OAuth2Login();
     ArrayList<String> permissionList = new ArrayList<>();
     GetIAM getiam;
-    ArrayList<GetIAM> iamobjectList = new ArrayList<>();
+    private static String userEmail;
+    private static String userRole;
+
+    private static String userRevokeEmail;
+    private static String userRevokeRole;
 
     public IAMPermissions() {
 
     }
 
-
     public String listPermissions() {
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe","/c", "gcloud projects get-iam-policy netsecpj");
+                "cmd.exe", "/c", "gcloud projects get-iam-policy netsecpj");
         builder.redirectErrorStream(true);
         Process p = null;
         try {
@@ -41,20 +43,71 @@ public class IAMPermissions {
                 break;
             }
             permissionList.add(line);
-//            System.out.println("ADDED INTO PERMISSION LIST!!!!!!!!!!!!!!!!!!!");
         }
         getiam = new GetIAM(permissionList);
-//        iamobjectList.add(getiam);
         return line;
     }
 
-//    public ArrayList<GetIAM> getIAMArrayList(){
-//        return iamobjectList;
-//    }
+
+    public void addPermissions(String email, String role) {
+        userEmail=email;
+        userRole=role;
+        System.out.println("EMAIL IS: " + userEmail);
+        System.out.println("ROLE IS: " + userRole);
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", "gcloud projects add-iam-policy-binding netsecpj --member user:"+userEmail+" --role "+userRole);
+        builder.redirectErrorStream(true);
+        Process p = null;
+        try {
+            p = builder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = null;
+        while (true) {
+            try {
+                line = r.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (line == null) {
+                break;
+            }
+        }
+    }
+
+    public void revokePermissions(String email, String role) {
+        userRevokeEmail=email;
+        userRevokeRole=role;
+        System.out.println("EMAIL IS: " + userEmail);
+        System.out.println("ROLE IS: " + userRole);
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", "gcloud projects remove-iam-policy-binding netsecpj --member user:"+userRevokeEmail+" --role "+userRevokeRole);
+        builder.redirectErrorStream(true);
+        Process p = null;
+        try {
+            p = builder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = null;
+        while (true) {
+            try {
+                line = r.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (line == null) {
+                break;
+            }
+        }
+    }
 
     public static void main (String args[]){
         IAMPermissions permissions = new IAMPermissions();
-        permissions.listPermissions();
+        permissions.addPermissions("Winstonlimjy2000@gmail.com","roles/editor");
     }
 
 }

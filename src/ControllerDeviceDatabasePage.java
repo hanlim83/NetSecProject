@@ -11,11 +11,13 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -57,19 +59,10 @@ public class ControllerDeviceDatabasePage implements Initializable {
     private TableColumn<OSVersion, Button> revoke;
 
     @FXML
-    private JFXTextField versionname;
-
-    @FXML
-    private JFXTextField versionnumber;
-
-    @FXML
     private JFXButton insertOS;
 
     @FXML
     private AnchorPane insertAnchor;
-
-    @FXML
-    private JFXButton submitButton;
 
     @FXML
     private JFXButton viewButton;
@@ -86,6 +79,9 @@ public class ControllerDeviceDatabasePage implements Initializable {
     String doubleConfirm = "";
     int CHECKING;
     int checker2;
+
+    String verName;
+    String verNumber;
 
     Device_Build_NumberDB deviceDB = new Device_Build_NumberDB();
     OSVersion osvers = new OSVersion();
@@ -163,8 +159,10 @@ public class ControllerDeviceDatabasePage implements Initializable {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                        deviceTable.setVisible(true);
-                        insertAnchor.setVisible(false);
+                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.show("Updating The Database", 3000);
+                        osObservableList = FXCollections.observableList(osList);
+                        deviceTable.setItems(osObservableList);
                     });
                     return null;
                 }
@@ -172,27 +170,91 @@ public class ControllerDeviceDatabasePage implements Initializable {
         }
     };
 
+
+
     @FXML
     void handleInsertOS(MouseEvent event) {
-        deviceTable.setVisible(false);
-        insertAnchor.setVisible(true);
+        creatingOS(anchorPane.getScene(), "No","Yes");
     }
 
-    @FXML
-    void handleSubmit(MouseEvent event) {
-        String verName = versionname.getText();
-        String verNumber = versionnumber.getText();
-        System.out.println("VERSION NAME IS : " + verName);
-        System.out.println("VERSION NUMBER IS : " + verNumber);
+    private void creatingOS(Scene scene, String buttonContent, String buttonContent2) {
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
 
-        try {
-            deviceDB.insertNewOSVersion(verName,verNumber);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        successfulMessage = "Successful Insertion - OS Version has been inserted.";
-        successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+        String message = "Please input the follow required data to insert the OS Versions.";
+        String title = "Insert OS Versions" + "\n" + message;
 
+        JFXButton no = new JFXButton(buttonContent);
+        no.setButtonType(JFXButton.ButtonType.RAISED);
+        no.setStyle("-fx-background-color: #00bfff;");
+
+        JFXButton yes = new JFXButton(buttonContent2);
+        yes.setButtonType(JFXButton.ButtonType.RAISED);
+        yes.setStyle("-fx-background-color: #ff2828");
+
+        String message1 = "Enter OS Version Number: ";
+        String message2 = "Enter OS Version Name: ";
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setPrefSize(600, 270);
+        layout.setHeading(new Label(title));
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 100, 10, 0));
+
+        JFXTextField inputOSName = new JFXTextField();
+        inputOSName.setPrefWidth(250);
+        inputOSName.setPromptText("Type OS Version Name Here");
+
+        grid.add(new Label(message2), 0, 0);
+        grid.add(inputOSName, 1, 0);
+
+        JFXTextField inputOSNumber = new JFXTextField();
+        inputOSNumber.setPrefWidth(250);
+        inputOSNumber.setPromptText("Type OS Version Number Here");
+
+        grid.add(new Label(message1), 0, 1);
+        grid.add(inputOSNumber, 1, 1);
+
+        layout.setBody(grid);
+
+        layout.setActions(no, yes);
+
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+
+        yes.setOnAction(__addEvent -> {
+            checker2 = 1;
+            CHECKING = -1;
+            System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
+            CHECKING = checker2;
+            verName = inputOSName.getText();
+            System.out.println("INPUT NAME IS : " + verName);
+            verNumber = inputOSNumber.getText();
+            System.out.println("INPUT NUMBER IS : " + verNumber);
+                try {
+                    deviceDB.insertNewOSVersion(verName,verNumber);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                process1.start();
+                successfulMessage = "This OS Version " + verName + " was created and added into the cloud. The device number is " + verNumber + ".";
+                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                alert.hideWithAnimation();
+        });
+        no.setOnAction(__addEvent -> {
+            checker2 = 0;
+            System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
+
+            alert.hideWithAnimation();
+        });
+
+        alert.show();
     }
 
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
