@@ -10,14 +10,19 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminDeviceCheck">
    <children>
-      <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
          <children>
-            <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
+            <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+            <Label layoutX="577.0" layoutY="28.0" text="Admin">
                <font>
-                  <Font size="40.0" />
+                  <Font name="Vladimir Script" size="18.0" />
                </font>
-            </Text>
-            <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+            </Label>
+            <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
+               <font>
+                  <Font name="Serif Regular" size="40.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <JFXButton fx:id="tempButton" layoutX="46.0" layoutY="410.0" mnemonicParsing="false" onAction="#onClickTempButton" prefHeight="150.0" prefWidth="184.0" text="Button" />
