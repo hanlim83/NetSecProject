@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -363,8 +364,22 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                        TableBlob person = getTableView().getItems().get(getIndex());
 //                                        System.out.println(person.getFirstName()
 //                                                + "   " + person.getLastName());
-                                        calculateEmail();
-                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
+//                                        calculateEmail();
+//                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
+                                        AnchorPane anchorPane=new AnchorPane();
+                                        anchorPane.setLayoutX(0);
+                                        anchorPane.setLayoutY(0);
+                                        anchorPane.setPrefWidth(200);
+
+//                                        VBox vBox=new VBox();
+//                                        Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
+//                                        vBox.setMinWidth(200);
+//                                        vBox.setLayoutX(boundsInScene.getMaxX());
+//                                        vBox.setLayoutY(boundsInScene.getMaxY());
+//                                        JFXButton jfxButton=new JFXButton();
+//                                        vBox.getChildren().add(0,jfxButton);
+//                                        System.out.println(boundsInScene.toString());
+//                                        System.out.println(btn.getLayoutX()+" "+btn.getLayoutY());
                                     });
                                     setGraphic(btn);
                                     setText(null);

@@ -4,6 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class MainAdmin extends Application {
     @Override
     public void start(Stage primaryStage) {
@@ -20,6 +22,12 @@ public class MainAdmin extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop(){
+//        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
+//        file.delete();
     }
 
     public static void main(String[] args) {
