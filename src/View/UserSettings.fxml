@@ -12,24 +12,23 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserSettings">
     <children>
-        <AnchorPane prefHeight="65.0" prefWidth="1066.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #29ddf4;">
             <children>
                 <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-                <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+                <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                     <font>
-                        <Font size="40.0" />
+                        <Font name="Serif Regular" size="40.0" />
                     </font>
-                </Text>
-                <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+                </Label>
             </children>
         </AnchorPane>
-        <JFXDrawer fx:id="drawer" layoutX="14.0" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <JFXButton layoutX="403.0" layoutY="73.0" onAction="#newNumber" prefHeight="46.0" prefWidth="263.0" text="Change number" />
-      <JFXButton fx:id="executeChange" layoutX="679.0" layoutY="301.0" onAction="#newChange" prefHeight="41.0" prefWidth="202.0" text="Change now!" visible="false"/>
+      <JFXButton fx:id="executeChange" layoutX="679.0" layoutY="301.0" onAction="#newChange" prefHeight="41.0" prefWidth="202.0" text="Change now!" visible="false" />
       <GridPane fx:id="changeNumber" layoutX="338.0" layoutY="171.0" prefHeight="122.0" prefWidth="394.0" visible="false">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="105.0" />
