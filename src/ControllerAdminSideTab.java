@@ -33,6 +33,8 @@ public class ControllerAdminSideTab {
     private JFXButton logsButton;
     @FXML
     private JFXButton deviceButton;
+    @FXML
+    private JFXButton FileExtentsionManager;
     private Scene myScene;
 
     public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
@@ -58,7 +60,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler,null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -72,7 +74,7 @@ public class ControllerAdminSideTab {
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.getController();
+                OLDControllerCAMainDashboard controller = loader.getController();
                 controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,7 +89,7 @@ public class ControllerAdminSideTab {
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.getController();
+                OLDControllerCAMainDashboard controller = loader.getController();
                 controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,7 +114,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler,null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,5 +206,10 @@ public class ControllerAdminSideTab {
         stage.setScene(new Scene(nextView));
         stage.setTitle("Device Build Number Page");
         stage.show();
+    }
+
+    @FXML
+    void goToFileExtensionManager(ActionEvent event) {
+
     }
 }

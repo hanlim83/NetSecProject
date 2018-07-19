@@ -2,19 +2,21 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.layout.VBox?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0"
-      prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="535.0" prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.171"
       fx:controller="ControllerAdminSideTab">
     <children>
-        <JFXButton fx:id="listCreate" onMouseClicked="#onClickBuckets" prefHeight="98.0" prefWidth="227.0"
+        <JFXButton fx:id="listCreate" onMouseClicked="#onClickBuckets" prefHeight="75.0" prefWidth="227.0"
                    text="Buckets Entry"/>
-        <JFXButton fx:id="logsButton" onMouseClicked="#onClickLogs" prefHeight="98.0" prefWidth="227.0"
+        <JFXButton fx:id="logsButton" onMouseClicked="#onClickLogs" prefHeight="75.0" prefWidth="227.0"
                    text="Loggings"/>
-        <JFXButton fx:id="deviceButton" onMouseClicked="#onClickDevice" prefHeight="98.0" prefWidth="227.0"
+        <JFXButton fx:id="deviceButton" onMouseClicked="#onClickDevice" prefHeight="75.0" prefWidth="227.0"
                    text="Device Build Number"/>
-        <JFXButton fx:id="pktCapture" onAction="#goToPacketCapture" onMouseClicked="#onClickBuckets" prefHeight="98.0"
+        <JFXButton fx:id="pktCapture" onAction="#goToPacketCapture" onMouseClicked="#onClickBuckets" prefHeight="75.0"
                    prefWidth="227.0" text="Network Capture - Packets View"/>
         <JFXButton fx:id="captureAnalysis" onAction="#goToCaptureAnalysis" onMouseClicked="#onClickBuckets"
-                   prefHeight="98.0" prefWidth="227.0" text="Network Capture - Statistics View"/>
+                   prefHeight="75.0" prefWidth="227.0" text="Network Capture - Statistics View"/>
+        <JFXButton fx:id="FileExtentsionManager" onAction="#goToFileExtensionManager" onMouseClicked="#onClickBuckets"
+                   prefHeight="75.0" prefWidth="227.0" text="File Extentsion Manager"/>
     </children>
 </VBox>
