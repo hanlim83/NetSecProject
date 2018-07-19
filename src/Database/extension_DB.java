@@ -29,4 +29,34 @@ public class extension_DB {
         }
         return ExtensionList;
     }
+
+    public void createExtension(String extension) throws SQLException {
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
+        }
+    }
+
+    public void deleteExtension(String extension) throws SQLException {
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
+        }
+    }
 }
