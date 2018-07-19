@@ -97,10 +97,11 @@ public class ControllerSecureCloudStorage implements Initializable {
         TableMethod();
     }
 
-    public void passData(ObservableList<TableBlob> blobs){
-        this.blobs=blobs;
+    public void passData(ObservableList<TableBlob> blobs) {
+        this.blobs = blobs;
         TableMethod();
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
@@ -117,11 +118,11 @@ public class ControllerSecureCloudStorage implements Initializable {
         return format.format(date);
     }
 
-    private Path saveFile(){
+    private Path saveFile() {
         FileChooser fileChooser = new FileChooser();
-        File filePath=fileChooser.showSaveDialog(null);
-        String filePathString=filePath.getAbsolutePath();
-        Path path=Paths.get(filePathString);
+        File filePath = fileChooser.showSaveDialog(null);
+        String filePathString = filePath.getAbsolutePath();
+        Path path = Paths.get(filePathString);
 //        fileChooser.setTitle("Save Image");
 ////        System.out.println(pic.getId());
 //        File file = fileChooser.showSaveDialog(null);
@@ -247,11 +248,11 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    public void deleteFile(String bucketName, String blobName){
+    public void deleteFile(String bucketName, String blobName) {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         BlobId blobId = BlobId.of(bucketName, blobName);
         boolean deleted = storage.delete(blobId);
-        if(deleted)
+        if (deleted)
 
         {
             // the blob was deleted
@@ -267,7 +268,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     private int entry1;
     private String entryid;
 
-    public void calculateEmail(){
+    public void calculateEmail() {
         String email = null;
         try {
             email = login.getEmail();
@@ -355,7 +356,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                        calculateEmail();
 //                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
                                         Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                        showVbox(boundsInScene.getMinX(),boundsInScene.getMaxY());
+                                        showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
                                     });
                                     setGraphic(btn);
                                     setText(null);
@@ -425,12 +426,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
-//        JFXTreeTableView<TableBlob> treeView = new JFXTreeTableView<>(root);
-//        treeView.setShowRoot(false);
-//        treeView.setEditable(true);
-//        treeView.getColumns().setAll(fileColumn, dateColumn);
-//        JFXTreeTableView.getChildren().add(JFXTreeTableView);
-
 //        FlowPane main = new FlowPane();
 //        main.setPadding(new Insets(10));
 //        anchorPane.getChildren().add(JFXTreeTableView);
@@ -454,28 +449,57 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
     }
 
-    VBox vBox=new VBox();
-    JFXButton jfxDownloadButton=new JFXButton();
-    JFXButton jfxDeleteButton=new JFXButton();
-    private int vBoxCounter=0;
-    private void showVbox(double minX,double maxY){
-        double minWidth=100;
-        double minHeight=200;
-        if (vBoxCounter==0){
+    VBox vBox = new VBox();
+    JFXButton jfxDownloadButton = new JFXButton();
+    JFXButton jfxDeleteButton = new JFXButton();
+    private int vBoxCounter = 0;
+
+    double minX;
+    double maxY;
+
+    private void showVbox(double minX, double maxY) {
+        double minWidth = 100;
+        double minHeight = 200;
+        this.minX=minX;
+        this.maxY=maxY;
+        if (vBoxCounter == 0) {
             vBox.setLayoutX(minX);
             vBox.setLayoutY(maxY);
-            vBox.setMinSize(minWidth,minHeight);
-            Background unfocusBackground = new Background( new BackgroundFill( Color.web( "#F4F4F4" ), CornerRadii.EMPTY, Insets.EMPTY ) );
+            vBox.setMinSize(minWidth, minHeight);
+            Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
             vBox.setBackground(unfocusBackground);
             jfxDownloadButton.setText("Download");
             jfxDeleteButton.setText("Delete");
-            jfxDownloadButton.setMinSize(vBox.getMinWidth(),vBox.getMinHeight()/2);
-            jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight()/2);
+            jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
+            jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
             //Update this to show confirmation pop-up
-            jfxDeleteButton.setOnAction(__ -> System.out.println("ONCLICK DELETE File"));
+            jfxDeleteButton.setOnAction(__ -> {System.out.println("ONCLICK DELETE File");
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
 
-            vBox.getChildren().addAll(jfxDownloadButton,jfxDeleteButton);
+                String title = "";
+                String content = "Are you sure you want to delete this file?";
+
+                JFXButton close = new JFXButton("Close");
+
+                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close.setStyle("-fx-background-color: #00bfff;");
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(___ -> alert.hideWithAnimation());
+                alert.show();} );
+
+            vBox.getChildren().addAll(jfxDownloadButton, jfxDeleteButton);
 //            vBox.getChildren().add(jfxDeleteButton);
             anchorPane.getChildren().add(vBox);
             vBoxCounter++;
@@ -486,7 +510,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                }
 //            });
             vBox.setVisible(true);
-        }else {
+        } else {
             vBox.setLayoutX(minX);
             vBox.setLayoutY(maxY);
 //            vBox.setMinSize(100, 200);
@@ -494,20 +518,23 @@ public class ControllerSecureCloudStorage implements Initializable {
             vBox.setBackground(unfocusBackground);
             vBox.setVisible(true);
         }
-        myScene=anchorPane.getScene();
-        myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("mouse click detected! " + mouseEvent.getSource());
-                if(mouseEvent.getX()>=minX && mouseEvent.getX()<=minX+100 && mouseEvent.getY()>=maxY && mouseEvent.getY()<=maxY+200){
-                    System.out.println("Inside the vbox");
-                }
-//                else{
-//                    vBox.setVisible(false);
-//                }
-            }
-        });
+        myScene = anchorPane.getScene();
+        myScene.addEventFilter(MouseEvent.MOUSE_PRESSED,closeVbox);
     }
+
+    EventHandler<MouseEvent> closeVbox = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            System.out.println("mouse click detected! " + mouseEvent.getSource());
+            System.out.println(minX + " " + maxY);
+            if (mouseEvent.getX() >= minX && mouseEvent.getX() <= minX + 100 && mouseEvent.getY() >= maxY && mouseEvent.getY() <= maxY + 200) {
+                System.out.println("Inside the vbox");
+            } else {
+                vBox.setVisible(false);
+                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED,closeVbox);
+            }
+        }
+    };
 
     private void onEdit() {
         FileButtonsHbox.setVisible(true);
@@ -543,40 +570,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             return date;
         }
     }
-
-//    public static class JFXButtonTableCell<S> extends TableCell<S, JFXButton> {
-//
-//        private final Button actionButton;
-//
-//        public JFXButtonTableCell(String label, Function< S, S> function) {
-//            this.getStyleClass().add("action-button-table-cell");
-//
-//            this.actionButton = new JFXButton(label);
-//            this.actionButton.setOnAction((ActionEvent e) -> {
-//                function.apply(getCurrentItem());
-//            });
-//            this.actionButton.setMaxWidth(Double.MAX_VALUE);
-//        }
-//
-//        public S getCurrentItem() {
-//            return (S) getTableView().getItems().get(getIndex());
-//        }
-//
-//        public static <S> Callback<TreeTableColumn<JFXButtonTableCell, JFXButton>, TreeTableCell<JFXButtonTableCell, JFXButton>> forTableColumn(String label, Function< S, S> function) {
-//            return param -> new JFXButtonTableCell<>(label, function);
-//        }
-//
-//        @Override
-//        public void updateItem(JFXButton item, boolean empty) {
-//            super.updateItem(item, empty);
-//
-//            if (empty) {
-//                setGraphic(null);
-//            } else {
-//                setGraphic(actionButton);
-//            }
-//        }
-//    }
 
 //    /**
 //     * A custom cell that shows a checkbox, label and button in the

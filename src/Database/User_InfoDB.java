@@ -1,29 +1,16 @@
 package Database;
 
-import Model.OSVersion;
-import com.jfoenix.controls.JFXTextField;
-
 import java.sql.*;
 import java.util.ArrayList;
 
 public class User_InfoDB {
+    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+    private static String databaseName = "user_info";
+    private static String username = "root";
+    private static String password = "root";
+
     public ArrayList<User> getUserList() throws SQLException {
         ArrayList<User> UserList = new ArrayList<User>();
-
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "user_info";
-        String username = "root";
-        String password = "root";
-
-//            if (instanceConnectionName.equals("<device-supported-versions>")) {
-//                System.err.println("Please update the sample to specify the instance connection name.");
-//                System.exit(1);
-//            }
-//
-//            if (password.equals("<insert_password>")) {
-//                System.err.println("Please update the sample to specify the mysql password.");
-//                System.exit(1);
-//            }
 
         //[START doc-example]
         String jdbcUrl = String.format(
@@ -47,34 +34,18 @@ public class User_InfoDB {
                 user.setPhoneNo(resultSet.getString("phoneNo"));
                 user.setEntryID(resultSet.getString("entryID"));
                 UserList.add(user);
-//                OSVersion osVersion = new OSVersion();
-//                osVersion.setVersionName(resultSet.getString("versionName"));
-//                osVersion.setVersionNumber(resultSet.getString("versionNumber"));
-//                osVersion.setEntryID(resultSet.getInt("entryID"));
-//                OSVersionList.add(osVersion);
-//                    SupportedVersions.add(resultSet.getString(1));
             }
         }
         return UserList;
     }
 
     public String getAccStatus(String email) throws SQLException {
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "user_info";
-        String username = "root";
-        String password = "root";
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "user_info";
+//        String username = "root";
+//        String password = "root";
 
         String state = "";
-//        if (instanceConnectionName.equals("user_info")) {
-//            System.err.println("Please update the sample to specify the instance connection name.");
-//            System.exit(1);
-//        }
-//
-//        if (password.equals("<insert_password>")) {
-//            System.err.println("Please update the sample to specify the mysql password.");
-//            System.exit(1);
-//        }
-
         //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
@@ -83,19 +54,20 @@ public class User_InfoDB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //same
-        System.out.println(jdbcUrl);
         //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT status FROM entries WHERE email=?");
+        preparedStatement.setString(1,email);
 
         try (Statement statement = connection.createStatement()) {
 //            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT status FROM entries WHERE email='"+email+"'");
+//            ResultSet resultSet = statement.executeQuery("SELECT status FROM entries WHERE email='"+email+"'");
+            ResultSet resultSet=preparedStatement.executeQuery();
             while (resultSet.next()) {
                 //System.out.println(resultSet.getString(1));
                 state=resultSet.getString(1);
             }
         }
-//        if (state==)
         System.out.println(state);
         return state;
     }
