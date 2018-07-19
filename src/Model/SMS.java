@@ -15,7 +15,8 @@ public class SMS {
     private AuthMethod auth;
     private NexmoClient client;
     private ArrayList<String> adminPN;
-    private boolean GeneralUse, permitUse = false;
+    private static final boolean permitUse = false;
+    private boolean GeneralUse;
 
     //PermitUse Boolean is used to prevent accidental charges to NEXMO balance. Please set as necessary
 
@@ -72,7 +73,7 @@ public class SMS {
     }
 
     public void sendSMS(String phoneNumber, String Message) {
-        if (permitUse = false)
+        if (permitUse == false)
             System.err.println("Please enable PermitUse Boolean first!");
         else if (phoneNumber.isEmpty() || Message.isEmpty())
             System.err.println("Missing Parameters!");

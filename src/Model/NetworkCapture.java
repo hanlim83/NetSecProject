@@ -41,7 +41,7 @@ public class NetworkCapture {
     private Timer timer = new Timer(true);
     private TimerTask sendExpiry;
     private TimerTask countExpiry;
-    private long PacketsReceived, PacketsDropped, PacketsDroppedByInt, PacketsCaptured;
+    private long PacketsReceived = 0, PacketsDroppedByInt = 0, PacketsCaptured = 0;
     private String directoryPath;
     private int Threshold, perMinutePktCount = 0;
     private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null, alertBeforeTimeStamp = null, alertAfterTimeStamp = null;
@@ -98,9 +98,9 @@ public class NetworkCapture {
         return PacketsReceived;
     }
 
-    public long getPacketsDropped() {
-        return PacketsDropped;
-    }
+//    public long getPacketsDropped() {
+//        return PacketsDropped;
+//    }
 
     //Packet count increment
     synchronized private void incrementCount() {
@@ -258,11 +258,11 @@ public class NetworkCapture {
         PcapStat ps;
         try {
             ps = Phandle.getStats();
-            PacketsReceived = ps.getNumPacketsReceived();
-            PacketsDropped = ps.getNumPacketsDropped();
-            PacketsDroppedByInt = ps.getNumPacketsDroppedByIf();
+            PacketsReceived += ps.getNumPacketsReceived();
+//            PacketsDropped = ps.getNumPacketsDropped();
+            PacketsDroppedByInt += ps.getNumPacketsDroppedByIf();
             if (Platform.isWindows()) {
-                PacketsCaptured = ps.getNumPacketsCaptured();
+                PacketsCaptured += ps.getNumPacketsCaptured();
             }
         } catch (PcapNativeException | NotOpenException e) {
             e.printStackTrace();

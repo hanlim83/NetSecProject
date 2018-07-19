@@ -9,7 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -362,7 +361,7 @@ public class ControllerCAMainDashboard implements Initializable {
         capture.stopSniffing();
         handler.cancelchartDataRunnable();
         //Alert below
-        myScene = anchorPane.getScene();
+        /*myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;
@@ -388,7 +387,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 alert.hideWithAnimation();
             }
         });
-        alert.show();
+        alert.show();*/
         clearCaptureBtn.setDisable(false);
         try {
             FXMLLoader loader = new FXMLLoader();

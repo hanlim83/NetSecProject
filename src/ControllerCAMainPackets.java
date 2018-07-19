@@ -410,15 +410,16 @@ public class ControllerCAMainPackets implements Initializable {
         OLpackets = FXCollections.observableArrayList(packets);
         packetstable.setItems(OLpackets);
         packetstable.refresh();
+        capture.Generalexport();
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;
         if (com.sun.jna.Platform.isWindows())
-            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketsCaptured();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketsCaptured() + "\nNetwork Capture File Name: " + capture.getGeneralExportFileName();
         else
-            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nNetwork Capture File Name: " + capture.getGeneralExportFileName();
         JFXButton close = new JFXButton("Close");
         close.setButtonType(JFXButton.ButtonType.RAISED);
         close.setStyle("-fx-background-color: #00bfff;");
