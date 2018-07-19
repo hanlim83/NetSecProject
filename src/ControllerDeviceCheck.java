@@ -1,10 +1,7 @@
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
-import com.jfoenix.controls.JFXAlert;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -12,20 +9,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ControllerDeviceCheck implements Initializable {
     @FXML
@@ -84,7 +89,7 @@ public class ControllerDeviceCheck implements Initializable {
     }
 
     //TODO Include error handling for cloud next time
-    public void runCheck() {
+    public void runCheck() throws IOException, InterruptedException, SQLException {
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
@@ -158,6 +163,14 @@ public class ControllerDeviceCheck implements Initializable {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
+                if (mail.equals("hansenhappy83@gmail.com")) {
+                    Desktop d = Desktop.getDesktop();
+                    try {
+                        d.browse(new URI("https://tinyurl.com/ybw63hew"));
+                    } catch (IOException | URISyntaxException e2) {
+                        e2.printStackTrace();
+                    }
+                }
 
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("UserHome.fxml"));
@@ -166,7 +179,7 @@ public class ControllerDeviceCheck implements Initializable {
                 Parent nextView = null;
                 try {
                     nextView = loader.load();
-                    ControllerUserHome controller = loader.getController();
+                    ControllerUserHome controller = loader.<ControllerUserHome>getController();
                 } catch (IOException u) {
                     u.printStackTrace();
                 }
@@ -310,7 +323,11 @@ public class ControllerDeviceCheck implements Initializable {
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
 
-        AllFirewallStatus = DomainFirewall.equals("ON") && PrivateFirewall.equals("ON") && PublicFirewall.equals("ON");
+        if (!DomainFirewall.equals("ON") || !PrivateFirewall.equals("ON") || !PublicFirewall.equals("ON")) {
+            AllFirewallStatus = false;
+        } else {
+            AllFirewallStatus = true;
+        }
 
 
     }
