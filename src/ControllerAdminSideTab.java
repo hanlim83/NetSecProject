@@ -24,6 +24,8 @@ public class ControllerAdminSideTab {
     private static SMS SMSHandler;
 
     @FXML
+    private JFXButton databasePage;
+    @FXML
     private JFXButton listCreate;
     @FXML
     private JFXButton pktCapture;
@@ -34,7 +36,7 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton deviceButton;
     @FXML
-    private JFXButton FileExtentsionManager;
+    private JFXButton FileExtensionManager;
     private Scene myScene;
 
     public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
@@ -187,6 +189,24 @@ public class ControllerAdminSideTab {
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("Logging Page");
+        stage.show();
+    }
+
+    @FXML
+    void onClickDatabase(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EmployeePage.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Database Page");
         stage.show();
     }
 

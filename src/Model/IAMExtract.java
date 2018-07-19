@@ -9,7 +9,7 @@ public class IAMExtract {
     private String globalUser;
     ArrayList<String> bringiamlist = new ArrayList<>();
    public static ArrayList<IAMExtract> iamobjlist = new ArrayList<>();
-   public ArrayList<String> stringEmailList = new ArrayList<>();
+   public static ArrayList<String> stringEmailList = new ArrayList<>();
     int index1 = 0;
 
 
@@ -45,15 +45,14 @@ public class IAMExtract {
     public ArrayList<IAMExtract> takeIAMList(){
         for(int i=0;i<bringiamlist.size()-1;i++){
             iamobjlist.add(new IAMExtract(globalRole,bringiamlist.get(i)));
-            stringEmailList.add(bringiamlist.get(i));
         }
         return iamobjlist;
     }
 
 
-    public ArrayList<String> getStringEmailList() {
-        return stringEmailList;
-    }
+//    public ArrayList<String> getStringEmailList() {
+//        return stringEmailList;
+//    }
 
     public String getGlobalRole() {
         return globalRole;

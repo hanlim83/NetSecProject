@@ -254,6 +254,7 @@ public class ControllerBucketsPage implements Initializable {
             //Checking for eligibilty - NOT ACCEPTED
             try {
                 storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+
                 JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                 snackbar.show("Updating The Database", 3000);
             } catch (com.google.cloud.storage.StorageException e) {

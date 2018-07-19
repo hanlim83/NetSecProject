@@ -236,6 +236,9 @@ public class ControllerLoggingPage implements Initializable {
 
         String timestamp1 = logsTable.getSelectionModel().getSelectedItem().getTimestamp();
         String severity1 = logsTable.getSelectionModel().getSelectedItem().getSeverity();
+        Label LABEL1 = new Label();
+        LABEL1.setTextFill(Color.rgb(255, 0, 0));
+        LABEL1.setText(severity1);
         String action1 = logsTable.getSelectionModel().getSelectedItem().getAction();
         String bucketname1 = logsTable.getSelectionModel().getSelectedItem().getBucketName();
         String user1 = logsTable.getSelectionModel().getSelectedItem().getFinalEmail();
@@ -273,7 +276,7 @@ public class ControllerLoggingPage implements Initializable {
         grid.add(label5,0,4);
 
         grid.add(new Label(timestamp1), 1, 0);
-        grid.add(new Label(severity1), 1, 1);
+        grid.add(LABEL1, 1, 1);
         grid.add(new Label(action1), 1, 2);
         grid.add(new Label(bucketname1), 1, 3);
         grid.add(new Label(user1), 1, 4);

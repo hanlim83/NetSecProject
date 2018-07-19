@@ -2,10 +2,7 @@ import Database.Admin;
 import Database.User;
 import Database.User_InfoDB;
 import Database.admin_DB;
-import Model.ActionButtonTableCell;
-import Model.GetIAM;
-import Model.IAMExtract;
-import Model.IAMPermissions;
+import Model.*;
 import com.google.api.services.iam.v1.Iam;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -30,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -138,13 +136,16 @@ public class ControllerEmployeePage implements Initializable {
     int checker2;
     String CreateUser;
     String CreateRole;
+    String CreateHandphone;
 
     String CreateAdmin;
     String CreateAdminRole;
 
     static String email1;
+    static String handphoneNUMBER;
     static String emailAdmin;
     static String emailPermission;
+    static String hpAdmin;
 
     static String rolePermission;
 
@@ -164,11 +165,13 @@ public class ControllerEmployeePage implements Initializable {
 
     IAMPermissions permissions;
     GetIAM getiam = new GetIAM();
-    IAMExtract iamExtract = new IAMExtract();
+    IAMExtract iamExtract;
 
     static int globalChecker;
 
     private String chosenRole;
+
+    SMS sendSMS = new SMS();
 
     String listPermission;
 
@@ -236,6 +239,7 @@ public class ControllerEmployeePage implements Initializable {
             email1 = users.getEmail();
             System.out.println("THIS IS THE EMAIL!!" + email1);
 
+            handphoneNUMBER = users.getPhoneNo();
             doubleConfirm = "This selected user \"" + users.getEmail() + "\" will be removed from the Employees Database. Are you sure to delete it?";
             doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
             CHECKING = checker2;
@@ -248,6 +252,9 @@ public class ControllerEmployeePage implements Initializable {
             admin(admins);
             emailAdmin = admins.getEmail();
             System.out.println("THIS IS THE EMAIL!!" + emailAdmin);
+
+            hpAdmin = admins.getPhoneNo();
+            System.out.println("THIS IS THE HP NUMBER : " + hpAdmin);
 
             doubleConfirm = "This selected user \"" + admins.getEmail() + "\" will be removed from the Admin Database. Are you sure to delete it?";
             doubleConfirmation1(anchorPane.getScene(), doubleConfirm, "No", "Yes");
@@ -282,46 +289,98 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     permissions = new IAMPermissions();
+                    iamExtract = new IAMExtract();
                     if (chosenRole.equals("Owner")) {
                         globalChecker = 1;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
+
                     } else if (chosenRole == "Editor") {
                         globalChecker = 2;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Viewer") {
                         globalChecker = 3;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "CloudSQL Admin") {
                         globalChecker = 4;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Firebase Rules System") {
                         globalChecker = 5;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Compute Engine Service") {
                         globalChecker = 6;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Logging Admin") {
                         globalChecker = 7;
+                        stringArrayList = IAMExtract.stringEmailList;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Storage Admin") {
                         globalChecker = 8;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else if (chosenRole == "Monitoring Admin") {
                         globalChecker = 9;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     } else {
                         globalChecker = 10;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
+                        stringArrayList = IAMExtract.stringEmailList;
+                        for(int u=0;u<stringArrayList.size();u++){
+                            stringEmail=stringArrayList.get(u);
+                            System.out.println("======================"+stringEmail);
+                        }
                     }
 
                     Platform.runLater(() -> {
@@ -372,30 +431,62 @@ public class ControllerEmployeePage implements Initializable {
         rolesTable.getItems().clear();
 
         process.start();
-
+        jfxcombobox.setDisable(true);
         //IF EMAIL IS NOT -users: , DO NOT PUT BUTTON INSIDE CELL
-        stringArrayList = iamExtract.getStringEmailList();
-        for(int u=0;u<stringArrayList.size();u++){
-            stringEmail=stringArrayList.get(u);
-            System.out.println("======================"+stringEmail);
-        }
-        revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
-            iamExtract(iamExtracts);
-            emailPermission = iamExtracts.getGlobalUser();
-            System.out.println("THIS IS THE EMAIL!!" + emailPermission);
 
-            rolePermission = iamExtracts.getGlobalRole();
-            System.out.println("THIS IS THE ROLE: " + rolePermission);
+        revokePermissions.setCellFactory(new Callback<TableColumn<IAMExtract, Button>, TableCell<IAMExtract, Button>>() {
+            String oneEmail;
+            @Override
+            public TableCell<IAMExtract, Button> call(TableColumn<IAMExtract, Button> param) {
+                return new TableCell<IAMExtract, Button>() {
 
-            doubleConfirm = "This selected user \"" + iamExtracts.getGlobalRole() + "\" will be revoked of this role "+rolePermission+ ". Are you sure to delete it?";
-            doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-            CHECKING = checker2;
-            System.out.println("CHECKER NOW IS " + CHECKING);
+                    @Override
+                    public void updateItem(Button item, boolean empty) {
+                        super.updateItem(item, empty);
 
-            return iamExtracts;
-        }));
+                        if(!isEmpty()) {
+                            revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
+                                iamExtract(iamExtracts);
+                                emailPermission = iamExtracts.getGlobalUser();
+                                emailPermission = emailPermission.substring(9,emailPermission.length());
+                                System.out.println("THIS IS THE EMAIL!!" + emailPermission);
+
+                                rolePermission = iamExtracts.getGlobalRole();
+                                System.out.println("THIS IS THE ROLE: " + rolePermission);
+
+                                doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
+                                doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                                CHECKING = checker2;
+                                System.out.println("CHECKER NOW IS " + CHECKING);
+
+                                return iamExtracts;
+                            }));
+                            for (int b = 0; b < stringArrayList.size(); b++) {
+                                oneEmail = stringArrayList.get(b);
+                                if (!oneEmail.contains("user:")) {
+                                    System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
+                                    this.setDisable(true);
+                                }
+//                                else {
+//                                    this.setDisable(true);
+//                                    System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
+//                                }
+                            }
+                            setItem(item);
+
+                        }
+
+                    }
+
+                };
+            }
+        });
+
+
+
 
         process.setOnSucceeded(e -> {
+            jfxcombobox.setDisable(false);
             spinner.setVisible(false);
             process.reset();
         });
@@ -504,13 +595,13 @@ public class ControllerEmployeePage implements Initializable {
     };
 
     public void newProcess() {
-        process2.start();
         employeeButton.setDisable(true);
+        process2.start();
 
         process2.setOnSucceeded(e -> {
             employeeButton.setDisable(false);
-            userObservableList = FXCollections.observableList(userList);
-            employeeTable.setItems(userObservableList);
+//            userObservableList = FXCollections.observableList(userList);
+//            employeeTable.setItems(userObservableList);
             process2.reset();
         });
         process2.setOnCancelled(e -> {
@@ -522,13 +613,15 @@ public class ControllerEmployeePage implements Initializable {
     }
 
     public void newProcessA() {
+        spinner.setVisible(true);
         process2a.start();
         adminButton.setDisable(true);
 
         process2a.setOnSucceeded(e -> {
-            employeeButton.setDisable(false);
-            userObservableList = FXCollections.observableList(userList);
-            employeeTable.setItems(userObservableList);
+            spinner.setVisible(false);
+            adminButton.setDisable(false);
+//            adminObservableList = FXCollections.observableList(adminList);
+//            adminTable.setItems(adminObservableList);
             process2a.reset();
         });
         process2a.setOnCancelled(e -> {
@@ -541,11 +634,10 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void onClickAdmin(MouseEvent event) {
+        process1a.start();
         secondAnchor.setVisible(false);
         employeeTable.setVisible(false);
         adminTable.setVisible(true);
-
-        process1a.start();
         adminButton.setDisable(true);
 
         process1a.setOnSucceeded(e -> {
@@ -762,14 +854,24 @@ public class ControllerEmployeePage implements Initializable {
 
         grid.add(new Label(message1), 0, 0);
         grid.add(inputAdmin, 1, 0);
-        layout.setBody(grid);
+
+        String message2 = "Enter Handphone No: ";
+        JFXTextField inputAdminHP = new JFXTextField();
+        inputAdminHP.setPrefWidth(250);
+        inputAdminHP.setPromptText("Type Handphone Number Here");
+
+        grid.add(new Label(message2), 0, 1);
+        grid.add(inputAdminHP, 1, 1);
+
 
         String chooserole = "Choose Role: ";
         JFXComboBox<String> creatingAdminRoles = new JFXComboBox<>();
         creatingAdminRoles.getItems().addAll("Owner", "Editor", "CloudSQL Admin", "Firebase Rules System", "Compute Engine Service", "Logging Admin", "Storage Admin", "Monitoring Admin", "API Keys Admin");
-        grid.add(new Label(chooserole), 0, 1);
-        grid.add(creatingAdminRoles, 1, 1);
+        grid.add(new Label(chooserole), 0, 2);
+        grid.add(creatingAdminRoles, 1, 2);
 
+
+        layout.setBody(grid);
         layout.setActions(no, yes);
 
         JFXAlert<Void> alert = new JFXAlert<>(stage);
@@ -779,6 +881,7 @@ public class ControllerEmployeePage implements Initializable {
         alert.initModality(Modality.NONE);
 
         yes.setOnAction(__addEvent -> {
+            String numbers = "[0-9]+";
             checker2 = 1;
             CHECKING = -1;
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
@@ -787,57 +890,67 @@ public class ControllerEmployeePage implements Initializable {
             CreateAdmin = inputAdmin.getText();
             System.out.println("INPUT NAME IS : " + CreateAdmin);
 
+            CreateHandphone = inputAdminHP.getText();
+            System.out.println("HANDPHONE NUMBER IS : " + CreateHandphone);
+
             CreateAdminRole = creatingAdminRoles.getSelectionModel().getSelectedItem();
 
             if (CreateAdmin.contains("@gmail.com") && !creatingAdminRoles.getSelectionModel().isEmpty()) {
-//                try {
-//                    adminDB.createAdmin(CreateAdmin);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-                newProcessA();
+                if (CreateHandphone.matches(numbers) && CreateHandphone.length()==8 && (CreateHandphone.startsWith("8") || CreateHandphone.startsWith("9"))){
+                    try {
+                        adminDB.createAdmin(CreateAdmin,CreateHandphone);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    newProcessA();
 
-                if (CreateAdminRole.equals("Owner")) {
-                    CreateAdminRole = "roles/owner";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateAdminRole == "Editor") {
-                    CreateAdminRole = "roles/editor";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "CloudSQL Admin") {
-                    CreateRole = "roles/cloudsql.admin";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "Firebase Rules System") {
-                    CreateRole = "roles/firebaserules.system";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "Compute Engine Service") {
-                    CreateRole = "roles/compute.serviceAgent";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "Logging Admin") {
-                    CreateRole = "roles/logging.admin";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "Storage Admin") {
-                    CreateRole = "roles/storage.admin";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "Monitoring Admin") {
-                    CreateRole = "roles/monitoring.admin";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                } else if (CreateRole == "API Keys Admin") {
-                    CreateRole = "roles/serviceusage.apiKeysAdmin";
-                    System.out.println("CHOOSE " + CreateAdminRole);
-                    permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    if (CreateAdminRole.equals("Owner")) {
+                        CreateAdminRole = "roles/owner";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateAdminRole == "Editor") {
+                        CreateAdminRole = "roles/editor";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "CloudSQL Admin") {
+                        CreateRole = "roles/cloudsql.admin";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "Firebase Rules System") {
+                        CreateRole = "roles/firebaserules.system";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "Compute Engine Service") {
+                        CreateRole = "roles/compute.serviceAgent";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "Logging Admin") {
+                        CreateRole = "roles/logging.admin";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "Storage Admin") {
+                        CreateRole = "roles/storage.admin";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "Monitoring Admin") {
+                        CreateRole = "roles/monitoring.admin";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    } else if (CreateRole == "API Keys Admin") {
+                        CreateRole = "roles/serviceusage.apiKeysAdmin";
+                        System.out.println("CHOOSE " + CreateAdminRole);
+                        permissions.addPermissions(CreateAdmin, CreateAdminRole);
+                    }
+
+                    successfulMessage = "This Administrator " + CreateAdmin + " was created and added into the cloud as Administrator.";
+                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                    alert.hideWithAnimation();
                 }
-
-                successfulMessage = "This Administrator " + CreateAdmin + " was created and added into the cloud as Administrator.";
-                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-                alert.hideWithAnimation();
+                else {
+                    System.out.println("Invalid Handphone Number! Please choose a valid hp number.");
+                    errorMessage = "Please try again. Handphone Number was invalid.";
+                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+                }
             } else if (creatingAdminRoles.getSelectionModel().isEmpty()) {
                 System.out.println("NO ROLE CHOSEN! PLEASE CHOOSE A ROLE");
                 errorMessage = "Please try again. Choose a role for the specified user.";
@@ -893,8 +1006,10 @@ public class ControllerEmployeePage implements Initializable {
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
 
             CHECKING = checker2;
+
             permissions.revokePermissions(emailPermission,rolePermission);
             rolesTable.getItems().remove(iamExtracts);
+
             successfulMessage = "This user " + emailPermission + " was successfully revoked of the role, " + rolePermission +".";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
             alert.hideWithAnimation();
@@ -944,20 +1059,24 @@ public class ControllerEmployeePage implements Initializable {
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
 
             CHECKING = checker2;
-//            try {
-//                adminDB.deleteAdmin(emailAdmin);
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                adminDB.deleteAdmin(emailAdmin,hpAdmin);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String sendingMessage = "You, " + emailAdmin + " have been removed from FireE's Cloud Administrator Database. Please contact Administrator if unknown.";
+            System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
+            sendSMS.sendSMS(hpAdmin,sendingMessage);
+
             adminTable.getItems().remove(admins);
-            successfulMessage = "This user " + emailAdmin + " was successfully removed.";
+            successfulMessage = "This Administrator " + emailAdmin + " was successfully removed.";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
             alert.hideWithAnimation();
         });
         no.setOnAction(__addEvent -> {
             checker2 = 0;
             System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
-            errorMessage = "This user " + emailAdmin + " was not successfully removed.";
+            errorMessage = "This Administrator " + emailAdmin + " was not successfully removed.";
             errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             alert.hideWithAnimation();
         });
@@ -1004,6 +1123,9 @@ public class ControllerEmployeePage implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Please contact Administrator if unknown.";
+            System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
+            sendSMS.sendSMS(handphoneNUMBER,sendingMessage);
             employeeTable.getItems().remove(users);
             successfulMessage = "This user " + email1 + " was successfully removed.";
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
