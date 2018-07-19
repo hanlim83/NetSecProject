@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class SMS {
     private static final String NEXMO_API_KEY = "6198ebad";
-    private static final String NEXMO_API_SECRET = "UcBivigsOmInyu5";
+    private static final String NEXMO_API_SECRET = "hdke38E3m";
     private AuthMethod auth;
     private NexmoClient client;
     private ArrayList<String> adminPN;

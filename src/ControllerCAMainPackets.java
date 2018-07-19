@@ -241,14 +241,43 @@ public class ControllerCAMainPackets implements Initializable {
             handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    boolean flag = capture.checkThreshold();
                     try {
-                        if (capture.checkThreshold()) {
+                        if (flag) {
                             SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
                         timerTaskinProgress = true;
                     }*/
                             capture.Specficexport();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myScene = anchorPane.getScene();
+                                    Stage stage = (Stage) (myScene).getWindow();
+                                    String title = "Suspicious Network Event Detected!";
+                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the alerts has been generated for you.";
+                                    JFXButton close = new JFXButton("Close");
+                                    close.setButtonType(JFXButton.ButtonType.RAISED);
+                                    close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXDialogLayout layout = new JFXDialogLayout();
+                                    layout.setHeading(new Label(title));
+                                    layout.setBody(new Label(content));
+                                    layout.setActions(close);
+                                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                    alert.setOverlayClose(true);
+                                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                    alert.setContent(layout);
+                                    alert.initModality(Modality.NONE);
+                                    close.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent __) {
+                                            alert.hideWithAnimation();
+                                        }
+                                    });
+                                    alert.show();
+                                }
+                            });
                         }
                         Platform.runLater(new Runnable() {
                             @Override
@@ -262,6 +291,54 @@ public class ControllerCAMainPackets implements Initializable {
                         });
                     } catch (ConcurrentModificationException e) {
                         System.err.println("ConcurrentModification Detected");
+                        capture.stopSniffing();
+                        if (flag) {
+                            SMSHandler.sendAlert();
+                   /* if (!timerTaskinProgress) {
+                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                        timerTaskinProgress = true;
+                    }*/
+                            capture.Specficexport();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myScene = anchorPane.getScene();
+                                    Stage stage = (Stage) (myScene).getWindow();
+                                    String title = "Suspicious Network Event Detected!";
+                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                                    JFXButton close = new JFXButton("Close");
+                                    close.setButtonType(JFXButton.ButtonType.RAISED);
+                                    close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXDialogLayout layout = new JFXDialogLayout();
+                                    layout.setHeading(new Label(title));
+                                    layout.setBody(new Label(content));
+                                    layout.setActions(close);
+                                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                    alert.setOverlayClose(true);
+                                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                    alert.setContent(layout);
+                                    alert.initModality(Modality.NONE);
+                                    close.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent __) {
+                                            alert.hideWithAnimation();
+                                        }
+                                    });
+                                    alert.show();
+                                }
+                            });
+                        }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                packets = capture.packets;
+                                OLpackets = FXCollections.observableArrayList(packets);
+                                packetstable.setItems(OLpackets);
+                                packetstable.refresh();
+                                alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
+                            }
+                        });
+                        capture.startSniffing();
                     }
                 }
             }, 2, 1, TimeUnit.SECONDS));

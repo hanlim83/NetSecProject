@@ -28,9 +28,6 @@ public class NetworkCapture {
     private static final int TPSRange = 10;
     //Data Variables
     public ArrayList<CapturedPacket> packets;
-    /*public ArrayList<OLDLineChartObject> PreviousTPS;
-    public ArrayList<OLDPieChartDataObject>ProtocolMakeup;
-    public ArrayList<OLDPieChartDataObject>Top5IPMakeup;*/
     public ArrayList<Integer> PreviousTPS;
     public ArrayList<Integer> ProtocolMakeupData;
     public ArrayList<String> ProtocolMakeupProtocols;
@@ -48,7 +45,7 @@ public class NetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
-    private int commonIndex = 0;
+    private int TPSSize = 0;
     private String GeneralExportFileName;
     private String SpecificExportFileName;
     //Overrides default packet handling
@@ -69,7 +66,6 @@ public class NetworkCapture {
                 ++perMinutePktCount;
         }
     };
-    private String PhoneNumber;
 
     public NetworkCapture(PcapNetworkInterface nif, String directoryPath, int Threshold) {
         this.Netinterface = nif;
@@ -122,16 +118,8 @@ public class NetworkCapture {
         return eventCount;
     }
 
-    public int getPerMinutePktCount() {
-        return perMinutePktCount;
-    }
-
-    public String getPhoneNumber() {
-        return PhoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+    public int getTPSSize() {
+        return TPSSize;
     }
 
     public long getPacketsDroppedByInt() {
@@ -206,30 +194,6 @@ public class NetworkCapture {
             return true;
         }
     }
-
-    /*public void ProtocolMakeup() {
-        OLDPieChartDataObject tempt = null;
-        int recordedIndex = 0;
-        for (CapturedPacket p : packets) {
-            if (ProtocolMakeup.isEmpty())
-                ProtocolMakeup.add(new OLDPieChartDataObject(p.identifyProtocol(),1));
-            else {
-                for (int i = 0; i < ProtocolMakeup.size(); i++){
-                    OLDPieChartDataObject d = ProtocolMakeup.get(i);
-                    if (d.getKey().equals(p.identifyProtocol())) {
-                        tempt = new OLDPieChartDataObject(d.getKey(),d.getValue()+1);
-                        recordedIndex = i;
-                        break;
-                    }
-                }
-                if (tempt != null){
-                    ProtocolMakeup.set(recordedIndex,tempt);
-                    recordedIndex = 0;
-                    tempt = null;
-                }
-            }
-        }
-    }*/
 
     public void ProtocolMakeup() {
         boolean found = false;
@@ -366,6 +330,24 @@ public class NetworkCapture {
         lastTimeStamp = later;
         return TPS;
     }*/
+
+    public void getTrafficPerSecond() {
+        Timestamp original = new Timestamp(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(original.getTime());
+        cal.add(Calendar.SECOND, TPSRange);
+        Timestamp later = new Timestamp(cal.getTime().getTime());
+        int packetCount = 0;
+        for (CapturedPacket packet : packets) {
+            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
+                ++packetCount;
+            else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
+                ++packetCount;
+        }
+        PreviousTPS.add(packetCount);
+        ++TPSSize;
+        lastTimeStamp = later;
+    }
 
     public boolean isRunning() {
         return Phandle.isOpen();

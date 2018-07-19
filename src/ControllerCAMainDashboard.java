@@ -8,6 +8,8 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -49,7 +52,7 @@ public class ControllerCAMainDashboard implements Initializable {
     @FXML
     private JFXButton clearCaptureBtn;
     @FXML
-    private LineChart<?, ?> networkTrafficChart;
+    private LineChart<Number, Number> networkTrafficChart;
     @FXML
     private PieChart protocolChart;
     @FXML
@@ -70,6 +73,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private SMS SMSHandler;
+    private XYChart.Series<Number, Number> dataSeries;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,6 +91,9 @@ public class ControllerCAMainDashboard implements Initializable {
         db = new admin_DB();
         hamburger.setDisable(true);
         captureToggle.setDisable(true);
+        dataSeries = new XYChart.Series<Number, Number>();
+        dataSeries.setName("Packet Capture TimeLine");
+        networkTrafficChart.getData().setAll(dataSeries);
         /*exportTask = new TimerTask() {
             @Override
             public void run() {
@@ -289,6 +296,37 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
+    public void ProtoMakeup() {
+        int index = 0, max = 0;
+        capture.ProtocolMakeup();
+        ArrayList<String> protoMakeUp = capture.ProtocolMakeupProtocols;
+        ArrayList<Integer> valueMakeup = capture.ProtocolMakeupData;
+        if (protoMakeUp.size() != valueMakeup.size())
+            return;
+        max = valueMakeup.size();
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        for (index = 0; index < max; index++) {
+            data.add(new PieChart.Data(protoMakeUp.get(index), valueMakeup.get(index)));
+        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                protocolChart.setData(data);
+            }
+        });
+    }
+
+    public void plotCaptureLine() {
+        capture.getTrafficPerSecond();
+        int max = capture.getTPSSize();
+        ArrayList<Integer> data = capture.PreviousTPS;
+        dataSeries.getData().clear();
+        for (int i = 0; i < max; i++) {
+            dataSeries.getData().add(new XYChart.Data<Number, Number>(i, data.get(i)));
+        }
+    }
+
+
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
@@ -297,6 +335,8 @@ public class ControllerCAMainDashboard implements Initializable {
             public void run() {
                 boolean flag = capture.checkThreshold();
                 try {
+                    ProtoMakeup();
+                    plotCaptureLine();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
@@ -342,6 +382,8 @@ public class ControllerCAMainDashboard implements Initializable {
                 } catch (ConcurrentModificationException e) {
                     System.err.println("ConcurrentModification Detected");
                     capture.stopSniffing();
+                    ProtoMakeup();
+                    plotCaptureLine();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
