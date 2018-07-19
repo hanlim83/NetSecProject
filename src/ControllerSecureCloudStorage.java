@@ -88,20 +88,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     private ObservableList<TableBlob> blobs;
 //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
-    @FXML
-    void onClickUploadButton(ActionEvent event) {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
-//        deleteFile("hugochiaxyznspj","42149.py");
-        UploadFileTest();
-        TableMethod();
-    }
-
-    public void passData(ObservableList<TableBlob> blobs) {
-        this.blobs = blobs;
-        TableMethod();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
@@ -110,6 +96,22 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void passData(ObservableList<TableBlob> blobs) {
+        this.blobs = blobs;
+        TableMethod();
+    }
+
+    @FXML
+    void onClickUploadButton(ActionEvent event) {
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
+//        deleteFile("hugochiaxyznspj","42149.py");
+        calculateEmail();
+        UploadFileTest();
+        updateObservableList();
+        TableMethod();
     }
 
     public String convertTime(long time) {
@@ -281,6 +283,27 @@ public class ControllerSecureCloudStorage implements Initializable {
         privateBucketName = emailFront + "nspj";
     }
 
+    private void updateObservableList(){
+        blobs.clear();
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        String email = null;
+        try {
+            email = login.getEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront = s.next();
+        emailFront = emailFront.replace(".", "");
+        String privateBucketName = emailFront + "nspj";
+//        String bucketname="hugochiaxyznspj";
+        Page<Blob> blobList = storage.list(privateBucketName);
+        for (Blob blob : blobList.iterateAll()) {
+//            BlobList.add(new MyBlob(blob));
+            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
+        }
+    }
+
     private void TableMethod() {
 //        blobs = FXCollections.observableArrayList();
 ////        users.add(new TreeTableDemo.User(COMPUTER_DEPARTMENT, "23", "CD 1"));
@@ -333,7 +356,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Others");
         settingsColumn.setPrefWidth(175);
         Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
-                = //
+                =
                 new Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>>() {
                     @Override
                     public TreeTableCell call(final TreeTableColumn<TableBlob, String> param) {
@@ -349,15 +372,38 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     setText(null);
                                 } else {
 //                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
-                                    btn.setOnAction(event -> {
-//                                        TableBlob person = getTableView().getItems().get(getIndex());
-//                                        System.out.println(person.getFirstName()
-//                                                + "   " + person.getLastName());
-//                                        calculateEmail();
-//                                        deleteFile(privateBucketName,JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
-                                        Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                        showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
+                                    btn.setOnAction(new EventHandler<ActionEvent>() {
+
+                                        @Override
+                                        public void handle(ActionEvent t) {
+                                            int selectdIndex = getTreeTableRow().getIndex();
+                                            System.out.println(selectdIndex);
+                                            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
+                                            System.out.println(tableBlob.getBlobName());
+                                            blobName=tableBlob.getBlobName();
+                                            System.out.println(tableBlob.getDate());
+                                            Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
+                                            showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
+                                        }
                                     });
+
+
+//                                    btn.setOnAction(event -> {
+//                                        int selectdIndex = getTableRow().getIndex();
+////                                        Record selectedRecord = (Record)tblView.getItems().get(selectdIndex);
+//                                        if (JFXTreeTableView.getSelectionModel().getSelectedItem() != null) {
+//                                            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
+//                                            System.out.println(tableBlob.getBlobName());
+//                                            System.out.println(tableBlob.getDate());
+//                                        }
+////                                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getParent().getValue().getBlobName());
+////                                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
+////                                        TableBlob person = getTableView().getItems().get(getIndex());
+////                                        System.out.println(person.getFirstName()
+////                                                + "   " + person.getLastName());
+////                                        calculateEmail();
+////                                        deleteFile(privateBucketName,);
+//                                    });
                                     setGraphic(btn);
                                     setText(null);
                                 }
@@ -457,11 +503,13 @@ public class ControllerSecureCloudStorage implements Initializable {
     double minX;
     double maxY;
 
+    private String blobName;
+
     private void showVbox(double minX, double maxY) {
         double minWidth = 100;
         double minHeight = 200;
-        this.minX=minX;
-        this.maxY=maxY;
+        this.minX = minX;
+        this.maxY = maxY;
         if (vBoxCounter == 0) {
             vBox.setLayoutX(minX);
             vBox.setLayoutY(maxY);
@@ -474,14 +522,15 @@ public class ControllerSecureCloudStorage implements Initializable {
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
             //Update this to show confirmation pop-up
-            jfxDeleteButton.setOnAction(__ -> {System.out.println("ONCLICK DELETE File");
+            jfxDeleteButton.setOnAction(__ -> {
+                System.out.println("ONCLICK DELETE File");
                 myScene = anchorPane.getScene();
                 Stage stage = (Stage) (myScene).getWindow();
 
                 String title = "";
                 String content = "Are you sure you want to delete this file?";
 
-                JFXButton close = new JFXButton("Close");
+                JFXButton close = new JFXButton("Ok");
 
                 close.setButtonType(JFXButton.ButtonType.RAISED);
 
@@ -496,8 +545,13 @@ public class ControllerSecureCloudStorage implements Initializable {
                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                 alert.setContent(layout);
                 alert.initModality(Modality.NONE);
-                close.setOnAction(___ -> alert.hideWithAnimation());
-                alert.show();} );
+                close.setOnAction(___ -> {alert.hideWithAnimation();
+                calculateEmail();
+                deleteFile(privateBucketName,blobName);
+                updateObservableList();
+                TableMethod();});
+                alert.show();
+            });
 
             vBox.getChildren().addAll(jfxDownloadButton, jfxDeleteButton);
 //            vBox.getChildren().add(jfxDeleteButton);
@@ -519,7 +573,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             vBox.setVisible(true);
         }
         myScene = anchorPane.getScene();
-        myScene.addEventFilter(MouseEvent.MOUSE_PRESSED,closeVbox);
+        myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
     }
 
     EventHandler<MouseEvent> closeVbox = new EventHandler<MouseEvent>() {
@@ -531,7 +585,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println("Inside the vbox");
             } else {
                 vBox.setVisible(false);
-                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED,closeVbox);
+                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
             }
         }
     };
