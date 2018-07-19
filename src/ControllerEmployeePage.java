@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -228,11 +229,11 @@ public class ControllerEmployeePage implements Initializable {
             e.printStackTrace();
         }
 
-        try {
-            adminList = adminDB.getAdminList();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            adminList = adminDB.getAdminList();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
         deletingEmployees.setCellFactory(ActionButtonTableCell.<User>forTableColumn("Revoke", (User users) -> {
             user(users);
@@ -273,6 +274,7 @@ public class ControllerEmployeePage implements Initializable {
         roleColumn.setCellValueFactory(new PropertyValueFactory<IAMExtract, String>("globalRole"));
 
         getIAMLists = IAMExtract.iamobjlist;
+
     }
 
     @FXML
@@ -295,6 +297,7 @@ public class ControllerEmployeePage implements Initializable {
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
                         stringArrayList = IAMExtract.stringEmailList;
+                        System.out.println(stringArrayList);
                         for(int u=0;u<stringArrayList.size();u++){
                             stringEmail=stringArrayList.get(u);
                             System.out.println("======================"+stringEmail);
@@ -305,6 +308,7 @@ public class ControllerEmployeePage implements Initializable {
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
                         stringArrayList = IAMExtract.stringEmailList;
+                        System.out.println(stringArrayList);
                         for(int u=0;u<stringArrayList.size();u++){
                             stringEmail=stringArrayList.get(u);
                             System.out.println("======================"+stringEmail);
@@ -433,6 +437,7 @@ public class ControllerEmployeePage implements Initializable {
         process.start();
         jfxcombobox.setDisable(true);
         //IF EMAIL IS NOT -users: , DO NOT PUT BUTTON INSIDE CELL
+//        revokePermissions.setCellFactory(ActionButtonTableCell);
 
         revokePermissions.setCellFactory(new Callback<TableColumn<IAMExtract, Button>, TableCell<IAMExtract, Button>>() {
             String oneEmail;
@@ -443,34 +448,31 @@ public class ControllerEmployeePage implements Initializable {
                     @Override
                     public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
-
                         if(!isEmpty()) {
-                            revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
-                                iamExtract(iamExtracts);
-                                emailPermission = iamExtracts.getGlobalUser();
-                                emailPermission = emailPermission.substring(9,emailPermission.length());
-                                System.out.println("THIS IS THE EMAIL!!" + emailPermission);
 
-                                rolePermission = iamExtracts.getGlobalRole();
-                                System.out.println("THIS IS THE ROLE: " + rolePermission);
-
-                                doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
-                                doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-                                CHECKING = checker2;
-                                System.out.println("CHECKER NOW IS " + CHECKING);
-
-                                return iamExtracts;
-                            }));
+//                            this.setTextFill(Color.GREEN);
                             for (int b = 0; b < stringArrayList.size(); b++) {
                                 oneEmail = stringArrayList.get(b);
                                 if (!oneEmail.contains("user:")) {
                                     System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
-                                    this.setDisable(true);
+                                }else{
+                                    revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
+                                        iamExtract(iamExtracts);
+                                        emailPermission = iamExtracts.getGlobalUser();
+                                        emailPermission = emailPermission.substring(9,emailPermission.length());
+                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
+
+                                        rolePermission = iamExtracts.getGlobalRole();
+                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
+
+                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
+                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                                        CHECKING = checker2;
+                                        System.out.println("CHECKER NOW IS " + CHECKING);
+
+                                        return iamExtracts;
+                                    }));
                                 }
-//                                else {
-//                                    this.setDisable(true);
-//                                    System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
-//                                }
                             }
                             setItem(item);
 
@@ -634,14 +636,17 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void onClickAdmin(MouseEvent event) {
-        process1a.start();
+        spinner.setVisible(true);
         secondAnchor.setVisible(false);
         employeeTable.setVisible(false);
         adminTable.setVisible(true);
         adminButton.setDisable(true);
 
+        process1a.start();
+
         process1a.setOnSucceeded(e -> {
             adminButton.setDisable(false);
+            spinner.setVisible(false);
             process1a.reset();
         });
         process1a.setOnCancelled(e -> {
@@ -657,11 +662,13 @@ public class ControllerEmployeePage implements Initializable {
         secondAnchor.setVisible(false);
         adminTable.setVisible(false);
         employeeTable.setVisible(true);
+        spinner.setVisible(true);
 
         process1.start();
         employeeButton.setDisable(true);
 
         process1.setOnSucceeded(e -> {
+            spinner.setVisible(false);
             employeeButton.setDisable(false);
             process1.reset();
         });
@@ -1064,7 +1071,7 @@ public class ControllerEmployeePage implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            String sendingMessage = "You, " + emailAdmin + " have been removed from FireE's Cloud Administrator Database. Please contact Administrator if unknown.";
+            String sendingMessage = "You, " + emailAdmin + " have been removed from FireE's Cloud Administrator Database. Contact Administrator if unknown.";
             System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
             sendSMS.sendSMS(hpAdmin,sendingMessage);
 
@@ -1123,7 +1130,7 @@ public class ControllerEmployeePage implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Please contact Administrator if unknown.";
+            String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Contact Administrator if unknown.";
             System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
             sendSMS.sendSMS(handphoneNUMBER,sendingMessage);
             employeeTable.getItems().remove(users);
