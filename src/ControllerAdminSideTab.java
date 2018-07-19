@@ -74,7 +74,7 @@ public class ControllerAdminSideTab {
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                OLDControllerCAMainDashboard controller = loader.getController();
+                ControllerCAMainDashboard controller = loader.getController();
                 controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -89,7 +89,7 @@ public class ControllerAdminSideTab {
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                OLDControllerCAMainDashboard controller = loader.getController();
+                ControllerCAMainDashboard controller = loader.getController();
                 controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();

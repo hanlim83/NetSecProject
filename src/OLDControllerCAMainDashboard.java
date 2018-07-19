@@ -1,15 +1,14 @@
 import Database.admin_DB;
-import Model.NetworkCapture;
-import Model.SMS;
-import Model.ScheduledExecutorServiceHandler;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -29,47 +30,57 @@ import org.pcap4j.core.PcapNetworkInterface;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class ControllerCAMainDashboard implements Initializable {
+public class OLDControllerCAMainDashboard implements Initializable {
+    private static final int RECORD_DURATION = 5;
+    private static final int MINUITE_TO_MILISECONDS = 60000;
     public static AnchorPane rootP;
+    private final int MAX_DATA_POINTS = 25, MAX = 9999, MIN = 11;
+    public ArrayList<OLDLineChartObject> packetsLineChart;
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private JFXHamburger hamburger;
     @FXML
+    private JFXDrawer drawer;
+    @FXML
     private JFXToggleButton captureToggle;
     @FXML
     private JFXButton clearCaptureBtn;
     @FXML
-    private LineChart<?, ?> networkTrafficChart;
+    private Label alertCount;
+    @FXML
+    private LineChart<Number, Number> networkTrafficChart;
     @FXML
     private PieChart protocolChart;
     @FXML
     private PieChart top10IPChart;
     @FXML
-    private Label alertCount;
-    @FXML
-    private JFXDrawer drawer;
-    @FXML
     private JFXSpinner spinner;
-
-    private Scene myScene;
     private PcapNetworkInterface device;
+    private Scene myScene;
+    private ArrayList<OLDLineChartObject> TPS;
     private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private Integer threshold;
+    private XYChart.Series series;
+    private NumberAxis chartXAxis;
+    private NumberAxis chartYAxis;
+    private double y = 10;
     private ArrayList<String> adminPN;
     private admin_DB db;
     private SMS SMSHandler;
+    private Timer timer = new Timer(true);
+    private TimerTask exportTask;
+    private boolean timerTaskinProgress = false;
+    private ArrayList<OLDPieChartDataObject> data;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,76 +95,60 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }
         });
+        chartXAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 1);
+        chartXAxis.setLabel("Duration");
+        chartYAxis = new NumberAxis(MIN - 1, MAX + 1, 50);
+        chartYAxis.setLabel("Packets Captured");
+        networkTrafficChart = new LineChart<>(chartXAxis, chartYAxis);
+        series = new XYChart.Series();
+        series.setName("Data");
+        packetsLineChart = new ArrayList<OLDLineChartObject>();
+        networkTrafficChart.getXAxis().setAutoRanging(true);
+        networkTrafficChart.getYAxis().setAutoRanging(true);
+        networkTrafficChart.getData().add(series);
         db = new admin_DB();
         hamburger.setDisable(true);
         captureToggle.setDisable(true);
-        /*exportTask = new TimerTask() {
+        exportTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Running");
                 capture.Specficexport();
                 timerTaskinProgress = false;
             }
-        };*/
+        };
     }
 
-    @FXML
-    public void ClearPackets(ActionEvent event) {
-        myScene = anchorPane.getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        String title = "Confirmation Dialog";
-        String content = "Do just want to clear the current capture only or clear the current capture and select a new interface?";
-        JFXButton clearCapture = new JFXButton("Clear Capture Only");
-        clearCapture.setButtonType(JFXButton.ButtonType.RAISED);
-        clearCapture.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
-        JFXButton clearCaptureAndInt = new JFXButton("Clear and choose new interface");
-        clearCaptureAndInt.setButtonType(JFXButton.ButtonType.RAISED);
-        clearCaptureAndInt.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Label(title));
-        layout.setBody(new Label(content));
-        layout.setActions(clearCapture, clearCaptureAndInt);
-        JFXAlert<Void> alert = new JFXAlert<>(stage);
-        alert.setOverlayClose(true);
-        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        alert.setContent(layout);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        clearCapture.setOnAction(addEvent -> {
-            capture = null;
-            clearCaptureBtn.setDisable(true);
-            alertCount.setText("Suspicious Events Count: 0");
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            alert.hideWithAnimation();
-        });
-        clearCaptureAndInt.setOnAction(addEvent -> {
-            capture = null;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
-            myScene = ((Node) event.getSource()).getScene();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            alert.close();
-            stage.show();
-        });
-        alert.showAndWait();
+    public void plotCaptureLine() {
+        /*OLDLineChartObject data = capture.getTrafficPerSecond();
+        series.getData().add(new XYChart.Data<Number, Number>(data.getLocation(), data.getData()));
+        System.out.println(data.getLocation() + "," + data.getData());*/
+        if (OLDLineChartObject.getCount() > MAX_DATA_POINTS) {
+            series.getData().remove(0);
+        }
+        if (OLDLineChartObject.getCount() > MAX_DATA_POINTS - 1) {
+            chartXAxis.setLowerBound(chartXAxis.getLowerBound() + 1);
+            chartXAxis.setUpperBound(chartXAxis.getUpperBound() + 1);
+        }
     }
+
+    /*public void plotExisitingData() {
+        if (TPS.size() > MAX_DATA_POINTS) {
+            int startingIndex = TPS.size() - MAX_DATA_POINTS;
+            for (int i = startingIndex; i < TPS.size(); i++) {
+                series.getData().add(new XYChart.Data<Number, Number>(TPS.get(i).getLocation(), TPS.get(i).getData()));
+            }
+        }
+        else if (TPS.size() < MAX_DATA_POINTS && TPS.size() != 0) {
+            for (OLDLineChartObject O : TPS) {
+                series.getData().add(new XYChart.Data<Number, Number>(O.getLocation(), O.getData()));
+            }
+        }
+    }*/
 
     public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
         this.device = nif;
         this.handler = handler;
+        this.capture = capture;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
@@ -254,140 +249,95 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }, 1, TimeUnit.SECONDS));
         }
-        if (capture == null)
+        if (capture == null) {
             clearCaptureBtn.setDisable(true);
-        else if (capture.isRunning()) {
-            this.capture = capture;
+        } else if (capture.isRunning()) {
             captureToggle.setSelected(true);
+            //TPS = capture.PreviousTPS;
+            //plotExisitingData();
             handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        plotCaptureLine();
                         if (capture.checkThreshold()) {
                             SMSHandler.sendAlert();
-                   /* if (!timerTaskinProgress) {
-                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
-                        timerTaskinProgress = true;
-                    }*/
-                            capture.Specficexport();
-                        }
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
+                            if (!timerTaskinProgress) {
+                                timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                                timerTaskinProgress = true;
                             }
-                        });
+                        }
                     } catch (ConcurrentModificationException e) {
-                        System.err.println("ConcurrentModification Detected");
+                        System.err.println("Concurrent MModificationException Detected!");
                     }
                 }
-            }, 2, 1, TimeUnit.SECONDS));
-
+            }, 1, 10, TimeUnit.SECONDS));
         } else if (capture != null) {
-            this.capture = capture;
             clearCaptureBtn.setDisable(false);
+            //TPS = capture.PreviousTPS;
+            //plotExisitingData();
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPieChart() {
+        int max = 0, index = 0;
+        capture.ProtocolMakeup();
+        ArrayList<Integer> data = capture.ProtocolMakeupData;
+        ArrayList<String> protocols = capture.ProtocolMakeupProtocols;
+        if (data.size() != protocols.size())
+            return;
+        max = data.size();
+        ObservableList<PieChart.Data> insertData = FXCollections.observableArrayList();
+        for (index = 0; index < max; index++) {
+            insertData.add(new PieChart.Data(protocols.get(index), data.get(index)));
+        }
+        protocolChart.setData(insertData);
+        ObservableList<PieChart.Data> retrievedData = protocolChart.getData();
+        for (PieChart.Data Data : retrievedData) {
+            System.out.println(Data.getPieValue());
+            System.out.println(Data.getName());
         }
     }
 
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
-        handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                boolean flag = capture.checkThreshold();
-                try {
-                    if (flag) {
-                        SMSHandler.sendAlert();
-                   /* if (!timerTaskinProgress) {
-                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
-                        timerTaskinProgress = true;
-                    }*/
-                        capture.Specficexport();
-                        Platform.runLater(new Runnable() {
+        if (handler.getchartDataRunnable() == null) {
+            handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //plotCaptureLine();
+                        setPieChart();
+                        if (capture.checkThreshold()) {
+                            SMSHandler.sendAlert();
+                            if (!timerTaskinProgress) {
+                                timer.schedule(exportTask, (RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                                timerTaskinProgress = true;
+                            }
+                        }
+                    } catch (ConcurrentModificationException e) {
+                        System.err.println("Concurrent ModificationException Detected!");
+                        capture.stopSniffing();
+                        setPieChart();
+                        handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                             @Override
                             public void run() {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Suspicious Network Event Detected!";
-                                String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the alerts has been generated for you.";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
-                                alert.show();
+                                capture.startSniffing();
                             }
-                        });
+                        }, 1, SECONDS));
                     }
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                        }
-                    });
-                } catch (ConcurrentModificationException e) {
-                    System.err.println("ConcurrentModification Detected");
-                    capture.stopSniffing();
-                    if (flag) {
-                        SMSHandler.sendAlert();
-                   /* if (!timerTaskinProgress) {
-                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
-                        timerTaskinProgress = true;
-                    }*/
-                        capture.Specficexport();
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Suspicious Network Event Detected!";
-                                String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
-                                alert.show();
-                            }
-                        });
-                    }
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                        }
-                    });
-                    capture.startSniffing();
                 }
-            }
-        }, 2, 1, TimeUnit.SECONDS));
+            }, 3, 5, TimeUnit.SECONDS));
+        }
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -396,7 +346,6 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }, 1, SECONDS));
         }
-        clearCaptureBtn.setDisable(true);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -405,21 +354,21 @@ public class ControllerCAMainDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        clearCaptureBtn.setDisable(true);
     }
 
     public void stopCapturing() {
         capture.stopSniffing();
         handler.cancelchartDataRunnable();
-        capture.Generalexport();
         //Alert below
-        myScene = anchorPane.getScene();
+        /*myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
         String title = "Packet Capturing Summary";
         String content;
         if (com.sun.jna.Platform.isWindows())
-            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketsCaptured() + "\nNetwork Capture File Name: " + capture.getGeneralExportFileName();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketsCaptured();
         else
-            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nNetwork Capture File Name: " + capture.getGeneralExportFileName();
+            content = "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped: " + capture.getPacketsDropped() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount();
         JFXButton close = new JFXButton("Close");
         close.setButtonType(JFXButton.ButtonType.RAISED);
         close.setStyle("-fx-background-color: #00bfff;");
@@ -438,7 +387,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 alert.hideWithAnimation();
             }
         });
-        alert.show();
+        alert.show();*/
         clearCaptureBtn.setDisable(false);
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -450,7 +399,6 @@ public class ControllerCAMainDashboard implements Initializable {
         }
     }
 
-
     public void hamburgerBar() {
         rootP = anchorPane;
 
@@ -460,7 +408,7 @@ public class ControllerCAMainDashboard implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerCAMainDashboard.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
@@ -479,5 +427,60 @@ public class ControllerCAMainDashboard implements Initializable {
                 drawer.setDisable(false);
             }
         });
+    }
+
+    @FXML
+    public void ClearPackets(ActionEvent event) {
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        String title = "Confirmation Dialog";
+        String content = "Do just want to clear the current capture only or clear the current capture and select a new interface?";
+        JFXButton clearCapture = new JFXButton("Clear Capture Only");
+        clearCapture.setButtonType(JFXButton.ButtonType.RAISED);
+        clearCapture.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
+        JFXButton clearCaptureAndInt = new JFXButton("Clear and choose new interface");
+        clearCaptureAndInt.setButtonType(JFXButton.ButtonType.RAISED);
+        clearCaptureAndInt.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(clearCapture, clearCaptureAndInt);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        clearCapture.setOnAction(addEvent -> {
+            capture = null;
+            clearCaptureBtn.setDisable(true);
+            alertCount.setText("Suspicious Events Count: 0");
+            networkTrafficChart.getData().removeAll();
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                ControllerAdminSideTab ctrl = loader.getController();
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            alert.hideWithAnimation();
+        });
+        clearCaptureAndInt.setOnAction(addEvent -> {
+            capture = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCALandingSelectInt controller = loader.getController();
+                controller.passVariables(handler, null, null, 0, SMSHandler, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            alert.close();
+            stage.show();
+        });
+        alert.showAndWait();
     }
 }
