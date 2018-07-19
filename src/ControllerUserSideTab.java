@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -84,6 +86,9 @@ public class ControllerUserSideTab {
 
     @FXML
     void onHoverTest(MouseEvent event) {
+//        SecureCloudStorageButton.setStyle("-fx-background-color: red;");
+        SecureCloudStorageButton.setRipplerFill(Color.RED);
+//        SecureCloudStorageButton.setDisableVisualFocus(false);
         SecureCloudStorageButton.setButtonType(JFXButton.ButtonType.RAISED);
         System.out.println("Hovering");
     }

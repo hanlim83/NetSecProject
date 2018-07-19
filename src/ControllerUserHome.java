@@ -288,22 +288,24 @@ public class ControllerUserHome implements Initializable {
 
     @FXML
     void onClickRSAButton(ActionEvent event) throws Exception {
-        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
-        rsaKeyGenerator.buildKeyPair();
-        System.out.println("=====================Public Key==========================");
-        System.out.println(rsaKeyGenerator.getPublicKeyString());
-        System.out.println("================================Private Key================================");
-        String privateKey = rsaKeyGenerator.getPrivateKeyString();
-        System.out.println(privateKey);
-
-        String encryptedPrivateKey = rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233", privateKey);
-        System.out.println("==========================Encrypted Private Key==================================");
-        System.out.println(encryptedPrivateKey);
-
-        System.out.println("==========================Decrypted Private Key==================================");
-        String privateKey2 = rsaKeyGenerator.getPrivateKeyString("pass1233", encryptedPrivateKey);
-        System.out.println(privateKey2);
-        System.out.println(privateKey.equals(privateKey2));
+        User_InfoDB user_infoDB=new User_InfoDB();
+        System.out.println(user_infoDB.checkPassword("WrongPassword","Email here"));
+//        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
+//        rsaKeyGenerator.buildKeyPair();
+//        System.out.println("=====================Public Key==========================");
+//        System.out.println(rsaKeyGenerator.getPublicKeyString());
+//        System.out.println("================================Private Key================================");
+//        String privateKey = rsaKeyGenerator.getPrivateKeyString();
+//        System.out.println(privateKey);
+//
+//        String encryptedPrivateKey = rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233", privateKey);
+//        System.out.println("==========================Encrypted Private Key==================================");
+//        System.out.println(encryptedPrivateKey);
+//
+//        System.out.println("==========================Decrypted Private Key==================================");
+//        String privateKey2 = rsaKeyGenerator.getPrivateKeyString("pass1233", encryptedPrivateKey);
+//        System.out.println(privateKey2);
+//        System.out.println(privateKey.equals(privateKey2));
     }
 
     @FXML

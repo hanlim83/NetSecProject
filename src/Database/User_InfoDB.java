@@ -1,5 +1,8 @@
 package Database;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -75,20 +78,11 @@ public class User_InfoDB {
     public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String phoneNo,String email) throws SQLException {
         //maybe change to boolean next time
 
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "user_info";
-        String username = "root";
-        String password = "root";
-        String state = "";
-//        if (instanceConnectionName.equals("user_info")) {
-//            System.err.println("Please update the sample to specify the instance connection name.");
-//            System.exit(1);
-//        }
-//
-//        if (password.equals("<insert_password>")) {
-//            System.err.println("Please update the sample to specify the mysql password.");
-//            System.exit(1);
-//        }
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "user_info";
+//        String username = "root";
+//        String password = "root";
+//        String state = "";
 
         //[START doc-example]
         String jdbcUrl = String.format(
@@ -257,5 +251,48 @@ public class User_InfoDB {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE entries SET phoneNo='"+phoneNo+"' WHERE email='"+email+"'");
         }
+    }
+
+    public boolean checkPassword(String passwordToHash,String email) throws SQLException {
+        String hashPassword=get_SHA_512_SecurePassword(passwordToHash,email);
+        //[START doc-example]
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        //[END doc-example]
+
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            ResultSet resultSet = statement.executeQuery("SELECT CASE WHEN hashPassword='"+hashPassword+"' THEN 1 ELSE 0 END FROM entries WHERE email='"+email+"'");
+            while (resultSet.next()) {
+                if(resultSet.getString(1).equals("1")){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private String get_SHA_512_SecurePassword(String passwordToHash, String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
     }
 }
