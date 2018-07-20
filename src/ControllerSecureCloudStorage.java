@@ -496,8 +496,8 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     VBox vBox = new VBox();
-    JFXButton jfxDownloadButton = new JFXButton();
-    JFXButton jfxDeleteButton = new JFXButton();
+    private JFXButton jfxDownloadButton = new JFXButton();
+    private JFXButton jfxDeleteButton = new JFXButton();
     private int vBoxCounter = 0;
 
     double minX;
@@ -517,8 +517,48 @@ public class ControllerSecureCloudStorage implements Initializable {
             Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
             vBox.setBackground(unfocusBackground);
             jfxDownloadButton.setText("Download");
-            jfxDeleteButton.setText("Delete");
             jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
+            jfxDownloadButton.setOnAction(__ -> {
+                //Download File
+                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+                System.out.println("Download File");
+                calculateEmail();
+                try {
+                    downloadFile(storage,privateBucketName,blobName,saveFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                myScene = anchorPane.getScene();
+//                Stage stage = (Stage) (myScene).getWindow();
+//
+//                String title = "";
+//                String content = "Are you sure you want to delete this file?";
+//
+//                JFXButton close = new JFXButton("Ok");
+//
+//                close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                close.setStyle("-fx-background-color: #00bfff;");
+//
+//                JFXDialogLayout layout = new JFXDialogLayout();
+//                layout.setHeading(new Label(title));
+//                layout.setBody(new Label(content));
+//                layout.setActions(close);
+//                JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                alert.setOverlayClose(true);
+//                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                alert.setContent(layout);
+//                alert.initModality(Modality.NONE);
+//                close.setOnAction(___ -> {alert.hideWithAnimation();
+//                    calculateEmail();
+//                    deleteFile(privateBucketName,blobName);
+//                    updateObservableList();
+//                    TableMethod();});
+//                alert.show();
+            });
+
+
+            jfxDeleteButton.setText("Delete");
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
             //Update this to show confirmation pop-up
@@ -576,7 +616,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
     }
 
-    EventHandler<MouseEvent> closeVbox = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> closeVbox = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             System.out.println("mouse click detected! " + mouseEvent.getSource());
