@@ -31,7 +31,8 @@ public class NetworkCapture {
     public ArrayList<Integer> PreviousTPS;
     public ArrayList<Integer> ProtocolMakeupData;
     public ArrayList<String> ProtocolMakeupProtocols;
-    public ArrayList<Integer> Top5IPMakeup;
+    public ArrayList<Integer> Top5IPValue;
+    public ArrayList<String> Top5IPMakeup;
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
     private PcapDumper dumper;
@@ -45,9 +46,6 @@ public class NetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
-    private int TPSSize = 0;
-    private String GeneralExportFileName;
-    private String SpecificExportFileName;
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
@@ -66,6 +64,9 @@ public class NetworkCapture {
                 ++perMinutePktCount;
         }
     };
+    private int TPSSize = 0;
+    private String GeneralExportFileName;
+    private String SpecificExportFileName;
 
     public NetworkCapture(PcapNetworkInterface nif, String directoryPath, int Threshold) {
         this.Netinterface = nif;
@@ -87,7 +88,8 @@ public class NetworkCapture {
         };
         ProtocolMakeupData = new ArrayList<Integer>();
         ProtocolMakeupProtocols = new ArrayList<String>();
-        Top5IPMakeup = new ArrayList<Integer>();
+        Top5IPValue = new ArrayList<Integer>();
+        Top5IPMakeup = new ArrayList<String>();
     }
 
     public long getPacketsReceived() {
@@ -270,9 +272,6 @@ public class NetworkCapture {
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             SpecificExportFileName = "Partial Capture for Alert " + dtf.format(now) + ".pcap";
             dumper = Phandle.dumpOpen(directoryPath + "\\" + SpecificExportFileName);
-            /*for (CapturedPacket p : packets) {
-                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
-            }*/
             for (CapturedPacket p : packets) {
                 if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
@@ -311,25 +310,6 @@ public class NetworkCapture {
             return false;
         }
     }
-
-    /*public OLDLineChartObject getTrafficPerSecond() {
-        Timestamp original = new Timestamp(System.currentTimeMillis());
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(original.getTime());
-        cal.add(Calendar.SECOND, TPSRange);
-        Timestamp later = new Timestamp(cal.getTime().getTime());
-        int packetCount = 0;
-        for (CapturedPacket packet : packets) {
-            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
-                ++packetCount;
-            else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
-                ++packetCount;
-        }
-        OLDLineChartObject TPS = new OLDLineChartObject(packetCount);
-        PreviousTPS.add(TPS);
-        lastTimeStamp = later;
-        return TPS;
-    }*/
 
     public void getTrafficPerSecond() {
         Timestamp original = new Timestamp(System.currentTimeMillis());
