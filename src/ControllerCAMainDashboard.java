@@ -336,7 +336,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 boolean flag = capture.checkThreshold();
                 try {
                     ProtoMakeup();
-                    plotCaptureLine();
+//                    plotCaptureLine();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
@@ -383,7 +383,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     System.err.println("ConcurrentModification Detected");
                     capture.stopSniffing();
                     ProtoMakeup();
-                    plotCaptureLine();
+                    //plotCaptureLine();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
@@ -429,7 +429,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     capture.startSniffing();
                 }
             }
-        }, 2, 1, TimeUnit.SECONDS));
+        }, 2, 5, TimeUnit.SECONDS));
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
