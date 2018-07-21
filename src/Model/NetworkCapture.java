@@ -8,10 +8,7 @@ import org.pcap4j.packet.Packet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class NetworkCapture {
     //Pre-Defined Variables
@@ -31,8 +28,7 @@ public class NetworkCapture {
     public ArrayList<Integer> PreviousTPS;
     public ArrayList<Integer> ProtocolMakeupData;
     public ArrayList<String> ProtocolMakeupProtocols;
-    public ArrayList<Integer> Top5IPValue;
-    public ArrayList<String> Top5IPMakeup;
+    public ArrayList<TopIPObject> Top5IPMakeup;
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
     private PcapDumper dumper;
@@ -46,10 +42,6 @@ public class NetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
-    private int TPSSize = 0;
-    private String GeneralExportFileName;
-    private String SpecificExportFileName;
-
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
@@ -68,6 +60,9 @@ public class NetworkCapture {
                 ++perMinutePktCount;
         }
     };
+    private int TPSSize = 0;
+    private String GeneralExportFileName;
+    private String SpecificExportFileName;
 
     public NetworkCapture(PcapNetworkInterface nif, String directoryPath, int Threshold) {
         this.Netinterface = nif;
@@ -89,8 +84,7 @@ public class NetworkCapture {
         };
         ProtocolMakeupData = new ArrayList<Integer>();
         ProtocolMakeupProtocols = new ArrayList<String>();
-        Top5IPValue = new ArrayList<Integer>();
-        Top5IPMakeup = new ArrayList<String>();
+        Top5IPMakeup = new ArrayList<TopIPObject>();
     }
 
     public long getPacketsReceived() {
@@ -329,6 +323,37 @@ public class NetworkCapture {
         ++TPSSize;
         lastTimeStamp = new Timestamp(cal.getTime().getTime());
         System.out.println(packetCount);
+    }
+
+    public void getTop5IP() {
+        TopIPObject tempt = null;
+        int recordedIndex = 0;
+        for (CapturedPacket p : packets) {
+            if (Top5IPMakeup.isEmpty()) {
+                Top5IPMakeup.add(new TopIPObject(p.getSrcIP(), 1));
+            } else {
+                for (int i = 0; i < Top5IPMakeup.size(); i++) {
+                    if (p.getSrcIP().equals(Top5IPMakeup.get(i).getKey())) {
+                        tempt = new TopIPObject(Top5IPMakeup.get(i).getKey(), Top5IPMakeup.get(i).getValue() + 1);
+                        recordedIndex = i;
+                        break;
+                    }
+                }
+                if (tempt != null) {
+                    Top5IPMakeup.set(recordedIndex, tempt);
+                    recordedIndex = 0;
+                    tempt = null;
+                }
+            }
+        }
+        if (!Top5IPMakeup.isEmpty() && Top5IPMakeup.size() > 5) {
+            Collections.sort(Top5IPMakeup);
+            ArrayList<TopIPObject> temporary = new ArrayList<TopIPObject>();
+            for (int j = 0; j < 5; j++) {
+                temporary.set(j, Top5IPMakeup.get(j));
+            }
+            Top5IPMakeup = temporary;
+        }
     }
 
     public boolean isRunning() {

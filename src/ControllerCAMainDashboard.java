@@ -2,6 +2,7 @@ import Database.admin_DB;
 import Model.NetworkCapture;
 import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
+import Model.TopIPObject;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -464,6 +465,25 @@ public class ControllerCAMainDashboard implements Initializable {
         });
     }
 
+    public void TopIPMakeup() {
+        int index = 0, max = 0;
+        capture.getTop5IP();
+        ArrayList<TopIPObject> IPData = capture.Top5IPMakeup;
+        if (IPData.isEmpty())
+            return;
+        max = IPData.size();
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        for (index = 0; index < max; index++) {
+            data.add(new PieChart.Data(IPData.get(index).getKey(), IPData.get(index).getValue()));
+        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                top10IPChart.setData(data);
+            }
+        });
+    }
+
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
@@ -475,6 +495,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     addToQueue();
                     ProtoMakeup();
                     addDataToSeries();
+                    TopIPMakeup();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
@@ -523,6 +544,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     addToQueue();
                     ProtoMakeup();
                     addDataToSeries();
+                    TopIPMakeup();
                     if (flag) {
                         SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
