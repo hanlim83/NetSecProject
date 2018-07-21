@@ -4,8 +4,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
@@ -17,6 +15,7 @@ public class Main extends Application {
 //            scene.getStylesheets().add("Style.css");
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
+//            primaryStage.getIcons().add(new Image("FireIcon.png"));
             primaryStage.setTitle("NSPJ");
             primaryStage.show();
         } catch (Exception e) {

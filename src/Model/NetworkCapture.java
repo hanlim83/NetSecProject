@@ -333,7 +333,7 @@ public class NetworkCapture {
                 Top5IPMakeup.add(new TopIPObject(p.getSrcIP(), 1));
             } else {
                 for (int i = 0; i < Top5IPMakeup.size(); i++) {
-                    if (p.getSrcIP().equals(Top5IPMakeup.get(i).getKey())) {
+                    if (!p.getSrcIP().isEmpty() && p.getSrcIP().equals(Top5IPMakeup.get(i).getKey())) {
                         tempt = new TopIPObject(Top5IPMakeup.get(i).getKey(), Top5IPMakeup.get(i).getValue() + 1);
                         recordedIndex = i;
                         break;
@@ -343,6 +343,8 @@ public class NetworkCapture {
                     Top5IPMakeup.set(recordedIndex, tempt);
                     recordedIndex = 0;
                     tempt = null;
+                } else {
+                    Top5IPMakeup.add(new TopIPObject(p.getSrcIP(), 1));
                 }
             }
         }
@@ -350,7 +352,7 @@ public class NetworkCapture {
             Collections.sort(Top5IPMakeup);
             ArrayList<TopIPObject> temporary = new ArrayList<TopIPObject>();
             for (int j = 0; j < 5; j++) {
-                temporary.set(j, Top5IPMakeup.get(j));
+                temporary.add(Top5IPMakeup.get(j));
             }
             Top5IPMakeup = temporary;
         }

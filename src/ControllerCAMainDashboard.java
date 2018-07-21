@@ -466,15 +466,13 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     public void TopIPMakeup() {
-        int index = 0, max = 0;
         capture.getTop5IP();
         ArrayList<TopIPObject> IPData = capture.Top5IPMakeup;
         if (IPData.isEmpty())
             return;
-        max = IPData.size();
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        for (index = 0; index < max; index++) {
-            data.add(new PieChart.Data(IPData.get(index).getKey(), IPData.get(index).getValue()));
+        for (TopIPObject d : IPData) {
+            data.add(new PieChart.Data(d.getKey(), d.getValue()));
         }
         Platform.runLater(new Runnable() {
             @Override

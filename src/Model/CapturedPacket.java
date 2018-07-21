@@ -1,12 +1,10 @@
 package Model;
 
-import org.pcap4j.packet.IpPacket;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
-import org.pcap4j.packet.UdpPacket;
-import java.sql.Timestamp;
+import org.pcap4j.packet.*;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
 
 public class CapturedPacket {
     private int srcPort,dstPort,length,number;
@@ -20,14 +18,27 @@ public class CapturedPacket {
         this.number = packetNumber;
         this.orignalTimeStamp = timestamp;
         this.timestamp = this.orignalTimeStamp.toString();
-        if (!originalPacket.contains(IpPacket.class)) {
-            this.information ="Not a Layer 2 (IP) Packet";
+        if (originalPacket.contains(ArpPacket.class)) {
+            ArpPacket arpPacket = this.originalPacket.get(ArpPacket.class);
+            this.srcIP = arpPacket.getHeader().getSrcProtocolAddr().getHostAddress();
+            this.destIP = arpPacket.getHeader().getDstProtocolAddr().getHostAddress();
+            this.Protocol = arpPacket.getHeader().getProtocolType().name();
+            this.length = arpPacket.getHeader().length();
+            if (arpPacket.getHeader().getOperation().value() == 1)
+                this.information = "ARP Request";
+            else if (arpPacket.getHeader().getOperation().value() == 2)
+                this.information = "ARP Reply";
+            else if (arpPacket.getHeader().getOperation().value() == 3)
+                this.information = "Reverse ARP Request";
+            else if (arpPacket.getHeader().getOperation().value() == 4)
+                this.information = "Reverse ARP Reply";
+        } else if (!originalPacket.contains(IpPacket.class)) {
+            this.information = "Not a Layer 2 (IP) Packet";
             return;
-        }
-        else {
+        } else {
             IpPacket ipPacket = this.originalPacket.get(IpPacket.class);
-            this.srcIP = ipPacket.getHeader().getSrcAddr().getHostAddress().toString();
-            this.destIP = ipPacket.getHeader().getDstAddr().getHostAddress().toString();
+            this.srcIP = ipPacket.getHeader().getSrcAddr().getHostAddress();
+            this.destIP = ipPacket.getHeader().getDstAddr().getHostAddress();
             this.Protocol = ipPacket.getHeader().getProtocol().name();
             if (this.Protocol.equals("TCP") ){
                 TcpPacket tcpPkt = this.originalPacket.get(TcpPacket.class);

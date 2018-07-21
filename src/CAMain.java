@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class CAMain extends Application {
@@ -27,6 +28,7 @@ public class CAMain extends Application {
             scene.getStylesheets().add(css);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
+            primaryStage.getIcons().add(new Image("FireIcon.png"));
             primaryStage.setTitle("Interface Selection");
             primaryStage.show();
         } catch (Exception e) {

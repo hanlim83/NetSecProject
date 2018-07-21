@@ -22,6 +22,7 @@ public class MainAdmin extends Application {
             loadAdminSideTabCtrl();
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
+//            primaryStage.getIcons().add(new Image("FireIcon.png"));
             primaryStage.setTitle("NSPJ");
             primaryStage.show();
         } catch (Exception e) {
