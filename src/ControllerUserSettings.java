@@ -107,7 +107,7 @@ public class ControllerUserSettings implements Initializable {
 
         // Need to add method to check password with the database
 
-        if (old.equals(exist)) {
+        if (old.equals(exist)&& user.checkPassword(pass, mail)==true) {
 
             user.setPhoneNo(number, mail);
             System.out.print("Change Successful!");

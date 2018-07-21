@@ -141,7 +141,7 @@ public class FileScanner {
         String ext = FilenameUtils.getExtension(path);
         System.out.print("\n\n" + ext + " - \n");
 
-        if (ext.equals("bat") || ext.equals("txt")) {
+        if (ext.equals("bat") || ext.equals("exe")) {
 
             return true;
 

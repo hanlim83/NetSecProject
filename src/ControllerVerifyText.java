@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -69,11 +70,12 @@ public class ControllerVerifyText {
 
 
     @FXML
-    void resendText(ActionEvent event) {
+    void resendText(ActionEvent event) throws MalformedURLException {
 
-        ControllerVerifyText resend = new ControllerVerifyText();
         String phoneNo = numberViewer.getText();
-        resend.sendNew(phoneNo);
+        TextAuthentication auth = new TextAuthentication();
+
+        auth.sendNew();
 
     }
 
