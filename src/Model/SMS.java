@@ -15,7 +15,7 @@ public class SMS {
     private AuthMethod auth;
     private NexmoClient client;
     private ArrayList<String> adminPN;
-    private static final boolean permitUse = true;
+    private static final boolean permitUse = false;
     private boolean GeneralUse;
 
     //PermitUse Boolean is used to prevent accidental charges to NEXMO balance. Please set as necessary

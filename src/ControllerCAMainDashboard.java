@@ -308,10 +308,13 @@ public class ControllerCAMainDashboard implements Initializable {
                                     myScene = anchorPane.getScene();
                                     Stage stage = (Stage) (myScene).getWindow();
                                     String title = "Suspicious Network Event Detected!";
-                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the alerts has been generated for you.";
+                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
                                     JFXButton close = new JFXButton("Close");
                                     close.setButtonType(JFXButton.ButtonType.RAISED);
                                     close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXButton show = new JFXButton("Show Alert Dashboard");
+                                    show.setButtonType(JFXButton.ButtonType.RAISED);
+                                    show.setStyle("-fx-background-color: #ff90bb;");
                                     JFXDialogLayout layout = new JFXDialogLayout();
                                     layout.setHeading(new Label(title));
                                     layout.setBody(new Label(content));
@@ -325,6 +328,12 @@ public class ControllerCAMainDashboard implements Initializable {
                                         @Override
                                         public void handle(ActionEvent __) {
                                             alert.hideWithAnimation();
+                                        }
+                                    });
+                                    show.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+
                                         }
                                     });
                                     alert.show();
@@ -360,6 +369,9 @@ public class ControllerCAMainDashboard implements Initializable {
                                     JFXButton close = new JFXButton("Close");
                                     close.setButtonType(JFXButton.ButtonType.RAISED);
                                     close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXButton show = new JFXButton("Show Alert Dashboard");
+                                    show.setButtonType(JFXButton.ButtonType.RAISED);
+                                    show.setStyle("-fx-background-color: #ff90bb;");
                                     JFXDialogLayout layout = new JFXDialogLayout();
                                     layout.setHeading(new Label(title));
                                     layout.setBody(new Label(content));
@@ -373,6 +385,12 @@ public class ControllerCAMainDashboard implements Initializable {
                                         @Override
                                         public void handle(ActionEvent __) {
                                             alert.hideWithAnimation();
+                                        }
+                                    });
+                                    show.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+
                                         }
                                     });
                                     alert.show();
@@ -508,10 +526,13 @@ public class ControllerCAMainDashboard implements Initializable {
                                 myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "Suspicious Network Event Detected!";
-                                String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the alerts has been generated for you.";
+                                String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
                                 close.setStyle("-fx-background-color: #00bfff;");
+                                JFXButton show = new JFXButton("Show Alert Dashboard");
+                                show.setButtonType(JFXButton.ButtonType.RAISED);
+                                show.setStyle("-fx-background-color: #ff90bb;");
                                 JFXDialogLayout layout = new JFXDialogLayout();
                                 layout.setHeading(new Label(title));
                                 layout.setBody(new Label(content));
@@ -525,6 +546,12 @@ public class ControllerCAMainDashboard implements Initializable {
                                     @Override
                                     public void handle(ActionEvent __) {
                                         alert.hideWithAnimation();
+                                    }
+                                });
+                                show.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+
                                     }
                                 });
                                 alert.show();
@@ -561,6 +588,9 @@ public class ControllerCAMainDashboard implements Initializable {
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
                                 close.setStyle("-fx-background-color: #00bfff;");
+                                JFXButton show = new JFXButton("Show Alert Dashboard");
+                                show.setButtonType(JFXButton.ButtonType.RAISED);
+                                show.setStyle("-fx-background-color: #ff90bb;");
                                 JFXDialogLayout layout = new JFXDialogLayout();
                                 layout.setHeading(new Label(title));
                                 layout.setBody(new Label(content));
@@ -574,6 +604,12 @@ public class ControllerCAMainDashboard implements Initializable {
                                     @Override
                                     public void handle(ActionEvent __) {
                                         alert.hideWithAnimation();
+                                    }
+                                });
+                                show.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+
                                     }
                                 });
                                 alert.show();
