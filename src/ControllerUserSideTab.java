@@ -31,39 +31,6 @@ public class ControllerUserSideTab {
     private Scene myScene;
 
     @FXML
-    void onClickUserSettings (ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("UserSettings.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
-
-        ControllerUserSettings controller = loader.<ControllerUserSettings>getController();
-        //controller.passData(admin);
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
-    }
-
-    @FXML
-    void onClickTestButton(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BaseLayoutNew.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
-
-
-        ControllerBaseLayoutNew controller = loader.<ControllerBaseLayoutNew>getController();
-        //controller.passData(admin);
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
-    }
-
-    @FXML
     void onClickSecureCloudStorageButton(ActionEvent event) throws IOException {
         //go back to user home and reference the observablelist
         //pass data to next page
@@ -102,6 +69,22 @@ public class ControllerUserSideTab {
     @FXML
     void onClickSecureCloudTransferButton(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onClickUserSettings (ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UserSettings.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerUserSettings controller = loader.<ControllerUserSettings>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     @FXML

@@ -332,6 +332,7 @@ public class ControllerLoginPage implements Initializable{
                             System.out.println("No wifi");
                             JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                             snackbar.show("Please check your internet connection", 3000);
+                            snackbar.getStylesheets().add("Style.css");
                             //u.printStackTrace();
                         });
                     } catch (Exception e) {
