@@ -10,6 +10,7 @@ public class ScheduledExecutorServiceHandler {
     private static ScheduledFuture captureRunnable;
     private static ScheduledFuture getSQLRunnable;
     private static ScheduledFuture chartDataRunnable;
+    private static ScheduledFuture showDataRunnable;
 
     public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -93,5 +94,21 @@ public class ScheduledExecutorServiceHandler {
 
     public void cancelchartDataRunnable() {
         chartDataRunnable.cancel(true);
+    }
+
+    public ScheduledFuture getshowDataRunnable() {
+        return showDataRunnable;
+    }
+
+    public void setshowDataRunnable(ScheduledFuture showDataRunnable) {
+        ScheduledExecutorServiceHandler.showDataRunnable = showDataRunnable;
+    }
+
+    public boolean getStatusshowDataRunnable() {
+        return !showDataRunnable.isDone();
+    }
+
+    public void cancelshowDataRunnable() {
+        showDataRunnable.cancel(true);
     }
 }

@@ -60,6 +60,7 @@ public class NetworkCapture {
                 ++perMinutePktCount;
         }
     };
+    private String specficExportFilePath;
     private int TPSSize = 0;
     private String GeneralExportFileName;
     private String SpecificExportFileName;
@@ -133,6 +134,10 @@ public class NetworkCapture {
 
     public String getSpecificExportFileName() {
         return SpecificExportFileName;
+    }
+
+    public String getSpecficExportFilePath() {
+        return specficExportFilePath;
     }
 
     public void getCurrentTimeStamp() {
@@ -266,7 +271,8 @@ public class NetworkCapture {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             SpecificExportFileName = "Partial Capture for Alert " + dtf.format(now) + ".pcap";
-            dumper = Phandle.dumpOpen(directoryPath + "\\" + SpecificExportFileName);
+            specficExportFilePath = directoryPath + "\\" + SpecificExportFileName;
+            dumper = Phandle.dumpOpen(specficExportFilePath);
             for (CapturedPacket p : packets) {
                 if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());

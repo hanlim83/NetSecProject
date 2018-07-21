@@ -46,7 +46,6 @@ import java.util.logging.Logger;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ControllerCAMainDashboard implements Initializable {
-    private static final int MAX_DATA_POINTS = 50;
     public static AnchorPane rootP;
     @FXML
     private AnchorPane anchorPane;
@@ -70,6 +69,8 @@ public class ControllerCAMainDashboard implements Initializable {
     private JFXDrawer drawer;
     @FXML
     private JFXSpinner spinner;
+
+    private static final int MAX_DATA_POINTS = 50;
     private Scene myScene;
     private PcapNetworkInterface device;
     private NetworkCapture capture;
@@ -402,7 +403,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
