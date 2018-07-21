@@ -94,7 +94,7 @@ public class OAuth2Login {
     public Credential login() throws UnknownHostException,Exception {
         Credential credential=authorize();
 
-        if (credential.getExpiresInSeconds()<300) {
+        if (credential.getExpiresInSeconds()<250) {
             System.out.println(credential.getExpiresInSeconds());
             System.out.println("Getting new Token");
             //extra

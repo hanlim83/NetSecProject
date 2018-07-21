@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ControllerLoginPage implements Initializable, Runnable {
+public class ControllerLoginPage implements Initializable{
     @FXML
     private AnchorPane anchorPane;
 
@@ -45,7 +45,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
     private Scene myScene;
 
     private OAuth2Login login = new OAuth2Login();
-    private WindowsUtils utils = new WindowsUtils();
     private User_InfoDB user_infoDB = new User_InfoDB();
 
     private Credential credential;
@@ -60,58 +59,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
 
     private static Timer timer;
     private TimerTask Task;
-
-    public void startTimer() {
-        timer = new Timer();
-        Task = new TimerTask() {
-            public void run() {
-                try {
-                    login.stopLocalServerReciver();
-                    LoadingSpinner.setVisible(false);
-                    LoginButton.setDisable(false);
-                    endTimer();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "The connection timeout. Please try again";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
-            }
-        };
-        //TODO change timer back to 60000
-        timer.schedule(Task, 60000);
-    }
-
-    public void endTimer() {
-        Task.cancel();
-        timer.cancel();
-        timer.purge();
-        System.out.println("TIMER CANCELLEDDD");
-    }
-
-    private int counter = 0;
 
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
@@ -205,7 +152,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
                     System.out.println("NOT INSIDE DB.REJECTED!!!");
                 }
 //                endTimer();
-
             }
         });
         process.setOnCancelled(e -> {
@@ -284,11 +230,59 @@ public class ControllerLoginPage implements Initializable, Runnable {
 //            }
 //        };
 
-//            ControllerLoginPage worker = new ControllerLoginPage();
-//            Thread thread = new Thread(worker);
-//            thread.start();
-
     }
+
+    public void startTimer() {
+        timer = new Timer();
+        Task = new TimerTask() {
+            public void run() {
+                try {
+                    login.stopLocalServerReciver();
+                    LoadingSpinner.setVisible(false);
+                    LoginButton.setDisable(false);
+                    endTimer();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "The connection timeout. Please try again";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+            }
+        };
+        //TODO change timer back to 60000
+        timer.schedule(Task, 60000);
+    }
+
+    public void endTimer() {
+        Task.cancel();
+        timer.cancel();
+        timer.purge();
+        System.out.println("TIMER CANCELLEDDD");
+    }
+
+    private int counter = 0;
 
     @FXML
     void onClickRevokeCredentialsButton(ActionEvent event) {
@@ -333,10 +327,6 @@ public class ControllerLoginPage implements Initializable, Runnable {
                         System.out.println("First step done");
                         email = login.getEmail();
                         System.out.println("2nd step done" + email);
-//                        if(counter>1){
-//                            process.cancel();
-//                            System.out.println("Restarting process");
-//                        }
                     } catch (UnknownHostException u) {
                         Platform.runLater(() -> {
                             System.out.println("No wifi");
@@ -345,12 +335,10 @@ public class ControllerLoginPage implements Initializable, Runnable {
                             //u.printStackTrace();
                         });
                     } catch (Exception e) {
-                        //e.printStackTrace();
+                        e.printStackTrace();
                     }
                     //after retrieve token, use that to cross check with the DB for active/inactive/null
                     if (!email.equals("")) {
-                        //Migrating to new codes
-//                        AccStatus=utils.getAccStatus(email);
                         AccStatus = user_infoDB.getAccStatus(email);
                     }
                     if (AccStatus.equals("Active")) {
@@ -429,21 +417,4 @@ public class ControllerLoginPage implements Initializable, Runnable {
             return null;
         }
     };
-
-    ///Will implement email check againstDB in future updates && also show spinner when running this
-    @Override
-    public void run() {
-        try {
-            credential = login.login();
-        } catch (UnknownHostException u) {
-            Platform.runLater(() -> {
-                System.out.println("No wifi");
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.show("Check your internet connection", 3000);
-                //u.printStackTrace();
-            });
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
-    }
 }
