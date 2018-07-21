@@ -199,7 +199,7 @@ public class ControllerCAMainPackets implements Initializable {
                 }
             }, 2, TimeUnit.SECONDS));
         } else if (threshold != 0) {
-            this.SMSHandler = SMSHandler;
+            this.SMSHandler = USMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -332,6 +332,12 @@ public class ControllerCAMainPackets implements Initializable {
                                 }
                             });
                         }
+                        handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                capture.startSniffing();
+                            }
+                        }, 1, SECONDS));
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -342,7 +348,6 @@ public class ControllerCAMainPackets implements Initializable {
                                 alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                             }
                         });
-                        capture.startSniffing();
                     }
                 }
             }, 2, 1, TimeUnit.SECONDS));
@@ -369,7 +374,6 @@ public class ControllerCAMainPackets implements Initializable {
         if (capture == null)
             capture = new NetworkCapture(device, directoryPath, threshold);
         handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
-            @Override
             public void run() {
                 boolean flag = capture.checkThreshold();
                 try {
@@ -458,6 +462,12 @@ public class ControllerCAMainPackets implements Initializable {
                             }
                         });
                     }
+                    handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                        @Override
+                        public void run() {
+                            capture.startSniffing();
+                        }
+                    }, 1, SECONDS));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -468,7 +478,6 @@ public class ControllerCAMainPackets implements Initializable {
                             alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                         }
                     });
-                    capture.startSniffing();
                 }
             }
         }, 2, 1, TimeUnit.SECONDS));

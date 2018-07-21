@@ -25,7 +25,7 @@ public class NetworkCapture {
     private static final int INCERMENT_LIMIT = 1;
     private static final int MINUTE_TO_MILISECONDS = 60000;
     private static final int RECORD_RANGE = 10;
-    private static final int TPSRange = 5;
+    private static final int TPSRange = 3;
     //Data Variables
     public ArrayList<CapturedPacket> packets;
     public ArrayList<Integer> PreviousTPS;
@@ -320,16 +320,15 @@ public class NetworkCapture {
         Timestamp later = new Timestamp(cal.getTime().getTime());
         int packetCount = 0;
         for (CapturedPacket packet : packets) {
-            /*if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
+            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
                 ++packetCount;
             else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
-                ++packetCount;*/
-            if (packet.getOrignalTimeStamp().before(later))
                 ++packetCount;
         }
         PreviousTPS.add(packetCount);
         ++TPSSize;
-        lastTimeStamp = later;
+        lastTimeStamp = new Timestamp(cal.getTime().getTime());
+        System.out.println(packetCount);
     }
 
     public boolean isRunning() {

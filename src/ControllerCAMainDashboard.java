@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,16 +81,9 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<Integer> TPS;
     private int xSeriesData = 0;
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
-    private ExecutorService executor;
     private ConcurrentLinkedQueue<Number> data = new ConcurrentLinkedQueue<>();
     private NumberAxis xAxis;
     private AnimationTimer timer;
-    /*private XYChart.Series<Number, Number> dataSeries;
-    private final int MAX_DATA_POINTS = 25, MAX = 5000, MIN = 100;
-    private LineChart<Number, Number> chart;
-    private XYChart.Series<Number, Number> dataSeries;
-    private NumberAxis xAxis;
-    private double sequence = 10;*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -130,31 +122,6 @@ public class ControllerCAMainDashboard implements Initializable {
         networkTrafficChart.setPrefWidth(1051);
         networkTrafficChart.setPrefHeight(334);
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
-        /*xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
-        final NumberAxis yAxis = new NumberAxis(MIN - 1, MAX + 1, 100);
-        chart = new LineChart<>(xAxis, yAxis);
-        chart.setAnimated(false);
-        chart.setLegendVisible(true);
-        chart.setTitle("Animated Line Chart");
-        xAxis.setLabel("Duration");
-        xAxis.setForceZeroInRange(false);
-        yAxis.setLabel("Packets Captured");
-        yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis));
-        dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Network Traffic");
-        chart.getData().add(dataSeries);
-        LineChartAnchorPane.getChildren().add(chart);
-        dataSeries = new XYChart.Series<Number, Number>();
-        dataSeries.setName("Packet Capture TimeLine");
-        networkTrafficChart.getData().setAll(dataSeries);*/
-        /*exportTask = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Running");
-                capture.Specficexport();
-                timerTaskinProgress = false;
-            }
-        };*/
     }
 
     @FXML
@@ -182,6 +149,9 @@ public class ControllerCAMainDashboard implements Initializable {
             capture = null;
             clearCaptureBtn.setDisable(true);
             alertCount.setText("Suspicious Events Count: 0");
+            data.clear();
+            series.getData().clear();
+            protocolChart.getData().clear();
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -272,7 +242,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             }, 2, TimeUnit.SECONDS));
         } else if (threshold != 0) {
-            this.SMSHandler = SMSHandler;
+            this.SMSHandler = USMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -318,14 +288,46 @@ public class ControllerCAMainDashboard implements Initializable {
             handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    boolean flag = capture.checkThreshold();
                     try {
-                        if (capture.checkThreshold()) {
+                        addToQueue();
+                        ProtoMakeup();
+                        addDataToSeries();
+                        if (flag) {
                             SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
                         timerTaskinProgress = true;
                     }*/
                             capture.Specficexport();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myScene = anchorPane.getScene();
+                                    Stage stage = (Stage) (myScene).getWindow();
+                                    String title = "Suspicious Network Event Detected!";
+                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the alerts has been generated for you.";
+                                    JFXButton close = new JFXButton("Close");
+                                    close.setButtonType(JFXButton.ButtonType.RAISED);
+                                    close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXDialogLayout layout = new JFXDialogLayout();
+                                    layout.setHeading(new Label(title));
+                                    layout.setBody(new Label(content));
+                                    layout.setActions(close);
+                                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                    alert.setOverlayClose(true);
+                                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                    alert.setContent(layout);
+                                    alert.initModality(Modality.NONE);
+                                    close.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent __) {
+                                            alert.hideWithAnimation();
+                                        }
+                                    });
+                                    alert.show();
+                                }
+                            });
                         }
                         Platform.runLater(new Runnable() {
                             @Override
@@ -335,10 +337,62 @@ public class ControllerCAMainDashboard implements Initializable {
                         });
                     } catch (ConcurrentModificationException e) {
                         System.err.println("ConcurrentModification Detected");
+                        capture.stopSniffing();
+                        addToQueue();
+                        ProtoMakeup();
+                        addDataToSeries();
+                        if (flag) {
+                            SMSHandler.sendAlert();
+                   /* if (!timerTaskinProgress) {
+                        timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
+                        timerTaskinProgress = true;
+                    }*/
+                            capture.Specficexport();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myScene = anchorPane.getScene();
+                                    Stage stage = (Stage) (myScene).getWindow();
+                                    String title = "Suspicious Network Event Detected!";
+                                    String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                                    JFXButton close = new JFXButton("Close");
+                                    close.setButtonType(JFXButton.ButtonType.RAISED);
+                                    close.setStyle("-fx-background-color: #00bfff;");
+                                    JFXDialogLayout layout = new JFXDialogLayout();
+                                    layout.setHeading(new Label(title));
+                                    layout.setBody(new Label(content));
+                                    layout.setActions(close);
+                                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                    alert.setOverlayClose(true);
+                                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                    alert.setContent(layout);
+                                    alert.initModality(Modality.NONE);
+                                    close.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent __) {
+                                            alert.hideWithAnimation();
+                                        }
+                                    });
+                                    alert.show();
+                                }
+                            });
+                        }
+                        handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                capture.startSniffing();
+                            }
+                        }, 1, SECONDS));
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
+                            }
+                        });
                     }
                 }
-            }, 2, 1, TimeUnit.SECONDS));
-
+            }, 2, 6, TimeUnit.SECONDS));
+            TimelineCtrl(true);
         } else if (capture != null) {
             this.capture = capture;
             clearCaptureBtn.setDisable(false);
@@ -505,16 +559,21 @@ public class ControllerCAMainDashboard implements Initializable {
                             }
                         });
                     }
+                    handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                        @Override
+                        public void run() {
+                            capture.startSniffing();
+                        }
+                    }, 1, SECONDS));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                         }
                     });
-                    capture.startSniffing();
                 }
             }
-        }, 2, 5, TimeUnit.SECONDS));
+        }, 2, 6, TimeUnit.SECONDS));
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable()) {
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
