@@ -12,8 +12,9 @@ import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -28,8 +29,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +36,7 @@ import javafx.util.Callback;
 
 import java.io.*;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -87,12 +87,14 @@ public class ControllerSecureCloudStorage implements Initializable {
     private String privateBucketName;
     private ObservableList<TableBlob> blobs;
 //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+    Storage storage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         try {
             credential = login.login();
+            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,43 +106,29 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     @FXML
-    void onClickUploadButton(ActionEvent event) {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+    void onClickUploadButton(ActionEvent event) throws Exception {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        getStorage();
 //        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
 //        deleteFile("hugochiaxyznspj","42149.py");
         calculateEmail();
         UploadFileTest();
-        updateObservableList();
-        TableMethod();
-    }
-
-    public String convertTime(long time) {
-        Date date = new Date(time);
-        Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
-        return format.format(date);
-    }
-
-    private Path saveFile() {
-        FileChooser fileChooser = new FileChooser();
-        File filePath = fileChooser.showSaveDialog(null);
-        String filePathString = filePath.getAbsolutePath();
-        Path path = Paths.get(filePathString);
-//        fileChooser.setTitle("Save Image");
-////        System.out.println(pic.getId());
-//        File file = fileChooser.showSaveDialog(null);
-//        return Paths.get(file.getName());
-        return path;
+//        updateObservableList();
+//        TableMethod();
+        updateTable();
     }
 
     public void UploadFileTest() {
         try {
             // authorization
-            credential = login.login();
+            //commented out credential to test new optimization techniques
+//            credential = login.login();
             // set up global Oauth2 instance
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
-            //FEATURE: Add ownerWindow to block screen
-            File file = fileChooser.showOpenDialog(null);
+            //FEATURE: stage now loads as 1 page instead of 2
+            Stage stage = (Stage) anchorPane.getScene().getWindow();
+            File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
                 String pathsInfo = "";
                 pathsInfo += "getPath(): " + file.getPath() + "\n";
@@ -156,7 +144,8 @@ public class ControllerSecureCloudStorage implements Initializable {
                 }
                 System.out.println(pathsInfo);
                 // authorization + Get Buckets
-                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+                getStorage();
                 //Testing for storage
                 Page<Bucket> buckets = storage.list();
                 for (Bucket bucket : buckets.iterateAll()) {
@@ -186,7 +175,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    public boolean checkNameTaken(String fileName) {
+    private boolean checkNameTaken(String fileName) {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         Page<Blob> blobs = storage.list("hr_dept");
         for (Blob blob : blobs.iterateAll()) {
@@ -201,8 +190,27 @@ public class ControllerSecureCloudStorage implements Initializable {
         return false;
     }
 
-    public void uploadFile(String filename, String AbsolutePath) throws FileNotFoundException {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+    private String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
+    }
+
+    private Path saveFile() {
+        FileChooser fileChooser = new FileChooser();
+        File filePath = fileChooser.showSaveDialog(null);
+        String filePathString = filePath.getAbsolutePath();
+        Path path = Paths.get(filePathString);
+//        fileChooser.setTitle("Save Image");
+////        System.out.println(pic.getId());
+//        File file = fileChooser.showSaveDialog(null);
+//        return Paths.get(file.getName());
+        return path;
+    }
+
+    public void uploadFile(String filename, String AbsolutePath) throws Exception {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        getStorage();
         Page<Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
             if (bucket.toString().contains(privateBucketName)) {
@@ -267,8 +275,8 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    private int entry1;
-    private String entryid;
+//    private int entry1;
+//    private String entryid;
 
     public void calculateEmail() {
         String email = null;
@@ -283,9 +291,10 @@ public class ControllerSecureCloudStorage implements Initializable {
         privateBucketName = emailFront + "nspj";
     }
 
-    private void updateObservableList(){
+    private void updateObservableList() throws Exception {
         blobs.clear();
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        getStorage();
         String email = null;
         try {
             email = login.getEmail();
@@ -331,7 +340,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 ////            BlobList.add(new MyBlob(blob));
 //            blobs.add(new TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
 //        }
-
 
         JFXTreeTableColumn<TableBlob, String> fileColumn = new JFXTreeTableColumn<>("File Name");
         fileColumn.setPrefWidth(525);
@@ -380,7 +388,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                                             System.out.println(selectdIndex);
                                             TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
                                             System.out.println(tableBlob.getBlobName());
-                                            blobName=tableBlob.getBlobName();
+                                            blobName = tableBlob.getBlobName();
                                             System.out.println(tableBlob.getDate());
                                             Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
                                             showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
@@ -470,6 +478,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
         JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
+        JFXTreeTableView.setEditable(false);
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
 //        FlowPane main = new FlowPane();
@@ -520,11 +529,16 @@ public class ControllerSecureCloudStorage implements Initializable {
             jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
             jfxDownloadButton.setOnAction(__ -> {
                 //Download File
-                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+                try {
+                    getStorage();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.out.println("Download File");
                 calculateEmail();
                 try {
-                    downloadFile(storage,privateBucketName,blobName,saveFile());
+                    downloadFile(storage, privateBucketName, blobName, saveFile());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -585,11 +599,14 @@ public class ControllerSecureCloudStorage implements Initializable {
                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                 alert.setContent(layout);
                 alert.initModality(Modality.NONE);
-                close.setOnAction(___ -> {alert.hideWithAnimation();
-                calculateEmail();
-                deleteFile(privateBucketName,blobName);
-                updateObservableList();
-                TableMethod();});
+                close.setOnAction(___ -> {
+                    alert.hideWithAnimation();
+                    calculateEmail();
+                    deleteFile(privateBucketName, blobName);
+//                    updateObservableList();
+//                    TableMethod();
+                    updateTable();
+                });
                 alert.show();
             });
 
@@ -630,12 +647,53 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
+    private void updateTable() {
+        System.out.println("Updating Table");
+        updateTableProcess.start();
+        updateTableProcess.setOnSucceeded(e -> {
+            updateTableProcess.reset();
+            //do other stuff
+        });
+        updateTableProcess.setOnCancelled(e -> {
+            updateTableProcess.reset();
+            //do other stuff
+        });
+        updateTableProcess.setOnFailed(e -> {
+            updateTableProcess.reset();
+            //do other stuff
+        });
+    }
+
+    private Service updateTableProcess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    updateObservableList();
+                    TableMethod();
+                    return null;
+                }
+            };
+        }
+    };
+
     private void onEdit() {
         FileButtonsHbox.setVisible(true);
         if (JFXTreeTableView.getSelectionModel().getSelectedItem() != null) {
             TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
             System.out.println(tableBlob.getBlobName());
             System.out.println(tableBlob.getDate());
+        }
+    }
+
+    private void getStorage() throws Exception {
+        if (credential.getExpiresInSeconds()<250){
+            credential=login.login();
+            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        }
+        if (storage==null){
+            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         }
     }
 
