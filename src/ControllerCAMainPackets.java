@@ -136,7 +136,7 @@ public class ControllerCAMainPackets implements Initializable {
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
-        if (SMSHandler == null) {
+        if (SMSHandler == null && threshold != 0) {
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -198,7 +198,7 @@ public class ControllerCAMainPackets implements Initializable {
                     }
                 }
             }, 2, TimeUnit.SECONDS));
-        } else {
+        } else if (threshold != 0) {
             this.SMSHandler = SMSHandler;
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -232,6 +232,10 @@ public class ControllerCAMainPackets implements Initializable {
                     }
                 }
             }, 1, TimeUnit.SECONDS));
+        } else {
+            spinner.setVisible(false);
+            captureToggle.setDisable(false);
+            hamburger.setDisable(false);
         }
         if (capture == null)
             clearCaptureBtn.setDisable(true);
@@ -350,6 +354,14 @@ public class ControllerCAMainPackets implements Initializable {
             OLpackets = FXCollections.observableArrayList(packets);
             packetstable.setItems(OLpackets);
             packetstable.refresh();
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.getController();
+            ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

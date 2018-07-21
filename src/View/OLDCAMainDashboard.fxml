@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,42 +10,51 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0"
             xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ControllerCAMainDashboard">
     <children>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
-                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0"/>
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8"/>
                 <Label layoutX="577.0" layoutY="28.0" text="Admin">
                     <font>
-                        <Font name="Vladimir Script" size="18.0" />
+                        <Font name="Vladimir Script" size="18.0"/>
                     </font>
                 </Label>
                 <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                     <font>
-                        <Font name="Serif Regular" size="40.0" />
+                        <Font name="Serif Regular" size="40.0"/>
                     </font>
                 </Label>
             </children>
         </AnchorPane>
         <JFXToggleButton fx:id="captureToggle" layoutX="372.0" layoutY="71.0" text="Capture Network Packets">
             <font>
-                <Font name="Lucida Sans Regular" size="20.0" />
+                <Font name="Lucida Sans Regular" size="20.0"/>
             </font>
         </JFXToggleButton>
-        <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets" text="Clear Current Capture" textFill="RED">
+        <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets"
+                   text="Clear Current Capture" textFill="RED">
             <font>
-                <Font name="Lucida Sans Regular" size="20.0" />
+                <Font name="Lucida Sans Regular" size="20.0"/>
             </font>
         </JFXButton>
         <ScrollPane layoutY="128.0" prefHeight="473.0" prefWidth="1069.0">
             <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                     <children>
-                        <PieChart fx:id="protocolChart" layoutY="342.0" title="Protocol Make-Up"/>
-                        <PieChart fx:id="top10IPChart" layoutX="538.0" layoutY="342.0" title="Top 5 IP Addresses"/>
-                        <AnchorPane fx:id="LineChartAnchorPane" layoutX="-1.0" layoutY="1.0" maxHeight="-Infinity"
-                                    maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0"
-                                    prefWidth="1051.0"/>
-                    </children></AnchorPane>
+                        <LineChart fx:id="networkTrafficChart" layoutX="-1.0" layoutY="1.0" prefHeight="334.0"
+                                   prefWidth="1051.0" title="Current Network Traffic">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT"/>
+                            </yAxis>
+                        </LineChart>
+                        <PieChart fx:id="protocolChart" layoutY="325.0" title="Protocol Make-Up"/>
+                        <PieChart fx:id="top10IPChart" layoutX="538.0" layoutY="325.0" title="Top 5 IP Addresses"/>
+                    </children>
+                </AnchorPane>
             </content>
         </ScrollPane>
         <Label fx:id="alertCount" layoutX="11.0" layoutY="93.0" prefHeight="26.0" prefWidth="353.0"
@@ -54,7 +63,7 @@
                 <Font name="Lucida Sans Regular" size="18.0"/>
             </font>
         </Label>
-        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
         <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0"/>
     </children>
 </AnchorPane>

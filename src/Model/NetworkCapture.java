@@ -25,7 +25,7 @@ public class NetworkCapture {
     private static final int INCERMENT_LIMIT = 1;
     private static final int MINUTE_TO_MILISECONDS = 60000;
     private static final int RECORD_RANGE = 10;
-    private static final int TPSRange = 10;
+    private static final int TPSRange = 5;
     //Data Variables
     public ArrayList<CapturedPacket> packets;
     public ArrayList<Integer> PreviousTPS;
@@ -46,6 +46,10 @@ public class NetworkCapture {
     private int eventCount = 0;
     private boolean sendLimit = false, renewCount = true;
     private int pktCount = 0;
+    private int TPSSize = 0;
+    private String GeneralExportFileName;
+    private String SpecificExportFileName;
+
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
         @Override
@@ -64,9 +68,6 @@ public class NetworkCapture {
                 ++perMinutePktCount;
         }
     };
-    private int TPSSize = 0;
-    private String GeneralExportFileName;
-    private String SpecificExportFileName;
 
     public NetworkCapture(PcapNetworkInterface nif, String directoryPath, int Threshold) {
         this.Netinterface = nif;
@@ -319,9 +320,11 @@ public class NetworkCapture {
         Timestamp later = new Timestamp(cal.getTime().getTime());
         int packetCount = 0;
         for (CapturedPacket packet : packets) {
-            if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
+            /*if (packet.getOrignalTimeStamp().before(later) && lastTimeStamp == null)
                 ++packetCount;
             else if (packet.getOrignalTimeStamp().before(later) && packet.getOrignalTimeStamp().after(lastTimeStamp))
+                ++packetCount;*/
+            if (packet.getOrignalTimeStamp().before(later))
                 ++packetCount;
         }
         PreviousTPS.add(packetCount);

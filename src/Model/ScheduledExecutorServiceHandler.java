@@ -6,10 +6,10 @@ import java.util.concurrent.ScheduledFuture;
 
 public class ScheduledExecutorServiceHandler {
     private static ScheduledExecutorService service;
-    private ScheduledFuture tableviewRunnable;
-    private ScheduledFuture captureRunnable;
-    private ScheduledFuture getSQLRunnable;
-    private ScheduledFuture chartDataRunnable;
+    private static ScheduledFuture tableviewRunnable;
+    private static ScheduledFuture captureRunnable;
+    private static ScheduledFuture getSQLRunnable;
+    private static ScheduledFuture chartDataRunnable;
 
     public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -36,7 +36,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setTableviewRunnable(ScheduledFuture tableviewRunnable) {
-        this.tableviewRunnable = tableviewRunnable;
+        ScheduledExecutorServiceHandler.tableviewRunnable = tableviewRunnable;
     }
 
     public boolean getStatusTableviewRunnable() {
@@ -52,7 +52,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setcaptureRunnable(ScheduledFuture captureRunnable) {
-        this.captureRunnable = captureRunnable;
+        ScheduledExecutorServiceHandler.captureRunnable = captureRunnable;
     }
 
     public boolean getStatuscaptureRunnable() {
@@ -68,7 +68,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setgetSQLRunnable(ScheduledFuture getSQLRunnable) {
-        this.getSQLRunnable = getSQLRunnable;
+        ScheduledExecutorServiceHandler.getSQLRunnable = getSQLRunnable;
     }
 
     public boolean getStatusgetSQLRunnable() {
@@ -84,7 +84,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setchartDataRunnable(ScheduledFuture chartDataRunnable) {
-        this.chartDataRunnable = chartDataRunnable;
+        ScheduledExecutorServiceHandler.chartDataRunnable = chartDataRunnable;
     }
 
     public boolean getStatuschartDataRunnable() {
