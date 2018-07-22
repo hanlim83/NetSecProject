@@ -30,8 +30,16 @@ public class AWSSMS {
                 .withCredentials(new AWSStaticCredentialsProvider(auth))
                 .withRegion(Regions.AP_SOUTHEAST_1)
                 .build();
-        setAttributes();
         GeneralUse = false;
+        smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
+                .withStringValue("FireE")
+                .withDataType("String"));
+        smsAttributes.put("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()
+                .withStringValue("1.00")
+                .withDataType("Number"));
+        smsAttributes.put("AWS.SNS.SMS.SMSType", new MessageAttributeValue()
+                .withStringValue("Transactional")
+                .withDataType("String"));
     }
 
     public AWSSMS() {
@@ -40,11 +48,7 @@ public class AWSSMS {
                 .withCredentials(new AWSStaticCredentialsProvider(auth))
                 .withRegion(Regions.AP_SOUTHEAST_1)
                 .build();
-        setAttributes();
         GeneralUse = true;
-    }
-
-    public void setAttributes() {
         smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
                 .withStringValue("FireE")
                 .withDataType("String"));
@@ -73,7 +77,8 @@ public class AWSSMS {
             for (String s : adminPN) {
                 PublishResult result = snsClient.publish(new PublishRequest()
                         .withMessage(alertMsg)
-                        .withPhoneNumber("+65" + s));
+                        .withPhoneNumber("+65" + s)
+                        .withMessageAttributes(smsAttributes));
                 System.out.println(result);
             }
         }
@@ -85,7 +90,8 @@ public class AWSSMS {
         else {
             PublishResult result = snsClient.publish(new PublishRequest()
                     .withMessage(Message)
-                    .withPhoneNumber("+65" + phoneNumber));
+                    .withPhoneNumber("+65" + phoneNumber)
+                    .withMessageAttributes(smsAttributes));
             System.out.println(result);
         }
     }

@@ -7,13 +7,13 @@ import java.net.UnknownHostException;
 import java.sql.Timestamp;
 
 public class CapturedPacket {
-    private int srcPort,dstPort,length,number;
-    private String srcIP,destIP,Protocol;
-    private String information,timestamp;
+    private int srcPort, dstPort, length, number;
+    private String srcIP, destIP, Protocol;
+    private String information, timestamp;
     private Packet originalPacket;
     private Timestamp orignalTimeStamp;
 
-    public CapturedPacket(Packet originalPacket, int packetNumber, Timestamp timestamp){
+    public CapturedPacket(Packet originalPacket, int packetNumber, Timestamp timestamp) {
         this.originalPacket = originalPacket;
         this.number = packetNumber;
         this.orignalTimeStamp = timestamp;
@@ -40,20 +40,35 @@ public class CapturedPacket {
             this.srcIP = ipPacket.getHeader().getSrcAddr().getHostAddress();
             this.destIP = ipPacket.getHeader().getDstAddr().getHostAddress();
             this.Protocol = ipPacket.getHeader().getProtocol().name();
-            if (this.Protocol.equals("TCP") ){
+            if (this.Protocol.equals("TCP")) {
                 TcpPacket tcpPkt = this.originalPacket.get(TcpPacket.class);
                 srcPort = tcpPkt.getHeader().getSrcPort().valueAsInt();
                 dstPort = tcpPkt.getHeader().getDstPort().valueAsInt();
-            }else if (this.Protocol.equals("UDP") ){
+            } else if (this.Protocol.equals("UDP")) {
                 UdpPacket udpPkt = this.originalPacket.get(UdpPacket.class);
                 srcPort = udpPkt.getHeader().getSrcPort().valueAsInt();
                 dstPort = udpPkt.getHeader().getDstPort().valueAsInt();
-            }else{
+            } else if (this.Protocol.equals("ICMPv4")) {
+                IcmpV4CommonPacket icmp4pkt = this.originalPacket.get(IcmpV4CommonPacket.class);
+                this.information = icmp4pkt.getHeader().getType().name() + "," + icmp4pkt.getHeader().getCode().name();
+
+            } else if (this.Protocol.equals("ICMPv6")) {
+                IcmpV6CommonPacket icmp6pkt = this.originalPacket.get(IcmpV6CommonPacket.class);
+                this.information = icmp6pkt.getHeader().getType().name() + "," + icmp6pkt.getHeader().getCode().name();
+            } else {
                 return;
             }
             length = this.originalPacket.length();
             this.Protocol = identifyProtocol();
             //this.information = identifyHost();
+            if (originalPacket.contains(EncryptedPacket.class)) {
+                EncryptedPacket encrypted = originalPacket.get(EncryptedPacket.class);
+                length = encrypted.getHeader().length();
+                if (this.information.isEmpty())
+                    this.information = "Encrypted Packet";
+                else
+                    this.information = this.information + ", Encrypted Packet";
+            }
         }
     }
 
@@ -107,29 +122,27 @@ public class CapturedPacket {
     }
 
     public String identifyHost() {
-        if (this.srcPort > 0 && this.srcPort <= 1023){
+        if (this.srcPort > 0 && this.srcPort <= 1023) {
             try {
                 InetAddress host = InetAddress.getByName(this.srcIP);
                 if (host.getCanonicalHostName().equals(srcIP))
                     return null;
                 else
-                    return "Identified Source Host: "+host.getCanonicalHostName();
+                    return "Identified Source Host: " + host.getCanonicalHostName();
             } catch (UnknownHostException ex) {
                 return null;
             }
-        }
-        else if (this.dstPort > 0 && this.dstPort <= 1023){
+        } else if (this.dstPort > 0 && this.dstPort <= 1023) {
             try {
                 InetAddress host = InetAddress.getByName(this.destIP);
                 if (host.getCanonicalHostName().equals(destIP))
                     return null;
                 else
-                    return "Identified Destination Host: "+host.getCanonicalHostName();
+                    return "Identified Destination Host: " + host.getCanonicalHostName();
             } catch (UnknownHostException ex) {
                 return null;
             }
-        }
-        else
+        } else
             return null;
     }
 
@@ -168,15 +181,17 @@ public class CapturedPacket {
     public Packet getOriginalPacket() {
         return originalPacket;
     }
+
     public String getTimestamp() {
         return timestamp;
     }
+
     public Timestamp getOrignalTimeStamp() {
         return orignalTimeStamp;
     }
 
     @Override
-    public String toString(){
-        return "Packet Number: "+this.number+" | Source IP Address: "+this.srcIP+" | Source Port: "+this.srcPort+" | Destination IP Address: "+destIP+" | Destination Port:"+dstPort;
+    public String toString() {
+        return "Packet Number: " + this.number + " | Source IP Address: " + this.srcIP + " | Source Port: " + this.srcPort + " | Destination IP Address: " + destIP + " | Destination Port:" + dstPort;
     }
 }
