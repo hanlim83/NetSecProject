@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AWSSMS {
-    private static final String ACCESS_KEY = "AKIAI2E3WSWKFM5BGMRQ";
-    private static final String SECRET_KEY = "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";
+    private static final String ACCESS_KEY = "AKIAI3QOKRMRP56BPYGQ";
+    private static final String SECRET_KEY = "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";
     private static final String alertMsg = "A suspicious network event has been detected! Please check the FireE Admin App for more information";
     private static BasicAWSCredentials auth;
     private static AmazonSNS snsClient;
