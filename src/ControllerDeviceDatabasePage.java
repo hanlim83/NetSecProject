@@ -97,37 +97,63 @@ public class ControllerDeviceDatabasePage implements Initializable {
         return osvers;
     }
 
+    Service initializeProcess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    versionName.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("versionName"));
+                    versionNumber.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("versionNumber"));
+                    entryID.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("entryID"));
+
+                    try {
+                        osList = deviceDB.CheckSupportedVersion();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    revoke.setCellFactory(ActionButtonTableCell.<OSVersion>forTableColumn("Revoke", (OSVersion OSVERSIONS) -> {
+                        //get entry id first
+                        osversion(OSVERSIONS);
+                        entry1 = OSVERSIONS.getEntryID();
+
+                        doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
+                        doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                        CHECKING=checker2;
+                        System.out.println("CHECKER NOW IS " + CHECKING);
+
+                        System.out.println("Entry id " + entry1);
+                        entryid = Integer.toString(entry1);
+
+                        return OSVERSIONS;
+                    }));
+
+                    Platform.runLater(() -> {
+                        osObservableList = FXCollections.observableList(osList);
+                        deviceTable.setItems(osObservableList);
+                    });
+                    return null;
+                }
+
+            };
+        }
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        versionName.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("versionName"));
-        versionNumber.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("versionNumber"));
-        entryID.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("entryID"));
+        initializeProcess.start();
 
-        try {
-            osList = deviceDB.CheckSupportedVersion();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        revoke.setCellFactory(ActionButtonTableCell.<OSVersion>forTableColumn("Revoke", (OSVersion OSVERSIONS) -> {
-            //get entry id first
-            osversion(OSVERSIONS);
-            entry1 = OSVERSIONS.getEntryID();
-
-            doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
-            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-            CHECKING=checker2;
-            System.out.println("CHECKER NOW IS " + CHECKING);
-
-            System.out.println("Entry id " + entry1);
-            entryid = Integer.toString(entry1);
-
-            return OSVERSIONS;
-        }));
-
-        osObservableList = FXCollections.observableList(osList);
-        deviceTable.setItems(osObservableList);
+        initializeProcess.setOnSucceeded(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnCancelled(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnFailed(e -> {
+            initializeProcess.reset();
+        });
     }
 
     @FXML

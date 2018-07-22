@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//*HERE SINCE 4.52PM
 public class ControllerBucketsPage implements Initializable {
 
     @FXML
@@ -72,28 +71,54 @@ public class ControllerBucketsPage implements Initializable {
     int checker2;
     int CHECKING;
 
+    Service initializeProcess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    //        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
+                    tableColBucketName1.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
+                    storagesnippets = new StorageSnippets();
+                    storagesnippets.listBuckets();
+                    objectArrayList = storagesnippets.getCloudbucketsList();
+                    //DELETION OF BUCKETS
+                    deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
+                        cldBucket(cldB);
+                        //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
+                        doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + " will be permanently deleted from the cloud. Are you sure to delete it?";
+                        doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                        CHECKING = checker2;
+                        System.out.println("CHECKER NOW IS " + CHECKING);
+
+                        return cldB;
+                    }));
+
+
+                    Platform.runLater(() -> {
+                        objectList = FXCollections.observableList(objectArrayList);
+                        bucketsTable1.setItems(objectList);
+                    });
+                    return null;
+                }
+
+            };
+        }
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-//        tableColBucketName.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
-        tableColBucketName1.setCellValueFactory(new PropertyValueFactory<CloudBuckets, String>("bucketName"));
-        storagesnippets = new StorageSnippets();
-        storagesnippets.listBuckets();
-        objectArrayList = storagesnippets.getCloudbucketsList();
-        //DELETION OF BUCKETS
-        deleteBuckets1.setCellFactory(ActionButtonTableCell.<CloudBuckets>forTableColumn("Remove", (CloudBuckets cldB) -> {
-            cldBucket(cldB);
-            //DO A ARE U SURE TO DELETE THIS BUCKET CONFIRMATION
-            doubleConfirm = "This selected bucket " + cldB.getBucketName().substring(12, cldB.getBucketName().length() - 1) + " will be permanently deleted from the cloud. Are you sure to delete it?";
-            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-            CHECKING = checker2;
-            System.out.println("CHECKER NOW IS " + CHECKING);
-
-            return cldB;
-        }));
-
-        objectList = FXCollections.observableList(objectArrayList);
-        bucketsTable1.setItems(objectList);
+        initializeProcess.start();
+        initializeProcess.setOnSucceeded(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnCancelled(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnFailed(e -> {
+            initializeProcess.reset();
+        });
     }
 
     @FXML

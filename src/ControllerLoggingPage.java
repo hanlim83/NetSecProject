@@ -190,6 +190,16 @@ public class ControllerLoggingPage implements Initializable {
         hamburgerBar();
         spinner.setVisible(false);
         process1.start();
+
+        process1.setOnSucceeded(e -> {
+            process1.reset();
+        });
+        process1.setOnCancelled(e -> {
+            process1.reset();
+        });
+        process1.setOnFailed(e -> {
+            process1.reset();
+        });
     }
 
 
