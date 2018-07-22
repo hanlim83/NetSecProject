@@ -170,13 +170,21 @@ public class ControllerCAMainDashboard implements Initializable {
         });
         clearCaptureAndInt.setOnAction(addEvent -> {
             capture = null;
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                ControllerAdminSideTab ctrl = loader.getController();
+                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();
             Parent nextView = null;
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }

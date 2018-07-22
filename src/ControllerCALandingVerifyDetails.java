@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -56,18 +57,20 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private int threshold;
     private SMS SMSHandler;
     private String intDisplayName;
+    private boolean CaptureType;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName, boolean CaptureType) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
+        this.CaptureType = CaptureType;
         chosenInterface.setText(intDisplayName);
 //        chosenInterface.setText(device.getName() + " (" + this.intDiplayName + ")");
         chosenDirectory.setText(directoryPath);
@@ -95,7 +98,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName);
+            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,20 +109,37 @@ public class ControllerCALandingVerifyDetails implements Initializable {
 
     @FXML
     public void transferToCaptureScreen(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
-        myScene = anchorPane.getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-            ControllerCAMainPackets controller = loader.getController();
-            controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (CaptureType) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCAMainPackets controller = loader.getController();
+                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Packets View");
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCAMainDashboard controller = loader.getController();
+                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Statistics View");
+            stage.show();
         }
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Capture - Packets View");
-        stage.show();
     }
 
     public void hamburgerBar() {

@@ -62,7 +62,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,7 +116,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,7 +136,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
-            stage.setTitle("Capture - Packet View");
+            stage.setTitle("Capture - Packets View");
             stage.show();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -151,7 +151,7 @@ public class ControllerAdminSideTab {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
-            stage.setTitle("Capture - Packet View");
+            stage.setTitle("Capture - Packets View");
             stage.show();
         }
     }

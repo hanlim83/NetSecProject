@@ -63,6 +63,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private Integer threshold;
     private SMS SMSHandler;
     private String intDisplayedName = null;
+    private boolean CaptureType;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -163,12 +164,13 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayedName) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayedName, boolean Capturetype) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
+        this.CaptureType = Capturetype;
         if (intDisplayedName != null || intDisplayedName == null) {
             this.device = null;
             nextBtn.setDisable(true);
@@ -225,7 +227,7 @@ public class ControllerCALandingSelectInt implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCALandingSetOptions controller = loader.getController();
-                    controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayedName);
+                    controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayedName, CaptureType);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

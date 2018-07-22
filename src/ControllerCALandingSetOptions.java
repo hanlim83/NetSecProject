@@ -57,6 +57,7 @@ public class ControllerCALandingSetOptions implements Initializable {
     private String directoryPath;
     private SMS SMSHandler;
     private String intDisplayName;
+    private boolean CaptureType;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,10 +76,11 @@ public class ControllerCALandingSetOptions implements Initializable {
         ThresholdChooser.setValue("Select Threshold");
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName, boolean CaptureType) {
         this.handler = handler;
         this.device = device;
         this.SMSHandler = SMSHandler;
+        this.CaptureType = CaptureType;
         if (directoryPath != null) {
             this.directoryPath = directoryPath;
             pcapFilesDirectoryField.setText(this.directoryPath);
@@ -125,9 +127,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName);
+                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName);
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,9 +148,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingVerifyDetails controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName);
+                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
             else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName);
+                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }

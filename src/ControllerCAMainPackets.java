@@ -443,7 +443,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null);
+                controller.passVariables(handler, null, null, 0, SMSHandler, null, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
