@@ -3,15 +3,15 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCADetailedPacket">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0"
+            xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ControllerCADetailedPacket">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
@@ -33,11 +33,12 @@
         <StackPane layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                    prefHeight="394.0" prefWidth="1069.0">
             <children>
-                <JFXTreeTableView fx:id="packetDetailsTable">
+                <TreeTableView fx:id="packetDetailsTable">
                     <columns>
-                        <TreeTableColumn editable="false" prefWidth="1068.0" sortable="false" text="Packet Layers"/>
+                        <TreeTableColumn fx:id="packetDetailsCol" editable="false" prefWidth="1068.0" sortable="false"
+                                         text="Packet Layers"/>
                     </columns>
-                </JFXTreeTableView>
+                </TreeTableView>
             </children>
         </StackPane>
         <Text layoutX="443.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packet Details">
