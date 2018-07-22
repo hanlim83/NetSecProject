@@ -37,6 +37,7 @@ dependencies {
     compile 'com.google.apis:google-api-services-cloudresourcemanager:v1-rev495-1.23.0'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.372'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.372'
+
 }
 
 sourceSets {

@@ -27,6 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -34,6 +35,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -42,6 +46,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,7 +92,8 @@ public class ControllerSecureCloudStorage implements Initializable {
     private String privateBucketName;
     private ObservableList<TableBlob> blobs;
 //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
-    Storage storage;
+    private Storage storage;
+    private String password;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -108,15 +114,92 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     void onClickUploadButton(ActionEvent event) throws Exception {
 //        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        getStorage();
-//        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
-//        deleteFile("hugochiaxyznspj","42149.py");
-        calculateEmail();
-        UploadFileTest();
-//        updateObservableList();
-//        TableMethod();
-        updateTable();
+//        getStorage();
+////        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
+////        deleteFile("hugochiaxyznspj","42149.py");
+//        calculateEmail();
+//        UploadFileTest();
+////        updateObservableList();
+////        TableMethod();
+//        updateTable();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        //FEATURE: stage now loads as 1 page instead of 2
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        encryptFile(file);
     }
+
+//    public static byte [] generateIV() {
+//        SecureRandom random = new SecureRandom();
+//        byte [] iv = new byte [16];
+//        random.nextBytes( iv );
+//        return iv;
+//    }
+
+    public Key generateSymmetricKey() throws Exception {
+        KeyGenerator generator = KeyGenerator.getInstance( "AES" );
+        SecretKey key = generator.generateKey();
+//        key=symmetricKey;
+        return key;
+    }
+
+    private byte [] IV;
+    public void generateIV() {
+        SecureRandom random = new SecureRandom();
+        byte [] iv = new byte [16];
+        random.nextBytes( iv );
+        this.IV=iv;
+//        return iv;
+    }
+
+    private Key symmetricKey;
+    private SecretKeySpec secretKey;
+
+    public void encryptFile(File f)
+            throws Exception {
+        System.out.println("Encrypting file: " + f.getName());
+        Key symmetricKey=generateSymmetricKey();
+        this.symmetricKey=symmetricKey;
+        generateIV();
+//        this.secretKey=symmetricKey;
+        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, new IvParameterSpec( IV ));
+        this.writeToFile(f,cipher);
+//        cipher.do
+        decryptFile(f);
+    }
+
+    public void writeToFile(File f,Cipher c) throws IOException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+        FileInputStream in = new FileInputStream(f);
+        byte[] input = new byte[(int) f.length()];
+        in.read(input);
+
+        FileOutputStream out = new FileOutputStream(f);
+        byte[] output = c.doFinal(input);
+        out.write(output);
+
+        out.flush();
+        out.close();
+        in.close();
+    }
+
+    public void decryptFile(File f)
+            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        System.out.println("Decrypting file: " + f.getName());
+        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
+        this.writeToFile(f,cipher);
+    }
+
+//    public void decryptFile(File f,Cipher c)
+//            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
+//        System.out.println("Decrypting file: " + f.getName());
+//
+//        cipher.init(Cipher.DECRYPT_MODE, symmetricKey);
+//        this.writeToFile(f,cipher);
+//        this.writeToFile(f,c);
+//    }
 
     public void UploadFileTest() {
         try {
@@ -227,6 +310,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws IOException {
         BlobId blobId = BlobId.of(bucketName, objectName);
         Blob blob = storage.get(blobId);
+        System.out.println(blob);
         if (blob == null) {
             System.out.println("No such object");
             return;
@@ -423,40 +507,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         settingsColumn.setCellFactory(cellFactory);
 
-//        settingsColumn.setCellFactory(JFXButtonTableCell.<TableBlob>forTableColumn("More", (TableBlob tableBlob) -> {
-//            //get entry id first
-//            TableBlob tableBlob1=tableBlob;
-////            osversion(tableBlob);
-////            entry1 = OSVERSIONS.getEntryID();
-////
-////            doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
-////            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-////            CHECKING=checker2;
-////            System.out.println("CHECKER NOW IS " + CHECKING);
-////
-////            System.out.println("Entry id " + entry1);
-////            entryid = Integer.toString(entry1);
-//
-//            return tableBlob1;
-//        }));
-
 //        TableBlob tableBlob=new TableBlob();
-
-//        settingsColumn.setCellFactory(ActionButtonTableCell.<OSVersion>forTableColumn("Revoke", (OSVersion OSVERSIONS) -> {
-//            //get entry id first
-//            osversion(OSVERSIONS);
-//            entry1 = OSVERSIONS.getEntryID();
-//
-////            doubleConfirm = "This selected OS Version \"" + OSVERSIONS.getVersionName()+ "\" will be removed from the cloud. Are you sure to delete it?";
-////            doubleConfirmation(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-////            CHECKING=checker2;
-////            System.out.println("CHECKER NOW IS " + CHECKING);
-//
-//            System.out.println("Entry id " + entry1);
-//            entryid = Integer.toString(entry1);
-//
-//            return OSVERSIONS;
-//        }));
 
         dateColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
                 new TextFieldEditorBuilder()));
@@ -516,7 +567,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private void showVbox(double minX, double maxY) {
         double minWidth = 100;
-        double minHeight = 200;
+        double minHeight = 100;
         this.minX = minX;
         this.maxY = maxY;
         if (vBoxCounter == 0) {
