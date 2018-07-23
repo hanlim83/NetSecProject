@@ -53,6 +53,9 @@ public class ControllerBucketsPage implements Initializable {
     @FXML
     private TableColumn<CloudBuckets, Button> deleteBuckets1;
 
+    @FXML
+    private JFXSpinner spinner;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -110,7 +113,9 @@ public class ControllerBucketsPage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         initializeProcess.start();
+        spinner.setVisible(true);
         initializeProcess.setOnSucceeded(e -> {
+            spinner.setVisible(false);
             initializeProcess.reset();
         });
         initializeProcess.setOnCancelled(e -> {
@@ -281,6 +286,7 @@ public class ControllerBucketsPage implements Initializable {
                 storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
 
                 JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.getStylesheets().add("Style.css");
                 snackbar.show("Updating The Database", 3000);
             } catch (com.google.cloud.storage.StorageException e) {
                 errorMessage = "-";

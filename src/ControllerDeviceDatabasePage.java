@@ -186,6 +186,7 @@ public class ControllerDeviceDatabasePage implements Initializable {
                     }
                     Platform.runLater(() -> {
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Database", 3000);
                         osObservableList = FXCollections.observableList(osList);
                         deviceTable.setItems(osObservableList);

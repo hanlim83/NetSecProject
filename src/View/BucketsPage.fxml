@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
@@ -35,6 +36,7 @@
          </columns>
       </TableView>
       <JFXButton fx:id="CreateBuckets" layoutX="70.0" layoutY="117.0" onMouseClicked="#handleCreateBuckets" prefHeight="48.0" prefWidth="157.0" text="Creating Buckets" />
+      <JFXSpinner fx:id="spinner" layoutX="400.0" layoutY="250.0" prefHeight="212.0" prefWidth="230.0" visible="false" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>
 </AnchorPane>

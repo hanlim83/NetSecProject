@@ -412,6 +412,7 @@ public class ControllerLoggingPage implements Initializable {
                         logsTable.setItems(logsObservableList);
 
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Logs", 3000);
                     });
                     return null;

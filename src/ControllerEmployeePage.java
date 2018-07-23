@@ -938,6 +938,7 @@ public class ControllerEmployeePage implements Initializable {
                         employeeTable.setItems(userObservableList);
 
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Database", 3000);
                     });
                     return null;
@@ -963,6 +964,7 @@ public class ControllerEmployeePage implements Initializable {
                         adminTable.setItems(adminObservableList);
 
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Database", 3000);
                     });
                     return null;
