@@ -448,6 +448,7 @@ public class ControllerCAMainPackets implements Initializable {
                 e.printStackTrace();
             }
             stage.setScene(new Scene(nextView));
+            stage.setTitle("Select Interface");
             alert.close();
             stage.show();
         });

@@ -10,6 +10,10 @@ import java.io.IOException;
 public class MainAdmin extends Application {
     ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -31,7 +35,7 @@ public class MainAdmin extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
 //        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
 //        file.delete();
         handler.shutdownService();
@@ -48,9 +52,5 @@ public class MainAdmin extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
