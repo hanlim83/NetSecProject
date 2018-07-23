@@ -44,6 +44,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
@@ -117,7 +118,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        getStorage();
 ////        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
 ////        deleteFile("hugochiaxyznspj","42149.py");
-//        calculateEmail();
+        calculateEmail();
 //        UploadFileTest();
 ////        updateObservableList();
 ////        TableMethod();
@@ -127,7 +128,21 @@ public class ControllerSecureCloudStorage implements Initializable {
         //FEATURE: stage now loads as 1 page instead of 2
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
-        encryptFile(file);
+        encryptFileNew(file);
+        FileChooser fileChooser1 = new FileChooser();
+        fileChooser1.setTitle("Open Resource File");
+        //FEATURE: stage now loads as 1 page instead of 2
+        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+        File file1 = fileChooser.showOpenDialog(stage1);
+
+        decryptFileNew(file1);
+//        downloadFile(storage,"hugochiaxyznspj","Encrypted test.txt",saveFile());
+//        FileChooser fileChooser1 = new FileChooser();
+//        fileChooser1.setTitle("Open Resource File");
+//        //FEATURE: stage now loads as 1 page instead of 2
+//        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+//        File file1 = fileChooser.showOpenDialog(stage1);
+//        decryptFile(file1);
     }
 
 //    public static byte [] generateIV() {
@@ -136,6 +151,38 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        random.nextBytes( iv );
 //        return iv;
 //    }
+
+    SecretKey secKey;
+    Cipher aesCipher;
+
+    public void encryptFileNew(File f) throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(128);
+
+        secKey = keyGen.generateKey();
+
+        aesCipher = Cipher.getInstance("AES");
+
+//        FileInputStream in = new FileInputStream(f);
+//        byte[] byteText = new byte[(int) f.length()];
+        byte[] byteTextNew = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
+
+//        byte[] byteText = "Your Plain Text Here".getBytes();
+
+        aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+        byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
+        uploadFile("Encrypted test.txt",f.getAbsolutePath(),byteCipherText);
+    }
+
+
+
+    public void decryptFileNew(File f) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+        byte[] cipherText = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
+
+        aesCipher.init(Cipher.DECRYPT_MODE, secKey);
+        byte[] bytePlainText = aesCipher.doFinal(cipherText);
+        Files.write(Paths.get(f.getAbsolutePath()), bytePlainText);
+    }
 
     public Key generateSymmetricKey() throws Exception {
         KeyGenerator generator = KeyGenerator.getInstance( "AES" );
@@ -167,17 +214,19 @@ public class ControllerSecureCloudStorage implements Initializable {
         cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, new IvParameterSpec( IV ));
         this.writeToFile(f,cipher);
 //        cipher.do
-        decryptFile(f);
+//        decryptFile(f);
     }
 
-    public void writeToFile(File f,Cipher c) throws IOException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public void writeToFile(File f,Cipher c) throws Exception {
         FileInputStream in = new FileInputStream(f);
         byte[] input = new byte[(int) f.length()];
         in.read(input);
 
         FileOutputStream out = new FileOutputStream(f);
         byte[] output = c.doFinal(input);
-        out.write(output);
+        uploadFile("Encrypted test.txt",f.getAbsolutePath(),output);
+
+//        out.write(output);
 
         out.flush();
         out.close();
@@ -185,7 +234,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     public void decryptFile(File f)
-            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+            throws Exception {
         System.out.println("Decrypting file: " + f.getName());
         Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
         cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
@@ -202,60 +251,60 @@ public class ControllerSecureCloudStorage implements Initializable {
 //    }
 
     public void UploadFileTest() {
-        try {
-            // authorization
-            //commented out credential to test new optimization techniques
-//            credential = login.login();
-            // set up global Oauth2 instance
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            //FEATURE: stage now loads as 1 page instead of 2
-            Stage stage = (Stage) anchorPane.getScene().getWindow();
-            File file = fileChooser.showOpenDialog(stage);
-            if (file != null) {
-                String pathsInfo = "";
-                pathsInfo += "getPath(): " + file.getPath() + "\n";
-                pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
-
-                pathsInfo += (new File(file.getPath())).isAbsolute();
-
-                try {
-                    pathsInfo += "getCanonicalPath(): " +
-                            file.getCanonicalPath() + "\n";
-                } catch (IOException ex) {
-
-                }
-                System.out.println(pathsInfo);
-                // authorization + Get Buckets
-//                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-                getStorage();
-                //Testing for storage
-                Page<Bucket> buckets = storage.list();
-                for (Bucket bucket : buckets.iterateAll()) {
-                    System.out.println(bucket.toString());
-                }
-
-                for (Bucket bucket : buckets.iterateAll()) {
-                    Page<Blob> blobs = bucket.list();
-                    for (Blob blob : blobs.iterateAll()) {
-                        // do something with the blob
-                        System.out.println(blob);
-                        System.out.println(blob.getName());
-                    }
-                }
-                //String filename= "TestFILENEW1";
-                //Actual Codes
-                if (checkNameTaken(file.getName()) == true) {
-                    System.out.println("Change NAME!!!!");
-                } else {
-                    uploadFile(file.getName(), file.getAbsolutePath());
-                }
-            } else {
-                System.out.println("No file selected");
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+//        try {
+//            // authorization
+//            //commented out credential to test new optimization techniques
+////            credential = login.login();
+//            // set up global Oauth2 instance
+//            FileChooser fileChooser = new FileChooser();
+//            fileChooser.setTitle("Open Resource File");
+//            //FEATURE: stage now loads as 1 page instead of 2
+//            Stage stage = (Stage) anchorPane.getScene().getWindow();
+//            File file = fileChooser.showOpenDialog(stage);
+//            if (file != null) {
+//                String pathsInfo = "";
+//                pathsInfo += "getPath(): " + file.getPath() + "\n";
+//                pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
+//
+//                pathsInfo += (new File(file.getPath())).isAbsolute();
+//
+//                try {
+//                    pathsInfo += "getCanonicalPath(): " +
+//                            file.getCanonicalPath() + "\n";
+//                } catch (IOException ex) {
+//
+//                }
+//                System.out.println(pathsInfo);
+//                // authorization + Get Buckets
+////                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//                getStorage();
+//                //Testing for storage
+//                Page<Bucket> buckets = storage.list();
+//                for (Bucket bucket : buckets.iterateAll()) {
+//                    System.out.println(bucket.toString());
+//                }
+//
+//                for (Bucket bucket : buckets.iterateAll()) {
+//                    Page<Blob> blobs = bucket.list();
+//                    for (Blob blob : blobs.iterateAll()) {
+//                        // do something with the blob
+//                        System.out.println(blob);
+//                        System.out.println(blob.getName());
+//                    }
+//                }
+//                //String filename= "TestFILENEW1";
+//                //Actual Codes
+//                if (checkNameTaken(file.getName()) == true) {
+//                    System.out.println("Change NAME!!!!");
+//                } else {
+//                    uploadFile(file.getName(), file.getAbsolutePath());
+//                }
+//            } else {
+//                System.out.println("No file selected");
+//            }
+//        } catch (Throwable t) {
+//            t.printStackTrace();
+//        }
     }
 
     private boolean checkNameTaken(String fileName) {
@@ -291,7 +340,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         return path;
     }
 
-    public void uploadFile(String filename, String AbsolutePath) throws Exception {
+    public void uploadFile(String filename, String AbsolutePath, byte [] out) throws Exception {
 //        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         getStorage();
         Page<Bucket> buckets = storage.list();
@@ -299,9 +348,10 @@ public class ControllerSecureCloudStorage implements Initializable {
             if (bucket.toString().contains(privateBucketName)) {
                 System.out.println(bucket.toString());
                 File initialFile = new File(AbsolutePath);
-                InputStream targetStream = new FileInputStream(initialFile);
+                InputStream input = new ByteArrayInputStream(out);
+//                InputStream targetStream = new FileInputStream(initialFile);
 //            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-                Blob blob = bucket.create(filename, targetStream, "text/plain");
+                Blob blob = bucket.create(filename, input, "text/plain");
             }
         }
     }
@@ -322,6 +372,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         if (blob.getSize() < 1_000_000) {
             // Blob is small read all its content in one request
             byte[] content = blob.getContent();
+
             writeTo.write(content);
         } else {
             // When Blob size is big or unknown use the blob's channel reader.

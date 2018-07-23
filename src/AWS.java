@@ -14,16 +14,26 @@ import java.util.Map;
 
 public class AWS {
     public static void main(String[] args) {
-        AWSCredentials awsCredentials = new BasicAWSCredentials("AKIAJRZLNDHLS7ZLN2IA", "sOZzRmDKUMYyR0Sws2sDH5NyVlib9ofrlgYGFRwq");
+//        AWSCredentials awsCredentials = new BasicAWSCredentials("AKIAJRZLNDHLS7ZLN2IA", "sOZzRmDKUMYyR0Sws2sDH5NyVlib9ofrlgYGFRwq");
+        AWSCredentials awsCredentials = new BasicAWSCredentials("AKIAI3QOKRMRP56BPYGQ", "Sk1fwykYbJE6AxOMsayLJtlNerp0DDNTbBdTnGH+");
         final AmazonSNSClient client = new AmazonSNSClient(awsCredentials);
         client.setRegion(Region.getRegion(Regions.DEFAULT_REGION));
 
         AmazonSNSClient snsClient = new AmazonSNSClient(awsCredentials);
-        String message = "A network violation has been detected!";
-        String phoneNumber = "+6596588071";
+        String message = "A network violation has been detected";
+        String phoneNumber = "+65<Masked>";
         Map<String, MessageAttributeValue> smsAttributes =
                 new HashMap<String, MessageAttributeValue>();
         //<set SMS attributes>
+        smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
+                .withStringValue("JGesus")
+                .withDataType("String"));
+        smsAttributes.put("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()
+                .withStringValue("1.00")
+                .withDataType("Number"));
+        smsAttributes.put("AWS.SNS.SMS.SMSType", new MessageAttributeValue()
+                .withStringValue("Transactional")
+                .withDataType("String"));
         sendSMSMessage(snsClient, message, phoneNumber, smsAttributes);
     }
 
@@ -35,6 +45,18 @@ public class AWS {
                 .withMessageAttributes(smsAttributes));
         System.out.println(result); // Prints the message ID.
     }
+
+//    public void setAttributes() {
+//        smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
+//                .withStringValue("SingHealth")
+//                .withDataType("String"));
+//        smsAttributes.put("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()
+//                .withStringValue("1.00")
+//                .withDataType("Number"));
+//        smsAttributes.put("AWS.SNS.SMS.SMSType", new MessageAttributeValue()
+//                .withStringValue("Transactional")
+//                .withDataType("String"));
+//    }
 //    public static void main(String[] args) {
 //        AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
 //        String message = "A network violation has been detected!";
