@@ -34,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.json.simple.JSONObject;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -50,10 +51,7 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,13 +127,15 @@ public class ControllerSecureCloudStorage implements Initializable {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
         encryptFileNew(file);
-        FileChooser fileChooser1 = new FileChooser();
-        fileChooser1.setTitle("Open Resource File");
-        //FEATURE: stage now loads as 1 page instead of 2
-        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-        File file1 = fileChooser.showOpenDialog(stage1);
 
-        decryptFileNew(file1);
+//        FileChooser fileChooser1 = new FileChooser();
+//        fileChooser1.setTitle("Open Resource File");
+//        //FEATURE: stage now loads as 1 page instead of 2
+//        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+//        File file1 = fileChooser.showOpenDialog(stage1);
+//
+//        decryptFileNew(file1);
+
 //        downloadFile(storage,"hugochiaxyznspj","Encrypted test.txt",saveFile());
 //        FileChooser fileChooser1 = new FileChooser();
 //        fileChooser1.setTitle("Open Resource File");
@@ -152,10 +152,10 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        return iv;
 //    }
 
-    SecretKey secKey;
-    Cipher aesCipher;
+    private SecretKey secKey;
+    private Cipher aesCipher;
 
-    public void encryptFileNew(File f) throws Exception {
+    private void encryptFileNew(File f) throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
 
@@ -171,7 +171,99 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
         byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
-        uploadFile("Encrypted test.txt",f.getAbsolutePath(),byteCipherText);
+        uploadFile("Encrypted test",f.getAbsolutePath(),byteCipherText);
+
+        //encoding the key to String
+        String secretKey=Base64.getEncoder().encodeToString(secKey.getEncoded());
+//        JSONObject main =new JSONObject();
+
+        JSONObject fileObj = new JSONObject();
+
+        JSONObject filemetadata= new JSONObject();
+        filemetadata.put("Encrypted Symmetric Key",secretKey);
+
+        fileObj.put("metadata",filemetadata);
+//        main.put("metadata",fileObj);
+
+        try {
+            // Writing to a file
+            File file=new File("JsonFile.json");
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);
+            System.out.println("Writing JSON object to file");
+            System.out.println("-----------------------");
+            System.out.print(fileObj);
+
+            fileWriter.write(fileObj.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //for oauth2 token field
+//        credential.getAccessToken();
+
+//        URL url = new URL(
+////                "" +
+////                "curl -X PATCH --data-binary @JsonFile.json " +
+////                "        -H \"Authorization: Bearer "+"1/Gj3dwe658cFMW9X0IFyL5p8Pf6CnjAwZ0wT46IYDYeQ"+" \\\n" +
+////                "        -H \"Content-Type: application/json\" \\\n" +
+//                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted test");
+//
+////        curl -X PATCH --data-binary @JsonFile.json \\" +
+////        "    -H \"Authorization: Bearer "+"1/Gj3dwe658cFMW9X0IFyL5p8Pf6CnjAwZ0wT46IYDYeQ"+"\\\"" +
+////                "    -H \"Content-Type: application/json\"" +
+////                "    \"https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted test\"
+//
+//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+//            for (String line; (line = reader.readLine()) != null;) {
+//                System.out.println(line);
+//            }
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //        curl -X PATCH --data-binary @[JSON_FILE_NAME].json \
+//        -H "Authorization: Bearer [OAUTH2_TOKEN]" \
+//        -H "Content-Type: application/json" \
+//        "https://www.googleapis.com/storage/v1/b/[BUCKET_NAME]/o/[OBJECT_NAME]"
+
+
+        String accessToken=credential.getAccessToken();
+        System.out.println(accessToken);
+
+//      "-H", "Authorization: Bearer ya29.GlwCBi4vxdEBtIa07c3ky9XkGT8kXEZEStM_kL-Hk0Btqd8iuwfZCuzvotbmEyem_ppxTgJuAtWdxOna3e2fDvzp37A1wbNFl9eX7OYYyvVuqBd4XHXRCqJ2EIq_4g",
+
+        String[] command = {"curl", "-X", "PATCH", "--data-binary","@JsonFile.json",
+                "-H", "Authorization: Bearer "+credential.getAccessToken(),
+                "-H", "Content-Type: application/json",
+                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/42149.py"};
+
+        ProcessBuilder process = new ProcessBuilder(command);
+        Process p;
+        try {
+            p = process.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append(System.getProperty("line.separator"));
+            }
+            String result = builder.toString();
+            System.out.print(result);
+
+        } catch (IOException e) {
+            System.out.print("error");
+            e.printStackTrace();
+        }
+//        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+//        // rebuild key using SecretKeySpec
+//        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 
 
@@ -224,7 +316,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         FileOutputStream out = new FileOutputStream(f);
         byte[] output = c.doFinal(input);
-        uploadFile("Encrypted test.txt",f.getAbsolutePath(),output);
+        uploadFile("Encrypted test",f.getAbsolutePath(),output);
 
 //        out.write(output);
 
