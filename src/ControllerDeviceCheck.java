@@ -9,28 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ControllerDeviceCheck implements Initializable {
     @FXML
@@ -54,6 +46,7 @@ public class ControllerDeviceCheck implements Initializable {
     private boolean AllFirewallStatus;
     //    private boolean WindowsStatus=true;
     private boolean WindowsStatus;
+    private boolean WirelessEncryption;
 
 
     @Override
@@ -122,7 +115,37 @@ public class ControllerDeviceCheck implements Initializable {
                     close.setOnAction(__ -> alert.hideWithAnimation());
                     alert.show();
                 });
-            } else if (WindowsStatus == false) {
+            } else if(WirelessEncryption==false) {
+                LoadingSpinner.setVisible(false);
+                RestartDeviceCheckButton.setVisible(true);
+                RestartDeviceCheckButton.setDisable(false);
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+            }
+            else if (WindowsStatus == false) {
                 LoadingSpinner.setVisible(false);
                 RestartDeviceCheckButton.setVisible(true);
                 RestartDeviceCheckButton.setDisable(false);
@@ -163,15 +186,6 @@ public class ControllerDeviceCheck implements Initializable {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-                if (mail.equals("hansenhappy83@gmail.com")) {
-                    Desktop d = Desktop.getDesktop();
-                    try {
-                        d.browse(new URI("https://tinyurl.com/ybw63hew"));
-                    } catch (IOException | URISyntaxException e2) {
-                        e2.printStackTrace();
-                    }
-                }
-
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("UserHome.fxml"));
                 myScene = anchorPane.getScene();
@@ -263,7 +277,7 @@ public class ControllerDeviceCheck implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     localDeviceFirewallCheck();
-                    //Error when connecting to cloud. need to handle all errors, and also the button to force reset and stuff after a certain amount of time
+                    checkWirelessConnectionEncryption();
                     checkWindowsApproved();
                     return null;
                 }
@@ -290,6 +304,7 @@ public class ControllerDeviceCheck implements Initializable {
             if (line.startsWith("State")) {
                 Scanner s = new Scanner(line).useDelimiter("                                 ");
                 String firstLine = s.next();
+                //use s.next instead. Reduces overhead of creating new var
                 String firewallStatus = s.next();
 //                output.append(line + "\n");
                 System.out.println(line);
@@ -307,18 +322,7 @@ public class ControllerDeviceCheck implements Initializable {
             output.append(line + "\n");
         }
 
-//        Scanner s = new Scanner(osName).useDelimiter("                ");
-//        String firstLine=s.next();
-//        String osBuildNoStr=s.next();
-//        //System.out.println("OS version is " + osName);
-//        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
-//        String osBuildNo=sc.next();
-//        System.out.println(osBuildNo);
-
         System.out.println(output.toString());
-        //Desktop.getDesktop().open(new File("C://"));
-//        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
         System.out.println(DomainFirewall);
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
@@ -328,42 +332,30 @@ public class ControllerDeviceCheck implements Initializable {
         } else {
             AllFirewallStatus = true;
         }
+    }
 
+    private void checkWirelessConnectionEncryption() throws IOException, InterruptedException {
+        Process p = Runtime.getRuntime().exec("netsh wlan show interfaces");
+        p.waitFor();
 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+            if(line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))){
+                //set global variable
+                WirelessEncryption=true;
+                System.out.println("Wireless Secure!!!");
+                break;
+            }
+            WirelessEncryption=false;
+        }
     }
 
     private void checkWindowsApproved() throws SQLException {
         if (utils.checkWindowsApproved() == true) {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("UserHome.fxml"));
-//            myScene = (Scene) ((Node) event.getSource()).getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//            Parent nextView = loader.load();
-//
-//            //Will change to Device Checking Page next time
-//            ControllerUserHome controller = loader.<ControllerUserHome>getController();
-//            //controller.passData(login.getEmail());
-//
-//            stage.setScene(new Scene(nextView));
-//            stage.setTitle("NSPJ");
-//            stage.show();
             System.out.println("SUPPORTED VERSION");
             WindowsStatus = true;
-
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("UserHome.fxml"));
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//            Parent nextView = null;
-//            try {
-//                nextView = loader.load();
-//                ControllerUserHome controller = loader.<ControllerUserHome>getController();
-//            } catch (IOException u) {
-//                u.printStackTrace();
-//            }
-//            stage.setScene(new Scene(nextView));
-//            stage.setTitle("NSPJ");
-//            stage.show();
         } else {
             WindowsStatus = false;
             System.out.println("Not supported VERSION!");
