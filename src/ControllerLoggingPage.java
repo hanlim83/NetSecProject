@@ -7,29 +7,31 @@ import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
+import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,6 +44,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import sun.rmi.runtime.Log;
@@ -51,6 +54,12 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private com.jfoenix.controls.JFXTreeTableView<LogsExtract> JFXTreeTableView;
+
+    @FXML
+    private AnchorPane treeTableAnchor;
 
     @FXML
     private JFXHamburger hamburger;
@@ -107,6 +116,9 @@ public class ControllerLoggingPage implements Initializable {
     private Label severity1;
 
     @FXML
+    private JFXTextField searchFunction;
+
+    @FXML
     private JFXSpinner spinner;
 
     private Scene myScene;
@@ -117,7 +129,10 @@ public class ControllerLoggingPage implements Initializable {
     LoggingOptions options;
     LogsExtract logsextract = new LogsExtract();
 
-    int colourchecker=0;
+//    private ObservableList<TableBlob1> blobs;
+
+
+    int colourchecker = 0;
 
     private int spinnerchecker;
 
@@ -134,72 +149,221 @@ public class ControllerLoggingPage implements Initializable {
 
     private ArrayList<Integer> globalCheckerList2 = new ArrayList<Integer>();
 
-    Service process1 = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    loggingsnippets = new LoggingSnippets();
-                    Platform.runLater(() -> {
-                        options = LoggingOptions.getDefaultInstance();
+//    Service process1 = new Service() {
+//        @Override
+//        protected Task createTask() {
+//            return new Task() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    loggingsnippets = new LoggingSnippets();
+//                    Platform.runLater(() -> {
+//                        options = LoggingOptions.getDefaultInstance();
+//
+//                        popupanchor.setVisible(false);
+//                        logsTable.setVisible(true);
+//                        spinner.setVisible(false);
+//
+//                        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
+//                        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
+//                        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
+//                        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
+//                        globalCheckerList2 = logsextract.getGlobalChckerList();
+////                      user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
+//                        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+//
+//                        severity.setCellFactory(new Callback<TableColumn<LogsExtract, String>, TableCell<LogsExtract, String>>() {
+//                            @Override
+//                            public TableCell<LogsExtract, String> call(TableColumn<LogsExtract, String> param) {
+//                                return new TableCell<LogsExtract, String>() {
+//
+//                                    @Override
+//                                    public void updateItem(String item, boolean empty) {
+//                                        super.updateItem(item, empty);
+//                                        if (!isEmpty()) {
+//                                            this.setTextFill(Color.BLACK);
+//                                            // Get fancy and change color based on data
+//                                            if (item.contains("ERROR"))
+//                                                this.setTextFill(Color.RED);
+//                                            setText(item);
+//
+//                                        }
+//                                    }
+//
+//                                };
+//                            }
+//                        });
+//                        logsList = loggingsnippets.getLogsExtractList();
+//                    });
+//                    return null;
+//                }
+//            };
+//        }
+//    };
 
-                        popupanchor.setVisible(false);
-                        logsTable.setVisible(true);
-                        spinner.setVisible(false);
+    private void TableMethod() {
 
-                        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
-                        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
-                        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
-                        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
-                        globalCheckerList2 = logsextract.getGlobalChckerList();
-//                      user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-                        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
+        JFXTreeTableColumn<LogsExtract, String> timestampCol = new JFXTreeTableColumn<>("Timestamp");
+        timestampCol.setPrefWidth(96.86665344238281);
+        timestampCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
+            if (timestampCol.validateValue(param)) {
+                return param.getValue().getValue().getTimestamp();
+            } else {
+                return timestampCol.getComputedValue(param);
+            }
+        });
 
-                        severity.setCellFactory(new Callback<TableColumn<LogsExtract, String>, TableCell<LogsExtract, String>>() {
+        JFXTreeTableColumn<LogsExtract, String> actionCol = new JFXTreeTableColumn<>("Action");
+        actionCol.setPrefWidth(113.13334655761719);
+        actionCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
+            if (actionCol.validateValue(param)) {
+                return param.getValue().getValue().getAction();
+            } else {
+                return actionCol.getComputedValue(param);
+            }
+        });
+
+        JFXTreeTableColumn<LogsExtract, String> severityCol = new JFXTreeTableColumn<>("Severity");
+        severityCol.setPrefWidth(118.66668701171875);
+        Callback<TreeTableColumn<LogsExtract, String>, TreeTableCell<LogsExtract, String>> cellFactory
+                =
+                new Callback<TreeTableColumn<LogsExtract, String>, TreeTableCell<LogsExtract, String>>() {
+                    @Override
+                    public TreeTableCell<LogsExtract, String> call(TreeTableColumn<LogsExtract, String> param) {
+                        return new TreeTableCell<LogsExtract, String>() {
+
                             @Override
-                            public TableCell<LogsExtract, String> call(TableColumn<LogsExtract, String> param) {
-                                return new TableCell<LogsExtract, String>() {
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (!isEmpty()) {
+                                    this.setTextFill(Color.BLACK);
+                                    // Get fancy and change color based on data
+                                    if (item.contains("ERROR"))
+                                        this.setTextFill(Color.RED);
+                                    setText(item);
 
-                                    @Override
-                                    public void updateItem(String item, boolean empty) {
-                                        super.updateItem(item, empty);
-                                        if (!isEmpty()) {
-                                            this.setTextFill(Color.BLACK);
-                                            // Get fancy and change color based on data
-                                            if(item.contains("ERROR"))
-                                                this.setTextFill(Color.RED);
-                                            setText(item);
-
-                                        }
-                                    }
-
-                                };
+                                }
                             }
-                        });
-                        logsList = loggingsnippets.getLogsExtractList();
-                    });
-                    return null;
-                }
-            };
-        }
-    };
+
+                        };
+                    }
+                };
+
+        JFXTreeTableColumn<LogsExtract, String> bucketCol = new JFXTreeTableColumn<>("Bucket Name");
+        bucketCol.setPrefWidth(287.33331298828125);
+        bucketCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
+            if (bucketCol.validateValue(param)) {
+                return param.getValue().getValue().getBucketName();
+            } else {
+                return bucketCol.getComputedValue(param);
+            }
+        });
+
+        JFXTreeTableColumn<LogsExtract, String> emailCol = new JFXTreeTableColumn<>("User");
+        emailCol.setPrefWidth(352.5999755859375);
+        emailCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
+            if (emailCol.validateValue(param)) {
+                return param.getValue().getValue().getFinalEmail();
+            } else {
+                return emailCol.getComputedValue(param);
+            }
+        });
+
+        severityCol.setCellFactory(cellFactory);
+
+
+
+        timestampCol.setCellFactory((TreeTableColumn<LogsExtract, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        timestampCol.setOnEditCommit((TreeTableColumn.CellEditEvent<LogsExtract, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().getTimestamp().set(t.getNewValue()));
+
+        actionCol.setCellFactory((TreeTableColumn<LogsExtract, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        actionCol.setOnEditCommit((TreeTableColumn.CellEditEvent<LogsExtract, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().getAction().set(t.getNewValue()));
+
+        bucketCol.setCellFactory((TreeTableColumn<LogsExtract, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        bucketCol.setOnEditCommit((TreeTableColumn.CellEditEvent<LogsExtract, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().getBucketName().set(t.getNewValue()));
+
+        emailCol.setCellFactory((TreeTableColumn<LogsExtract, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        emailCol.setOnEditCommit((TreeTableColumn.CellEditEvent<LogsExtract, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().getFinalEmail().set(t.getNewValue()));
+
+        severityCol.setCellFactory((TreeTableColumn<LogsExtract, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        severityCol.setOnEditCommit((TreeTableColumn.CellEditEvent<LogsExtract, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().getSeverity().set(t.getNewValue()));
+
+        final TreeItem<LogsExtract> root = new RecursiveTreeItem<>(logsObservableList, RecursiveTreeObject::getChildren);
+
+        JFXTreeTableView = new JFXTreeTableView<>(root);
+        JFXTreeTableView.setShowRoot(false);
+        JFXTreeTableView.setEditable(true);
+        JFXTreeTableView.getColumns().setAll(timestampCol, actionCol, bucketCol, emailCol, severityCol);
+        JFXTreeTableView.setEditable(false);
+        treeTableAnchor.getChildren().add(JFXTreeTableView);
+
+        searchFunction.textProperty().addListener((o, oldVal, newVal) -> {
+            JFXTreeTableView.setPredicate(userProp -> {
+                final LogsExtract blob = userProp.getValue();
+                return blob.getTimestamp().get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.getAction().get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.getBucketName().get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.getFinalEmail().get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.getSeverity().get().toLowerCase().contains(newVal.toLowerCase())
+//                        || blob.blobName.get().toUpperCase().contains(newVal)
+//                        || blob.date.get().toUpperCase().contains(newVal)
+                        || blob.getTimestamp().get().contains(newVal)
+                        || blob.getAction().get().contains(newVal)
+                        || blob.getBucketName().get().contains(newVal)
+                        || blob.getFinalEmail().get().contains(newVal)
+                        || blob.getSeverity().get().contains(newVal);
+
+            });
+        });
+
+//        JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+//            if (e.isPrimaryButtonDown()) {
+//                onEdit();
+//            }
+//        });
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loggingsnippets = new LoggingSnippets();
+        options = LoggingOptions.getDefaultInstance();
+
         hamburgerBar();
         spinner.setVisible(false);
-        process1.start();
 
-        process1.setOnSucceeded(e -> {
-            process1.reset();
-        });
-        process1.setOnCancelled(e -> {
-            process1.reset();
-        });
-        process1.setOnFailed(e -> {
-            process1.reset();
-        });
+        logsList = loggingsnippets.getLogsExtractList();
+        logsObservableList = FXCollections.observableList(logsList);
+//        TableMethod();
+//        process1.start();
+//
+//        process1.setOnSucceeded(e -> {
+//            process1.reset();
+//        });
+//        process1.setOnCancelled(e -> {
+//            process1.reset();
+//        });
+//        process1.setOnFailed(e -> {
+//            process1.reset();
+//        });
     }
 
 
@@ -242,16 +406,16 @@ public class ControllerLoggingPage implements Initializable {
 
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
-        grid.getColumnConstraints().addAll(col1,col2);
+        grid.getColumnConstraints().addAll(col1, col2);
 
-        String timestamp1 = logsTable.getSelectionModel().getSelectedItem().getTimestamp();
-        String severity1 = logsTable.getSelectionModel().getSelectedItem().getSeverity();
+        StringProperty timestamp1 = logsTable.getSelectionModel().getSelectedItem().getTimestamp();
+        StringProperty severity1 = logsTable.getSelectionModel().getSelectedItem().getSeverity();
         Label LABEL1 = new Label();
         LABEL1.setTextFill(Color.rgb(255, 0, 0));
-        LABEL1.setText(severity1);
-        String action1 = logsTable.getSelectionModel().getSelectedItem().getAction();
-        String bucketname1 = logsTable.getSelectionModel().getSelectedItem().getBucketName();
-        String user1 = logsTable.getSelectionModel().getSelectedItem().getFinalEmail();
+//        LABEL1.setText(severity1);
+        StringProperty action1 = logsTable.getSelectionModel().getSelectedItem().getAction();
+        StringProperty bucketname1 = logsTable.getSelectionModel().getSelectedItem().getBucketName();
+        StringProperty user1 = logsTable.getSelectionModel().getSelectedItem().getFinalEmail();
 
         String string1 = "Timestamp :";
         Label label1 = new Label();
@@ -279,17 +443,17 @@ public class ControllerLoggingPage implements Initializable {
         label5.setText(string5);
 
 
-        grid.add(label1,0,0);
-        grid.add(label2,0,1);
-        grid.add(label3,0,2);
-        grid.add(label4,0,3);
-        grid.add(label5,0,4);
+        grid.add(label1, 0, 0);
+        grid.add(label2, 0, 1);
+        grid.add(label3, 0, 2);
+        grid.add(label4, 0, 3);
+        grid.add(label5, 0, 4);
 
-        grid.add(new Label(timestamp1), 1, 0);
-        grid.add(LABEL1, 1, 1);
-        grid.add(new Label(action1), 1, 2);
-        grid.add(new Label(bucketname1), 1, 3);
-        grid.add(new Label(user1), 1, 4);
+//        grid.add(new Label(timestamp1), 1, 0);
+//        grid.add(LABEL1, 1, 1);
+//        grid.add(new Label(action1), 1, 2);
+//        grid.add(new Label(bucketname1), 1, 3);
+//        grid.add(new Label(user1), 1, 4);
 
         layout.setBody(grid);
 
@@ -308,14 +472,15 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handledeleted(MouseEvent event) {
-        logsTable.getItems().clear();
+    //    logsTable.getItems().clear();
         createdlogs.setDisable(true);
         general.setDisable(true);
         deletedlogs.setDisable(true);
         spinner.setVisible(true);
-        logsTable.setVisible(true);
+     //   logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "delete";
+
         process.start();
 
         process.setOnSucceeded(e -> {
@@ -337,14 +502,15 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handlecreated(MouseEvent event) {
-        logsTable.getItems().clear();
+  //      logsTable.getItems().clear();
         createdlogs.setDisable(true);
         deletedlogs.setDisable(true);
         general.setDisable(true);
         spinner.setVisible(true);
-        logsTable.setVisible(true);
+  //      logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "create";
+
         process.start();
 
         process.setOnSucceeded(e -> {
@@ -366,14 +532,16 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handleonetwo(MouseEvent event) {
-        logsTable.getItems().clear();
+    //    logsTable.getItems().clear();
         general.setDisable(true);
         deletedlogs.setDisable(true);
         createdlogs.setDisable(true);
         spinner.setVisible(true);
-        logsTable.setVisible(true);
+   //     logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "one two";
+
+
         process.start();
 
         process.setOnSucceeded(e -> {
@@ -402,14 +570,18 @@ public class ControllerLoggingPage implements Initializable {
                     try (Logging logging = options.getService()) {
                         System.out.println(options.getProjectId());
                         loggingsnippets.listLogEntries(filters);
+
                     } catch (com.google.cloud.logging.LoggingException e1) {
                         e1.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
+
+
                     Platform.runLater(() -> {
                         logsObservableList = FXCollections.observableList(logsList);
-                        logsTable.setItems(logsObservableList);
+                        TableMethod();
 
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
@@ -450,5 +622,7 @@ public class ControllerLoggingPage implements Initializable {
             }
         });
     }
+
+
 
 }

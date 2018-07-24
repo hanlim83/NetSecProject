@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
@@ -37,7 +38,7 @@
             <JFXButton fx:id="deletedlogs" onMouseClicked="#handledeleted" prefHeight="75.0" prefWidth="145.0" style="-fx-background-color: #042c6#a8c9ffd;" text="Deleted Logs" textFill="#1100ff" />
          </children>
       </HBox>
-      <TableView fx:id="logsTable" layoutX="46.0" layoutY="170.0" onMouseClicked="#clickItem" prefHeight="400.0" prefWidth="962.0">
+      <TableView fx:id="logsTable" disable="true" layoutX="46.0" layoutY="170.0" onMouseClicked="#clickItem" prefHeight="400.0" prefWidth="962.0" visible="false">
         <columns>
           <TableColumn fx:id="timestamp" prefWidth="96.86665344238281" text="Timestamp" />
           <TableColumn fx:id="action" prefWidth="113.13334655761719" text="Action" />
@@ -46,8 +47,10 @@
             <TableColumn fx:id="severity" prefWidth="118.66668701171875" text="Severity" />
         </columns>
       </TableView>
+      <AnchorPane fx:id="treeTableAnchor" layoutX="46.0" layoutY="172.0" prefHeight="400.0" prefWidth="962.0" />
       <AnchorPane fx:id="popupanchor" layoutX="43.0" layoutY="177.0" prefHeight="390.0" prefWidth="970.0" visible="false" />
       <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXTextField fx:id="searchFunction" layoutX="859.0" layoutY="106.0" />
     </children>
 </AnchorPane>

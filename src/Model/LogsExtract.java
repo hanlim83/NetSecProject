@@ -3,7 +3,10 @@ package Model;
 import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Payload;
 import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import org.json.simple.JSONArray;
@@ -19,19 +22,20 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LogsExtract {
+public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     String severitycolour;
     static int colorchecker=0;
 
     public LogEntry logentry;
-    private String timestamp;
-    private String action;
-    private String bucketName;
+    private StringProperty timestamp;
+    private StringProperty action;
+    private StringProperty bucketName;
     private String user;
-    //    private String projectID;
-    private String severity;
-    private String finalEmail;
-    private String nonFinalEmail;
+    private StringProperty severity;
+    private StringProperty finalEmail;
+//    private StringProperty nonFinalEmail;
+
+
     Pattern p = Pattern.compile("\\\\");
     Pattern p1 = Pattern.compile("@");
     Pattern p2 = Pattern.compile("gmail.com");
@@ -58,15 +62,15 @@ public class LogsExtract {
         Date date = new Date(logentry.getReceiveTimestamp());
         DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         String dateFormatted = formatter.format(date);
-        this.timestamp = dateFormatted;
+        this.timestamp = new SimpleStringProperty(dateFormatted);
         // Get Severity
         severitycolour = logentry.getSeverity().toString();
-        this.severity = severitycolour;
+        this.severity = new SimpleStringProperty(severitycolour);
 
         // Get type of action -> GCS Bucket / CloudSQL / Project
-        this.action = logentry.getResource().getType();
+        this.action = new SimpleStringProperty(logentry.getResource().getType());
         // Get label -> Location, ProjectID, Bucketname
-        this.bucketName = logentry.getResource().getLabels().toString();
+        this.bucketName = new SimpleStringProperty(logentry.getResource().getLabels().toString());
 
         this.user = logentry.getPayload().getData().toString();
 
@@ -87,8 +91,8 @@ public class LogsExtract {
                 //if no @ sign, store in stringList3
                 stringList3.add(stringList.get(i));
                 System.out.println("no @ " + stringList.get(i));
-                this.nonFinalEmail = stringList3.get(i);
-                System.out.println("HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== " + nonFinalEmail);
+//                this.nonFinalEmail = stringList3.get(i);
+//                System.out.println("HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== " + nonFinalEmail);
                 //HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== type_url: "type.googleapis.com/google.cloud.audit.AuditLog"
                 this.globalchecker = -1;
                 globalChckerList.add(globalchecker);
@@ -127,20 +131,23 @@ public class LogsExtract {
         listIterator = stringList4.listIterator();
         while (listIterator.hasNext()) {
             String emailString = listIterator.next().toString();
-            System.out.println(emailString);
+//            System.out.println(emailString);
 
             Matcher m2 = p2.matcher(emailString);
             if (m2.find()) {
-                this.finalEmail = emailString.substring(3, emailString.length());
+                this.finalEmail = new SimpleStringProperty(emailString.substring(3, emailString.length()));
                 this.globalchecker = 1;
                 globalChckerList.add(globalchecker);
                 System.out.println("HERE IS THE FINAL EMAIL LALALALAA : " + finalEmail);
-            } else {
-                System.out.println("GOT @ but not EMAIL");
-
             }
+//            else {
+//                System.out.println("GOT @ but not EMAIL");
+//            }
         }
 
+//        TableBlob(timestamp,severity,action,bucketName,finalEmail);
+//
+//        tableblob = new ControllerLoggingPage.TableBlob();
     }
 
     public int getColorchecker() {
@@ -151,9 +158,9 @@ public class LogsExtract {
         return globalChckerList;
     }
 
-    public String getNonFinalEmail() {
-        return nonFinalEmail;
-    }
+//    public String getNonFinalEmail() {
+//        return nonFinalEmail;
+//    }
 
     public int getGlobalchecker() {
         return globalchecker;
@@ -163,15 +170,15 @@ public class LogsExtract {
         return logentry;
     }
 
-    public String getTimestamp() {
+    public StringProperty getTimestamp() {
         return timestamp;
     }
 
-    public String getAction() {
+    public StringProperty getAction() {
         return action;
     }
 
-    public String getBucketName() {
+    public StringProperty getBucketName() {
         return bucketName;
     }
 
@@ -179,12 +186,7 @@ public class LogsExtract {
         return user;
     }
 
-//    public String getProjectID() {
-//        return projectID;
-//    }
-
-
-    public String getFinalEmail() {
+    public StringProperty getFinalEmail() {
         return finalEmail;
     }
 
@@ -192,7 +194,7 @@ public class LogsExtract {
         return stringList3;
     }
 
-    public String getSeverity() {
+    public StringProperty getSeverity() {
         return severity;
     }
 }
