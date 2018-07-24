@@ -152,14 +152,14 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        return iv;
 //    }
 
-    private SecretKey secKey;
+//    private SecretKey secKey;
     private Cipher aesCipher;
 
     private void encryptFileNew(File f) throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
 
-        secKey = keyGen.generateKey();
+        SecretKey secKey = keyGen.generateKey();
 
         aesCipher = Cipher.getInstance("AES");
 
@@ -174,13 +174,20 @@ public class ControllerSecureCloudStorage implements Initializable {
         uploadFile("Encrypted test",f.getAbsolutePath(),byteCipherText);
 
         //encoding the key to String
-        String secretKey=Base64.getEncoder().encodeToString(secKey.getEncoded());
+        String encodedSecretKey=Base64.getEncoder().encodeToString(secKey.getEncoded());
 //        JSONObject main =new JSONObject();
+
+        //Testing for decoded key
+        byte[] decodedKey = Base64.getDecoder().decode(encodedSecretKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        System.err.println("TESTING"+secKey.equals(originalKey));
+        //Testing for decoded key
 
         JSONObject fileObj = new JSONObject();
 
         JSONObject filemetadata= new JSONObject();
-        filemetadata.put("Encrypted Symmetric Key",secretKey);
+        filemetadata.put("Encrypted Symmetric Key",encodedSecretKey);
 
         fileObj.put("metadata",filemetadata);
 //        main.put("metadata",fileObj);
@@ -241,7 +248,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         String[] command = {"curl", "-X", "PATCH", "--data-binary","@JsonFile.json",
                 "-H", "Authorization: Bearer "+credential.getAccessToken(),
                 "-H", "Content-Type: application/json",
-                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/42149.py"};
+                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted%20test"};
 
         ProcessBuilder process = new ProcessBuilder(command);
         Process p;
@@ -261,53 +268,48 @@ public class ControllerSecureCloudStorage implements Initializable {
             System.out.print("error");
             e.printStackTrace();
         }
-//        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-//        // rebuild key using SecretKeySpec
-//        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 
-
-
-    public void decryptFileNew(File f) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+    public void decryptFileNew(File f, SecretKey secretKey) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
         byte[] cipherText = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
 
-        aesCipher.init(Cipher.DECRYPT_MODE, secKey);
+        aesCipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte[] bytePlainText = aesCipher.doFinal(cipherText);
         Files.write(Paths.get(f.getAbsolutePath()), bytePlainText);
     }
 
-    public Key generateSymmetricKey() throws Exception {
-        KeyGenerator generator = KeyGenerator.getInstance( "AES" );
-        SecretKey key = generator.generateKey();
-//        key=symmetricKey;
-        return key;
-    }
+//    public Key generateSymmetricKey() throws Exception {
+//        KeyGenerator generator = KeyGenerator.getInstance( "AES" );
+//        SecretKey key = generator.generateKey();
+////        key=symmetricKey;
+//        return key;
+//    }
+//
+//    private byte [] IV;
+//    public void generateIV() {
+//        SecureRandom random = new SecureRandom();
+//        byte [] iv = new byte [16];
+//        random.nextBytes( iv );
+//        this.IV=iv;
+////        return iv;
+//    }
+//
+//    private Key symmetricKey;
+//    private SecretKeySpec secretKey;
 
-    private byte [] IV;
-    public void generateIV() {
-        SecureRandom random = new SecureRandom();
-        byte [] iv = new byte [16];
-        random.nextBytes( iv );
-        this.IV=iv;
-//        return iv;
-    }
-
-    private Key symmetricKey;
-    private SecretKeySpec secretKey;
-
-    public void encryptFile(File f)
-            throws Exception {
-        System.out.println("Encrypting file: " + f.getName());
-        Key symmetricKey=generateSymmetricKey();
-        this.symmetricKey=symmetricKey;
-        generateIV();
-//        this.secretKey=symmetricKey;
-        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
-        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, new IvParameterSpec( IV ));
-        this.writeToFile(f,cipher);
-//        cipher.do
-//        decryptFile(f);
-    }
+//    public void encryptFile(File f)
+//            throws Exception {
+//        System.out.println("Encrypting file: " + f.getName());
+//        Key symmetricKey=generateSymmetricKey();
+//        this.symmetricKey=symmetricKey;
+//        generateIV();
+////        this.secretKey=symmetricKey;
+//        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+//        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, new IvParameterSpec( IV ));
+//        this.writeToFile(f,cipher);
+////        cipher.do
+////        decryptFile(f);
+//    }
 
     public void writeToFile(File f,Cipher c) throws Exception {
         FileInputStream in = new FileInputStream(f);
@@ -325,13 +327,23 @@ public class ControllerSecureCloudStorage implements Initializable {
         in.close();
     }
 
-    public void decryptFile(File f)
-            throws Exception {
-        System.out.println("Decrypting file: " + f.getName());
-        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
-        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
-        this.writeToFile(f,cipher);
-    }
+    //original testing
+//    public void decryptFile(File f)
+//            throws Exception {
+//        System.out.println("Decrypting file: " + f.getName());
+//        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
+//        this.writeToFile(f,cipher);
+//    }
+
+//    public void decryptFile(File f, SecretKey secretKey)
+//            throws Exception {
+//        System.out.println("Decrypting file: " + f.getName());
+//        Cipher cipher = Cipher.getInstance( secretKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
+//        this.writeToFile(f,cipher);
+//    }
+
 
 //    public void decryptFile(File f,Cipher c)
 //            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
@@ -449,7 +461,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     //To test
-    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws IOException {
+    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
         BlobId blobId = BlobId.of(bucketName, objectName);
         Blob blob = storage.get(blobId);
         System.out.println(blob);
@@ -483,6 +495,22 @@ public class ControllerSecureCloudStorage implements Initializable {
         } else {
             writeTo.close();
         }
+        FileChooser fileChooser1 = new FileChooser();
+        fileChooser1.setTitle("Open Resource File");
+        //FEATURE: stage now loads as 1 page instead of 2
+        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+        File file1 = fileChooser1.showOpenDialog(stage1);
+        String encodedKey=blob.getMetadata().get("Encrypted Symmetric Key");
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+//        decryptFileNew(file1,originalKey);
+        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
+
+        aesCipher = Cipher.getInstance("AES");
+        aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+        byte[] bytePlainText = aesCipher.doFinal(cipherText);
+        Files.write(Paths.get(file1.getAbsolutePath()), bytePlainText);
     }
 
     public void deleteFile(String bucketName, String blobName) {
@@ -733,7 +761,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 calculateEmail();
                 try {
                     downloadFile(storage, privateBucketName, blobName, saveFile());
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 //                myScene = anchorPane.getScene();
