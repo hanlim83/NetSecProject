@@ -82,7 +82,8 @@ public class ControllerCAMainDashboard implements Initializable {
     private SMS SMSHandler;
     private ArrayList<Integer> TPS;
     private int xSeriesData = 0;
-    private XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    private XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
+    private XYChart.Series<Number, Number> thresholdSeries = new XYChart.Series<>();
     private ConcurrentLinkedQueue<Number> data = new ConcurrentLinkedQueue<>();
     private NumberAxis xAxis;
     private AnimationTimer timer;
@@ -121,8 +122,10 @@ public class ControllerCAMainDashboard implements Initializable {
         networkTrafficChart.setAnimated(false);
         networkTrafficChart.setTitle("Network Traffic Chart");
         networkTrafficChart.setHorizontalGridLinesVisible(true);
-        series.setName("Current Network Traffic");
-        networkTrafficChart.getData().add(series);
+        dataSeries.setName("Current Network Traffic");
+        networkTrafficChart.getData().add(dataSeries);
+        thresholdSeries.setName("Threshold");
+        networkTrafficChart.getData().add(thresholdSeries);
         networkTrafficChart.setPrefWidth(1051);
         networkTrafficChart.setPrefHeight(334);
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
@@ -156,7 +159,8 @@ public class ControllerCAMainDashboard implements Initializable {
             clearCaptureBtn.setDisable(true);
             alertCount.setText("Suspicious Events Count: 0");
             data.clear();
-            series.getData().clear();
+            dataSeries.getData().clear();
+            thresholdSeries.getData().clear();
             protocolChart.getData().clear();
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -342,10 +346,12 @@ public class ControllerCAMainDashboard implements Initializable {
             public void run() {
                 for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
                     if (data.isEmpty()) break;
-                    series.getData().add(new XYChart.Data<>(xSeriesData++, data.remove()));
+                    dataSeries.getData().add(new XYChart.Data<>(xSeriesData++, data.remove()));
+                    thresholdSeries.getData().add(new XYChart.Data<>(xSeriesData++, threshold));
                 }
-                if (series.getData().size() > MAX_DATA_POINTS) {
-                    series.getData().remove(0, series.getData().size() - MAX_DATA_POINTS);
+                if (dataSeries.getData().size() > MAX_DATA_POINTS) {
+                    dataSeries.getData().remove(0, dataSeries.getData().size() - MAX_DATA_POINTS);
+                    thresholdSeries.getData().remove(0, thresholdSeries.getData().size() - MAX_DATA_POINTS);
                 }
                 xAxis.setLowerBound(xSeriesData - MAX_DATA_POINTS);
                 xAxis.setUpperBound(xSeriesData - 1);

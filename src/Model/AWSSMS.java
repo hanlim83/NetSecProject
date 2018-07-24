@@ -17,6 +17,8 @@ public class AWSSMS {
     private static final String ACCESS_KEY = "AKIAI3QOKRMRP56BPYGQ";
     private static final String SECRET_KEY = "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";
     private static final String alertMsg = "A suspicious network event has been detected! Please check the FireE Admin App for more information";
+    private static final String authMsg1 = "To continue your sign in, please enter ";
+    private static final String authMsg2 = " as your OTP in the FireE App";
     private static BasicAWSCredentials auth;
     private static AmazonSNS snsClient;
     private static Map<String, MessageAttributeValue> smsAttributes = new HashMap<String, MessageAttributeValue>();
@@ -95,4 +97,17 @@ public class AWSSMS {
             System.out.println(result);
         }
     }
+
+    public void sendCode(String phoneNumber, String code) {
+        if (phoneNumber.isEmpty() || code.isEmpty())
+            System.err.println("Missing Parameters!");
+        else {
+            PublishResult result = snsClient.publish(new PublishRequest()
+                    .withMessage(authMsg1 + code + authMsg2)
+                    .withPhoneNumber("+65" + phoneNumber)
+                    .withMessageAttributes(smsAttributes));
+            System.out.println(result);
+        }
+    }
+
 }
