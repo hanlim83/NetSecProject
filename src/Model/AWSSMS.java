@@ -74,7 +74,7 @@ public class AWSSMS {
         if (GeneralUse == true) {
             return;
         } else if (adminPN == null)
-            System.err.println("Set Admin Phone Number(s) first!");
+            throw new RuntimeException("Admin Phone Numbers are not set!");
         else {
             for (String s : adminPN) {
                 PublishResult result = snsClient.publish(new PublishRequest()
@@ -88,7 +88,7 @@ public class AWSSMS {
 
     public void sendSMS(String phoneNumber, String Message) {
         if (phoneNumber.isEmpty() || Message.isEmpty())
-            System.err.println("Missing Parameters!");
+            throw new RuntimeException("Missing Parameters");
         else {
             PublishResult result = snsClient.publish(new PublishRequest()
                     .withMessage(Message)
@@ -100,7 +100,7 @@ public class AWSSMS {
 
     public void sendCode(String phoneNumber, String code) {
         if (phoneNumber.isEmpty() || code.isEmpty())
-            System.err.println("Missing Parameters!");
+            throw new RuntimeException("Missing Parameters");
         else {
             PublishResult result = snsClient.publish(new PublishRequest()
                     .withMessage(authMsg1 + code + authMsg2)

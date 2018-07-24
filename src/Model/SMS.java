@@ -37,24 +37,23 @@ public class SMS {
         if (GeneralUse == false)
             return adminPN;
         else
-            System.err.println("Not configured for specific use!");
-        return null;
+            throw new RuntimeException("Not configured for specific use!");
     }
 
     public void setAdminPN(ArrayList<String> adminPN) {
         if (GeneralUse == false)
             this.adminPN = adminPN;
         else
-            System.err.println("Not configured for specific use!");
+            throw new RuntimeException("Not configured for specific use!");
     }
 
     public void sendAlert() {
         if (GeneralUse == true) {
             return;
         } else if (permitUse == false)
-            System.err.println("Please enable PermitUse Boolean first!");
+            throw new RuntimeException("Please enable PermitUse Boolean first!");
         else if (adminPN == null)
-            System.err.println("Set Admin Phone Number(s) first!");
+            throw new RuntimeException("Set Admin Phone Number(s) first!");
         else {
             for (String s : adminPN) {
                 try {
@@ -74,9 +73,9 @@ public class SMS {
 
     public void sendSMS(String phoneNumber, String Message) {
         if (permitUse == false)
-            System.err.println("Please enable PermitUse Boolean first!");
+            throw new RuntimeException("Please enable PermitUse Boolean first!");
         else if (phoneNumber.isEmpty() || Message.isEmpty())
-            System.err.println("Missing Parameters!");
+            throw new RuntimeException("Missing Parameters!");
         else {
             try {
                 client.getSmsClient().submitMessage(new TextMessage(

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +80,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private String partialCaptureFilePath;
     private PcapHandle handle;
     private int pktCount = 0;
+    private ShowData sRunnable = new ShowData();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,6 +128,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.handler.setshowDataRunnable(ScheduledExecutorServiceHandler.getService().schedule(sRunnable, 3, TimeUnit.SECONDS));
     }
 
     synchronized private void incrementCount() {
