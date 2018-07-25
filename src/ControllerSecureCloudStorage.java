@@ -1,3 +1,4 @@
+import Database.User_InfoDB;
 import Model.*;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
@@ -10,6 +11,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -90,9 +92,8 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private String privateBucketName;
     private ObservableList<TableBlob> blobs;
-    //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
     private Storage storage;
-    private String password;
+    private static String password;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -112,22 +113,26 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     @FXML
     void onClickUploadButton(ActionEvent event) throws Exception {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        checkUserPassword();
 //        getStorage();
+
+//        calculateEmail();
+////        UploadFileTest();
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Choose File to Upload");
+//        //FEATURE: stage now loads as 1 page instead of 2
+//        Stage stage = (Stage) anchorPane.getScene().getWindow();
+//        File file = fileChooser.showOpenDialog(stage);
+//        if (checkNameTaken(file.getName()) == true) {
+//            System.out.println("Change NAME!!!! Add showing alert");
+//        } else {
+//            encryptFileNew(file);
+//            //may need to move update Table somewhere else instead
+//            updateTable();
+//        }
+
 ////        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
 ////        deleteFile("hugochiaxyznspj","42149.py");
-        calculateEmail();
-//        UploadFileTest();
-////        updateObservableList();
-////        TableMethod();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        //FEATURE: stage now loads as 1 page instead of 2
-        Stage stage = (Stage) anchorPane.getScene().getWindow();
-        File file = fileChooser.showOpenDialog(stage);
-        encryptFileNew(file);
-
-        updateTable();
 
 //        FileChooser fileChooser1 = new FileChooser();
 //        fileChooser1.setTitle("Open Resource File");
@@ -146,6 +151,27 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        decryptFile(file1);
     }
 
+    private boolean checkNameTaken(String fileName) throws Exception {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        if (storage == null) {
+            getStorage();
+        }
+        if (privateBucketName == null) {
+            calculateEmail();
+        }
+        Page<Blob> blobs = storage.list(privateBucketName);
+        for (Blob blob : blobs.iterateAll()) {
+            // do something with the blob
+            System.out.println("FROM METHOD" + blob);
+            System.out.println("FROM METHOD" + blob.getName());
+            if (fileName.equals(blob.getName())) {
+                System.out.println("Choose Different NAME!");
+                return true;
+            }
+        }
+        return false;
+    }
+
 //    public static byte [] generateIV() {
 //        SecureRandom random = new SecureRandom();
 //        byte [] iv = new byte [16];
@@ -154,7 +180,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //    }
 
     //    private SecretKey secKey;
-    private Cipher aesCipher;
+//    private Cipher aesCipher;
 
     private void encryptFileNew(File f) throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -162,7 +188,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         SecretKey secKey = keyGen.generateKey();
 
-        aesCipher = Cipher.getInstance("AES");
+        Cipher aesCipher = Cipher.getInstance("AES");
 
 //        FileInputStream in = new FileInputStream(f);
 //        byte[] byteText = new byte[(int) f.length()];
@@ -250,11 +276,8 @@ public class ControllerSecureCloudStorage implements Initializable {
         String[] command = {"curl", "-X", "PATCH", "--data-binary", "@JsonFile.json",
                 "-H", "Authorization: Bearer " + credential.getAccessToken(),
                 "-H", "Content-Type: application/json",
-                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/"+convertName(f.getName())};
+                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/" + convertName(f.getName())};
         //                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/Encrypted%20test"};
-
-        //TODO Edited ^ to private bucket name. To test
-
 
         ProcessBuilder process = new ProcessBuilder(command);
         Process p;
@@ -276,7 +299,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    private String convertName(String name){
+    private String convertName(String name) {
         name = name.replace(" ", "%20");
         return name;
     }
@@ -297,13 +320,119 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    public void decryptFileNew(File f, SecretKey secretKey) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
-        byte[] cipherText = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
+    //Download,saving and decrypt is here now
+//    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
+    private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        File filePath = fileChooser.showSaveDialog(stage);
+        String filePathString = filePath.getAbsolutePath();
+        Path downloadTo = Paths.get(filePathString);
 
-        aesCipher.init(Cipher.DECRYPT_MODE, secretKey);
+        BlobId blobId = BlobId.of(bucketName, objectName);
+        Blob blob = storage.get(blobId);
+        System.out.println(blob);
+        if (blob == null) {
+            System.out.println("No such object");
+            return;
+        }
+        PrintStream writeTo = System.out;
+        if (downloadTo != null) {
+            writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
+        }
+        if (blob.getSize() < 1_000_000) {
+            // Blob is small read all its content in one request
+            byte[] content = blob.getContent();
+
+            writeTo.write(content);
+        } else {
+            // When Blob size is big or unknown use the blob's channel reader.
+            try (ReadChannel reader = blob.reader()) {
+                WritableByteChannel channel = Channels.newChannel(writeTo);
+                ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                while (reader.read(bytes) > 0) {
+                    bytes.flip();
+                    channel.write(bytes);
+                    bytes.clear();
+                }
+            }
+        }
+        if (downloadTo == null) {
+            writeTo.println();
+        } else {
+            writeTo.close();
+        }
+//        FileChooser fileChooser1 = new FileChooser();
+//        fileChooser1.setTitle("Open Resource File");
+//        //FEATURE: stage now loads as 1 page instead of 2
+//        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+//        File file1 = fileChooser1.showOpenDialog(stage1);
+
+        String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+//        decryptFileNew(file1,originalKey);
+//        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
+        byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
+
+
+        Cipher aesCipher = Cipher.getInstance("AES");
+        aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
         byte[] bytePlainText = aesCipher.doFinal(cipherText);
-        Files.write(Paths.get(f.getAbsolutePath()), bytePlainText);
+        Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
     }
+
+//    public void decryptFileNew(File f, SecretKey secretKey) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+//        byte[] cipherText = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
+//
+//        aesCipher.init(Cipher.DECRYPT_MODE, secretKey);
+//        byte[] bytePlainText = aesCipher.doFinal(cipherText);
+//        Files.write(Paths.get(f.getAbsolutePath()), bytePlainText);
+//    }
+//
+//    public void writeToFile(File f, Cipher c) throws Exception {
+//        FileInputStream in = new FileInputStream(f);
+//        byte[] input = new byte[(int) f.length()];
+//        in.read(input);
+//
+//        FileOutputStream out = new FileOutputStream(f);
+//        byte[] output = c.doFinal(input);
+//        uploadFile("Encrypted test", f.getAbsolutePath(), output);
+//
+////        out.write(output);
+//
+//        out.flush();
+//        out.close();
+//        in.close();
+//    }
+
+    //original testing
+//    public void decryptFile(File f)
+//            throws Exception {
+//        System.out.println("Decrypting file: " + f.getName());
+//        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
+//        this.writeToFile(f,cipher);
+//    }
+
+//    public void decryptFile(File f, SecretKey secretKey)
+//            throws Exception {
+//        System.out.println("Decrypting file: " + f.getName());
+//        Cipher cipher = Cipher.getInstance( secretKey.getAlgorithm() + "/CBC/PKCS5Padding" );
+//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
+//        this.writeToFile(f,cipher);
+//    }
+
+
+//    public void decryptFile(File f,Cipher c)
+//            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
+//        System.out.println("Decrypting file: " + f.getName());
+//
+//        cipher.init(Cipher.DECRYPT_MODE, symmetricKey);
+//        this.writeToFile(f,cipher);
+//        this.writeToFile(f,c);
+//    }
 
 //    public Key generateSymmetricKey() throws Exception {
 //        KeyGenerator generator = KeyGenerator.getInstance( "AES" );
@@ -336,49 +465,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        this.writeToFile(f,cipher);
 ////        cipher.do
 ////        decryptFile(f);
-//    }
-
-    public void writeToFile(File f, Cipher c) throws Exception {
-        FileInputStream in = new FileInputStream(f);
-        byte[] input = new byte[(int) f.length()];
-        in.read(input);
-
-        FileOutputStream out = new FileOutputStream(f);
-        byte[] output = c.doFinal(input);
-        uploadFile("Encrypted test", f.getAbsolutePath(), output);
-
-//        out.write(output);
-
-        out.flush();
-        out.close();
-        in.close();
-    }
-
-    //original testing
-//    public void decryptFile(File f)
-//            throws Exception {
-//        System.out.println("Decrypting file: " + f.getName());
-//        Cipher cipher = Cipher.getInstance( symmetricKey.getAlgorithm() + "/CBC/PKCS5Padding" );
-//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
-//        this.writeToFile(f,cipher);
-//    }
-
-//    public void decryptFile(File f, SecretKey secretKey)
-//            throws Exception {
-//        System.out.println("Decrypting file: " + f.getName());
-//        Cipher cipher = Cipher.getInstance( secretKey.getAlgorithm() + "/CBC/PKCS5Padding" );
-//        cipher.init(Cipher.DECRYPT_MODE, this.symmetricKey, new IvParameterSpec( IV ));
-//        this.writeToFile(f,cipher);
-//    }
-
-
-//    public void decryptFile(File f,Cipher c)
-//            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
-//        System.out.println("Decrypting file: " + f.getName());
-//
-//        cipher.init(Cipher.DECRYPT_MODE, symmetricKey);
-//        this.writeToFile(f,cipher);
-//        this.writeToFile(f,c);
 //    }
 
     public void UploadFileTest() {
@@ -438,100 +524,24 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        }
     }
 
-    private boolean checkNameTaken(String fileName) {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        Page<Blob> blobs = storage.list("hr_dept");
-        for (Blob blob : blobs.iterateAll()) {
-            // do something with the blob
-            System.out.println("FROM METHOD" + blob);
-            System.out.println("FROM METHOD" + blob.getName());
-            if (fileName.equals(blob.getName())) {
-                System.out.println("Choose Different NAME!");
-                return true;
-            }
-        }
-        return false;
-    }
-
     private String convertTime(long time) {
         Date date = new Date(time);
         Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
         return format.format(date);
     }
 
-    private Path saveFile() {
-        FileChooser fileChooser = new FileChooser();
-        File filePath = fileChooser.showSaveDialog(null);
-        String filePathString = filePath.getAbsolutePath();
-        Path path = Paths.get(filePathString);
-//        fileChooser.setTitle("Save Image");
-////        System.out.println(pic.getId());
-//        File file = fileChooser.showSaveDialog(null);
-//        return Paths.get(file.getName());
-        return path;
-    }
-
-    //Download and decrypt is here now
-//    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
-    private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
-        FileChooser fileChooser = new FileChooser();
-        File filePath = fileChooser.showSaveDialog(null);
-        String filePathString = filePath.getAbsolutePath();
-        Path downloadTo = Paths.get(filePathString);
-
-        BlobId blobId = BlobId.of(bucketName, objectName);
-        Blob blob = storage.get(blobId);
-        System.out.println(blob);
-        if (blob == null) {
-            System.out.println("No such object");
-            return;
-        }
-        PrintStream writeTo = System.out;
-        if (downloadTo != null) {
-            writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
-        }
-        if (blob.getSize() < 1_000_000) {
-            // Blob is small read all its content in one request
-            byte[] content = blob.getContent();
-
-            writeTo.write(content);
-        } else {
-            // When Blob size is big or unknown use the blob's channel reader.
-            try (ReadChannel reader = blob.reader()) {
-                WritableByteChannel channel = Channels.newChannel(writeTo);
-                ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
-                while (reader.read(bytes) > 0) {
-                    bytes.flip();
-                    channel.write(bytes);
-                    bytes.clear();
-                }
-            }
-        }
-        if (downloadTo == null) {
-            writeTo.println();
-        } else {
-            writeTo.close();
-        }
-//        FileChooser fileChooser1 = new FileChooser();
-//        fileChooser1.setTitle("Open Resource File");
-//        //FEATURE: stage now loads as 1 page instead of 2
-//        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-//        File file1 = fileChooser1.showOpenDialog(stage1);
-
-        String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
-        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        // rebuild key using SecretKeySpec
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-//        decryptFileNew(file1,originalKey);
-//        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
-        byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
-
-
-        aesCipher = Cipher.getInstance("AES");
-        aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-        byte[] bytePlainText = aesCipher.doFinal(cipherText);
-        Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
-    }
+//    private Path saveFile() {
+//        FileChooser fileChooser = new FileChooser();
+//        Stage stage = (Stage) anchorPane.getScene().getWindow();
+//        File filePath = fileChooser.showSaveDialog(stage);
+//        String filePathString = filePath.getAbsolutePath();
+//        Path path = Paths.get(filePathString);
+////        fileChooser.setTitle("Save Image");
+//////        System.out.println(pic.getId());
+////        File file = fileChooser.showSaveDialog(null);
+////        return Paths.get(file.getName());
+//        return path;
+//    }
 
     public void deleteFile(String bucketName, String blobName) {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
@@ -550,10 +560,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-//    private int entry1;
-//    private String entryid;
-
-    public void calculateEmail() {
+    private void calculateEmail() {
         String email = null;
         try {
             email = login.getEmail();
@@ -566,22 +573,101 @@ public class ControllerSecureCloudStorage implements Initializable {
         privateBucketName = emailFront + "nspj";
     }
 
-    private void updateObservableList() throws Exception {
-        blobs.clear();
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        getStorage();
-        String email = null;
-        try {
-            email = login.getEmail();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private boolean checkPassword;
+    private String tempPassword;
+    private void checkUserPassword() {
+
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String title = "Enter your password to enter the restricted area";
+//        String content = "The connection timeout. Please try again";
+        JFXPasswordField jfxPasswordField = new JFXPasswordField();
+        jfxPasswordField.setPromptText("Enter password");
+
+        JFXButton jfxOKButton = new JFXButton("Ok");
+
+        jfxOKButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        jfxOKButton.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(jfxPasswordField);
+        layout.setActions(jfxOKButton);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        jfxOKButton.setOnAction(__ ->{
+            //check
+            tempPassword=jfxPasswordField.getText();
+            uploadProcess.start();});
+        alert.show();
+        uploadProcess.setOnSucceeded(e -> {
+            uploadProcess.reset();
+            //if dosen't match redo process
+            if (checkPassword==false){
+                System.out.println("Wrong password");
+            }else{
+                //if matches continue to encrypt also need to store the password somewhere
+                alert.hideWithAnimation();
+                calculateEmail();
+                //        UploadFileTest();
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Choose File to Upload");
+                //FEATURE: stage now loads as 1 page instead of 2
+                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+                File file = fileChooser.showOpenDialog(stage1);
+                try {
+                    if (checkNameTaken(file.getName()) == true) {
+                        System.out.println("Change NAME!!!! Add showing alert");
+                    } else {
+                        encryptFileNew(file);
+                        //may need to move update Table somewhere else instead
+                        updateTable();
+                    }
+                }catch(Exception e1){
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private Service uploadProcess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    //check password against the hash in DB first then set password temporarily as a global variable
+                    User_InfoDB user_infoDB=new User_InfoDB();
+                    checkPassword=user_infoDB.checkPassword(tempPassword,login.getEmail());
+//                    Platform.runLater(() -> {
+//
+//                    });
+                    return null;
+                }
+            };
         }
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        emailFront = emailFront.replace(".", "");
-        String privateBucketName = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
+    };
+
+    private void updateObservableList() throws Exception {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        try {
+            if (storage == null) {
+                getStorage();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            getStorage();
+        }
+        if (privateBucketName == null) {
+            calculateEmail();
+        }
         Page<Blob> blobList = storage.list(privateBucketName);
+        blobs.clear();
         for (Blob blob : blobList.iterateAll()) {
 //            BlobList.add(new MyBlob(blob));
             blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
