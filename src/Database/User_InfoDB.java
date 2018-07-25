@@ -16,7 +16,6 @@ public class User_InfoDB {
     public ArrayList<User> getUserList() throws SQLException {
         ArrayList<User> UserList = new ArrayList<User>();
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -24,7 +23,6 @@ public class User_InfoDB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
 
         PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
 

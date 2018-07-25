@@ -21,8 +21,11 @@ public class admin_DB {
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
         //[END doc-example]
 
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
+
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            ResultSet resultSet=preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Admin admin=new Admin();
                 admin.setEmail(resultSet.getString("email"));
@@ -33,6 +36,8 @@ public class admin_DB {
         }
         return AdminList;
     }
+
+    //TODO continue migration below
 
     public void createAdmin(String email,String phoneNo) throws SQLException {
         String jdbcUrl = String.format(
@@ -98,10 +103,10 @@ public class admin_DB {
 
     public ArrayList<String> getAllPhoneNo() throws SQLException {
         ArrayList<String> phoneNoList=new ArrayList<String>();
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "admin_DB";
-        String username = "root";
-        String password = "root";
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "admin_DB";
+//        String username = "root";
+//        String password = "root";
 
         //[START doc-example]
         String jdbcUrl = String.format(
@@ -130,10 +135,10 @@ public class admin_DB {
 
     public String getPhoneNo(String email) throws SQLException {
         String phoneNo = null;
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "admin_DB";
-        String username = "root";
-        String password = "root";
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "admin_DB";
+//        String username = "root";
+//        String password = "root";
 
         //[START doc-example]
         String jdbcUrl = String.format(

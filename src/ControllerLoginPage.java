@@ -62,7 +62,6 @@ public class ControllerLoginPage implements Initializable{
 
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
-
         String state = process.getState().toString();
         counter++;
         if (process.getState().toString().equals("RUNNING")) {
@@ -215,24 +214,9 @@ public class ControllerLoginPage implements Initializable{
             LoginButton.setDisable(false);
             LoadingSpinner.setVisible(false);
         });
-//        Runnable task = new Runnable() {
-//            public void run() {
-//                try {
-//                    login.l.stop();
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                }
-//                LoadingSpinner.setVisible(false);
-//                LoginButton.setDisable(false);
-//                //endTimer();
-//                process.reset();
-//                System.out.println("DONE");
-//            }
-//        };
-
     }
 
-    public void startTimer() {
+    private void startTimer() {
         timer = new Timer();
         Task = new TimerTask() {
             public void run() {
@@ -275,7 +259,7 @@ public class ControllerLoginPage implements Initializable{
         timer.schedule(Task, 60000);
     }
 
-    public void endTimer() {
+    private void endTimer() {
         Task.cancel();
         timer.cancel();
         timer.purge();
