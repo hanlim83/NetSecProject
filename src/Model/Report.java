@@ -18,59 +18,59 @@ import java.util.Map;
 public class Report {
 
     private static ArrayList<Integer> indexNo = new ArrayList();
-    private static ArrayList<String> avSoftware = new ArrayList();
-    private static ArrayList<String> softwareVersion = new ArrayList();
-    private static ArrayList<String> results = new ArrayList();
-    private int index;
-    private String software;
-    private String version;
-    private String result;
-    private ObservableList<Report> reportLister = FXCollections.observableArrayList();
+                private static ArrayList<String> avSoftware = new ArrayList();
+                private static ArrayList<String> softwareVersion = new ArrayList();
+                private static ArrayList<String> results = new ArrayList();
+                private int index;
+                private String software;
+                private String version;
+                private String result;
+                private ObservableList<Report> reportLister = FXCollections.observableArrayList();
     public Report(int indexx, String softwaree, String versionn, String resultss) {
-        this.index = indexx;
-        this.software = softwaree;
-        this.version = versionn;
-        this.result = resultss;
-    }
+                    this.index = indexx;
+                    this.software = softwaree;
+                    this.version = versionn;
+                    this.result = resultss;
+                }
 
     public Report() {
 
-    }
+                }
 
-    public int getIndex() {
-        return index;
-    }
+                public int getIndex() {
+                    return index;
+                }
 
-    public String getSoftware() {
-        return software;
-    }
+                public String getSoftware() {
+                    return software;
+                }
 
-    public String getVersion() {
-        return version;
-    }
+                public String getVersion() {
+                    return version;
+                }
 
-    public String getResult() {
-        return result;
-    }
+                public String getResult() {
+                    return result;
+                }
 
-    public void assignment() {
-
-
-        try {
-            VirusTotalConfig.getConfigInstance().setVirusTotalAPIKey("1ac910b3fbfcb977b199e7113a20030386f81ce6ba242d4c56683789f08ae42e");
-            VirustotalPublicV2 virusTotalRef = new VirustotalPublicV2Impl();
-
-            FileScanner res = new FileScanner();
-            String resource = res.giveResource();
-
-            System.out.print(resource + "\n\n");
-
-            FileScanReport report = virusTotalRef.getScanReport(resource);
-
-            Map<String, VirusScanInfo> scans = report.getScans();
+                public void assignment() {
 
 
-            for (String key : scans.keySet()) {
+                    try {
+                        VirusTotalConfig.getConfigInstance().setVirusTotalAPIKey("1ac910b3fbfcb977b199e7113a20030386f81ce6ba242d4c56683789f08ae42e");
+                        VirustotalPublicV2 virusTotalRef = new VirustotalPublicV2Impl();
+
+                        FileScanner res = new FileScanner();
+                        String resource = res.giveResource();
+
+                        System.out.print(resource + "\n\n");
+
+                        FileScanReport report = virusTotalRef.getScanReport(resource);
+
+                        Map<String, VirusScanInfo> scans = report.getScans();
+
+
+                        for (String key : scans.keySet()) {
 
 
                 VirusScanInfo virusInfo = scans.get(key);

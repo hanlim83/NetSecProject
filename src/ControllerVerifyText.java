@@ -117,7 +117,10 @@ public class ControllerVerifyText {
     }
 
         @FXML
-        void backLogin (ActionEvent event) {
+        void backLogin (ActionEvent event) throws MalformedURLException {
+
+        TextAuthentication auth = new TextAuthentication();
+        auth.cancelAuth();
 
             File file= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
             file.delete();

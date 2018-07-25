@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSecureFileTransfer">
+    <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #29ddf4;">
+            <children>
+                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+                <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
+                    <font>
+                        <Font name="Serif Regular" size="40.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <AnchorPane fx:id="TableAnchor" layoutX="160.0" layoutY="244.0" prefHeight="301.0" prefWidth="747.0" />
+      <JFXTextField fx:id="searchBar" layoutX="785.0" layoutY="103.0" promptText="Search" />
+      <JFXButton layoutX="809.0" layoutY="164.0" onAction="#transferFile" prefHeight="43.0" prefWidth="121.0" text="Transfer file" />
+    </children>
+</AnchorPane>

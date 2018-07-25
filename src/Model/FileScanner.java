@@ -26,7 +26,7 @@ public class FileScanner {
 
     private static String resource;
 
-    public void Scanner(String filePath) {
+    public String Scanner(String filePath) {
 
 
         try {
@@ -53,6 +53,8 @@ public class FileScanner {
             String resource = scanInformation.getResource();
             this.resource = resource;
 
+            return filePath;
+
 
         } catch (APIKeyNotFoundException ex) {
             System.err.println("API Key not found! " + ex.getMessage());
@@ -64,6 +66,7 @@ public class FileScanner {
             System.err.println("Something Bad Happened! " + ex.getMessage());
         }
 
+        return null;
     }
 
     public boolean scannerReport() {
@@ -101,19 +104,21 @@ public class FileScanner {
 
                 System.out.println("\033[31;1mThis file is malicious!\033[0m");
 
+                return false;
+
             } else {
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("FireE");
-                alert.setHeaderText("This file is safe!");
-                alert.setContentText("This file will be pushed to our cloud servers momentarily.");
-                alert.showAndWait();
+//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                alert.setTitle("FireE");
+//                alert.setHeaderText("This file is safe!");
+//                alert.setContentText("This file will be pushed to our cloud servers momentarily.");
+//                alert.showAndWait();
 
                 System.out.println("\033[32mThis file is safe!\033[0m");
+                return true;
 
             }
 
-            return true;
 
         } catch (APIKeyNotFoundException ex) {
             System.err.println("API Key not found! " + ex.getMessage());

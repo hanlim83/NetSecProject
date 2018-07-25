@@ -173,5 +173,20 @@ public class TextAuthentication {
 
     }
 
+    public void cancelAuth () throws MalformedURLException {
+        URL url = new URL("https://api.nexmo.com/verify/control/json?api_key=" + "bf186834" + "&api_secret=" + "ZMmLKV2HNEBiphpA" + "&request_id=" + VerifyId + "&cmd=cancel");
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+            for (String line; (line = reader.readLine()) != null; ) {
+                System.out.println(line);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

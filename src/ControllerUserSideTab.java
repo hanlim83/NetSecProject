@@ -67,7 +67,20 @@ public class ControllerUserSideTab {
     }
 
     @FXML
-    void onClickSecureCloudTransferButton(ActionEvent event) {
+    void onClickSecureCloudTransferButton(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerSecureFileTransfer controller = loader.<ControllerSecureFileTransfer>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
 
     }
 
