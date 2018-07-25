@@ -120,13 +120,14 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        UploadFileTest();
 ////        updateObservableList();
 ////        TableMethod();
-//        updateTable();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         //FEATURE: stage now loads as 1 page instead of 2
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
         encryptFileNew(file);
+
+        updateTable();
 
 //        FileChooser fileChooser1 = new FileChooser();
 //        fileChooser1.setTitle("Open Resource File");
@@ -171,7 +172,8 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
         byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
-        uploadFile("Encrypted test", f.getAbsolutePath(), byteCipherText);
+        uploadFile(f.getName(), f.getAbsolutePath(), byteCipherText);
+//        uploadFile("Encrypted test", f.getAbsolutePath(), byteCipherText);
 
         //encoding the key to String
         String encodedSecretKey = Base64.getEncoder().encodeToString(secKey.getEncoded());
@@ -248,7 +250,9 @@ public class ControllerSecureCloudStorage implements Initializable {
         String[] command = {"curl", "-X", "PATCH", "--data-binary", "@JsonFile.json",
                 "-H", "Authorization: Bearer " + credential.getAccessToken(),
                 "-H", "Content-Type: application/json",
-                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/Encrypted%20test"};
+                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/"+convertName(f.getName())};
+        //                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/Encrypted%20test"};
+
         //TODO Edited ^ to private bucket name. To test
 
 
@@ -269,6 +273,27 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (IOException e) {
             System.out.print("error");
             e.printStackTrace();
+        }
+    }
+
+    private String convertName(String name){
+        name = name.replace(" ", "%20");
+        return name;
+    }
+
+    private void uploadFile(String filename, String AbsolutePath, byte[] out) throws Exception {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        getStorage();
+        Page<Bucket> buckets = storage.list();
+        for (Bucket bucket : buckets.iterateAll()) {
+            if (bucket.toString().contains(privateBucketName)) {
+                System.out.println(bucket.toString());
+                File initialFile = new File(AbsolutePath);
+                InputStream input = new ByteArrayInputStream(out);
+//                InputStream targetStream = new FileInputStream(initialFile);
+//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
+                Blob blob = bucket.create(filename, input, "text/plain");
+            }
         }
     }
 
@@ -444,22 +469,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        File file = fileChooser.showSaveDialog(null);
 //        return Paths.get(file.getName());
         return path;
-    }
-
-    public void uploadFile(String filename, String AbsolutePath, byte[] out) throws Exception {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        getStorage();
-        Page<Bucket> buckets = storage.list();
-        for (Bucket bucket : buckets.iterateAll()) {
-            if (bucket.toString().contains(privateBucketName)) {
-                System.out.println(bucket.toString());
-                File initialFile = new File(AbsolutePath);
-                InputStream input = new ByteArrayInputStream(out);
-//                InputStream targetStream = new FileInputStream(initialFile);
-//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
-                Blob blob = bucket.create(filename, input, "text/plain");
-            }
-        }
     }
 
     //Download and decrypt is here now
@@ -667,8 +676,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 };
 
         settingsColumn.setCellFactory(cellFactory);
-
-//        TableBlob tableBlob=new TableBlob();
 
         dateColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
                 new TextFieldEditorBuilder()));
