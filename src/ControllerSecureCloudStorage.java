@@ -90,7 +90,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private String privateBucketName;
     private ObservableList<TableBlob> blobs;
-//    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+    //    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
     private Storage storage;
     private String password;
 
@@ -152,7 +152,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        return iv;
 //    }
 
-//    private SecretKey secKey;
+    //    private SecretKey secKey;
     private Cipher aesCipher;
 
     private void encryptFileNew(File f) throws Exception {
@@ -171,30 +171,30 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
         byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
-        uploadFile("Encrypted test",f.getAbsolutePath(),byteCipherText);
+        uploadFile("Encrypted test", f.getAbsolutePath(), byteCipherText);
 
         //encoding the key to String
-        String encodedSecretKey=Base64.getEncoder().encodeToString(secKey.getEncoded());
+        String encodedSecretKey = Base64.getEncoder().encodeToString(secKey.getEncoded());
 //        JSONObject main =new JSONObject();
 
         //Testing for decoded key
         byte[] decodedKey = Base64.getDecoder().decode(encodedSecretKey);
         // rebuild key using SecretKeySpec
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        System.err.println("TESTING"+secKey.equals(originalKey));
+        System.err.println("TESTING" + secKey.equals(originalKey));
         //Testing for decoded key
 
         JSONObject fileObj = new JSONObject();
 
-        JSONObject filemetadata= new JSONObject();
-        filemetadata.put("Encrypted Symmetric Key",encodedSecretKey);
+        JSONObject filemetadata = new JSONObject();
+        filemetadata.put("Encrypted Symmetric Key", encodedSecretKey);
 
-        fileObj.put("metadata",filemetadata);
+        fileObj.put("metadata", filemetadata);
 //        main.put("metadata",fileObj);
 
         try {
             // Writing to a file
-            File file=new File("JsonFile.json");
+            File file = new File("JsonFile.json");
             file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
             System.out.println("Writing JSON object to file");
@@ -240,15 +240,17 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        "https://www.googleapis.com/storage/v1/b/[BUCKET_NAME]/o/[OBJECT_NAME]"
 
 
-        String accessToken=credential.getAccessToken();
+        String accessToken = credential.getAccessToken();
         System.out.println(accessToken);
 
 //      "-H", "Authorization: Bearer ya29.GlwCBi4vxdEBtIa07c3ky9XkGT8kXEZEStM_kL-Hk0Btqd8iuwfZCuzvotbmEyem_ppxTgJuAtWdxOna3e2fDvzp37A1wbNFl9eX7OYYyvVuqBd4XHXRCqJ2EIq_4g",
 
-        String[] command = {"curl", "-X", "PATCH", "--data-binary","@JsonFile.json",
-                "-H", "Authorization: Bearer "+credential.getAccessToken(),
+        String[] command = {"curl", "-X", "PATCH", "--data-binary", "@JsonFile.json",
+                "-H", "Authorization: Bearer " + credential.getAccessToken(),
                 "-H", "Content-Type: application/json",
-                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted%20test"};
+                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/Encrypted%20test"};
+        //TODO Edited ^ to private bucket name. To test
+
 
         ProcessBuilder process = new ProcessBuilder(command);
         Process p;
@@ -311,14 +313,14 @@ public class ControllerSecureCloudStorage implements Initializable {
 ////        decryptFile(f);
 //    }
 
-    public void writeToFile(File f,Cipher c) throws Exception {
+    public void writeToFile(File f, Cipher c) throws Exception {
         FileInputStream in = new FileInputStream(f);
         byte[] input = new byte[(int) f.length()];
         in.read(input);
 
         FileOutputStream out = new FileOutputStream(f);
         byte[] output = c.doFinal(input);
-        uploadFile("Encrypted test",f.getAbsolutePath(),output);
+        uploadFile("Encrypted test", f.getAbsolutePath(), output);
 
 //        out.write(output);
 
@@ -444,7 +446,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         return path;
     }
 
-    public void uploadFile(String filename, String AbsolutePath, byte [] out) throws Exception {
+    public void uploadFile(String filename, String AbsolutePath, byte[] out) throws Exception {
 //        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         getStorage();
         Page<Bucket> buckets = storage.list();
@@ -460,8 +462,14 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    //To test
-    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
+    //Download and decrypt is here now
+//    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
+    private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
+        FileChooser fileChooser = new FileChooser();
+        File filePath = fileChooser.showSaveDialog(null);
+        String filePathString = filePath.getAbsolutePath();
+        Path downloadTo = Paths.get(filePathString);
+
         BlobId blobId = BlobId.of(bucketName, objectName);
         Blob blob = storage.get(blobId);
         System.out.println(blob);
@@ -495,22 +503,25 @@ public class ControllerSecureCloudStorage implements Initializable {
         } else {
             writeTo.close();
         }
-        FileChooser fileChooser1 = new FileChooser();
-        fileChooser1.setTitle("Open Resource File");
-        //FEATURE: stage now loads as 1 page instead of 2
-        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-        File file1 = fileChooser1.showOpenDialog(stage1);
-        String encodedKey=blob.getMetadata().get("Encrypted Symmetric Key");
+//        FileChooser fileChooser1 = new FileChooser();
+//        fileChooser1.setTitle("Open Resource File");
+//        //FEATURE: stage now loads as 1 page instead of 2
+//        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+//        File file1 = fileChooser1.showOpenDialog(stage1);
+
+        String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
         // rebuild key using SecretKeySpec
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 //        decryptFileNew(file1,originalKey);
-        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
+//        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
+        byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
+
 
         aesCipher = Cipher.getInstance("AES");
         aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
         byte[] bytePlainText = aesCipher.doFinal(cipherText);
-        Files.write(Paths.get(file1.getAbsolutePath()), bytePlainText);
+        Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
     }
 
     public void deleteFile(String bucketName, String blobName) {
@@ -635,38 +646,17 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     setText(null);
                                 } else {
 //                                    btn.setButtonType(JFXButton.ButtonType.RAISED);
-                                    btn.setOnAction(new EventHandler<ActionEvent>() {
-
-                                        @Override
-                                        public void handle(ActionEvent t) {
-                                            int selectdIndex = getTreeTableRow().getIndex();
-                                            System.out.println(selectdIndex);
-                                            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
-                                            System.out.println(tableBlob.getBlobName());
-                                            blobName = tableBlob.getBlobName();
-                                            System.out.println(tableBlob.getDate());
-                                            Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                            showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
-                                        }
+                                    btn.setOnAction(event -> {
+                                        int selectdIndex = getTreeTableRow().getIndex();
+                                        System.out.println(selectdIndex);
+                                        TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
+                                        System.out.println(tableBlob.getBlobName());
+                                        blobName = tableBlob.getBlobName();
+                                        System.out.println(tableBlob.getDate());
+                                        Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
+                                        showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
                                     });
 
-
-//                                    btn.setOnAction(event -> {
-//                                        int selectdIndex = getTableRow().getIndex();
-////                                        Record selectedRecord = (Record)tblView.getItems().get(selectdIndex);
-//                                        if (JFXTreeTableView.getSelectionModel().getSelectedItem() != null) {
-//                                            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
-//                                            System.out.println(tableBlob.getBlobName());
-//                                            System.out.println(tableBlob.getDate());
-//                                        }
-////                                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getParent().getValue().getBlobName());
-////                                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBlobName());
-////                                        TableBlob person = getTableView().getItems().get(getIndex());
-////                                        System.out.println(person.getFirstName()
-////                                                + "   " + person.getLastName());
-////                                        calculateEmail();
-////                                        deleteFile(privateBucketName,);
-//                                    });
                                     setGraphic(btn);
                                     setText(null);
                                 }
@@ -726,13 +716,13 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
     }
 
-    VBox vBox = new VBox();
+    private VBox vBox = new VBox();
     private JFXButton jfxDownloadButton = new JFXButton();
     private JFXButton jfxDeleteButton = new JFXButton();
     private int vBoxCounter = 0;
 
-    double minX;
-    double maxY;
+    private double minX;
+    private double maxY;
 
     private String blobName;
 
@@ -760,7 +750,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println("Download File");
                 calculateEmail();
                 try {
-                    downloadFile(storage, privateBucketName, blobName, saveFile());
+                    downloadFile(storage, privateBucketName, blobName);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -910,11 +900,11 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     private void getStorage() throws Exception {
-        if (credential.getExpiresInSeconds()<250){
-            credential=login.login();
+        if (credential.getExpiresInSeconds() < 250) {
+            credential = login.login();
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         }
-        if (storage==null){
+        if (storage == null) {
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         }
     }
