@@ -576,7 +576,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     private boolean checkPassword;
     private String tempPassword;
     private void checkUserPassword() {
-
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -603,15 +602,20 @@ public class ControllerSecureCloudStorage implements Initializable {
         jfxOKButton.setOnAction(__ ->{
             //check
             tempPassword=jfxPasswordField.getText();
+            jfxOKButton.setDisable(true);
+            jfxPasswordField.setDisable(true);
             uploadProcess.start();});
         alert.show();
         uploadProcess.setOnSucceeded(e -> {
             uploadProcess.reset();
             //if dosen't match redo process
             if (checkPassword==false){
+                jfxPasswordField.setDisable(false);
+                jfxOKButton.setDisable(false);
                 System.out.println("Wrong password");
             }else{
                 //if matches continue to encrypt also need to store the password somewhere
+                password=jfxPasswordField.getText();
                 alert.hideWithAnimation();
                 calculateEmail();
                 //        UploadFileTest();
@@ -632,6 +636,13 @@ public class ControllerSecureCloudStorage implements Initializable {
                     e1.printStackTrace();
                 }
             }
+        });
+        uploadProcess.setOnCancelled(e ->{
+            uploadProcess.reset();
+        });
+        uploadProcess.setOnFailed(e ->{
+            uploadProcess.reset();
+            jfxOKButton.setDisable(false);
         });
     }
 
@@ -685,17 +696,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 ////        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "21", "HR 1"));
 ////        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "28", "HR 2"));
 //        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        String email = null;
-//        try {
-//            email = login.getEmail();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Scanner s = new Scanner(email).useDelimiter("@");
-//        String emailFront = s.next();
-//        emailFront = emailFront.replace(".", "");
-//        privateBucketName = emailFront + "nspj";
-////        String bucketname="hugochiaxyznspj";
 //        Page<Blob> blobList = storage.list(privateBucketName);
 //        for (Blob blob : blobList.iterateAll()) {
 ////            BlobList.add(new MyBlob(blob));
@@ -1027,48 +1027,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             return date;
         }
     }
-
-//    /**
-//     * A custom cell that shows a checkbox, label and button in the
-//     * TreeCell.
-//     */
-//    class CustomCell extends TreeTableCell<String> {
-//        @Override
-//        protected void updateItem(String item, boolean empty) {
-//            super.updateItem(item, empty);
-//
-//            // If the cell is empty we don't show anything.
-//            if (isEmpty()) {
-//                setGraphic(null);
-//                setText(null);
-//            } else {
-//                // We only show the custom cell if it is a leaf, meaning it has
-//                // no children.
-//                if (this.getTreeTableItem().isLeaf()) {
-//
-//                    // A custom HBox that will contain your check box, label and
-//                    // button.
-//                    HBox cellBox = new HBox(10);
-//
-////                    CheckBox checkBox = new CheckBox();
-////                    Label label = new Label(item);
-//                    JFXButton button = new JFXButton("Press!");
-//                    // Here we bind the pref height of the label to the height of the checkbox. This way the label and the checkbox will have the same size.
-////                    label.prefHeightProperty().bind(checkBox.heightProperty());
-//
-//                    cellBox.getChildren().addAll(button);
-//
-//                    // We set the cellBox as the graphic of the cell.
-//                    setGraphic(cellBox);
-//                    setText(null);
-//                } else {
-//                    // If this is the root we just display the text.
-//                    setGraphic(null);
-//                    setText(item);
-//                }
-//            }
-//        }
-//    }
 
     public void hamburgerBar() {
         rootP = anchorPane;
