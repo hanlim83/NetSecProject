@@ -47,8 +47,8 @@
             <TableColumn fx:id="severity" prefWidth="118.66668701171875" text="Severity" />
         </columns>
       </TableView>
-      <AnchorPane fx:id="treeTableAnchor" layoutX="46.0" layoutY="172.0" prefHeight="400.0" prefWidth="962.0" />
-      <AnchorPane fx:id="popupanchor" layoutX="43.0" layoutY="177.0" prefHeight="390.0" prefWidth="970.0" visible="false" />
+      <AnchorPane fx:id="treeTableAnchor" layoutX="2.0" layoutY="172.0" prefHeight="414.0" prefWidth="1063.0" />
+      <AnchorPane fx:id="popupanchor" layoutX="43.0" layoutY="177.0" prefHeight="390.0" prefWidth="1013.0" visible="false" />
       <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <JFXTextField fx:id="searchFunction" layoutX="859.0" layoutY="106.0" />

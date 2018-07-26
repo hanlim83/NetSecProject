@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     private String user;
     private StringProperty severity;
     private StringProperty finalEmail;
-//    private StringProperty nonFinalEmail;
+    private StringProperty nonFinalEmail;
 
 
     Pattern p = Pattern.compile("\\\\");
@@ -59,10 +60,12 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     public LogsExtract(LogEntry logentry) {
         this.logentry = logentry;
         // Get Timestamp
-        Date date = new Date(logentry.getReceiveTimestamp());
-        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String dateFormatted = formatter.format(date);
-        this.timestamp = new SimpleStringProperty(dateFormatted);
+//        Date date = new Date(logentry.getReceiveTimestamp());
+//        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//        String dateFormatted = formatter.format(date);
+        Date date = new Date(logentry.getTimestamp());
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        this.timestamp=new SimpleStringProperty(format.format(date));
         // Get Severity
         severitycolour = logentry.getSeverity().toString();
         this.severity = new SimpleStringProperty(severitycolour);
@@ -91,14 +94,13 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
                 //if no @ sign, store in stringList3
                 stringList3.add(stringList.get(i));
                 System.out.println("no @ " + stringList.get(i));
-//                this.nonFinalEmail = stringList3.get(i);
-//                System.out.println("HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== " + nonFinalEmail);
-                //HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== type_url: "type.googleapis.com/google.cloud.audit.AuditLog"
+                this.finalEmail = new SimpleStringProperty(stringList3.get(i));
+                System.out.println("HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== " + finalEmail);
+//                HEEEEEEEREEEEEEEEEEEEEEEEEEEEEEEEEEE =================== type_url: "type.googleapis.com/google.cloud.audit.AuditLog"
                 this.globalchecker = -1;
                 globalChckerList.add(globalchecker);
             }
         }
-
 
         // check if got slash first!
         for (int o = 0; o < stringList2.size(); o++) {
@@ -117,7 +119,6 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
             }
         }
 
-
         Scanner sc = null;
         for (int k = 0; k < stringList5.size(); k++) {
             sc = new Scanner(stringList5.get(k)).useDelimiter("\\\\");
@@ -125,24 +126,19 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
             while (sc.hasNext()) {
                 stringList4.add(sc.next());
             }
-
         }
 
         listIterator = stringList4.listIterator();
         while (listIterator.hasNext()) {
             String emailString = listIterator.next().toString();
-//            System.out.println(emailString);
-
             Matcher m2 = p2.matcher(emailString);
+
             if (m2.find()) {
-                this.finalEmail = new SimpleStringProperty(emailString.substring(3, emailString.length()));
-                this.globalchecker = 1;
-                globalChckerList.add(globalchecker);
-                System.out.println("HERE IS THE FINAL EMAIL LALALALAA : " + finalEmail);
-            }
-//            else {
-//                System.out.println("GOT @ but not EMAIL");
-//            }
+                    this.finalEmail = new SimpleStringProperty(emailString.substring(3, emailString.length()));
+                    this.globalchecker = 1;
+                    globalChckerList.add(globalchecker);
+                    System.out.println("HERE IS THE FINAL EMAIL LALALALAA : " + finalEmail);
+                }
         }
 
 //        TableBlob(timestamp,severity,action,bucketName,finalEmail);
