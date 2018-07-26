@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,23 +28,18 @@ import org.pcap4j.packet.Packet;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ControllerCAMainAlertDashboard implements Initializable {
-    private static final int MAX_DATA_POINTS = 25;
     public static AnchorPane rootP;
-    public ArrayList<CapturedPacket> packets = new ArrayList<CapturedPacket>();
-    public ArrayList<Integer> TPS = new ArrayList<Integer>();
-    public ArrayList<Integer> ProtocolMakeupData = new ArrayList<Integer>();
-    public ArrayList<String> ProtocolMakeupProtocols = new ArrayList<String>();
-    public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -64,6 +58,13 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private JFXSpinner spinner;
     @FXML
     private JFXButton returnToCaptureBtn;
+
+    public static final int LineRange = 5;
+    private final int MAX_DATA_POINTS = 25, MAX = 10, MIN = 5;
+    public ArrayList<CapturedPacket> packets = new ArrayList<CapturedPacket>();
+    public ArrayList<Integer> TPS = new ArrayList<Integer>();
+    public ArrayList<Integer> ProtocolMakeupData = new ArrayList<Integer>();
+    public ArrayList<String> ProtocolMakeupProtocols = new ArrayList<String>();
     private Scene myScene;
     private PcapNetworkInterface device;
     private NetworkCapture capture;
@@ -71,11 +72,11 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private String directoryPath;
     private Integer threshold;
     private SMS SMSHandler;
-    private int xSeriesData = 0;
-    private XYChart.Series<Number, Number> series = new XYChart.Series<>();
-    private ConcurrentLinkedQueue<Number> data = new ConcurrentLinkedQueue<>();
+    public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
+    private XYChart.Series<Number, Number> dataSeries;
     private NumberAxis xAxis;
-    private AnimationTimer timer;
+    private double sequence = 0;
+    private double y = 10;
     private boolean captureType;
     private String partialCaptureFilePath;
     private PcapHandle handle;
@@ -87,24 +88,16 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         hamburgerBar();
         hamburger.setDisable(true);
         returnToCaptureBtn.setDisable(true);
+        xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
+        final NumberAxis yAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
         xAxis = new NumberAxis(0, MAX_DATA_POINTS, MAX_DATA_POINTS / 10);
         xAxis.setForceZeroInRange(false);
-        xAxis.setAutoRanging(false);
-        xAxis.setTickLabelsVisible(false);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickVisible(false);
-        NumberAxis yAxis = new NumberAxis();
-        networkTrafficChart = new LineChart<Number, Number>(xAxis, yAxis) {
-            // Override to remove symbols on each data point
-            @Override
-            protected void dataItemAdded(Series<Number, Number> series, int itemIndex, Data<Number, Number> item) {
-            }
-        };
-        networkTrafficChart.setAnimated(false);
-        networkTrafficChart.setTitle("Network Traffic Chart");
-        networkTrafficChart.setHorizontalGridLinesVisible(true);
-        series.setName("Network Traffic");
-        networkTrafficChart.getData().add(series);
+        yAxis.setLabel("Duration");
+        yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis, "$", null));
+        dataSeries = new XYChart.Series<>();
+        dataSeries.setName("Network Traffic");
+
+        networkTrafficChart.getData().add(dataSeries);
         networkTrafficChart.setPrefWidth(1051);
         networkTrafficChart.setPrefHeight(334);
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
@@ -231,7 +224,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             } catch (NotOpenException e) {
                 e.printStackTrace();
             }
-            //Extracted from ProtocolMaekup
+            //Extracted from ProtocolMakeup
             boolean found = false;
             for (CapturedPacket p : packets) {
                 if (ProtocolMakeupData.isEmpty() && ProtocolMakeupProtocols.isEmpty()) {
@@ -311,6 +304,47 @@ public class ControllerCAMainAlertDashboard implements Initializable {
                     top10IPChart.setData(data1);
                 }
             });
+            //Based from getTrafficPerSecond
+            Timestamp firstPacket = packets.get(0).getOrignalTimeStamp();
+            boolean finished = false;
+            while (finished != true) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(firstPacket.getTime());
+                cal.add(Calendar.SECOND, LineRange);
+                Timestamp later = new Timestamp(cal.getTime().getTime());
+                int packetRecord = 0;
+                for (CapturedPacket c : packets) {
+                    if (c.getOrignalTimeStamp().after(firstPacket) && c.getOrignalTimeStamp().before(later)) {
+                        ++packetRecord;
+                    }
+                }
+                if (packetRecord != 0)
+                    TPS.add(packetRecord);
+                else
+                    finished = true;
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(firstPacket.getTime());
+            cal.add(Calendar.SECOND, LineRange);
+            Timestamp later = new Timestamp(cal.getTime().getTime());
+            int packetRecord = 0;
+            for (CapturedPacket c : packets) {
+                if (c.getOrignalTimeStamp().after(firstPacket) && c.getOrignalTimeStamp().before(later)) {
+                    ++packetRecord;
+                }
+            }
+            //Based on Runnable Line Chart
+            int Chartindex = 0;
+            for (Integer i : TPS) {
+                dataSeries.getData().add(new XYChart.Data<Number, Number>(Chartindex++, i));
+                if (sequence > MAX_DATA_POINTS) {
+                    dataSeries.getData().remove(0);
+                }
+                if (sequence > MAX_DATA_POINTS - 1) {
+                    xAxis.setLowerBound(xAxis.getLowerBound() + 1);
+                    xAxis.setUpperBound(xAxis.getUpperBound() + 1);
+                }
+            }
             System.err.println("LineChart Not Yet Handled");
             spinner.setVisible(false);
             hamburger.setDisable(false);
