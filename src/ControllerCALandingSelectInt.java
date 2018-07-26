@@ -26,6 +26,7 @@ import org.pcap4j.core.Pcaps;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -63,6 +64,8 @@ public class ControllerCALandingSelectInt implements Initializable {
     private Integer threshold;
     private SMS SMSHandler;
     private String intDisplayedName = null;
+    private ArrayList<String> duplicateAdapterName;
+    private ArrayList<Integer> duplicateValuses;
     private boolean CaptureType;
 
     @Override
@@ -82,15 +85,20 @@ public class ControllerCALandingSelectInt implements Initializable {
             TreeItem<String> dummyRoot = new TreeItem<String>();
             List<String> idS = devices.stream().map(PcapNetworkInterface::getName).collect(Collectors.toList());
             List<String> names = devices.stream().map(PcapNetworkInterface::getDescription).collect(Collectors.toList());
-            int duplicate = 1;
+            duplicateAdapterName = new ArrayList<String>();
+            duplicateValuses = new ArrayList<Integer>();
+            String adapterName = null;
             for (PcapNetworkInterface i : devices) {
-                TreeItem<String> Interface = new TreeItem<String>(i.getDescription());
-                for (int j = 1; j < names.size(); j++) {
-                    if (i.getDescription().equals(names.get(j)) && !i.getName().equals(idS.get(j))) {
-                        Interface.setValue(i.getDescription() + " " + duplicate);
-                        ++duplicate;
-                    }
+                if (duplicateAdapterName.isEmpty() || !duplicateAdapterName.contains(i.getDescription())) {
+                    duplicateAdapterName.add(i.getDescription());
+                    duplicateValuses.add(0);
+                    adapterName = i.getDescription();
+                } else {
+                    int index = duplicateAdapterName.indexOf(i.getDescription());
+                    duplicateValuses.set(index, duplicateValuses.get(index) + 1);
+                    adapterName = i.getDescription() + " " + duplicateValuses.get(index);
                 }
+                TreeItem<String> Interface = new TreeItem<String>(adapterName);
                 TreeItem<String> InterfaceID = new TreeItem<String>("Interface ID: " + i.getName());
                 TreeItem<String> InterfaceDescription = new TreeItem<String>("Interface Description: " + i.getDescription());
                 TreeItem<String> InterfaceType = null;

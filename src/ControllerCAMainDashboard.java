@@ -501,7 +501,20 @@ public class ControllerCAMainDashboard implements Initializable {
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                    myScene = ((Node) event.getSource()).getScene();
+                                    Parent nextView = null;
+                                    try {
+                                        nextView = loader.load();
+                                        ControllerCAMainAlertDashboard controller = loader.getController();
+                                        controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler, capture.getSpecficExportFilePath(), true);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    stage.setScene(new Scene(nextView));
+                                    stage.setTitle("Alert Dashboard");
+                                    alert.close();
+                                    stage.show();
                                 }
                             });
                             alert.show();

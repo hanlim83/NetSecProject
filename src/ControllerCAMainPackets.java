@@ -147,6 +147,7 @@ public class ControllerCAMainPackets implements Initializable {
                     try {
                         adminPN = db.getAllPhoneNo();
                         SMSHandler = new SMS(adminPN);
+                        SMSHandler = new SMS(adminPN);
                         for (String s : adminPN) {
                             System.out.println(s);
                         }
@@ -498,7 +499,20 @@ public class ControllerCAMainPackets implements Initializable {
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                    myScene = ((Node) event.getSource()).getScene();
+                                    Parent nextView = null;
+                                    try {
+                                        nextView = loader.load();
+                                        ControllerCAMainAlertDashboard controller = loader.getController();
+                                        controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler, capture.getSpecficExportFilePath(), false);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    stage.setScene(new Scene(nextView));
+                                    stage.setTitle("Alert Dashboard");
+                                    alert.close();
+                                    stage.show();
                                 }
                             });
                             alert.show();
