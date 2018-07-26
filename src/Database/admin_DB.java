@@ -11,7 +11,7 @@ public class admin_DB {
 
     public ArrayList<Admin> getAdminList() throws SQLException {
         ArrayList<Admin> AdminList = new ArrayList<Admin>();
-        //[START doc-example]
+
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -19,7 +19,6 @@ public class admin_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
 
         PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
 
@@ -37,8 +36,6 @@ public class admin_DB {
         return AdminList;
     }
 
-    //TODO continue migration below
-
     public void createAdmin(String email,String phoneNo) throws SQLException {
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
@@ -47,10 +44,14 @@ public class admin_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entries (email,phoneNumber) VALUES (?,?)");
+        preparedStatement.setString(1,email);
+        preparedStatement.setString(2,phoneNo);
 
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("INSERT INTO entries (email,phoneNumber) VALUES ('"+email+"','"+phoneNo+"')");
+//            statement.executeUpdate("INSERT INTO entries (email,phoneNumber) VALUES ('"+email+"','"+phoneNo+"')");
+            preparedStatement.executeUpdate();
         }
     }
 
@@ -62,22 +63,22 @@ public class admin_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE email=? AND phoneNumber=?");
+        preparedStatement.setString(1,email);
+        preparedStatement.setString(2,phoneNo);
 
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
+//            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
+            preparedStatement.executeUpdate();
         }
     }
 
-    public String getAdminAccStatus(String email) throws SQLException {
-//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//        String databaseName = "admin_DB";
-//        String username = "root";
-//        String password = "root";
+    //TODO continue migration below
 
+    public String getAdminAccStatus(String email) throws SQLException {
         String state = "";
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -85,9 +86,6 @@ public class admin_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //same
-        System.out.println(jdbcUrl);
-        //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
@@ -108,17 +106,13 @@ public class admin_DB {
 //        String username = "root";
 //        String password = "root";
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
                 databaseName,
                 instanceConnectionName);
 
-        Connection connection = null;
-//        try {
-            connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         try (Statement statement = connection.createStatement()) {
 //            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
@@ -140,7 +134,6 @@ public class admin_DB {
 //        String username = "root";
 //        String password = "root";
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -148,7 +141,6 @@ public class admin_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
 
         try (Statement statement = connection.createStatement()) {
 //            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
