@@ -519,11 +519,11 @@ public class ControllerCAMainPackets implements Initializable {
                         }
                     });
                 }
+                packets = capture.packets;
+                OLpackets = FXCollections.observableArrayList(packets);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        packets = capture.packets;
-                        OLpackets = FXCollections.observableArrayList(packets);
                         packetstable.setItems(OLpackets);
                         packetstable.refresh();
                         alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
@@ -583,11 +583,11 @@ public class ControllerCAMainPackets implements Initializable {
                         capture.startSniffing();
                     }
                 }, 1, SECONDS));
+                packets = capture.packets;
+                OLpackets = FXCollections.observableArrayList(packets);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        packets = capture.packets;
-                        OLpackets = FXCollections.observableArrayList(packets);
                         packetstable.setItems(OLpackets);
                         packetstable.refresh();
                         alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));

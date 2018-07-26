@@ -1,5 +1,3 @@
-package org.pcap4j.sample;
-
 import org.pcap4j.core.BpfProgram.BpfCompileMode;
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
@@ -19,7 +17,6 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@SuppressWarnings("javadoc")
 public class SendArpRequest {
 
     private static final String COUNT_KEY
