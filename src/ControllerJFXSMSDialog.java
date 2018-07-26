@@ -24,6 +24,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class ControllerJFXSMSDialog implements Initializable {
@@ -49,7 +50,7 @@ public class ControllerJFXSMSDialog implements Initializable {
 
     private TextAuthentication verifyText = new TextAuthentication();
 
-    private WindowsUtils utils = new WindowsUtils();
+//    private WindowsUtils utils = new WindowsUtils();
     private User_InfoDB user_infoDB = new User_InfoDB();
 
     private String hashPassword;
@@ -127,7 +128,9 @@ public class ControllerJFXSMSDialog implements Initializable {
             hashPassword = get_SHA_512_SecurePassword(password, email);
             System.out.println(hashPassword);
 //            utils.setUserKeyInfo(hashPassword, publicKey, encryptedPrivateKey, email);
-            user_infoDB.setUserKeyInfo(hashPassword, publicKey, encryptedPrivateKey, phoneNo, email);
+            LocalDateTime now=LocalDateTime.now();
+            String ActivationTime=now.toString();
+            user_infoDB.setUserKeyInfo(hashPassword, publicKey, encryptedPrivateKey, phoneNo, ActivationTime, email);
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("DeviceCheck.fxml"));

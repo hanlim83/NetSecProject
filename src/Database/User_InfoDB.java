@@ -38,6 +38,7 @@ public class User_InfoDB {
                 user.setPrivateKey(resultSet.getString("privateKey"));
                 user.setPhoneNo(resultSet.getString("phoneNo"));
                 user.setEntryID(resultSet.getString("entryID"));
+                user.setActivationTime(resultSet.getString("activationTime"));
                 UserList.add(user);
             }
         }
@@ -72,10 +73,9 @@ public class User_InfoDB {
         return state;
     }
 
-    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String phoneNo,String email) throws SQLException {
+    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String phoneNo, String activationTime, String email) throws SQLException {
         //maybe change to boolean next time
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -83,17 +83,15 @@ public class User_InfoDB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //same
-        System.out.println(jdbcUrl);
 
-        //[END doc-example]
-
-        PreparedStatement preparedStatement=connection.prepareStatement("UPDATE entries SET status='Active', hashPassword=?, publicKey=?, privateKey=?, phoneNo=? WHERE email=?");
+        PreparedStatement preparedStatement=connection.prepareStatement("UPDATE entries SET status='Active', hashPassword=?, publicKey=?, privateKey=?, phoneNo=?, activationTime=? WHERE email=?");
         preparedStatement.setString(1,hashPassword);
         preparedStatement.setString(2,publicKey);
         preparedStatement.setString(3,encryptedPrivateKey);
         preparedStatement.setString(4,phoneNo);
-        preparedStatement.setString(5,email);
+        preparedStatement.setString(5,activationTime);
+        preparedStatement.setString(6,email);
+
 
         //Here no need to return any result so how?
         try (Statement statement = connection.createStatement()) {
@@ -110,25 +108,13 @@ public class User_InfoDB {
 
     public void deleteUser(String email) throws SQLException {
         //maybe change to boolean next time
-//        // TODO: fill this in
-//        // The instance connection name can be obtained from the instance overview page in Cloud Console
-//        // or by running "gcloud sql instances describe <instance> | grep connectionName".
 //        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//
-//        // TODO: fill this in
-//        // The database from which to list tables.
 //        String databaseName = "user_info";
-//
 //        String username = "root";
-//
-//        // TODO: fill this in
-//        // This is the password that was set via the Cloud Console or empty if never set
-//        // (not recommended).
 //        String password = "root";
 
 //        String state = "";
 
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -136,7 +122,6 @@ public class User_InfoDB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
 
         PreparedStatement preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE email=?");
         preparedStatement.setString(1,email);

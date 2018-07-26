@@ -8,6 +8,7 @@ public class User {
     private String privateKey;
     private String phoneNo;
     private String entryID;
+    private String ActivationTime;
 
     public String getEmail() {
         return email;
@@ -63,5 +64,13 @@ public class User {
 
     public void setEntryID(String entryID) {
         this.entryID = entryID;
+    }
+
+    public String getActivationTime() {
+        return ActivationTime;
+    }
+
+    public void setActivationTime(String activationTime) {
+        ActivationTime = activationTime;
     }
 }

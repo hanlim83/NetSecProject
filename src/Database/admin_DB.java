@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class admin_DB {
+    //TODO check if migration is successful
     private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
     private static String databaseName = "admin_DB";
     private static String username = "root";
@@ -74,8 +75,6 @@ public class admin_DB {
         }
     }
 
-    //TODO continue migration below
-
     public String getAdminAccStatus(String email) throws SQLException {
         String state = "";
 
@@ -87,8 +86,12 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT EXISTS(SELECT * FROM entries WHERE email =?");
+        preparedStatement.setString(1,email);
+
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
+//            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 //System.out.println(resultSet.getString(1));
                 state=resultSet.getString(1);
@@ -114,16 +117,15 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries");
+
         try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 phoneNoList.add(resultSet.getString(1));
             }
         }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         return phoneNoList;
     }
 
@@ -142,9 +144,12 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries WHERE email= =?");
+        preparedStatement.setString(1,email);
+
         try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries WHERE email='"+email+"'");
+//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries WHERE email='"+email+"'");
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 phoneNo=resultSet.getString(1);
             }
