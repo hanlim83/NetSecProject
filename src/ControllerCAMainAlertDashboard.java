@@ -345,7 +345,6 @@ public class ControllerCAMainAlertDashboard implements Initializable {
                     xAxis.setUpperBound(xAxis.getUpperBound() + 1);
                 }
             }
-            System.err.println("LineChart Not Yet Handled");
             spinner.setVisible(false);
             hamburger.setDisable(false);
             returnToCaptureBtn.setDisable(false);
