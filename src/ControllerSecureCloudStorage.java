@@ -237,9 +237,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             e.printStackTrace();
         }
 
-        //for oauth2 token field
-//        credential.getAccessToken();
-
 //        URL url = new URL(
 ////                "" +
 ////                "curl -X PATCH --data-binary @JsonFile.json " +
@@ -268,8 +265,8 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        "https://www.googleapis.com/storage/v1/b/[BUCKET_NAME]/o/[OBJECT_NAME]"
 
 
-        String accessToken = credential.getAccessToken();
-        System.out.println(accessToken);
+//        String accessToken = credential.getAccessToken();
+//        System.out.println(accessToken);
 
 //      "-H", "Authorization: Bearer ya29.GlwCBi4vxdEBtIa07c3ky9XkGT8kXEZEStM_kL-Hk0Btqd8iuwfZCuzvotbmEyem_ppxTgJuAtWdxOna3e2fDvzp37A1wbNFl9eX7OYYyvVuqBd4XHXRCqJ2EIq_4g",
 
@@ -326,61 +323,63 @@ public class ControllerSecureCloudStorage implements Initializable {
         FileChooser fileChooser = new FileChooser();
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         File filePath = fileChooser.showSaveDialog(stage);
-        String filePathString = filePath.getAbsolutePath();
-        Path downloadTo = Paths.get(filePathString);
+        if (filePath != null) {
+            String filePathString = filePath.getAbsolutePath();
+            Path downloadTo = Paths.get(filePathString);
 
-        BlobId blobId = BlobId.of(bucketName, objectName);
-        Blob blob = storage.get(blobId);
-        System.out.println(blob);
-        if (blob == null) {
-            System.out.println("No such object");
-            return;
-        }
-        PrintStream writeTo = System.out;
-        if (downloadTo != null) {
-            writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
-        }
-        if (blob.getSize() < 1_000_000) {
-            // Blob is small read all its content in one request
-            byte[] content = blob.getContent();
+            BlobId blobId = BlobId.of(bucketName, objectName);
+            Blob blob = storage.get(blobId);
+            System.out.println(blob);
+            if (blob == null) {
+                System.out.println("No such object");
+                return;
+            }
+            PrintStream writeTo = System.out;
+            if (downloadTo != null) {
+                writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
+            }
+            if (blob.getSize() < 1_000_000) {
+                // Blob is small read all its content in one request
+                byte[] content = blob.getContent();
 
-            writeTo.write(content);
-        } else {
-            // When Blob size is big or unknown use the blob's channel reader.
-            try (ReadChannel reader = blob.reader()) {
-                WritableByteChannel channel = Channels.newChannel(writeTo);
-                ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
-                while (reader.read(bytes) > 0) {
-                    bytes.flip();
-                    channel.write(bytes);
-                    bytes.clear();
+                writeTo.write(content);
+            } else {
+                // When Blob size is big or unknown use the blob's channel reader.
+                try (ReadChannel reader = blob.reader()) {
+                    WritableByteChannel channel = Channels.newChannel(writeTo);
+                    ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                    while (reader.read(bytes) > 0) {
+                        bytes.flip();
+                        channel.write(bytes);
+                        bytes.clear();
+                    }
                 }
             }
-        }
-        if (downloadTo == null) {
-            writeTo.println();
-        } else {
-            writeTo.close();
-        }
+            if (downloadTo == null) {
+                writeTo.println();
+            } else {
+                writeTo.close();
+            }
 //        FileChooser fileChooser1 = new FileChooser();
 //        fileChooser1.setTitle("Open Resource File");
 //        //FEATURE: stage now loads as 1 page instead of 2
 //        Stage stage1 = (Stage) anchorPane.getScene().getWindow();
 //        File file1 = fileChooser1.showOpenDialog(stage1);
 
-        String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
-        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-        // rebuild key using SecretKeySpec
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+            String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
+            byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+            // rebuild key using SecretKeySpec
+            SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 //        decryptFileNew(file1,originalKey);
 //        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
-        byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
+            byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
 
 
-        Cipher aesCipher = Cipher.getInstance("AES");
-        aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-        byte[] bytePlainText = aesCipher.doFinal(cipherText);
-        Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+            byte[] bytePlainText = aesCipher.doFinal(cipherText);
+            Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
+        }
     }
 
 //    public void decryptFileNew(File f, SecretKey secretKey) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
@@ -575,55 +574,50 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private boolean checkPassword;
     private String tempPassword;
+    //add counter to check if this is the first time
     private void checkUserPassword() {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
 
         String title = "Enter your password to enter the restricted area";
-//        String content = "The connection timeout. Please try again";
+
         JFXPasswordField jfxPasswordField = new JFXPasswordField();
         jfxPasswordField.setPromptText("Enter password");
 
-        JFXButton jfxOKButton = new JFXButton("Ok");
+        JFXButton jfxOKButton= new JFXButton("Ok");
 
         jfxOKButton.setButtonType(JFXButton.ButtonType.RAISED);
 
         jfxOKButton.setStyle("-fx-background-color: #00bfff;");
 
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Label(title));
-        layout.setBody(jfxPasswordField);
-        layout.setActions(jfxOKButton);
         JFXAlert<Void> alert = new JFXAlert<>(stage);
-        alert.setOverlayClose(true);
-        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        alert.setContent(layout);
-        alert.initModality(Modality.NONE);
-        jfxOKButton.setOnAction(__ ->{
-            //check
-            tempPassword=jfxPasswordField.getText();
-            jfxOKButton.setDisable(true);
-            jfxPasswordField.setDisable(true);
-            uploadProcess.start();});
-        alert.show();
-        uploadProcess.setOnSucceeded(e -> {
-            uploadProcess.reset();
-            //if dosen't match redo process
-            if (checkPassword==false){
-                jfxPasswordField.setDisable(false);
-                jfxOKButton.setDisable(false);
-                System.out.println("Wrong password");
-            }else{
-                //if matches continue to encrypt also need to store the password somewhere
-                password=jfxPasswordField.getText();
-                alert.hideWithAnimation();
-                calculateEmail();
-                //        UploadFileTest();
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Choose File to Upload");
-                //FEATURE: stage now loads as 1 page instead of 2
-                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-                File file = fileChooser.showOpenDialog(stage1);
+        if (password==null) {
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(jfxPasswordField);
+            layout.setActions(jfxOKButton);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            jfxOKButton.setOnAction(__ -> {
+                //check
+                tempPassword = jfxPasswordField.getText();
+                jfxOKButton.setDisable(true);
+                jfxPasswordField.setDisable(true);
+                uploadProcess.start();
+            });
+            alert.show();
+        }else{
+//            password = jfxPasswordField.getText();
+            alert.hideWithAnimation();
+            calculateEmail();
+            //        UploadFileTest();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose File to Upload");
+            Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+            File file = fileChooser.showOpenDialog(stage1);
+            if (file != null) {
                 try {
                     if (checkNameTaken(file.getName()) == true) {
                         System.out.println("Change NAME!!!! Add showing alert");
@@ -632,18 +626,51 @@ public class ControllerSecureCloudStorage implements Initializable {
                         //may need to move update Table somewhere else instead
                         updateTable();
                     }
-                }catch(Exception e1){
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
-        });
-        uploadProcess.setOnCancelled(e ->{
-            uploadProcess.reset();
-        });
-        uploadProcess.setOnFailed(e ->{
-            uploadProcess.reset();
-            jfxOKButton.setDisable(false);
-        });
+        }
+            uploadProcess.setOnSucceeded(e -> {
+                uploadProcess.reset();
+                //if dosen't match redo process
+                if (checkPassword == false) {
+                    jfxPasswordField.setDisable(false);
+                    jfxOKButton.setDisable(false);
+                    System.out.println("Wrong password");
+                } else {
+                    //if matches continue to encrypt also need to store the password somewhere
+                    password = jfxPasswordField.getText();
+                    alert.hideWithAnimation();
+                    calculateEmail();
+                    //        UploadFileTest();
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Choose File to Upload");
+                    //FEATURE: stage now loads as 1 page instead of 2
+                    Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+                    File file = fileChooser.showOpenDialog(stage1);
+                    if (file != null) {
+                        try {
+                            if (checkNameTaken(file.getName()) == true) {
+                                System.out.println("Change NAME!!!! Add showing alert");
+                            } else {
+                                encryptFileNew(file);
+                                //may need to move update Table somewhere else instead
+                                updateTable();
+                            }
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
+            uploadProcess.setOnCancelled(e -> {
+                uploadProcess.reset();
+            });
+            uploadProcess.setOnFailed(e -> {
+                uploadProcess.reset();
+                jfxOKButton.setDisable(false);
+            });
     }
 
     private Service uploadProcess = new Service() {
