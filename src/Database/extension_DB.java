@@ -11,7 +11,6 @@ public class extension_DB {
 
     public ArrayList<String> getExtensionList() throws SQLException {
         ArrayList<String> ExtensionList = new ArrayList<String>();
-        //[START doc-example]
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
                         + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
@@ -19,10 +18,12 @@ public class extension_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
 
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            ResultSet resultSet=preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ExtensionList.add(resultSet.getString(1));
             }
@@ -38,10 +39,13 @@ public class extension_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entries (extensions) VALUES (?)");
+        preparedStatement.setString(1,extension);
 
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
+//            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
+            preparedStatement.executeUpdate();
         }
     }
 
@@ -53,10 +57,13 @@ public class extension_DB {
                 instanceConnectionName);
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+
+        PreparedStatement preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE extensions=?");
+        preparedStatement.setString(1,extension);
 
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
+//            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
+            preparedStatement.executeUpdate();
         }
     }
 }
