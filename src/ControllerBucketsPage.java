@@ -10,6 +10,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -66,6 +68,7 @@ public class ControllerBucketsPage implements Initializable {
     CloudBuckets cldB2 = new CloudBuckets();
 
     String inputBUCKETNAME;
+    String inputMEMBER;
 
     String errorMessage = "";
     String successfulMessage = "";
@@ -73,6 +76,8 @@ public class ControllerBucketsPage implements Initializable {
     String doubleConfirm = "";
     int checker2;
     int CHECKING;
+
+    BucketIamSnippets bucketiam = new BucketIamSnippets();
 
     Service initializeProcess = new Service() {
         @Override
@@ -233,7 +238,7 @@ public class ControllerBucketsPage implements Initializable {
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
-        String message = "Please input the follow required data to create buckets.";
+        String message = "Please input the follow required data to create buckets." +"\n" + "Viewers of project will have access to this bucket. Please indicate viewers.";
         String title = "Creating Buckets" + "\n" + message;
 
         JFXButton no = new JFXButton(buttonContent);
@@ -248,13 +253,16 @@ public class ControllerBucketsPage implements Initializable {
 
 
         JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setPrefSize(600, 270);
+        layout.setPrefSize(670, 350);
         layout.setHeading(new Label(title));
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(10, 100, 10, 0));
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(15);
+        col1.setHalignment(HPos.LEFT);
 
         JFXTextField inputBucketName = new JFXTextField();
         inputBucketName.setPrefWidth(250);
@@ -262,6 +270,20 @@ public class ControllerBucketsPage implements Initializable {
 
         grid.add(new Label(message1), 0, 0);
         grid.add(inputBucketName, 1, 0);
+
+        JFXCheckBox checkbox1 = new JFXCheckBox("Grant read permission for all viewers role and above.");
+        checkbox1.setWrapText(true);
+        grid.add(checkbox1,0,4);
+
+        Label addMembers = new Label();
+        addMembers.setText("Add Members: ");
+
+        JFXTextField inputMember = new JFXTextField();
+        inputMember.setPrefWidth(250);
+        inputMember.setPromptText("Type Member Here");
+
+        grid.add(addMembers,0,2);
+        grid.add(inputMember,1,2);
 
         layout.setBody(grid);
 
@@ -279,15 +301,30 @@ public class ControllerBucketsPage implements Initializable {
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
             inputBUCKETNAME=inputBucketName.getText();
+            inputMEMBER = inputMember.getText();
+
             System.out.println("Bucket name is : " + inputBUCKETNAME);
 
             //Checking for eligibilty - NOT ACCEPTED
             try {
-                storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+                //if checkbox is selected, create bucket normally/usually as all viewers allowed to view
+                if(checkbox1.isSelected()) {
+                    storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
 
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.getStylesheets().add("Style.css");
-                snackbar.show("Updating The Database", 3000);
+                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                    snackbar.getStylesheets().add("Style.css");
+                    snackbar.show("Updating The Database", 3000);
+                }
+                else{
+                    storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+                    //Remove all viewers from the bucket
+                    bucketiam.removeBucketIamMember(inputBUCKETNAME,"roles/storage.legacyBucketReader","projectViewer:netsecpj");
+
+                    bucketiam.addBucketIamMember(inputBUCKETNAME,"roles/storage.legacyBucketReader",inputMEMBER);
+                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                    snackbar.getStylesheets().add("Style.css");
+                    snackbar.show("Updating The Database", 3000);
+                }
             } catch (com.google.cloud.storage.StorageException e) {
                 errorMessage = "-";
                 checkEligible(inputBUCKETNAME);
