@@ -888,8 +888,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 final TableBlob blob = userProp.getValue();
                 return blob.blobName.get().toLowerCase().contains(newVal.toLowerCase())
                         || blob.date.get().toLowerCase().contains(newVal.toLowerCase())
-//                        || blob.blobName.get().toUpperCase().contains(newVal)
-//                        || blob.date.get().toUpperCase().contains(newVal)
                         || blob.blobName.get().contains(newVal)
                         || blob.date.get().contains(newVal);
             });
@@ -928,7 +926,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             jfxDownloadButton.setOnAction(__ -> {
                 //Download File
                 if (password == null) {
-//                    checkUserPassword();
                     try {
                         checkUserDownloadDelete("Download");
                     } catch (Exception e) {
@@ -948,21 +945,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                         e.printStackTrace();
                     }
                 }
-
-
-//                try {
-//                    getStorage();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println("Download File");
-//                calculateEmail();
-//                try {
-//                    //need add decryption here next time
-////                    downloadFile(storage, privateBucketName, blobName);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
             });
             jfxDeleteButton.setText("Delete");
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
@@ -1228,10 +1210,29 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println("Inside the vbox");
             } else {
                 vBox.setVisible(false);
-                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+//                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+//                addListeners();
             }
         }
     };
+
+    private void addListeners(){
+        filterField.textProperty().addListener((o, oldVal, newVal) -> {
+            JFXTreeTableView.setPredicate(userProp -> {
+                final TableBlob blob = userProp.getValue();
+                return blob.blobName.get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.date.get().toLowerCase().contains(newVal.toLowerCase())
+                        || blob.blobName.get().contains(newVal)
+                        || blob.date.get().contains(newVal);
+            });
+        });
+
+        JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            if (e.isPrimaryButtonDown()) {
+                onEdit();
+            }
+        });
+    }
 
     private void updateTable() {
         System.out.println("Updating Table");
