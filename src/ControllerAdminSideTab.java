@@ -48,6 +48,30 @@ public class ControllerAdminSideTab {
         ControllerAdminSideTab.SMSHandler = SMSHandler;
     }
 
+    public static PcapNetworkInterface getDevice() {
+        return device;
+    }
+
+    public static ScheduledExecutorServiceHandler getHandler() {
+        return handler;
+    }
+
+    public static NetworkCapture getCapture() {
+        return capture;
+    }
+
+    public static String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public static Integer getThreshold() {
+        return threshold;
+    }
+
+    public static SMS getSMSHandler() {
+        return SMSHandler;
+    }
+
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
         if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
