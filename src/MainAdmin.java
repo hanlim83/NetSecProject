@@ -1,5 +1,5 @@
+import Model.AWSSMS;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,7 +26,7 @@ public class MainAdmin extends Application {
     private PcapNetworkInterface device = null;
     private String directoryPath = null;
     private Integer threshold = null;
-    private SMS SMSHandler = null;
+    private AWSSMS SMSHandler = null;
     private Scene myScene;
     private static Stage primaryStage;
 
@@ -185,14 +185,14 @@ public class MainAdmin extends Application {
     public void stop() {
 //        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
 //        file.delete();
-            handler.shutdownService();
-            if (!ScheduledExecutorServiceHandler.getService().isShutdown())
-                handler.forceShutdownService();
-            try {
-                FileUtils.cleanDirectory(new File("PcapExport"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        handler.shutdownService();
+        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+            handler.forceShutdownService();
+        try {
+            FileUtils.cleanDirectory(new File("PcapExport"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         /*}*/
     }
 

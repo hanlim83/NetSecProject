@@ -1,5 +1,5 @@
+import Model.AWSSMS;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
@@ -21,7 +21,7 @@ public class ControllerAdminSideTab {
     private static NetworkCapture capture;
     private static String directoryPath;
     private static Integer threshold;
-    private static SMS SMSHandler;
+    private static AWSSMS SMSHandler;
 
     @FXML
     private JFXButton databasePage;
@@ -39,13 +39,8 @@ public class ControllerAdminSideTab {
     private JFXButton FileExtensionManager;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
-        device = nif;
-        ControllerAdminSideTab.handler = handler;
-        ControllerAdminSideTab.capture = capture;
-        ControllerAdminSideTab.directoryPath = directoryPath;
-        ControllerAdminSideTab.threshold = threshold;
-        ControllerAdminSideTab.SMSHandler = SMSHandler;
+    public static AWSSMS getSMSHandler() {
+        return SMSHandler;
     }
 
     public static PcapNetworkInterface getDevice() {
@@ -68,8 +63,13 @@ public class ControllerAdminSideTab {
         return threshold;
     }
 
-    public static SMS getSMSHandler() {
-        return SMSHandler;
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
+        device = nif;
+        ControllerAdminSideTab.handler = handler;
+        ControllerAdminSideTab.capture = capture;
+        ControllerAdminSideTab.directoryPath = directoryPath;
+        ControllerAdminSideTab.threshold = threshold;
+        ControllerAdminSideTab.SMSHandler = SMSHandler;
     }
 
     @FXML

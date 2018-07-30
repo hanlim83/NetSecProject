@@ -71,7 +71,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private Integer threshold;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
     public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
     private XYChart.Series<Number, Number> dataSeries;
     private NumberAxis xAxis;
@@ -103,7 +103,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler, String absolutePath, boolean captureType) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;

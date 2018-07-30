@@ -1,4 +1,4 @@
-import Model.SMS;
+import Model.AWSSMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -55,7 +55,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private int threshold;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
     private String intDisplayName;
     private boolean CaptureType;
 
@@ -64,7 +64,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         hamburgerBar();
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayName, boolean CaptureType) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;

@@ -1,4 +1,4 @@
-import Model.SMS;
+import Model.AWSSMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -62,7 +62,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private ScheduledExecutorServiceHandler handler;
     private String directoryPath;
     private Integer threshold;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
     private String intDisplayedName = null;
     private ArrayList<String> duplicateAdapterName;
     private ArrayList<Integer> duplicateValuses;
@@ -172,7 +172,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, SMS SMSHandler, String intDisplayedName, boolean Capturetype) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype) {
         this.handler = handler;
         this.device = device;
         this.directoryPath = directoryPath;

@@ -1,5 +1,5 @@
+import Model.AWSSMS;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -26,7 +26,7 @@ public class TrayIcon {
     private static NetworkCapture capture;
     private static String directoryPath;
     private static Integer threshold;
-    private static SMS SMSHandler;
+    private static AWSSMS SMSHandler;
     final SystemTray tray = SystemTray.getSystemTray();
     String TOOL_TIP = "FireE Tool Tip";
     String MESSAGE_HEADER = "FireE";
@@ -35,7 +35,7 @@ public class TrayIcon {
     private Stage primaryStage;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
         device = nif;
         TrayIcon.handler = handler;
         TrayIcon.capture = capture;

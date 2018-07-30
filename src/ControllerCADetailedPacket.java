@@ -1,6 +1,6 @@
+import Model.AWSSMS;
 import Model.CapturedPacket;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
@@ -53,14 +53,14 @@ public class ControllerCADetailedPacket implements Initializable {
     private Scene myScene;
     private String directoryPath;
     private Integer threshold;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, SMS SMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;

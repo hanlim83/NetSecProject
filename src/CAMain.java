@@ -1,5 +1,5 @@
+import Model.AWSSMS;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,7 +26,7 @@ public class CAMain extends Application {
     private PcapNetworkInterface device = null;
     private String directoryPath = null;
     private Integer threshold = null;
-    private SMS SMSHandler = null;
+    private AWSSMS SMSHandler = null;
     private static Stage primaryStage;
     private Scene myScene;
 
@@ -172,8 +172,7 @@ public class CAMain extends Application {
                                 e.printStackTrace();
                             }
                         }
-                    }
-                    else {
+                    } else {
                         Platform.exit();
                     }
                 }
@@ -187,15 +186,15 @@ public class CAMain extends Application {
 
     @Override
     public void stop() {
-            handler.shutdownService();
-            if (!ScheduledExecutorServiceHandler.getService().isShutdown())
-                handler.forceShutdownService();
-            try {
-                FileUtils.cleanDirectory(new File("PcapExport"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        handler.shutdownService();
+        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+            handler.forceShutdownService();
+        try {
+            FileUtils.cleanDirectory(new File("PcapExport"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     public void getVariables() {
         try {

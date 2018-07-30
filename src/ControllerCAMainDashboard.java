@@ -1,6 +1,6 @@
 import Database.admin_DB;
+import Model.AWSSMS;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import Model.TopIPObject;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
@@ -79,7 +79,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private Integer threshold;
     private ArrayList<String> adminPN;
     private admin_DB db;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
     private ArrayList<Integer> TPS;
     private int xSeriesData = 0;
     private XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
@@ -200,7 +200,7 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.showAndWait();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS USMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;
@@ -212,7 +212,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 public void run() {
                     try {
                         adminPN = db.getAllPhoneNo();
-                        SMSHandler = new SMS(adminPN);
+                        SMSHandler = new AWSSMS(adminPN);
                         for (String s : adminPN) {
                             System.out.println(s);
                         }

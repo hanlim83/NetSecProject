@@ -1,7 +1,7 @@
 import Database.admin_DB;
+import Model.AWSSMS;
 import Model.CapturedPacket;
 import Model.NetworkCapture;
-import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -89,7 +89,7 @@ public class ControllerCAMainPackets implements Initializable {
     private Integer threshold;
     private ArrayList<String> adminPN;
     private admin_DB db;
-    private SMS SMSHandler;
+    private AWSSMS SMSHandler;
     private tableview tRunnable;
     private capture cRunnable;
     /*private Timer timer = new Timer(true);
@@ -134,7 +134,7 @@ public class ControllerCAMainPackets implements Initializable {
         };*/
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS USMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS USMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.directoryPath = directoryPath;
@@ -146,8 +146,7 @@ public class ControllerCAMainPackets implements Initializable {
                 public void run() {
                     try {
                         adminPN = db.getAllPhoneNo();
-                        SMSHandler = new SMS(adminPN);
-                        SMSHandler = new SMS(adminPN);
+                        SMSHandler = new AWSSMS(adminPN);
                         for (String s : adminPN) {
                             System.out.println(s);
                         }
