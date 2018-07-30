@@ -1,8 +1,13 @@
 package Model;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 public class OutlookEmail {
@@ -82,6 +87,59 @@ public class OutlookEmail {
 
             } catch (MessagingException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void sendEmail(String subject, String messageContent, String attachmentPath) {
+        if (receiverAddress.isEmpty())
+            throw new RuntimeException("Receiver Email Address is empty!");
+        else if (subject.isEmpty() || messageContent.isEmpty() || attachmentPath.isEmpty())
+            throw new RuntimeException("Missing Parameters!");
+        else {
+            try {
+                // Create a default MimeMessage object.
+                Message message = new MimeMessage(session);
+
+                // Set From: header field of the header.
+                message.setFrom(new InternetAddress(host));
+
+                // Set To: header field of the header.
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(receiverAddress));
+
+                // Set Subject: header field
+                message.setSubject("Testing Subject");
+
+                // Create the message part
+                BodyPart messageBodyPart = new MimeBodyPart();
+
+                // Now set the actual message
+                messageBodyPart.setText("This is message body");
+
+                // Create a multipar message
+                Multipart multipart = new MimeMultipart();
+
+                // Set text message part
+                multipart.addBodyPart(messageBodyPart);
+
+                // Part two is attachment
+                messageBodyPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(attachmentPath);
+                messageBodyPart.setDataHandler(new DataHandler(source));
+                messageBodyPart.setFileName(attachmentPath);
+                multipart.addBodyPart(messageBodyPart);
+
+                // Send the complete message parts
+                message.setContent(multipart);
+
+                // Send message
+                Transport.send(message);
+
+                System.out.println("Sent message successfully....");
+
+            } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
         }
