@@ -74,6 +74,9 @@ public class ControllerDeviceDatabasePage implements Initializable {
 
     public static AnchorPane rootP;
 
+    private String myIPAddress;
+    private boolean ipChecker;
+
     String errorMessage="";
     String successfulMessage="";
     String doubleConfirm = "";
@@ -205,6 +208,12 @@ public class ControllerDeviceDatabasePage implements Initializable {
     }
 
     private void creatingOS(Scene scene, String buttonContent, String buttonContent2) {
+        try {
+            myIPAddress=IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -264,8 +273,16 @@ public class ControllerDeviceDatabasePage implements Initializable {
             System.out.println("INPUT NAME IS : " + verName);
             verNumber = inputOSNumber.getText();
             System.out.println("INPUT NUMBER IS : " + verNumber);
+            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
+            if(ipChecker==false) {
+                //Display not within ip range error message
+                errorMessage = "You are not within the company's premises to perform this function.";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            }
+            else {
                 try {
-                    deviceDB.insertNewOSVersion(verName,verNumber);
+                    deviceDB.insertNewOSVersion(verName, verNumber);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -273,6 +290,7 @@ public class ControllerDeviceDatabasePage implements Initializable {
                 successfulMessage = "This OS Version " + verName + " was created and added into the cloud. The device number is " + verNumber + ".";
                 successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
                 alert.hideWithAnimation();
+            }
         });
         no.setOnAction(__addEvent -> {
             checker2 = 0;
@@ -285,6 +303,12 @@ public class ControllerDeviceDatabasePage implements Initializable {
     }
 
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
+        try {
+            myIPAddress=IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         checker2=-1;
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
@@ -318,17 +342,25 @@ public class ControllerDeviceDatabasePage implements Initializable {
             checker2 = 1;
             CHECKING = -1;
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
-
             CHECKING=checker2;
-            try {
-                deviceDB.deleteOSVersion(entryid);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
+            if(ipChecker==false) {
+                //Display not within ip range error message
+                errorMessage = "You are not within the company's premises to perform this function.";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
-            deviceTable.getItems().remove(osvers);
-            successfulMessage = "OS Version removed Successfully";
-            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-            alert.hideWithAnimation();
+            else {
+                try {
+                    deviceDB.deleteOSVersion(entryid);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                deviceTable.getItems().remove(osvers);
+                successfulMessage = "OS Version removed Successfully";
+                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                alert.hideWithAnimation();
+            }
         });
         no.setOnAction(__addEvent -> {
             checker2 = 0;

@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerBucketsPage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
@@ -29,14 +29,16 @@
                 </Label>
             </children>
         </AnchorPane>
-      <TableView fx:id="bucketsTable1" layoutX="65.0" layoutY="189.0" prefHeight="371.0" prefWidth="940.0">
+      <TableView fx:id="bucketsTable1" layoutX="65.0" layoutY="189.0" onMouseClicked="#clickItem" prefHeight="371.0" prefWidth="940.0">
          <columns>
-            <TableColumn fx:id="tableColBucketName1" prefWidth="625.0" text="Bucket" />
-            <TableColumn fx:id="deleteBuckets1" prefWidth="314.0" text="Deletion" />
+            <TableColumn fx:id="tableColBucketName1" prefWidth="523.0" text="Bucket" />
+            <TableColumn fx:id="editBuckets1" prefWidth="213.0" text="Edit" />
+            <TableColumn fx:id="deleteBuckets1" prefWidth="203.0" text="Deletion" />
          </columns>
       </TableView>
-      <JFXButton fx:id="CreateBuckets" layoutX="70.0" layoutY="117.0" onMouseClicked="#handleCreateBuckets" prefHeight="48.0" prefWidth="157.0" text="Creating Buckets" />
+      <JFXButton fx:id="CreateBuckets" layoutX="70.0" layoutY="117.0" onMouseClicked="#handleCreateBuckets" prefHeight="48.0" prefWidth="157.0" text="Creating Buckets" textFill="#0916ff" />
       <JFXSpinner fx:id="spinner" layoutX="400.0" layoutY="250.0" prefHeight="212.0" prefWidth="230.0" visible="false" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
+      <Label layoutX="68.0" layoutY="562.0" text="Double click on bucket to view more information." textFill="#f50000" />
     </children>
 </AnchorPane>

@@ -96,8 +96,8 @@ public class BucketIamSnippets {
         try1.listBucketIamMembers("testingonly123123");
 
 //        try1.removeBucketIamMember("testingonly123123","roles/storage.legacyBucketReader","projectViewer:netsecpj");
-        try1.addBucketIamMember("testingonly123123","roles/storage.objectViewer","user:nspjdemo@gmail.com");
-        try1.addBucketIamMember("testingonly123123","roles/storage.legacyBucketReader","projectViewer:netsecpj");
+//        try1.addBucketIamMember("testingonly123123","roles/storage.objectViewer","user:nspjdemo@gmail.com");
+//        try1.addBucketIamMember("testingonly123123","roles/storage.legacyBucketReader","projectViewer:netsecpj");
 
         //        try1.grantReadAccess("nspjdemo@gmail.com","permissionbucket1");
 

@@ -1,4 +1,5 @@
 import Model.CloudBuckets;
+import Model.IPAddressPolicy;
 import Model.LoggingSnippets;
 import Model.LogsExtract;
 import com.google.api.gax.paging.Page;
@@ -132,6 +133,9 @@ public class ControllerLoggingPage implements Initializable {
     LoggingOptions options;
     LogsExtract logsextract = new LogsExtract();
 
+    private String myIPAddress;
+    private boolean ipChecker;
+
 //    private ObservableList<TableBlob1> blobs;
 
 
@@ -204,7 +208,6 @@ public class ControllerLoggingPage implements Initializable {
 //    };
 
     private void TableMethod() {
-
         JFXTreeTableColumn<LogsExtract, String> timestampCol = new JFXTreeTableColumn<>("Timestamp");
         timestampCol.setPrefWidth(150);
         timestampCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
@@ -489,6 +492,12 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handledeleted(MouseEvent event) {
+        try {
+            myIPAddress= IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //    logsTable.getItems().clear();
         createdlogs.setDisable(true);
         general.setDisable(true);
@@ -498,8 +507,21 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "delete";
 
-        process.start();
-
+        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
+        if(ipChecker==false) {
+            //Display not within ip range error message
+            errorMessage = "You are not within the company's premises to perform this function.";
+            errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            process.reset();
+            spinner.setVisible(false);
+            general.setDisable(false);
+            deletedlogs.setDisable(false);
+            createdlogs.setDisable(false);
+        }
+        else {
+            process.start();
+        }
         process.setOnSucceeded(e -> {
             spinner.setVisible(false);
             popupanchor.setVisible(false);
@@ -519,6 +541,12 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handlecreated(MouseEvent event) {
+        try {
+            myIPAddress=IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //      logsTable.getItems().clear();
         createdlogs.setDisable(true);
         deletedlogs.setDisable(true);
@@ -528,8 +556,21 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "create";
 
-        process.start();
-
+        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
+        if(ipChecker==false) {
+            //Display not within ip range error message
+            errorMessage = "You are not within the company's premises to perform this function.";
+            errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            process.reset();
+            spinner.setVisible(false);
+            general.setDisable(false);
+            deletedlogs.setDisable(false);
+            createdlogs.setDisable(false);
+        }
+        else {
+            process.start();
+        }
         process.setOnSucceeded(e -> {
             spinner.setVisible(false);
             createdlogs.setDisable(false);
@@ -549,6 +590,12 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handleonetwo(MouseEvent event) {
+        try {
+            myIPAddress=IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //    logsTable.getItems().clear();
         general.setDisable(true);
         deletedlogs.setDisable(true);
@@ -558,9 +605,21 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "one two";
 
-
-        process.start();
-
+        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
+        if(ipChecker==false) {
+            //Display not within ip range error message
+            errorMessage = "You are not within the company's premises to perform this function.";
+            errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            process.reset();
+            spinner.setVisible(false);
+            general.setDisable(false);
+            deletedlogs.setDisable(false);
+            createdlogs.setDisable(false);
+        }
+        else {
+            process.start();
+        }
         process.setOnSucceeded(e -> {
             general.setDisable(false);
             deletedlogs.setDisable(false);
@@ -609,6 +668,31 @@ public class ControllerLoggingPage implements Initializable {
             };
         }
     };
+
+    private void errorMessagePopOut(Scene scene, String errorMessage, String buttonContent) {
+        myScene = scene;
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String message = errorMessage;
+        String title = "ERROR";
+        JFXButton close = new JFXButton(buttonContent);
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(message));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
+    }
 
     public void hamburgerBar() {
         rootP = anchorPane;
