@@ -110,13 +110,13 @@ public class OutlookEmail {
                         InternetAddress.parse(receiverAddress));
 
                 // Set Subject: header field
-                message.setSubject("Testing Subject");
+                message.setSubject(subject);
 
                 // Create the message part
                 BodyPart messageBodyPart = new MimeBodyPart();
 
                 // Now set the actual message
-                messageBodyPart.setText("This is message body");
+                messageBodyPart.setText(messageContent);
 
                 // Create a multipar message
                 Multipart multipart = new MimeMultipart();
@@ -129,6 +129,59 @@ public class OutlookEmail {
                 DataSource source = new FileDataSource(attachmentPath);
                 messageBodyPart.setDataHandler(new DataHandler(source));
                 messageBodyPart.setFileName(attachmentPath);
+                multipart.addBodyPart(messageBodyPart);
+
+                // Send the complete message parts
+                message.setContent(multipart);
+
+                // Send message
+                Transport.send(message);
+
+                System.out.println("Sent message successfully....");
+
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void sendPcap(String pcapFilePath) {
+        if (receiverAddress.isEmpty())
+            throw new RuntimeException("Receiver Email Address is empty!");
+        else if (pcapFilePath.isEmpty())
+            throw new RuntimeException("Missing Parameters!");
+        else {
+            try {
+                // Create a default MimeMessage object.
+                Message message = new MimeMessage(session);
+
+                // Set From: header field of the header.
+                message.setFrom(new InternetAddress(host));
+
+                // Set To: header field of the header.
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(receiverAddress));
+
+                // Set Subject: header field
+                message.setSubject("Suspicious Network Event");
+
+                // Create the message part
+                BodyPart messageBodyPart = new MimeBodyPart();
+
+                // Now set the actual message
+                messageBodyPart.setText("Dear Admin,\n\nA suspicious network event has been detected on the network, for your convenience, the Pcap File Generated has been atatched in this email.\n\nFireE Admin App\nThis is a system generated email, no signature is required");
+
+                // Create a multipar message
+                Multipart multipart = new MimeMultipart();
+
+                // Set text message part
+                multipart.addBodyPart(messageBodyPart);
+
+                // Part two is attachment
+                messageBodyPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(pcapFilePath);
+                messageBodyPart.setDataHandler(new DataHandler(source));
+                messageBodyPart.setFileName(pcapFilePath);
                 multipart.addBodyPart(messageBodyPart);
 
                 // Send the complete message parts
