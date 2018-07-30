@@ -38,6 +38,7 @@ dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.372'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.372'
     compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 sourceSets {
