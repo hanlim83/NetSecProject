@@ -23,7 +23,7 @@ public class MainAdmin extends Application {
     Integer threshold = null;
     SMS SMSHandler = null;
     private Scene myScene;
-    private Stage primaryStage;
+    private static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,7 +31,7 @@ public class MainAdmin extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        MainAdmin.primaryStage = primaryStage;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
@@ -40,11 +40,11 @@ public class MainAdmin extends Application {
             scene.getStylesheets().add("Style.css");
             scene.getStylesheets().add("IntTreeTableViewStyle.css");
             loadAdminSideTabCtrl();
-            this.primaryStage.setResizable(false);
-            this.primaryStage.setScene(scene);
+            MainAdmin.primaryStage.setResizable(false);
+            MainAdmin.primaryStage.setScene(scene);
 //            this.primaryStage.getIcons().add(new Image("FireIcon.png"));
-            this.primaryStage.setTitle("NSPJ");
-            this.primaryStage.show();
+            MainAdmin.primaryStage.setTitle("NSPJ");
+            MainAdmin.primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,11 +87,11 @@ public class MainAdmin extends Application {
                 Scene scene = new Scene(root, 1056, 600);
                 scene.getStylesheets().add("Style.css");
                 scene.getStylesheets().add("IntTreeTableViewStyle.css");
-                this.primaryStage.setResizable(false);
-                this.primaryStage.setScene(scene);
-                this.primaryStage.getIcons().add(new Image("FireIcon.png"));
-                this.primaryStage.setTitle("Capture - Packets View");
-                this.primaryStage.show();
+                primaryStage.setResizable(false);
+                primaryStage.setScene(scene);
+                primaryStage.getIcons().add(new Image("FireIcon.png"));
+                primaryStage.setTitle("Capture - Packets View");
+                primaryStage.show();
             } else {
                 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                 alert1.setTitle("Information Dialog");
