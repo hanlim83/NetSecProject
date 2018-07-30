@@ -5,24 +5,20 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 public class MainAdmin extends Application {
-    ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
-    NetworkCapture capture = null;
-    PcapNetworkInterface device = null;
-    String directoryPath = null;
-    Integer threshold = null;
-    SMS SMSHandler = null;
+    private ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
+    private NetworkCapture capture = null;
+    private PcapNetworkInterface device = null;
+    private String directoryPath = null;
+    private Integer threshold = null;
+    private SMS SMSHandler = null;
     private Scene myScene;
     private static Stage primaryStage;
 
@@ -41,6 +37,9 @@ public class MainAdmin extends Application {
             scene.getStylesheets().add("Style.css");
             scene.getStylesheets().add("IntTreeTableViewStyle.css");
             loadAdminSideTabCtrl();
+            if (!new File("PcapExport").exists()) {
+                FileUtils.forceMkdir(new File("PcapExport"));
+            }
             MainAdmin.primaryStage.setResizable(false);
             MainAdmin.primaryStage.setScene(scene);
 //            this.primaryStage.getIcons().add(new Image("FireIcon.png"));
@@ -55,7 +54,7 @@ public class MainAdmin extends Application {
     public void stop() {
 //        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
 //        file.delete();
-        getVariables();
+        /*getVariables();
         if (handler.getStatuscaptureRunnable()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
@@ -100,12 +99,17 @@ public class MainAdmin extends Application {
                 alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                 alert1.showAndWait();
             }
-        } else {
-            handler.shutdownService();
-            if (!ScheduledExecutorServiceHandler.getService().isShutdown())
-                handler.forceShutdownService();
+        } else {*/
+        handler.shutdownService();
+        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+            handler.forceShutdownService();
+        try {
+            FileUtils.cleanDirectory(new File("PcapExport"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+    /*}*/
 
     public void loadAdminSideTabCtrl() {
         try {
@@ -116,20 +120,6 @@ public class MainAdmin extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void deleteFolder(File folder) {
-        File[] files = folder.listFiles();
-        if (files != null) { //some JVMs return null for empty dirs
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    deleteFolder(f);
-                } else {
-                    f.delete();
-                }
-            }
-        }
-        folder.delete();
     }
 
     public void getVariables() {
