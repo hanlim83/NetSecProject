@@ -5,6 +5,7 @@ import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.packet.Packet;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -278,6 +279,13 @@ public class NetworkCapture {
                     dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
             dumper.close();
+            System.out.println(new File("PcapExport").getAbsolutePath() + "\\" + SpecificExportFileName);
+            dumper = Phandle.dumpOpen(new File("PcapExport").getAbsolutePath() + "\\" + SpecificExportFileName);
+            for (CapturedPacket p : packets) {
+                if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
+                    dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
+            }
+            dumper.close();
             return true;
         } catch (PcapNativeException e) {
             e.printStackTrace();
@@ -297,6 +305,14 @@ public class NetworkCapture {
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             GeneralExportFileName = "Complete Network Capture " + dtf.format(now) + ".pcap";
             dumper = Phandle.dumpOpen(directoryPath + "\\" + GeneralExportFileName);
+            for (CapturedPacket p : packets) {
+                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
+            }
+            dumper.close();
+            Phandle.close();
+            Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            System.out.println(new File("PcapExport").getAbsolutePath() + "\\" + GeneralExportFileName);
+            dumper = Phandle.dumpOpen(new File("PcapExport").getAbsolutePath() + "\\" + GeneralExportFileName);
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
             }
