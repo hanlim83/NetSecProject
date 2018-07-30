@@ -104,10 +104,6 @@ public class admin_DB {
 
     public ArrayList<String> getAllPhoneNo() throws SQLException {
         ArrayList<String> phoneNoList=new ArrayList<String>();
-//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//        String databaseName = "admin_DB";
-//        String username = "root";
-//        String password = "root";
 
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
@@ -131,10 +127,6 @@ public class admin_DB {
 
     public String getPhoneNo(String email) throws SQLException {
         String phoneNo = null;
-//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//        String databaseName = "admin_DB";
-//        String username = "root";
-//        String password = "root";
 
         String jdbcUrl = String.format(
                 "jdbc:mysql://google/%s?cloudSqlInstance=%s"
@@ -155,5 +147,28 @@ public class admin_DB {
             }
         }
         return phoneNo;
+    }
+
+    public ArrayList<String> getAllEmail() throws SQLException {
+        ArrayList<String> emailList=new ArrayList<String>();
+
+        String jdbcUrl = String.format(
+                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                databaseName,
+                instanceConnectionName);
+
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT email FROM entries");
+
+        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                emailList.add(resultSet.getString(1));
+            }
+        }
+        return emailList;
     }
 }
