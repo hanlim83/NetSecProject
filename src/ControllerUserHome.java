@@ -33,6 +33,7 @@ import java.io.*;
 import java.net.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +52,6 @@ public class ControllerUserHome implements Initializable {
 
     @FXML
     private JFXButton randomButton;
-
-    @FXML
-    private JFXButton CloudStorageTestButton;
 
     @FXML
     private JFXButton RSAButton;
@@ -261,29 +259,17 @@ public class ControllerUserHome implements Initializable {
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
-        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
-        User_InfoDB user_infoDB=new User_InfoDB();
-////        Scanner s = new Scanner(osName).useDelimiter("                ");
-////        String firstLine=s.next();
-////        String osBuildNoStr=s.next();
-////        //System.out.println("OS version is " + osName);
-////        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
-////        String osBuildNo=sc.next();
-////        System.out.println(osBuildNo);
-//
-//        System.out.println(output.toString());
-//        //Desktop.getDesktop().open(new File("C://"));
-////        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-//        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
-//        System.out.println(DomainFirewall);
-//        System.out.println(PrivateFirewall);
-//        System.out.println(PublicFirewall);
-
+//        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
 
 //        //TODO TESTING DELETE B4 PUSH
 ////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
 //        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
-        user_infoDB.createUser("hugochiaxyz8@gmail.com");
+//        user_infoDB.createUser("hugochiaxyz8@gmail.com");
+
+        LocalDateTime now=LocalDateTime.now();
+        String nowString=now.toString();
+        System.out.println(nowString);
+//        long l=now.get
     }
 
     @FXML
@@ -306,10 +292,6 @@ public class ControllerUserHome implements Initializable {
 //        String privateKey2 = rsaKeyGenerator.getPrivateKeyString("pass1233", encryptedPrivateKey);
 //        System.out.println(privateKey2);
 //        System.out.println(privateKey.equals(privateKey2));
-    }
-
-    @FXML
-    void onClickCloudStorageTestButton(ActionEvent event) throws Exception {
         System.out.println(getIp());
         MACaddrTest();
     }

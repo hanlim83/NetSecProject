@@ -22,9 +22,8 @@
             </children>
         </AnchorPane>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXButton fx:id="randomButton" layoutX="884.0" layoutY="445.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
-      <JFXButton fx:id="CloudStorageTestButton" layoutX="628.0" layoutY="429.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="141.0" prefWidth="201.0" text="Cloud Storage Test" />
-      <JFXButton fx:id="RSAButton" layoutX="182.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="125.0" prefWidth="219.0" text="RSA Test Button" />
+      <JFXButton fx:id="randomButton" layoutX="829.0" layoutY="462.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="125.0" prefWidth="161.0" text="Get some information" />
+      <JFXButton fx:id="RSAButton" layoutX="638.0" layoutY="474.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="113.0" prefWidth="168.0" text="RSA Test Button" />
       <Label fx:id="LastFileModifiedLabel" alignment="CENTER" layoutX="145.0" layoutY="361.0" prefHeight="84.0" prefWidth="779.0">
          <font>
             <Font size="24.0" />
