@@ -1,16 +1,23 @@
 import Model.NetworkCapture;
 import Model.SMS;
 import Model.ScheduledExecutorServiceHandler;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 public class TrayIcon {
 
@@ -24,7 +31,9 @@ public class TrayIcon {
     String TOOL_TIP = "FireE Tool Tip";
     String MESSAGE_HEADER = "FireE";
     java.awt.TrayIcon processTrayIcon = null;
-    Stage primaryStage;
+    private static boolean running = false;
+    private Stage primaryStage;
+    private Scene myScene;
 
     public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, SMS SMSHandler) {
         device = nif;
@@ -35,113 +44,383 @@ public class TrayIcon {
         TrayIcon.SMSHandler = SMSHandler;
     }
 
-    private void createAndAddApplicationToSystemTray(Stage primaryStage) throws IOException {
-        this.primaryStage = primaryStage;
-        // Check the SystemTray support
-        if (!SystemTray.isSupported()) {
-            System.err.println("SystemTray is not supported");
-            return;
-        }
+    public void resetPrimaryStage() {
+        this.primaryStage = new Stage();
+    }
 
-        final PopupMenu popup = new PopupMenu();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("FireIcon.png");
-        Image img = ImageIO.read(inputStream);
-
-        final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(img, TOOL_TIP);
-        this.processTrayIcon = trayIcon;
-        MenuItem MainScreen = new MenuItem("View Home Screen");
-        MenuItem CapturePackets = new MenuItem("View Network Capture (Packets View)");
-        MenuItem CaptureDashboard = new MenuItem("View Network Capture (Dashboard View)");
-        MenuItem StopCapture = new MenuItem("Stop Network Capture");
-        MenuItem Exit = new MenuItem("Exit FireE");
-        popup.add(MainScreen);
-        popup.addSeparator();
-        popup.add(CapturePackets);
-        popup.add(CaptureDashboard);
-        popup.addSeparator();
-        popup.add(StopCapture);
-        popup.add(Exit);
-        trayIcon.setPopupMenu(popup);
-        trayIcon.setImageAutoSize(true);
-        try {
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            System.err.println("TrayIcon could not be added.");
-            return;
-        }
-        // Add listener to trayIcon.
-        trayIcon.addActionListener(e -> {
-
-        });
-        MainScreen.addActionListener(e -> {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("AdminHome.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-            } catch (IOException e2) {
-                e2.printStackTrace();
+    public void createAndAddApplicationToSystemTray() throws IOException {
+        if (running == false) {
+            primaryStage = new Stage();
+            // Check the SystemTray support
+            if (!SystemTray.isSupported()) {
+                System.err.println("SystemTray is not supported");
+                return;
             }
-            Scene scene = new Scene(root, 1056, 600);
-            scene.getStylesheets().add("Style.css");
-            scene.getStylesheets().add("IntTreeTableViewStyle.css");
-            primaryStage.setResizable(false);
-            primaryStage.setScene(scene);
-            primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
-            primaryStage.setTitle("Home Page");
-            primaryStage.show();
-        });
-        CapturePackets.addActionListener(e -> {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("CAMainPackets.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-                ControllerCAMainPackets ctrl = loader.getController();
-                ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
-            } catch (IOException e3) {
-                e3.printStackTrace();
-            }
-            Scene scene = new Scene(root, 1056, 600);
-            scene.getStylesheets().add("Style.css");
-            scene.getStylesheets().add("IntTreeTableViewStyle.css");
-            primaryStage.setResizable(false);
-            primaryStage.setScene(scene);
-            primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
-            primaryStage.setTitle("Capture - Packets View");
-            primaryStage.show();
-        });
-        CaptureDashboard.addActionListener(e -> {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("CAMainDashboard.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-                ControllerCAMainDashboard ctrl = loader.getController();
-                ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
-            } catch (IOException e4) {
-                e4.printStackTrace();
-            }
-            Scene scene = new Scene(root, 1056, 600);
-            scene.getStylesheets().add("Style.css");
-            scene.getStylesheets().add("IntTreeTableViewStyle.css");
-            primaryStage.setResizable(false);
-            primaryStage.setScene(scene);
-            primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
-            primaryStage.setTitle("Capture - Dashboard View");
-            primaryStage.show();
-        });
-        StopCapture.addActionListener(e -> {
 
-        });
-        Exit.addActionListener(e -> {
+            final PopupMenu popup = new PopupMenu();
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream("FireIcon.png");
+            Image img = ImageIO.read(inputStream);
 
-        });
+            final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(img, TOOL_TIP);
+            this.processTrayIcon = trayIcon;
+            MenuItem MainScreen = new MenuItem("View Home Screen");
+            MenuItem CapturePackets = new MenuItem("View Network Capture (Packets View)");
+            MenuItem CaptureDashboard = new MenuItem("View Network Capture (Dashboard View)");
+            MenuItem StopCapture = new MenuItem("Stop Network Capture");
+            MenuItem Exit = new MenuItem("Exit FireE");
+            popup.add(MainScreen);
+            popup.addSeparator();
+            popup.add(CapturePackets);
+            popup.add(CaptureDashboard);
+            popup.addSeparator();
+            popup.add(StopCapture);
+            popup.add(Exit);
+            trayIcon.setPopupMenu(popup);
+            trayIcon.setImageAutoSize(true);
+            try {
+                tray.add(trayIcon);
+                running = true;
+            } catch (AWTException e) {
+                System.err.println("TrayIcon could not be added.");
+                return;
+            }
+            // Add listener to trayIcon.
+            trayIcon.addActionListener(e -> {
+
+            });
+            MainScreen.addActionListener(e -> {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("AdminHome.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+                Scene scene = new Scene(root, 1056, 600);
+                scene.getStylesheets().add("Style.css");
+                scene.getStylesheets().add("IntTreeTableViewStyle.css");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        primaryStage.setResizable(false);
+                        primaryStage.setScene(scene);
+                        primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
+                        primaryStage.setTitle("Home Page");
+                        primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                if (handler.getTableviewRunnable() != null)
+                                    handler.cancelTableviewRunnable();
+                                if (handler.getchartDataRunnable() != null)
+                                    handler.cancelchartDataRunnable();
+                                if (handler.getshowDataRunnable() != null)
+                                    handler.cancelshowDataRunnable();
+                                try {
+                                    FXMLLoader loader = new FXMLLoader();
+                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                                    ControllerAdminSideTab ctrl = loader.getController();
+                                    handler = ControllerAdminSideTab.getHandler();
+                                    capture = ControllerAdminSideTab.getCapture();
+                                    device = ControllerAdminSideTab.getDevice();
+                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
+                                    threshold = ControllerAdminSideTab.getThreshold();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (capture != null && capture.isRunning()) {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Confirmation Dialog");
+                                    alert.setHeaderText("Network Capture is still running");
+                                    alert.setContentText("The network capture is still running, do you wish to stop the capture or keep the capture running?");
+                                    ButtonType buttonTypeOne = new ButtonType("Cancel Capture");
+                                    ButtonType buttonTypeTwo = new ButtonType("Cancel Capture but don't exit");
+                                    ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                                    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == buttonTypeOne) {
+                                        capture.stopSniffing();
+                                        if (handler.getStatuscaptureRunnable())
+                                            handler.cancelcaptureRunnable();
+
+                                    } else if (result.get() == buttonTypeTwo) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+                                        myScene = primaryStage.getScene();
+                                        primaryStage.close();
+                                        Stage stage = new Stage();
+                                        Parent nextView = null;
+                                        try {
+                                            nextView = loader.load();
+                                            ControllerCAMainPackets controller = loader.getController();
+                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        stage.setScene(new Scene(nextView));
+                                        stage.setTitle("Capture - Packets View");
+                                        stage.show();
+                                    } else {
+                                        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                        alert1.setTitle("Information Dialog");
+                                        alert1.setHeaderText("FireE will minimize to Tray Icon");
+                                        alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
+                                        alert1.showAndWait();
+                                        TrayIcon trayIcon = new TrayIcon();
+                                        try {
+                                            trayIcon.createAndAddApplicationToSystemTray();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else {
+                                    Platform.exit();
+                                }
+                            }
+                        });
+                        primaryStage.show();
+                        resetPrimaryStage();
+                    }
+                });
+
+            });
+            CapturePackets.addActionListener(e -> {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("CAMainPackets.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                    ControllerCAMainPackets ctrl = loader.getController();
+                    ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                } catch (IOException e3) {
+                    e3.printStackTrace();
+                }
+                Scene scene = new Scene(root, 1056, 600);
+                scene.getStylesheets().add("Style.css");
+                scene.getStylesheets().add("IntTreeTableViewStyle.css");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        primaryStage.setResizable(false);
+                        primaryStage.setScene(scene);
+                        primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
+                        primaryStage.setTitle("Home Page");
+                        primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                if (handler.getTableviewRunnable() != null)
+                                    handler.cancelTableviewRunnable();
+                                if (handler.getchartDataRunnable() != null)
+                                    handler.cancelchartDataRunnable();
+                                if (handler.getshowDataRunnable() != null)
+                                    handler.cancelshowDataRunnable();
+                                try {
+                                    FXMLLoader loader = new FXMLLoader();
+                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                                    ControllerAdminSideTab ctrl = loader.getController();
+                                    handler = ControllerAdminSideTab.getHandler();
+                                    capture = ControllerAdminSideTab.getCapture();
+                                    device = ControllerAdminSideTab.getDevice();
+                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
+                                    threshold = ControllerAdminSideTab.getThreshold();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (capture != null && capture.isRunning()) {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Confirmation Dialog");
+                                    alert.setHeaderText("Network Capture is still running");
+                                    alert.setContentText("The network capture is still running, do you wish to stop the capture or keep the capture running?");
+                                    ButtonType buttonTypeOne = new ButtonType("Cancel Capture");
+                                    ButtonType buttonTypeTwo = new ButtonType("Cancel Capture but don't exit");
+                                    ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                                    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == buttonTypeOne) {
+                                        capture.stopSniffing();
+                                        if (handler.getStatuscaptureRunnable())
+                                            handler.cancelcaptureRunnable();
+
+                                    } else if (result.get() == buttonTypeTwo) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+                                        myScene = primaryStage.getScene();
+                                        primaryStage.close();
+                                        Stage stage = new Stage();
+                                        Parent nextView = null;
+                                        try {
+                                            nextView = loader.load();
+                                            ControllerCAMainPackets controller = loader.getController();
+                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        stage.setScene(new Scene(nextView));
+                                        stage.setTitle("Capture - Packets View");
+                                        stage.show();
+                                    } else {
+                                        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                        alert1.setTitle("Information Dialog");
+                                        alert1.setHeaderText("FireE will minimize to Tray Icon");
+                                        alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
+                                        alert1.showAndWait();
+                                        TrayIcon trayIcon = new TrayIcon();
+                                        try {
+                                            trayIcon.createAndAddApplicationToSystemTray();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else {
+                                    Platform.exit();
+                                }
+                            }
+                        });
+                        primaryStage.show();
+                    }
+                });
+            });
+            CaptureDashboard.addActionListener(e -> {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("CAMainDashboard.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                    ControllerCAMainDashboard ctrl = loader.getController();
+                    ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                } catch (IOException e4) {
+                    e4.printStackTrace();
+                }
+                Scene scene = new Scene(root, 1056, 600);
+                scene.getStylesheets().add("Style.css");
+                scene.getStylesheets().add("IntTreeTableViewStyle.css");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        primaryStage.setResizable(false);
+                        primaryStage.setScene(scene);
+                        primaryStage.getIcons().add(new javafx.scene.image.Image("FireIcon.png"));
+                        primaryStage.setTitle("Home Page");
+                        primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                if (handler.getTableviewRunnable() != null)
+                                    handler.cancelTableviewRunnable();
+                                if (handler.getchartDataRunnable() != null)
+                                    handler.cancelchartDataRunnable();
+                                if (handler.getshowDataRunnable() != null)
+                                    handler.cancelshowDataRunnable();
+                                try {
+                                    FXMLLoader loader = new FXMLLoader();
+                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                                    ControllerAdminSideTab ctrl = loader.getController();
+                                    handler = ControllerAdminSideTab.getHandler();
+                                    capture = ControllerAdminSideTab.getCapture();
+                                    device = ControllerAdminSideTab.getDevice();
+                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
+                                    threshold = ControllerAdminSideTab.getThreshold();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (capture != null && capture.isRunning()) {
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Confirmation Dialog");
+                                    alert.setHeaderText("Network Capture is still running");
+                                    alert.setContentText("The network capture is still running, do you wish to stop the capture or keep the capture running?");
+                                    ButtonType buttonTypeOne = new ButtonType("Cancel Capture");
+                                    ButtonType buttonTypeTwo = new ButtonType("Cancel Capture but don't exit");
+                                    ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                                    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == buttonTypeOne) {
+                                        capture.stopSniffing();
+                                        if (handler.getStatuscaptureRunnable())
+                                            handler.cancelcaptureRunnable();
+
+                                    } else if (result.get() == buttonTypeTwo) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
+                                        myScene = primaryStage.getScene();
+                                        primaryStage.close();
+                                        Stage stage = new Stage();
+                                        Parent nextView = null;
+                                        try {
+                                            nextView = loader.load();
+                                            ControllerCAMainPackets controller = loader.getController();
+                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        stage.setScene(new Scene(nextView));
+                                        stage.setTitle("Capture - Packets View");
+                                        stage.show();
+                                    } else {
+                                        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                                        alert1.setTitle("Information Dialog");
+                                        alert1.setHeaderText("FireE will minimize to Tray Icon");
+                                        alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
+                                        alert1.showAndWait();
+                                        TrayIcon trayIcon = new TrayIcon();
+                                        try {
+                                            trayIcon.createAndAddApplicationToSystemTray();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } else {
+                                    Platform.exit();
+                                }
+                            }
+                        });
+                        primaryStage.show();
+                    }
+                });
+            });
+            StopCapture.addActionListener(e -> {
+
+            });
+            Exit.addActionListener(e -> {
+                if (capture != null && capture.isRunning()) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Confirmation Dialog");
+                            alert.setHeaderText("Network Capture is still running");
+                            alert.setContentText("The network capture is still running, do you wish to stop the capture and exit?");
+                            ButtonType buttonTypeOne = new ButtonType("Cancel Capture and exit");
+                            ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == buttonTypeOne) {
+                                capture.stopSniffing();
+                                if (handler.getStatuscaptureRunnable())
+                                    handler.cancelcaptureRunnable();
+                                Platform.exit();
+                                removeTrayicon();
+                            } else {
+
+                            }
+                        }
+                    });
+                } else {
+                    Platform.exit();
+                    removeTrayicon();
+                }
+            });
+        } else
+            System.err.println("Tray Icon Already Running");
+//            throw new RuntimeException("Tray Icon Already Running");
     }
 
     public void removeTrayicon() {
         tray.remove(processTrayIcon);
+        running = false;
     }
 
 }
