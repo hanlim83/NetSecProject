@@ -5,12 +5,17 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class MainAdmin extends Application {
     private ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
@@ -55,7 +60,7 @@ public class MainAdmin extends Application {
 //        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
 //        file.delete();
         /*getVariables();
-        if (handler.getStatuscaptureRunnable()) {
+        if (capture !=  null && capture.isRunning()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Network Capture is still running");
@@ -100,16 +105,16 @@ public class MainAdmin extends Application {
                 alert1.showAndWait();
             }
         } else {*/
-        handler.shutdownService();
-        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
-            handler.forceShutdownService();
-        try {
-            FileUtils.cleanDirectory(new File("PcapExport"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            handler.shutdownService();
+            if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+                handler.forceShutdownService();
+            try {
+                FileUtils.cleanDirectory(new File("PcapExport"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        /*}*/
     }
-    /*}*/
 
     public void loadAdminSideTabCtrl() {
         try {
