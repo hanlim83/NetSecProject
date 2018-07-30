@@ -11,7 +11,6 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -43,6 +42,7 @@ import org.json.simple.JSONObject;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.URL;
@@ -54,12 +54,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
+import java.security.spec.KeySpec;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class ControllerSecureCloudStorage implements Initializable {
     @FXML
@@ -208,11 +210,32 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        byte[] byteText = "Your Plain Text Here".getBytes();
 
         aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+        //Encrypt file here
         byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
+
         uploadFile(f.getName(), f.getAbsolutePath(), byteCipherText);
 
+        //TODO Encrypt the key and get back the E key string which will be uploaded to the cloud
         //encoding the key to String
         String encodedSecretKey = Base64.getEncoder().encodeToString(secKey.getEncoded());
+        System.out.println(encodedSecretKey);
+
+        byte[] salt = new byte[8];
+        srandom.nextBytes(salt);
+        //Convert salt to base64 for uploading
+        String encodedSalt = Base64.getEncoder().encodeToString(salt);
+
+        /* Derive the key, given password and salt. */
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+        SecretKey tmp = factory.generateSecret(spec);
+        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        String encryptedSymmetricKey=getEncryptedSymmetricKey(secret, encodedSecretKey);
+        //At this point symmetric key has been encoded then encrypted then encoded again
+        System.out.println(encryptedSymmetricKey);
+        //TODO Upload this instead^
+
 //        JSONObject main =new JSONObject();
 
         //encrypt the secretKey then encode?
@@ -227,7 +250,8 @@ public class ControllerSecureCloudStorage implements Initializable {
         JSONObject fileObj = new JSONObject();
 
         JSONObject filemetadata = new JSONObject();
-        filemetadata.put("Encrypted Symmetric Key", encodedSecretKey);
+        filemetadata.put("Encrypted Symmetric Key", encryptedSymmetricKey);
+        filemetadata.put("Salt", encodedSalt);
 
         fileObj.put("metadata", filemetadata);
 //        main.put("metadata",fileObj);
@@ -308,6 +332,11 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
+    private String convertName(String name) {
+        name = name.replace(" ", "%20");
+        return name;
+    }
+
     //pass in the
 //    public String getEncryptedPrivateKeyString(String password, String privateKey) throws Exception {
 //        //String EncryptedPrivateKeyString=null;
@@ -326,9 +355,42 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        return cipher.doFinal(privateKey.getBytes());
 //    }
 
-    private String convertName(String name) {
-        name = name.replace(" ", "%20");
-        return name;
+    private byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+    private String getEncryptedSymmetricKey(SecretKey secret,String symmetricKey) throws Exception {
+
+        //returns encrypted symmetric key
+        byte[] EncryptedSymmetricKey=encryptSymmetricKey(secret,symmetricKey);
+        //convert E. symmetric key to base64
+        return Base64.getEncoder().encodeToString(EncryptedSymmetricKey);
+//        return null;
+    }
+
+    private SecureRandom srandom=new SecureRandom();
+
+    private byte[] encryptSymmetricKey(SecretKey secret, String symmetricKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secret, ivspec);
+
+        return cipher.doFinal(symmetricKey.getBytes());
+    }
+
+
+    //By the time it comes here must password must be converted to same Key using the same salt
+    private String getDecryptedSymmetricKey(SecretKey passwordKey, String EncryptedSymmetricKeyEncoded) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException, BadPaddingException {
+        //decode String from EncryptedSymmetricKeyString
+        byte[] EncryptedSymmetricKey=Base64.getDecoder().decode(EncryptedSymmetricKeyEncoded);
+        byte[] PrivateKeyString=decryptSymmetricKey(passwordKey,EncryptedSymmetricKey);
+        //return Base64.getEncoder().encodeToString(PrivateKeyString);
+        return new String(PrivateKeyString);
+    }
+
+    private byte[] decryptSymmetricKey(SecretKey passwordKey, byte [] encrypted) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, passwordKey, ivspec);
+
+        return cipher.doFinal(encrypted);
     }
 
     private void uploadFile(String filename, String AbsolutePath, byte[] out) throws Exception {
@@ -390,8 +452,22 @@ public class ControllerSecureCloudStorage implements Initializable {
                 writeTo.close();
             }
 
+            //Current decryption is here
+            //getting back the same salt
+            byte[] salt = new byte[8];
+            String saltMetadata=blob.getMetadata().get("Salt");
+            System.err.println(saltMetadata);
+            salt=Base64.getDecoder().decode(saltMetadata);
+
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+            SecretKey tmp = factory.generateSecret(spec);
+            SecretKey passwordKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+
             String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
-            byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+            String decryptedSymmetricKey=getDecryptedSymmetricKey(passwordKey,encodedKey);
+
+            byte[] decodedKey = Base64.getDecoder().decode(decryptedSymmetricKey);
             // rebuild key using SecretKeySpec
             SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 //        decryptFileNew(file1,originalKey);
@@ -867,8 +943,20 @@ public class ControllerSecureCloudStorage implements Initializable {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else{
+                    try {
+                        getStorage();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Download File");
+                    calculateEmail();
+                    try {
+                        downloadFile(storage, privateBucketName, blobName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                //minor bug with download can password dialog opens 2 times
 
 
 //                try {
