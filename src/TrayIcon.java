@@ -181,6 +181,8 @@ public class TrayIcon {
                             }
                         });
                         primaryStage.show();
+                        tray.remove(trayIcon);
+                        running = false;
                         resetPrimaryStage();
                     }
                 });
@@ -280,6 +282,9 @@ public class TrayIcon {
                             }
                         });
                         primaryStage.show();
+                        tray.remove(trayIcon);
+                        running = false;
+                        resetPrimaryStage();
                     }
                 });
             });
@@ -377,11 +382,35 @@ public class TrayIcon {
                             }
                         });
                         primaryStage.show();
+                        tray.remove(trayIcon);
+                        running = false;
+                        resetPrimaryStage();
                     }
                 });
             });
             StopCapture.addActionListener(e -> {
-
+                capture.stopSniffing();
+                capture.printStat();
+                trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount(), java.awt.TrayIcon.MessageType.INFO);
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                    ControllerAdminSideTab ctrl = loader.getController();
+                    ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                } catch (IOException e4) {
+                    e4.printStackTrace();
+                }
+                popup.remove(CapturePackets);
+                popup.remove(CaptureDashboard);
+                popup.remove(StopCapture);
+                tray.remove(trayIcon);
+                trayIcon.setPopupMenu(popup);
+                try {
+                    tray.add(trayIcon);
+                } catch (AWTException e4) {
+                    System.err.println("TrayIcon could not be added.");
+                    return;
+                }
             });
             Exit.addActionListener(e -> {
                 if (capture != null && capture.isRunning()) {
