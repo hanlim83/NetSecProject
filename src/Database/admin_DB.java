@@ -86,7 +86,7 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT EXISTS(SELECT * FROM entries WHERE email =?");
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT EXISTS(SELECT * FROM entries WHERE email=?)");
         preparedStatement.setString(1,email);
 
         try (Statement statement = connection.createStatement()) {
@@ -144,7 +144,7 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries WHERE email= =?");
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries WHERE email=?");
         preparedStatement.setString(1,email);
 
         try (Statement statement = connection.createStatement()) {

@@ -163,7 +163,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     private boolean checkNameTaken(String fileName) throws Exception {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         if (storage == null) {
             getStorage();
         }
@@ -193,6 +192,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     //    private SecretKey secKey;
 //    private Cipher aesCipher;
 
+    //pass in password here to encrypt the symmetric key
     private void encryptFileNew(File f) throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
@@ -307,6 +307,24 @@ public class ControllerSecureCloudStorage implements Initializable {
             e.printStackTrace();
         }
     }
+
+    //pass in the
+//    public String getEncryptedPrivateKeyString(String password, String privateKey) throws Exception {
+//        //String EncryptedPrivateKeyString=null;
+//        //getPrivateKeyString();
+//
+//        //encryption codes
+//        byte[] EncryptedPrivateKeyString=encryptPrivateKey(password,privateKey);
+//        //convert to base64
+//        return Base64.getEncoder().encodeToString(EncryptedPrivateKeyString);
+//    }
+//
+//    private byte[] encryptPrivateKey(SecretKeySpec symmetricKey, String privateKey) throws Exception {
+//        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+//        cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, ivspec);
+//
+//        return cipher.doFinal(privateKey.getBytes());
+//    }
 
     private String convertName(String name) {
         name = name.replace(" ", "%20");
