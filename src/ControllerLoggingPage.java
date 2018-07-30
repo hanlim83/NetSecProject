@@ -410,55 +410,62 @@ public class ControllerLoggingPage implements Initializable {
 
         StringProperty timestamp0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getTimestamp();
         Label LABEL0 = new Label();
-        LABEL0.setFont(new Font(LABEL0.getFont().getName(),11));
+//        LABEL0.setFont(new Font(LABEL0.getFont().getName(),11));
         LABEL0.setText(String.valueOf(timestamp0).substring(23, String.valueOf(timestamp0).length() - 1));
         StringProperty severity0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getSeverity();
         Label LABEL1 = new Label();
-        LABEL1.setFont(new Font(LABEL0.getFont().getName(),11));
-        LABEL1.setTextFill(Color.rgb(255, 0, 0));
-        LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
+//        LABEL1.setFont(new Font(LABEL0.getFont().getName(),11));
+        String severity00= String.valueOf(severity0);
+        if(severity00.equals("ERROR")){
+            LABEL1.setTextFill(Color.rgb(255, 0, 0));
+            LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
+        }else{
+            LABEL1.setTextFill(Color.rgb(1, 0, 199));
+            LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
+        }
+
         StringProperty action0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getAction();
         Label LABEL2 = new Label();
-        LABEL2.setFont(new Font(LABEL0.getFont().getName(),11));
+//        LABEL2.setFont(new Font(LABEL0.getFont().getName(),11));
         LABEL2.setText(String.valueOf(action0).substring(23, String.valueOf(action0).length() - 1));
         LABEL2.setWrapText(true);
         StringProperty bucketname0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBucketName();
         Label LABEL3 = new Label();
-        LABEL3.setFont(new Font(LABEL0.getFont().getName(),11));
+//        LABEL3.setFont(new Font(LABEL0.getFont().getName(),11));
         LABEL3.setText(String.valueOf(bucketname0).substring(23, String.valueOf(bucketname0).length() - 1));
         LABEL3.setWrapText(true);
         StringProperty user0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFinalEmail();
         Label LABEL4 = new Label();
-        LABEL4.setFont(new Font(LABEL0.getFont().getName(),11));
+//        LABEL4.setFont(new Font(LABEL0.getFont().getName(),11));
         LABEL4.setText(String.valueOf(user0).substring(23, String.valueOf(user0).length() - 1));
 
         String string1 = "Timestamp :";
         Label label1 = new Label();
-        label1.setFont(new Font(LABEL0.getFont().getName(),11));
+//        label1.setFont(new Font(LABEL0.getFont().getName(),11));
         label1.setTextFill(Color.rgb(1, 0, 199));
         label1.setText(string1);
 
         String string2 = "Severity :";
         Label label2 = new Label();
-        label2.setFont(new Font(LABEL0.getFont().getName(),11));
+//        label2.setFont(new Font(LABEL0.getFont().getName(),11));
         label2.setTextFill(Color.rgb(1, 0, 199));
         label2.setText(string2);
 
         String string3 = "Task Category :";
         Label label3 = new Label();
-        label3.setFont(new Font(LABEL0.getFont().getName(),11));
+//        label3.setFont(new Font(LABEL0.getFont().getName(),11));
         label3.setTextFill(Color.rgb(1, 0, 199));
         label3.setText(string3);
 
         String string4 = "Source :";
         Label label4 = new Label();
-        label4.setFont(new Font(LABEL0.getFont().getName(),11));
+//        label4.setFont(new Font(LABEL0.getFont().getName(),11));
         label4.setTextFill(Color.rgb(1, 0, 199));
         label4.setText(string4);
 
         String string5 = "Information :";
         Label label5 = new Label();
-        label5.setFont(new Font(LABEL0.getFont().getName(),11));
+//        label5.setFont(new Font(LABEL0.getFont().getName(),11));
         label5.setTextFill(Color.rgb(1, 0, 199));
         label5.setText(string5);
 

@@ -58,9 +58,6 @@ public class ControllerEmployeePage implements Initializable {
     private JFXButton listPermissions;
 
     @FXML
-    private JFXButton employeeButton;
-
-    @FXML
     private JFXSpinner spinner;
 
     @FXML
@@ -181,7 +178,7 @@ public class ControllerEmployeePage implements Initializable {
 
     private String chosenRole;
 
-    SMS sendSMS = new SMS();
+    AWSSMS sendSMS = new AWSSMS();
 
     String listPermission;
 
@@ -250,12 +247,14 @@ public class ControllerEmployeePage implements Initializable {
         createAdmin.setVisible(false);
         spinner.setVisible(true);
         employeeAdminCombobox.setDisable(true);
+        listPermissions.setDisable(true);
 
         initializeProcess.start();
 
         initializeProcess.setOnSucceeded(e -> {
             spinner.setVisible(false);
             employeeAdminCombobox.setDisable(false);
+            listPermissions.setDisable(false);
             initializeProcess.reset();
         });
         initializeProcess.setOnCancelled(e -> {
@@ -937,9 +936,6 @@ public class ControllerEmployeePage implements Initializable {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                        userObservableList = FXCollections.observableList(userList);
-                        employeeTable.setItems(userObservableList);
-
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Database", 3000);
@@ -963,9 +959,6 @@ public class ControllerEmployeePage implements Initializable {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                        adminObservableList = FXCollections.observableList(adminList);
-                        adminTable.setItems(adminObservableList);
-
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
                         snackbar.show("Updating The Database", 3000);
@@ -978,13 +971,16 @@ public class ControllerEmployeePage implements Initializable {
     };
 
     public void newProcess() {
-        employeeButton.setDisable(true);
+        spinner.setVisible(true);
         process2.start();
+        employeeAdminCombobox.setDisable(true);
+
 
         process2.setOnSucceeded(e -> {
-            employeeButton.setDisable(false);
-//            userObservableList = FXCollections.observableList(userList);
-//            employeeTable.setItems(userObservableList);
+            spinner.setVisible(false);
+            employeeAdminCombobox.setDisable(false);
+            userObservableList = FXCollections.observableList(userList);
+            employeeTable.setItems(userObservableList);
             process2.reset();
         });
         process2.setOnCancelled(e -> {
@@ -1003,8 +999,8 @@ public class ControllerEmployeePage implements Initializable {
         process2a.setOnSucceeded(e -> {
             spinner.setVisible(false);
             employeeAdminCombobox.setDisable(false);
-//            adminObservableList = FXCollections.observableList(adminList);
-//            adminTable.setItems(adminObservableList);
+            adminObservableList = FXCollections.observableList(adminList);
+            adminTable.setItems(adminObservableList);
             process2a.reset();
         });
         process2a.setOnCancelled(e -> {
@@ -1091,6 +1087,7 @@ public class ControllerEmployeePage implements Initializable {
             CreateUser = inputUser.getText();
             System.out.println("INPUT NAME IS : " + CreateUser);
             CreateRole = creatingRoles.getSelectionModel().getSelectedItem();
+
             ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
             System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
             if(ipChecker==false) {
@@ -1099,7 +1096,6 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
             else {
-
                 if (CreateUser.contains("@gmail.com") && !creatingRoles.getSelectionModel().isEmpty()) {
                     try {
                         userinfodb.createUser(CreateUser);
