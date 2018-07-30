@@ -27,13 +27,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -46,7 +42,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -58,7 +53,6 @@ import java.security.spec.KeySpec;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -411,6 +405,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     //Download,saving and decrypt is here now
 //    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
     private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
+        //close vBox test
+        vBox.setVisible(false);
+        myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
         FileChooser fileChooser = new FileChooser();
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         File filePath = fileChooser.showSaveDialog(stage);
@@ -825,7 +822,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
         });
 
-        JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Others");
+        JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Actions");
         settingsColumn.setPrefWidth(175);
         Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
                 =
@@ -1079,6 +1076,8 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println("Download File");
                 calculateEmail();
                 downloadFile(storage, privateBucketName, blobName);
+            } else if(type.equals("Upload")){
+                //TODO upload codes
             }
         }
         uploadProcess.setOnSucceeded(e -> {
@@ -1105,6 +1104,8 @@ public class ControllerSecureCloudStorage implements Initializable {
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
+                } else if (type.equals("Upload")){
+                    //TODO upload codes
                 }
 //                calculateEmail();
 //                //        UploadFileTest();
