@@ -3,6 +3,9 @@ package Model;
 import com.sun.jna.Platform;
 import org.pcap4j.core.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
+import org.pcap4j.packet.ArpPacket;
+import org.pcap4j.packet.EthernetPacket;
+import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.Packet;
 
 import java.io.File;
@@ -30,6 +33,7 @@ public class NetworkCapture {
     public ArrayList<Integer> ProtocolMakeupData;
     public ArrayList<String> ProtocolMakeupProtocols;
     public ArrayList<TopIPObject> Top5IPMakeup;
+    private ArrayList<ARPObject> ARPDatabase;
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
     private PcapDumper dumper;
@@ -59,6 +63,7 @@ public class NetworkCapture {
             }
             if (Phandle.getTimestamp().before(TrackAheadTimeStamp) && Phandle.getTimestamp().after(TrackCurrentTimeStamp))
                 ++perMinutePktCount;
+            processARP(packet);
         }
     };
     private String specficExportFilePath;
@@ -87,6 +92,7 @@ public class NetworkCapture {
         ProtocolMakeupData = new ArrayList<Integer>();
         ProtocolMakeupProtocols = new ArrayList<String>();
         Top5IPMakeup = new ArrayList<TopIPObject>();
+        ARPDatabase = new ArrayList<ARPObject>();
     }
 
     public long getPacketsReceived() {
@@ -379,6 +385,80 @@ public class NetworkCapture {
             Top5IPMakeup = temporary;
         }
     }
+
+    public void printARPDatabase() {
+        for (ARPObject O : ARPDatabase) {
+            System.out.println(O.getIPAddress() + " : " + O.getMACAddress());
+        }
+    }
+
+    public void processARP(Packet receivedPacket) {
+        String ipAddr, macAddr;
+        if (receivedPacket.contains(IpPacket.class) && receivedPacket.contains(EthernetPacket.class)) {
+            IpPacket IPpkt = receivedPacket.get(IpPacket.class);
+            ipAddr = IPpkt.getHeader().getSrcAddr().getHostAddress();
+            EthernetPacket Epkt = receivedPacket.get(EthernetPacket.class);
+            macAddr = Epkt.getHeader().getSrcAddr().toString();
+        } else if (receivedPacket.contains(ArpPacket.class)) {
+            ArpPacket pkt = receivedPacket.get(ArpPacket.class);
+            ipAddr = pkt.getHeader().getSrcProtocolAddr().getHostAddress();
+            macAddr = pkt.getHeader().getSrcHardwareAddr().toString();
+        } else {
+            return;
+        }
+        if (ARPDatabase.isEmpty()) {
+            ARPObject newObject = new ARPObject(macAddr, ipAddr);
+            ARPDatabase.add(newObject);
+            return;
+        } else {
+            for (ARPObject o : ARPDatabase) {
+                if (o.getIPAddress().equals(ipAddr) && o.getMACAddress().equals(macAddr)) {
+                    return;
+                } else if (o.getIPAddress().equals(ipAddr) && !o.getMACAddress().equals(macAddr)) {
+
+                }
+            }
+            if (!ARPDatabase.contains(new ARPObject(macAddr, ipAddr))) {
+                ARPObject newObject = new ARPObject(macAddr, ipAddr);
+                ARPDatabase.add(newObject);
+                return;
+            }
+        }
+    }
+
+    /*public boolean processARP(Packet ARPPacket) {
+        if (!ARPPacket.contains(ArpPacket.class))
+            throw new RuntimeException("Not ARP Packet, Cannot check!");
+        else if (ARPDatabase.isEmpty()){
+            ArpPacket pkt = ARPPacket.get(ArpPacket.class);
+            String macAddr = pkt.getHeader().getSrcHardwareAddr().toString();
+            String ipAddr = pkt.getHeader().getSrcProtocolAddr().getHostAddress();
+            ARPObject newARP = new ARPObject(macAddr,ipAddr);
+            ARPDatabase.add(newARP);
+            return true;
+        }
+        else{
+            ArpPacket pkt = ARPPacket.get(ArpPacket.class);
+            String macAddr = pkt.getHeader().getSrcHardwareAddr().toString();
+            String ipAddr = pkt.getHeader().getSrcProtocolAddr().getHostAddress();
+            boolean found = false;
+            for (ARPObject o : ARPDatabase){
+                if (o.getIPAddress().equals(ipAddr) && macAddr.equals(macAddr)){
+                    found = true;
+                    return true;
+                }
+                else if (o.getIPAddress().equals(ipAddr) && !macAddr.equals(macAddr)) {
+                    found = true;
+                    return false;
+                }
+            }
+            if (found == false){
+                ARPObject newARP = new ARPObject(macAddr,ipAddr);
+                ARPDatabase.add(newARP);
+                return true;
+            }
+        }
+    }*/
 
     public boolean isRunning() {
         return Phandle.isOpen();
