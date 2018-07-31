@@ -45,8 +45,8 @@ public class ControllerAdminDeviceCheck implements Initializable {
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
-//    private boolean WindowsStatus=true;
     private boolean WindowsStatus;
+    private boolean WirelessEncryption;
 
 
     @Override
@@ -83,6 +83,35 @@ public class ControllerAdminDeviceCheck implements Initializable {
 
                     String title = "";
                     String content = "Please turn on your firewall and try again.";
+
+                    JFXButton close = new JFXButton("Close");
+
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close);
+                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+                    alert.setOverlayClose(true);
+                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert.setContent(layout);
+                    alert.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert.hideWithAnimation());
+                    alert.show();
+                });
+            } else if(WirelessEncryption==false) {
+                LoadingSpinner.setVisible(false);
+                RestartDeviceCheckButton.setVisible(true);
+                RestartDeviceCheckButton.setDisable(false);
+                Platform.runLater(() -> {
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String content = "Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler";
 
                     JFXButton close = new JFXButton("Close");
 
@@ -224,6 +253,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
                 protected Void call() throws Exception {
                     localDeviceFirewallCheck();
                     //Error when connecting to cloud. need to handle all errors, and also the button to force reset and stuff after a certain amount of time
+                    checkWirelessConnectionEncryption();
                     checkWindowsApproved();
                     return null;
                 }
@@ -278,8 +308,24 @@ public class ControllerAdminDeviceCheck implements Initializable {
         }else{
             AllFirewallStatus=true;
         }
+    }
 
+    private void checkWirelessConnectionEncryption() throws IOException, InterruptedException {
+        Process p = Runtime.getRuntime().exec("netsh wlan show interfaces");
+        p.waitFor();
 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+            if(line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))){
+                //set global variable
+                WirelessEncryption=true;
+                System.out.println("Wireless Secure!!!");
+                break;
+            }
+            WirelessEncryption=false;
+        }
     }
 
     private void checkWindowsApproved() throws SQLException {
