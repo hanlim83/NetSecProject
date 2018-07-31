@@ -9,6 +9,7 @@ import com.google.cloud.storage.StorageOptions;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,11 +17,14 @@ import java.util.Set;
  * This class contains Bucket-level IAM snippets for the {@link Storage} interface.
  */
 public class BucketIamSnippets {
-
+   public static ArrayList<String> bucketRoleList = new ArrayList<>();
+   public static ArrayList<String> bucketMember = new ArrayList<>();
     /**
      * Example of listing the Bucket-Level IAM Roles and Members
      */
     public Policy listBucketIamMembers(String bucketName) {
+        bucketRoleList.clear();
+        bucketMember.clear();
         // [START view_bucket_iam_members]
         // Initialize a Cloud Storage client
         Storage storage = StorageOptions.getDefaultInstance().getService();
@@ -32,6 +36,10 @@ public class BucketIamSnippets {
         Map<Role, Set<Identity>> policyBindings = policy.getBindings();
         for(Map.Entry<Role, Set<Identity>> entry : policyBindings.entrySet()) {
             System.out.printf("Role: %s Identities: %s\n", entry.getKey(), entry.getValue());
+//            System.out.println(entry.getKey());
+//            System.out.println(entry.getValue());
+            bucketRoleList.add(String.valueOf(entry.getKey()));
+            bucketMember.add(String.valueOf(entry.getValue()));
         }
         // [END view_bucket_iam_members]
         return policy;
@@ -102,6 +110,15 @@ public class BucketIamSnippets {
         //        try1.grantReadAccess("nspjdemo@gmail.com","permissionbucket1");
 
     }
+
+    public ArrayList<String> getBucketRoleList() {
+        return bucketRoleList;
+    }
+
+    public ArrayList<String> getBucketMember() {
+        return bucketMember;
+    }
+
 
 //    private String email;
 //    private String bucketName;

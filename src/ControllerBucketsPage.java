@@ -226,14 +226,12 @@ public class ControllerBucketsPage implements Initializable {
     }
 
 
-//    Service process = new Service() {
+//    Service processExpanding = new Service() {
 //        @Override
 //        protected Task createTask() {
 //            return new Task() {
 //                @Override
 //                protected Void call() throws Exception {
-//
-//
 //                    Platform.runLater(() -> {
 //
 //                    });
@@ -246,9 +244,21 @@ public class ControllerBucketsPage implements Initializable {
     @FXML
     public void clickItem(MouseEvent event) {
         try {
-            if (event.getClickCount() == 2) //Checking double click
-            {
+            if (event.getClickCount() == 2) {
+                //Checking double click
                 expandedDetails(anchorPane.getScene(), "Close");
+
+//                processExpanding.start();
+//
+//                processExpanding.setOnSucceeded(e -> {
+//                    processExpanding.reset();
+//                });
+//                processExpanding.setOnCancelled(e -> {
+//                    processExpanding.reset();
+//                });
+//                processExpanding.setOnFailed(e -> {
+//                    processExpanding.reset();
+//                });
             }
         } catch (com.google.cloud.logging.LoggingException e1) {
             e1.printStackTrace();
@@ -299,62 +309,67 @@ public class ControllerBucketsPage implements Initializable {
         grid.add(label1, 0, 0);
         grid.add(LABEL0, 1, 0);
 
-        TitledPane firstTitledPane = new TitledPane();
-        firstTitledPane.setText("Bucket Owners");
+
 
         // roles/storage.legacyBucketOwner , roles/storage.legacyBucketReader , roles/storage.legacyBucketWriter
         String bucketinfo = String.valueOf(bucketiam.listBucketIamMembers(BUCKETname));
         System.out.println(bucketinfo);
-        Pattern p1 = Pattern.compile("[//]");
-//        Pattern p2 = Pattern.compile("roles/storage.legacyBucketReader");
-//        Pattern p3 = Pattern.compile("roles/storage.legacyBucketWriter");
 
-        Matcher m1 = p1.matcher(bucketinfo);
-//        Matcher m2 = p2.matcher(bucketinfo);
-//        Matcher m3 = p3.matcher(bucketinfo);
+        ArrayList<String> bucketRoleList = bucketiam.getBucketRoleList();
+        System.out.println("Things inside bucketRoleList " + bucketRoleList.size());
+        for(int omg1=0;omg1<bucketRoleList.size();omg1++){
+            System.out.println(bucketRoleList.get(omg1));
+        }
 
-//        if(m1.find()) {
-//
-//        }
-//            if(m2.find()){
-//                String[] first2 = bucketinfo.split(String.valueOf(p2));
-//                System.out.println(first2[0]);
-//            }
+        ArrayList<String>bucketMember = bucketiam.getBucketMember();
+        System.out.println("Things inside bucketMember " + bucketMember.size());
+        for(int omg=0;omg<bucketMember.size();omg++){
+            System.out.println(bucketMember.get(omg));
+        }
 
-//        else if(m2.find()){
-//            String[] second = bucketinfo.split(String.valueOf(p2));
-//            for(int i=0;i<second.length;i++){
-//                System.out.println(second[i]);
-//            }
-  //      }
-//        else if(m3.find()) {
-//            String[] third = bucketinfo.split(String.valueOf(p3));
-//            for (int i = 0; i < third.length; i++) {
-//                System.out.println(third[i]);
-//            }
-//        }
-
+        TitledPane firstTitledPane = new TitledPane();
+        firstTitledPane.setText("Bucket Owners");
         VBox content1 = new VBox();
-        content1.getChildren().add(new Label("INPUT 1"));
-        content1.getChildren().add(new Label("INPUT 2"));
-        content1.getChildren().add(new Label("INPUT 3"));
-        firstTitledPane.setContent(content1);
 
         TitledPane secondTitledPane = new TitledPane();
         secondTitledPane.setText("Bucket Writer");
-
         VBox content2 = new VBox();
-        content2.getChildren().add(new Label("INPUT 1"));
-        content2.getChildren().add(new Label("INPUT 2"));
-        secondTitledPane.setContent(content2);
 
         TitledPane thirdTiltedPane = new TitledPane();
         thirdTiltedPane.setText("Bucket Reader");
-
         VBox content3 = new VBox();
-        content3.getChildren().add(new Label("INPUT 1"));
-        content3.getChildren().add(new Label("INPUT 2"));
+
+        for(int p=0;p<bucketRoleList.size();p++){
+            String whatistherole = bucketRoleList.get(p);
+            System.out.println(whatistherole);
+
+            if (whatistherole.equals("roles/storage.legacyBucketOwner")){
+                String ownerMember = bucketMember.get(0);
+                System.out.println(ownerMember);
+                content1.getChildren().add(new Label(ownerMember));
+//                content1.getChildren().add(new Label("INPUT 2"));
+//                content1.getChildren().add(new Label("INPUT 3"));
+            }
+            else if(whatistherole.equals("roles/storage.legacyBucketWriter")){
+                String writerMember = bucketMember.get(2);
+                System.out.println(writerMember);
+                content2.getChildren().add(new Label(writerMember));
+//                content2.getChildren().add(new Label("INPUT 1"));
+//                content2.getChildren().add(new Label("INPUT 2"));
+            }
+            else if(whatistherole.equals("roles/storage.legacyBucketReader")){
+                String readerMember = bucketMember.get(1);
+                System.out.println(readerMember);
+                content3.getChildren().add(new Label(readerMember));
+//               content3.getChildren().add(new Label("INPUT 1"));
+//               content3.getChildren().add(new Label("INPUT 2"));
+            }
+        }
+
+        firstTitledPane.setContent(content1);
+        secondTitledPane.setContent(content2);
         thirdTiltedPane.setContent(content3);
+
 
         Accordion root= new Accordion();
         root.getPanes().addAll(firstTitledPane, secondTitledPane,thirdTiltedPane);

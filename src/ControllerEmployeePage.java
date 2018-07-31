@@ -486,7 +486,7 @@ public class ControllerEmployeePage implements Initializable {
 
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
-        grid.getColumnConstraints().addAll(col1,col2);
+        grid.getColumnConstraints().addAll(col1, col2);
 
         String email1 = employeeTable.getSelectionModel().getSelectedItem().getEmail();
         String entryid1 = employeeTable.getSelectionModel().getSelectedItem().getEntryID();
@@ -520,11 +520,11 @@ public class ControllerEmployeePage implements Initializable {
         label5.setText(string5);
 
 
-        grid.add(label1,0,0);
-        grid.add(label2,0,1);
-        grid.add(label3,0,2);
-        grid.add(label4,0,3);
-        grid.add(label5,0,4);
+        grid.add(label1, 0, 0);
+        grid.add(label2, 0, 1);
+        grid.add(label3, 0, 2);
+        grid.add(label4, 0, 3);
+        grid.add(label5, 0, 4);
 
         grid.add(new Label(entryid1), 1, 0);
         grid.add(new Label(email1), 1, 1);
@@ -571,7 +571,7 @@ public class ControllerEmployeePage implements Initializable {
 
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
-        grid.getColumnConstraints().addAll(col1,col2);
+        grid.getColumnConstraints().addAll(col1, col2);
 
         String email2 = adminTable.getSelectionModel().getSelectedItem().getEmail();
         String entryid2 = adminTable.getSelectionModel().getSelectedItem().getEntryID();
@@ -605,9 +605,9 @@ public class ControllerEmployeePage implements Initializable {
 //        label5.setText(string5);
 
 
-        grid.add(label1,0,0);
-        grid.add(label2,0,1);
-        grid.add(label3,0,2);
+        grid.add(label1, 0, 0);
+        grid.add(label2, 0, 1);
+        grid.add(label3, 0, 2);
 //        grid.add(label4,0,3);
 //        grid.add(label5,0,4);
 
@@ -743,37 +743,69 @@ public class ControllerEmployeePage implements Initializable {
                     }
 
                     Platform.runLater(() -> {
-                        if (globalChecker == 1) {
-                            ownerObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(ownerObservableList);
-                        } else if (globalChecker == 2) {
-                            editorObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(editorObservableList);
-                        } else if (globalChecker == 3) {
-                            viewerObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(viewerObservableList);
-                        } else if (globalChecker == 4) {
-                            cloudsqlObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(cloudsqlObservableList);
-                        } else if (globalChecker == 5) {
-                            firebaseObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(firebaseObservableList);
-                        } else if (globalChecker == 6) {
-                            computeengineObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(computeengineObservableList);
-                        } else if (globalChecker == 7) {
-                            loggingadminObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(loggingadminObservableList);
-                        } else if (globalChecker == 8) {
-                            storageadminObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(storageadminObservableList);
-                        } else if (globalChecker == 9) {
-                            monitoringadminObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(monitoringadminObservableList);
-                        } else {
-                            apikeysadminObservableList = FXCollections.observableList(getIAMLists);
-                            rolesTable.setItems(apikeysadminObservableList);
-                        }
+                        revokePermissions.setCellFactory(new Callback<TableColumn<IAMExtract, Button>, TableCell<IAMExtract, Button>>() {
+                            String oneEmail;
+                            Boolean checkingde = null;
+                            @Override
+                            public TableCell<IAMExtract, Button> call(TableColumn<IAMExtract, Button> param) {
+                                return new TableCell<IAMExtract, Button>() {
+                                    @Override
+                                    public void updateItem(Button item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty) {
+                                            System.out.println("EMPTY");
+                                            setItem(null);
+                                        }else{
+                                            System.out.println("STRING ARRAYLIST SIZE IS = " +stringArrayList.size());
+                                            for (int r = 0; r < stringArrayList.size(); r++) {
+                                                oneEmail = stringArrayList.get(r);
+                                                if (oneEmail.contains("user:")) {
+                                                    System.out.println("IT IS A USER!");
+                                                    checkingde = true;
+                                                    revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", checkingde, (IAMExtract iamExtracts) -> {
+                                                        iamExtract(iamExtracts);
+                                                        emailPermission = iamExtracts.getGlobalUser();
+                                                        emailPermission = emailPermission.substring(9, emailPermission.length());
+                                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
+
+                                                        rolePermission = iamExtracts.getGlobalRole();
+                                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
+
+                                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
+                                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                                                        CHECKING = checker2;
+                                                        System.out.println("CHECKER NOW IS " + CHECKING);
+
+                                                        return iamExtracts;
+                                                    }));
+                                                }
+                                                else{
+                                                    checkingde = false;
+                                                    revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", checkingde, (IAMExtract iamExtracts) -> {
+                                                        iamExtract(iamExtracts);
+                                                        emailPermission = iamExtracts.getGlobalUser();
+                                                        emailPermission = emailPermission.substring(9, emailPermission.length());
+                                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
+
+                                                        rolePermission = iamExtracts.getGlobalRole();
+                                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
+
+                                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
+                                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+                                                        CHECKING = checker2;
+                                                        System.out.println("CHECKER NOW IS " + CHECKING);
+
+                                                        return iamExtracts;
+                                                    }));
+                                                }
+                                                setItem(item);
+                                            }
+                                        }
+
+                                    }
+                                };
+                            }
+                        });
                     });
                     return null;
                 }
@@ -788,86 +820,46 @@ public class ControllerEmployeePage implements Initializable {
         chosenRole = jfxcombobox.getSelectionModel().getSelectedItem();
         System.out.println(chosenRole);
         rolesTable.getItems().clear();
-        String oneEmail;
 
         process.start();
         jfxcombobox.setDisable(true);
-        //IF EMAIL IS NOT -users: , DO NOT PUT BUTTON INSIDE CELL
-//        revokePermissions.setCellFactory(ActionButtonTableCell);
-//        for (int b = 0; b < stringArrayList.size(); b++) {
-//                                oneEmail = stringArrayList.get(b);
-//                                if (!oneEmail.contains("user:")) {
-//                                    System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
-//                                }else{
-//                                    revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
-//                                        iamExtract(iamExtracts);
-//                                        emailPermission = iamExtracts.getGlobalUser();
-//                                        emailPermission = emailPermission.substring(9,emailPermission.length());
-//                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
-//
-//                                        rolePermission = iamExtracts.getGlobalRole();
-//                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
-//
-//                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
-//                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-//                                        CHECKING = checker2;
-//                                        System.out.println("CHECKER NOW IS " + CHECKING);
-//
-//                                        return iamExtracts;
-//                                    }));
-//                                }
-//                            }
-
-
-        revokePermissions.setCellFactory(new Callback<TableColumn<IAMExtract, Button>, TableCell<IAMExtract, Button>>() {
-            String oneEmail;
-
-            @Override
-            public TableCell<IAMExtract, Button> call(TableColumn<IAMExtract, Button> param) {
-                return new TableCell<IAMExtract, Button>() {
-
-                    @Override
-                    public void updateItem(Button item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!isEmpty()) {
-
-                            for (int b = 0; b < stringArrayList.size(); b++) {
-                                oneEmail = stringArrayList.get(b);
-                                if (!oneEmail.contains("user:")) {
-                                    System.out.println("NO BUTTON BECAUSE NOT USER, ITS GOOGLE SERVICE ACCOUNT");
-                                } else {
-                                    revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", (IAMExtract iamExtracts) -> {
-                                        iamExtract(iamExtracts);
-                                        emailPermission = iamExtracts.getGlobalUser();
-                                        emailPermission = emailPermission.substring(9, emailPermission.length());
-                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
-
-                                        rolePermission = iamExtracts.getGlobalRole();
-                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
-
-                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
-                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
-                                        CHECKING = checker2;
-                                        System.out.println("CHECKER NOW IS " + CHECKING);
-
-                                        return iamExtracts;
-                                    }));
-                                }
-                            }
-                            setItem(item);
-
-                        }
-
-                    }
-
-                };
-            }
-        });
-
 
         process.setOnSucceeded(e -> {
             jfxcombobox.setDisable(false);
             spinner.setVisible(false);
+
+            if (globalChecker == 1) {
+                ownerObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(ownerObservableList);
+            } else if (globalChecker == 2) {
+                editorObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(editorObservableList);
+            } else if (globalChecker == 3) {
+                viewerObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(viewerObservableList);
+            } else if (globalChecker == 4) {
+                cloudsqlObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(cloudsqlObservableList);
+            } else if (globalChecker == 5) {
+                firebaseObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(firebaseObservableList);
+            } else if (globalChecker == 6) {
+                computeengineObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(computeengineObservableList);
+            } else if (globalChecker == 7) {
+                loggingadminObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(loggingadminObservableList);
+            } else if (globalChecker == 8) {
+                storageadminObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(storageadminObservableList);
+            } else if (globalChecker == 9) {
+                monitoringadminObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(monitoringadminObservableList);
+            } else {
+                apikeysadminObservableList = FXCollections.observableList(getIAMLists);
+                rolesTable.setItems(apikeysadminObservableList);
+            }
+
             process.reset();
         });
         process.setOnCancelled(e -> {
@@ -1027,7 +1019,7 @@ public class ControllerEmployeePage implements Initializable {
 
     private void creatingUSERS(Scene scene, String buttonContent, String buttonContent2) {
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1088,14 +1080,13 @@ public class ControllerEmployeePage implements Initializable {
             System.out.println("INPUT NAME IS : " + CreateUser);
             CreateRole = creatingRoles.getSelectionModel().getSelectedItem();
 
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 if (CreateUser.contains("@gmail.com") && !creatingRoles.getSelectionModel().isEmpty()) {
                     try {
                         userinfodb.createUser(CreateUser);
@@ -1174,7 +1165,7 @@ public class ControllerEmployeePage implements Initializable {
 
     private void creatingAdmins(Scene scene, String buttonContent, String buttonContent2) {
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1249,14 +1240,13 @@ public class ControllerEmployeePage implements Initializable {
 
             CreateAdminRole = creatingAdminRoles.getSelectionModel().getSelectedItem();
 
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 if (CreateAdmin.contains("@gmail.com") && !creatingAdminRoles.getSelectionModel().isEmpty()) {
                     if (CreateHandphone.matches(numbers) && CreateHandphone.length() == 8 && (CreateHandphone.startsWith("8") || CreateHandphone.startsWith("9"))) {
                         try {
@@ -1336,7 +1326,7 @@ public class ControllerEmployeePage implements Initializable {
     private void doubleConfirmation2(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
         checker2 = -1;
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1374,14 +1364,13 @@ public class ControllerEmployeePage implements Initializable {
             CHECKING = -1;
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 permissions.revokePermissions(emailPermission, rolePermission);
                 rolesTable.getItems().remove(iamExtracts);
 
@@ -1403,7 +1392,7 @@ public class ControllerEmployeePage implements Initializable {
     private void doubleConfirmation1(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
         checker2 = -1;
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1440,14 +1429,13 @@ public class ControllerEmployeePage implements Initializable {
             CHECKING = -1;
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 try {
                     adminDB.deleteAdmin(emailAdmin, hpAdmin);
                 } catch (SQLException e) {
@@ -1476,7 +1464,7 @@ public class ControllerEmployeePage implements Initializable {
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
         checker2 = -1;
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1513,14 +1501,13 @@ public class ControllerEmployeePage implements Initializable {
             CHECKING = -1;
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 try {
                     userinfodb.deleteUser(email1);
                 } catch (SQLException e) {
