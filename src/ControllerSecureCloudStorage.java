@@ -128,9 +128,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        uploadProcess.start();
         checkUserDownloadDelete("Upload");
 
-//        getStorage();
-
-//        calculateEmail();
 ////        UploadFileTest();
 //        FileChooser fileChooser = new FileChooser();
 //        fileChooser.setTitle("Choose File to Upload");
@@ -144,13 +141,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            //may need to move update Table somewhere else instead
 //            updateTable();
 //        }
-
-////        downloadFile(storage,"hugochiaxyznspj","42149.py",saveFile());
-////        deleteFile("hugochiaxyznspj","42149.py");
-//        decryptFileNew(file1);
-
-//        downloadFile(storage,"hugochiaxyznspj","Encrypted test.txt",saveFile());
-//        decryptFile(file1);
     }
 
     private boolean checkNameTaken(String fileName) throws Exception {
@@ -1052,7 +1042,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 checkPasswordProcess.start();
             });
             jfxcancelButton.setOnAction(___ -> {
-                vBox.setVisible(false);
+//                vBox.setVisible(false);
                 myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
                 alert.hideWithAnimation();
             });
@@ -1210,7 +1200,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println("Inside the vbox");
             } else {
                 vBox.setVisible(false);
-//                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
 //                addListeners();
             }
         }
@@ -1239,14 +1229,17 @@ public class ControllerSecureCloudStorage implements Initializable {
         updateTableProcess.start();
         updateTableProcess.setOnSucceeded(e -> {
             updateTableProcess.reset();
+            System.out.println("Update table success");
             //do other stuff
         });
         updateTableProcess.setOnCancelled(e -> {
             updateTableProcess.reset();
+            System.out.println("Update table cancelled");
             //do other stuff
         });
         updateTableProcess.setOnFailed(e -> {
             updateTableProcess.reset();
+            System.out.println("Update table failed");
             //do other stuff
         });
     }
@@ -1258,7 +1251,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     updateObservableList();
-                    TableMethod();
+//                    TableMethod();
                     return null;
                 }
             };
