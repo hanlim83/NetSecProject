@@ -461,13 +461,12 @@ public class ControllerCAMainDashboard implements Initializable {
     private class charts implements Runnable {
         @Override
         public void run() {
-            boolean flag = capture.checkThreshold();
             try {
                 addToQueue();
                 ProtoMakeup();
                 addDataToSeries();
                 TopIPMakeup();
-                if (flag) {
+                if (capture.checkThreshold() || capture.checkARP()) {
                     SMSHandler.sendAlert();
                     capture.Specficexport();
                     Platform.runLater(new Runnable() {
@@ -534,7 +533,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 ProtoMakeup();
                 addDataToSeries();
                 TopIPMakeup();
-                if (flag) {
+                if (capture.checkThreshold() || capture.checkARP()) {
                     SMSHandler.sendAlert();
                     capture.Specficexport();
                     Platform.runLater(new Runnable() {

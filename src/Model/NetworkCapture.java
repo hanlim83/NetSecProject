@@ -45,7 +45,7 @@ public class NetworkCapture {
     private int Threshold, perMinutePktCount = 0;
     private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null, alertBeforeTimeStamp = null, alertAfterTimeStamp = null;
     private int eventCount = 0;
-    private boolean sendLimit = false, renewCount = true;
+    private boolean sendLimit = false, renewCount = true, ARPSpoofing = false;
     private int pktCount = 0;
     //Overrides default packet handling
     PacketListener listener = new PacketListener() {
@@ -199,7 +199,31 @@ public class NetworkCapture {
             cal.setTimeInMillis(System.currentTimeMillis());
             cal.add(Calendar.MINUTE, -RECORD_RANGE);
             alertBeforeTimeStamp = new Timestamp(cal.getTime().getTime());
-            //Specficexport();
+            return true;
+        }
+    }
+
+    public boolean checkARP() {
+        if (ARPSpoofing == false)
+            return false;
+        else if (sendLimit == true) {
+            System.out.println("Incremented");
+            incrementEvents();
+            return false;
+        } else {
+            System.out.println("Incremented and sent alert");
+            incrementEvents();
+            sendLimit = true;
+            renewCount = false;
+            timer.schedule(sendExpiry, (ALERT_LIMIT * MINUTE_TO_MILISECONDS));
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.MINUTE, RECORD_RANGE);
+            alertAfterTimeStamp = new Timestamp(cal.getTime().getTime());
+            cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.MINUTE, -RECORD_RANGE);
+            alertBeforeTimeStamp = new Timestamp(cal.getTime().getTime());
             return true;
         }
     }
@@ -415,7 +439,8 @@ public class NetworkCapture {
                 if (o.getIPAddress().equals(ipAddr) && o.getMACAddress().equals(macAddr)) {
                     return;
                 } else if (o.getIPAddress().equals(ipAddr) && !o.getMACAddress().equals(macAddr)) {
-
+                    ARPSpoofing = true;
+                    return;
                 }
             }
             if (!ARPDatabase.contains(new ARPObject(macAddr, ipAddr))) {

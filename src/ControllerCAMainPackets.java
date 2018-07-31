@@ -458,9 +458,8 @@ public class ControllerCAMainPackets implements Initializable {
     private class tableview implements Runnable {
         @Override
         public void run() {
-            boolean flag = capture.checkThreshold();
             try {
-                if (flag) {
+                if (capture.checkThreshold() || capture.checkARP()) {
                     SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
@@ -531,7 +530,7 @@ public class ControllerCAMainPackets implements Initializable {
             } catch (ConcurrentModificationException e) {
                 System.err.println("ConcurrentModification Detected");
                 capture.stopSniffing();
-                if (flag) {
+                if (capture.checkThreshold() || capture.checkARP()) {
                     SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
