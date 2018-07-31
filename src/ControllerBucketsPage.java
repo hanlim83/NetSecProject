@@ -37,6 +37,9 @@ public class ControllerBucketsPage implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private Label ipAddr;
+
+    @FXML
     private JFXHamburger hamburger;
 
     @FXML
@@ -129,6 +132,21 @@ public class ControllerBucketsPage implements Initializable {
         hamburgerBar();
         initializeProcess.start();
         spinner.setVisible(true);
+
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initializeProcess.setOnSucceeded(e -> {
             spinner.setVisible(false);
             initializeProcess.reset();

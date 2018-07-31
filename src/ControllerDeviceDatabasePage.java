@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,6 +37,9 @@ public class ControllerDeviceDatabasePage implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private Label ipAddr;
 
     @FXML
     private JFXHamburger hamburger;
@@ -147,7 +151,19 @@ public class ControllerDeviceDatabasePage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         initializeProcess.start();
-
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initializeProcess.setOnSucceeded(e -> {
             initializeProcess.reset();
         });

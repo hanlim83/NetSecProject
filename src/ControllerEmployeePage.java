@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,10 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,6 +45,9 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private Label ipAddr;
 
     @FXML
     private JFXHamburger hamburger;
@@ -217,6 +218,21 @@ public class ControllerEmployeePage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         Path path = FileSystems.getDefault().getPath("src\\View\\addingpicture.png");
         File file = new File(path.toUri());
         Image imageForFile;
@@ -749,6 +765,8 @@ public class ControllerEmployeePage implements Initializable {
                             @Override
                             public TableCell<IAMExtract, Button> call(TableColumn<IAMExtract, Button> param) {
                                 return new TableCell<IAMExtract, Button>() {
+//                                    JFXButton btn = new JFXButton();
+
                                     @Override
                                     public void updateItem(Button item, boolean empty) {
                                         super.updateItem(item, empty);
@@ -756,12 +774,48 @@ public class ControllerEmployeePage implements Initializable {
                                             System.out.println("EMPTY");
                                             setItem(null);
                                         }else{
+//                                            btn.setDisable(true);
                                             System.out.println("STRING ARRAYLIST SIZE IS = " +stringArrayList.size());
                                             for (int r = 0; r < stringArrayList.size(); r++) {
                                                 oneEmail = stringArrayList.get(r);
                                                 if (oneEmail.contains("user:")) {
-                                                    System.out.println("IT IS A USER!");
+                                                    System.out.println("IT IS NOT A USER! GOOGLE SERVICE ACCOUNT! DISABLE BUTTON NOW!!!");
                                                     checkingde = true;
+//                                                    btn.setDisable(false);
+//                                                    btn.setOnAction(event -> {
+//                                                        int selectdIndex = getTableRow().getIndex();
+//                                                        System.out.println(selectdIndex);
+//                                                        IAMExtract iamEX = rolesTable.getSelectionModel().getSelectedItem();
+//                                                        emailPermission = iamExtracts.getGlobalUser();
+//                                                        emailPermission = emailPermission.substring(9, emailPermission.length());
+//                                                        System.out.println("THIS IS THE EMAIL!!" + emailPermission);
+//
+//                                                        rolePermission = iamExtracts.getGlobalRole();
+//                                                        System.out.println("THIS IS THE ROLE: " + rolePermission);
+//
+//                                                        doubleConfirm = "This selected user \"" + emailPermission + "\" will be revoked of this role " + rolePermission + ". Are you sure to delete it?";
+//                                                        doubleConfirmation2(anchorPane.getScene(), doubleConfirm, "No", "Yes");
+//                                                        CHECKING = checker2;
+//                                                        System.out.println("CHECKER NOW IS " + CHECKING);
+//                                                    });
+//
+//                                                    Path path = FileSystems.getDefault().getPath("src\\View\\more.png");
+//                                                    File file = new File(path.toUri());
+//                                                    Image imageForFile;
+//                                                    try {
+//                                                        imageForFile = new Image(file.toURI().toURL().toExternalForm());
+//                                                        ImageView iv1 = new ImageView(imageForFile);
+//                                                        iv1.setFitHeight(28);
+//                                                        iv1.setFitWidth(40);
+//                                                        btn.setGraphic(iv1);
+//                                                    } catch (MalformedURLException e) {
+//                                                        e.printStackTrace();
+//                                                    }
+//                                                    btn.setBorder(new Border(new BorderStroke(Color.rgb(41,221,244),
+//                                                            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//
+//                                                    setGraphic(btn);
+//                                                    setText(null);
                                                     revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", checkingde, (IAMExtract iamExtracts) -> {
                                                         iamExtract(iamExtracts);
                                                         emailPermission = iamExtracts.getGlobalUser();

@@ -28,6 +28,14 @@
                         <Font name="Serif Regular" size="40.0" />
                     </font>
                 </Label>
+                <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
             </children>
         </AnchorPane>
       <AnchorPane fx:id="secondAnchor" layoutY="160.0" prefHeight="438.0" prefWidth="1066.0" visible="false">

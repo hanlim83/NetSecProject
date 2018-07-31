@@ -27,6 +27,14 @@
                         <Font name="Serif Regular" size="40.0" />
                     </font>
                 </Label>
+                <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
             </children>
         </AnchorPane>
       <TableView fx:id="deviceTable" layoutX="120.0" layoutY="150.0" prefHeight="389.0" prefWidth="850.0">

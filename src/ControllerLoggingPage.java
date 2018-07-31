@@ -60,6 +60,9 @@ public class ControllerLoggingPage implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private Label ipAddr;
+
+    @FXML
     private com.jfoenix.controls.JFXTreeTableView<LogsExtract> JFXTreeTableView;
 
     @FXML
@@ -359,6 +362,20 @@ public class ControllerLoggingPage implements Initializable {
 
         hamburgerBar();
         spinner.setVisible(false);
+
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         logsList = loggingsnippets.getLogsExtractList();
         logsObservableList = FXCollections.observableList(logsList);
