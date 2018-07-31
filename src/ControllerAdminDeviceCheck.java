@@ -30,9 +30,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
-    private JFXButton tempButton;
-
-    @FXML
     private JFXButton RestartDeviceCheckButton;
 
     @FXML
@@ -59,13 +56,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
         process.start();
         LoadingSpinner.setVisible(true);
         RestartDeviceCheckButton.setDisable(true);
-    }
-
-    //TODO
-    //Remove this in the future
-    @FXML
-    void onClickTempButton(ActionEvent event) throws IOException, SQLException, InterruptedException {
-        runCheck();
     }
 
     //TODO Include error handling for cloud next time

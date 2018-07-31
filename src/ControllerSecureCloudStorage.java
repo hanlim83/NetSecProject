@@ -81,9 +81,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private HBox FileButtonsHbox;
-
-    @FXML
     private JFXTextField filterField;
 
     private Scene myScene;
@@ -126,7 +123,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     void onClickUploadButton(ActionEvent event) throws Exception {
 //        checkUserPassword();
 //        uploadProcess.start();
-        checkUserDownloadDelete("Upload");
+
+        //TODO IMPORTANT UNCOMMENT THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        checkUserDownloadDelete("Upload");
 
 ////        UploadFileTest();
 //        FileChooser fileChooser = new FileChooser();
@@ -299,6 +298,10 @@ public class ControllerSecureCloudStorage implements Initializable {
             System.out.print("error");
             e.printStackTrace();
         }
+
+        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+        snackbar.show("Upload success", 3000);
+        snackbar.getStylesheets().add("Style.css");
     }
 
     private String convertName(String name) {
@@ -768,7 +771,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //        }
 
         JFXTreeTableColumn<TableBlob, String> fileColumn = new JFXTreeTableColumn<>("File Name");
-        fileColumn.setPrefWidth(525);
+        fileColumn.setPrefWidth(390);
         fileColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (fileColumn.validateValue(param)) {
                 return param.getValue().getValue().blobName;
@@ -788,7 +791,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
 
         JFXTreeTableColumn<TableBlob, String> settingsColumn = new JFXTreeTableColumn<>("Actions");
-        settingsColumn.setPrefWidth(175);
+        settingsColumn.setPrefWidth(150);
         Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>> cellFactory
                 =
                 new Callback<TreeTableColumn<TableBlob, String>, TreeTableCell<TableBlob, String>>() {
@@ -804,6 +807,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     setGraphic(null);
                                     setText(null);
                                 } else {
+//                                    if cannot revoke -> disable
                                     btn.setOnAction(event -> {
                                         int selectdIndex = getTreeTableRow().getIndex();
                                         System.out.println(selectdIndex);
@@ -815,6 +819,8 @@ public class ControllerSecureCloudStorage implements Initializable {
                                         showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
                                     });
 
+                                    btn.setId("tableJFXButton");
+
 //                                    Image imageEllipsis = new Image("https://www.google.com.sg/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiLuLWN8cbcAhWEdH0KHQ5xAXIQjRx6BAgBEAU&url=https%3A%2F%2Fwww.charbase.com%2F22ef-unicode-midline-horizontal-ellipsis&psig=AOvVaw3K7nmLaegBi6CsmUh6izNv&ust=1533042128558435");
 //                                    btn.setGraphic(new ImageView(imageEllipsis));
 
@@ -824,14 +830,24 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     try {
                                         imageForFile = new Image(file.toURI().toURL().toExternalForm());
                                         ImageView iv1 = new ImageView(imageForFile);
-                                        iv1.setFitHeight(28);
-                                        iv1.setFitWidth(40);
+                                        iv1.setFitHeight(24.5);
+                                        iv1.setFitWidth(35);
                                         btn.setGraphic(iv1);
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
-                                    btn.setBorder(new Border(new BorderStroke(Color.rgb(41,221,244),
-                                            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//                                    btn.setBorder(new Border(new BorderStroke(Color.BLACK,
+//                                            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//                                    btn.setStyle("-fx-border-width: 5;");
+//                                    btn.setStyle("-fx-border-radius: 5;");
+                                    btn.getStylesheets().add("Style.css");
+                                    btn.setOnMouseEntered(event -> {
+//                                        btn.setStyle("-fx-border-radius: 5;");
+                                    });
+
+                                    btn.setOnMouseExited(event -> {
+
+                                    });
 
                                     setGraphic(btn);
                                     setText(null);
@@ -844,7 +860,24 @@ public class ControllerSecureCloudStorage implements Initializable {
                     }
                 };
 
+        JFXTreeTableColumn<TableBlob, String> folderColumn = new JFXTreeTableColumn<>("Folder");
+        folderColumn.setPrefWidth(150);
+        folderColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
+            if (folderColumn.validateValue(param)) {
+                return param.getValue().getValue().folderName;
+            } else {
+                return folderColumn.getComputedValue(param);
+            }
+        });
+
         settingsColumn.setCellFactory(cellFactory);
+
+        folderColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
+                new TextFieldEditorBuilder()));
+        folderColumn.setOnEditCommit((CellEditEvent<TableBlob, String> t) -> t.getTreeTableView()
+                .getTreeItem(t.getTreeTablePosition()
+                        .getRow())
+                .getValue().folderName.set(t.getNewValue()));
 
         dateColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
                 new TextFieldEditorBuilder()));
@@ -865,13 +898,23 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView = new JFXTreeTableView<>(root);
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.setEditable(true);
-        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
+        JFXTreeTableView.getColumns().setAll(fileColumn, folderColumn, dateColumn, settingsColumn);
         JFXTreeTableView.setEditable(false);
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
 //        FlowPane main = new FlowPane();
 //        main.setPadding(new Insets(10));
 //        anchorPane.getChildren().add(JFXTreeTableView);
+
+//        JFXButton groupButton = new JFXButton("Group");
+//        UploadButton.setOnAction((action) ->{ new Thread(() -> JFXTreeTableView.group(folderColumn)).start();
+//        JFXTreeTableView.getColumns().clear();
+//        JFXTreeTableView.getColumns().setAll(folderColumn, fileColumn, dateColumn, settingsColumn);
+//        });
+        JFXTreeTableView.group(folderColumn);
+        JFXTreeTableView.getColumns().clear();
+        JFXTreeTableView.getColumns().setAll(folderColumn, fileColumn, dateColumn, settingsColumn);
+//        main.getChildren().add(groupButton);
 
         filterField.textProperty().addListener((o, oldVal, newVal) -> {
             JFXTreeTableView.setPredicate(userProp -> {
@@ -1042,7 +1085,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 checkPasswordProcess.start();
             });
             jfxcancelButton.setOnAction(___ -> {
-//                vBox.setVisible(false);
+                vBox.setVisible(false);
                 myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
                 alert.hideWithAnimation();
             });
@@ -1163,12 +1206,12 @@ public class ControllerSecureCloudStorage implements Initializable {
         checkPasswordProcess.setOnCancelled(e -> {
             checkPasswordProcess.reset();
             jfxOKButton.setDisable(false);
-            jfxcancelButton.setDisable(true);
+            jfxcancelButton.setDisable(false);
         });
         checkPasswordProcess.setOnFailed(e -> {
             checkPasswordProcess.reset();
             jfxOKButton.setDisable(false);
-            jfxcancelButton.setDisable(true);
+            jfxcancelButton.setDisable(false);
         });
         return false;
     }
@@ -1206,23 +1249,23 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
-    private void addListeners(){
-        filterField.textProperty().addListener((o, oldVal, newVal) -> {
-            JFXTreeTableView.setPredicate(userProp -> {
-                final TableBlob blob = userProp.getValue();
-                return blob.blobName.get().toLowerCase().contains(newVal.toLowerCase())
-                        || blob.date.get().toLowerCase().contains(newVal.toLowerCase())
-                        || blob.blobName.get().contains(newVal)
-                        || blob.date.get().contains(newVal);
-            });
-        });
-
-        JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            if (e.isPrimaryButtonDown()) {
-                onEdit();
-            }
-        });
-    }
+//    private void addListeners(){
+//        filterField.textProperty().addListener((o, oldVal, newVal) -> {
+//            JFXTreeTableView.setPredicate(userProp -> {
+//                final TableBlob blob = userProp.getValue();
+//                return blob.blobName.get().toLowerCase().contains(newVal.toLowerCase())
+//                        || blob.date.get().toLowerCase().contains(newVal.toLowerCase())
+//                        || blob.blobName.get().contains(newVal)
+//                        || blob.date.get().contains(newVal);
+//            });
+//        });
+//
+//        JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+//            if (e.isPrimaryButtonDown()) {
+//                onEdit();
+//            }
+//        });
+//    }
 
     private void updateTable() {
         System.out.println("Updating Table");
@@ -1259,7 +1302,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     };
 
     private void onEdit() {
-        FileButtonsHbox.setVisible(true);
         if (JFXTreeTableView.getSelectionModel().getSelectedItem() != null) {
             TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
             System.out.println(tableBlob.getBlobName());
@@ -1280,9 +1322,19 @@ public class ControllerSecureCloudStorage implements Initializable {
     public static final class TableBlob extends RecursiveTreeObject<TableBlob> {
         final StringProperty blobName;
         final StringProperty date;
+        StringProperty folderName;
 
         TableBlob(String blobName, String date) {
-            this.blobName = new SimpleStringProperty(blobName);
+            if(blobName.contains("/")){
+                Scanner s = new Scanner(blobName).useDelimiter("/");
+                String folderName = s.next();
+                this.folderName = new SimpleStringProperty(folderName);
+                String filename = s.next();
+                this.blobName = new SimpleStringProperty(filename);
+            }
+            else{
+                this.blobName = new SimpleStringProperty(blobName);
+            }
             this.date = new SimpleStringProperty(date);
         }
 
@@ -1300,6 +1352,18 @@ public class ControllerSecureCloudStorage implements Initializable {
 
         public StringProperty dateProperty() {
             return date;
+        }
+
+        public String getFolderName() {
+            return folderName.get();
+        }
+
+        public StringProperty folderNameProperty() {
+            return folderName;
+        }
+
+        public void setFolderName(String folderName) {
+            this.folderName.set(folderName);
         }
     }
 

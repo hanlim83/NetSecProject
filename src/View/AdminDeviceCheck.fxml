@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminDeviceCheck">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminDeviceCheck">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
          <children>
@@ -24,7 +24,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXButton fx:id="tempButton" layoutX="46.0" layoutY="410.0" mnemonicParsing="false" onAction="#onClickTempButton" prefHeight="150.0" prefWidth="184.0" text="Button" />
       <JFXSpinner fx:id="LoadingSpinner" layoutX="409.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
       <JFXButton fx:id="RestartDeviceCheckButton" layoutX="379.0" layoutY="453.0" onAction="#onClickRestartDeviceCheckButton" prefHeight="120.0" prefWidth="310.0" text="Restart Device Checking" visible="false">
          <font>
