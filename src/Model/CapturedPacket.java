@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class CapturedPacket {
     private int srcPort, dstPort, length, number;
-    private String srcIP, destIP, Protocol;
+    private String srcIP, destIP, Protocol, srcMac, destMac;
     private String information, timestamp;
     private Packet originalPacket;
     private Timestamp orignalTimeStamp;
@@ -59,6 +59,9 @@ public class CapturedPacket {
                 return;
             }
             length = this.originalPacket.length();
+            EthernetPacket ethernetPacket = this.originalPacket.get(EthernetPacket.class);
+            srcMac = ethernetPacket.getHeader().getSrcAddr().toString();
+            destMac = ethernetPacket.getHeader().getDstAddr().toString();
             this.Protocol = identifyProtocol();
             //this.information = identifyHost();
             if (originalPacket.contains(EncryptedPacket.class)) {
@@ -192,6 +195,6 @@ public class CapturedPacket {
 
     @Override
     public String toString() {
-        return "Packet Number: " + this.number + " | Source IP Address: " + this.srcIP + " | Source Port: " + this.srcPort + " | Destination IP Address: " + destIP + " | Destination Port:" + dstPort;
+        return "Packet Number: " + this.number + " | Source IP Address: " + this.srcIP + " | Source Port: " + this.srcPort + " | Source MAC Address: " + this.srcMac + " | Destination IP Address: " + destIP + " | Destination Port:" + dstPort + " | Destination MAC Address: " + this.destMac;
     }
 }

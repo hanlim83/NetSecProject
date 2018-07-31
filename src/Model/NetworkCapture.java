@@ -426,40 +426,6 @@ public class NetworkCapture {
         }
     }
 
-    /*public boolean processARP(Packet ARPPacket) {
-        if (!ARPPacket.contains(ArpPacket.class))
-            throw new RuntimeException("Not ARP Packet, Cannot check!");
-        else if (ARPDatabase.isEmpty()){
-            ArpPacket pkt = ARPPacket.get(ArpPacket.class);
-            String macAddr = pkt.getHeader().getSrcHardwareAddr().toString();
-            String ipAddr = pkt.getHeader().getSrcProtocolAddr().getHostAddress();
-            ARPObject newARP = new ARPObject(macAddr,ipAddr);
-            ARPDatabase.add(newARP);
-            return true;
-        }
-        else{
-            ArpPacket pkt = ARPPacket.get(ArpPacket.class);
-            String macAddr = pkt.getHeader().getSrcHardwareAddr().toString();
-            String ipAddr = pkt.getHeader().getSrcProtocolAddr().getHostAddress();
-            boolean found = false;
-            for (ARPObject o : ARPDatabase){
-                if (o.getIPAddress().equals(ipAddr) && macAddr.equals(macAddr)){
-                    found = true;
-                    return true;
-                }
-                else if (o.getIPAddress().equals(ipAddr) && !macAddr.equals(macAddr)) {
-                    found = true;
-                    return false;
-                }
-            }
-            if (found == false){
-                ARPObject newARP = new ARPObject(macAddr,ipAddr);
-                ARPDatabase.add(newARP);
-                return true;
-            }
-        }
-    }*/
-
     public boolean isRunning() {
         return Phandle.isOpen();
     }
