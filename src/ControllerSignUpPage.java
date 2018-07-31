@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,18 +16,11 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerSignUpPage implements Initializable {
     @FXML
     private AnchorPane anchorPane;
-
-    @FXML
-    private TextField EmailTextField;
 
     @FXML
     private JFXTextField PhoneNoField;
@@ -45,13 +37,16 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     private JFXButton CancelButton;
 
+    @FXML
+    private Label emailLabel;
+
     private Scene myScene;
     public static String email;
 
     //TODO Code CLEANUP AND IMPLEMENT MULTITHREADING
     void passData(String email) {
         this.email = email;
-        EmailTextField.setText(email);
+        emailLabel.setText(email);
     }
 
     @Override
