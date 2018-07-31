@@ -95,8 +95,9 @@ public class ControllerJFXSMSDialog implements Initializable {
     };
 
     @FXML
-    void onActionCancelButton(ActionEvent event) {
+    void onActionCancelButton(ActionEvent event) throws MalformedURLException {
         //Close Window
+        verifyText.cancelAuth();
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         stage.close();
     }
@@ -104,12 +105,6 @@ public class ControllerJFXSMSDialog implements Initializable {
     @FXML
     void onActionResendButton(ActionEvent event) throws MalformedURLException {
         verifyText.sendNew();
-//        SignUpPage signUpPage=new SignUpPage();
-//        this.email=signUpPage.getEmail();
-//        this.password=signUpPage.getPassword();
-//        this.phoneNo=signUpPage.getPhoneNo();
-//        //verifyText.sendAuth();
-//        System.out.println(email+password+phoneNo);
     }
 
     @FXML
