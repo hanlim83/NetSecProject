@@ -41,7 +41,6 @@ public class NetworkCapture {
     private TimerTask sendExpiry;
     private TimerTask countExpiry;
     private long PacketsReceived = 0, PacketsDroppedByInt = 0, PacketsCaptured = 0;
-    private String directoryPath;
     private int Threshold, perMinutePktCount = 0;
     private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null, alertBeforeTimeStamp = null, alertAfterTimeStamp = null;
     private int eventCount = 0;
@@ -71,9 +70,8 @@ public class NetworkCapture {
     private String GeneralExportFileName;
     private String SpecificExportFileName;
 
-    public NetworkCapture(PcapNetworkInterface nif, String directoryPath, int Threshold) {
+    public NetworkCapture(PcapNetworkInterface nif, int Threshold) {
         this.Netinterface = nif;
-        this.directoryPath = directoryPath;
         this.Threshold = Threshold;
         packets = new ArrayList<CapturedPacket>();
         PreviousTPS = new ArrayList<Integer>();
@@ -302,13 +300,6 @@ public class NetworkCapture {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             SpecificExportFileName = "Partial Capture for Alert " + dtf.format(now) + ".pcap";
-            specficExportFilePath = directoryPath + "\\" + SpecificExportFileName;
-            dumper = Phandle.dumpOpen(specficExportFilePath);
-            for (CapturedPacket p : packets) {
-                if (p.getOrignalTimeStamp().after(alertBeforeTimeStamp) && p.getOrignalTimeStamp().before(alertAfterTimeStamp))
-                    dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
-            }
-            dumper.close();
             System.out.println(new File("PcapExport").getAbsolutePath() + "\\" + SpecificExportFileName);
             dumper = Phandle.dumpOpen(new File("PcapExport").getAbsolutePath() + "\\" + SpecificExportFileName);
             for (CapturedPacket p : packets) {
@@ -333,15 +324,8 @@ public class NetworkCapture {
         try {
             if (!Phandle.isOpen())
                 Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            GeneralExportFileName = "Complete Network Capture " + dtf.format(now) + ".pcap";
-            dumper = Phandle.dumpOpen(directoryPath + "\\" + GeneralExportFileName);
-            for (CapturedPacket p : packets) {
-                dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());
-            }
-            dumper.close();
-            Phandle.close();
-            Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             System.out.println(new File("PcapExport").getAbsolutePath() + "\\" + GeneralExportFileName);
+            Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             dumper = Phandle.dumpOpen(new File("PcapExport").getAbsolutePath() + "\\" + GeneralExportFileName);
             for (CapturedPacket p : packets) {
                 dumper.dump(p.getOriginalPacket(), p.getOrignalTimeStamp());

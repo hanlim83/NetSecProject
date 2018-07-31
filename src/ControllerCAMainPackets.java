@@ -1,8 +1,5 @@
 import Database.admin_DB;
-import Model.AWSSMS;
-import Model.CapturedPacket;
-import Model.NetworkCapture;
-import Model.ScheduledExecutorServiceHandler;
+import Model.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -27,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -78,6 +76,8 @@ public class ControllerCAMainPackets implements Initializable {
     private Label alertCount;
     @FXML
     private JFXSpinner spinner;
+    @FXML
+    private Label ipAddr;
 
     private PcapNetworkInterface device;
     private Scene myScene;
@@ -85,7 +85,7 @@ public class ControllerCAMainPackets implements Initializable {
     private ObservableList<CapturedPacket> OLpackets;
     private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
-    private String directoryPath;
+    private boolean ARPDetection;
     private Integer threshold;
     private ArrayList<String> adminPN;
     private admin_DB db;
@@ -101,6 +101,18 @@ public class ControllerCAMainPackets implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if (validityIP == true) {
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            } else {
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         tableColPN.setCellValueFactory(new PropertyValueFactory<CapturedPacket, Integer>("number"));
         tableColSrcIP.setCellValueFactory(new PropertyValueFactory<CapturedPacket, String>("srcIP"));
         tableColSrcPort.setCellValueFactory(new PropertyValueFactory<CapturedPacket, Integer>("srcPort"));
@@ -134,10 +146,10 @@ public class ControllerCAMainPackets implements Initializable {
         };*/
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS USMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler) {
         this.device = nif;
         this.handler = handler;
-        this.directoryPath = directoryPath;
+        this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
         if (SMSHandler == null && threshold != 0) {
@@ -196,7 +208,7 @@ public class ControllerCAMainPackets implements Initializable {
                         FXMLLoader loader = new FXMLLoader();
                         loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                         ControllerAdminSideTab ctrl = loader.getController();
-                        ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                        ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -260,7 +272,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+            ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,7 +280,7 @@ public class ControllerCAMainPackets implements Initializable {
 
     public void startCapturing() {
         if (capture == null)
-            capture = new NetworkCapture(device, directoryPath, threshold);
+            capture = new NetworkCapture(device, threshold);
         handler.setTableviewRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable())
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(cRunnable, 1, TimeUnit.SECONDS));
@@ -277,7 +289,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,7 +337,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -383,7 +395,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.getController();
-                    controller.passVariables(device, handler, capture, selected, directoryPath, threshold, SMSHandler);
+                    controller.passVariables(device, handler, capture, selected, ARPDetection, threshold, SMSHandler);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -426,7 +438,7 @@ public class ControllerCAMainPackets implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, directoryPath, threshold, SMSHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -443,7 +455,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null, true);
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -459,7 +471,7 @@ public class ControllerCAMainPackets implements Initializable {
         @Override
         public void run() {
             try {
-                if (capture.checkThreshold() || capture.checkARP()) {
+                if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));
@@ -503,7 +515,7 @@ public class ControllerCAMainPackets implements Initializable {
                                     try {
                                         nextView = loader.load();
                                         ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler, capture.getSpecficExportFilePath(), false);
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), false);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -530,7 +542,7 @@ public class ControllerCAMainPackets implements Initializable {
             } catch (ConcurrentModificationException e) {
                 System.err.println("ConcurrentModification Detected");
                 capture.stopSniffing();
-                if (capture.checkThreshold() || capture.checkARP()) {
+                if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
                    /* if (!timerTaskinProgress) {
                         timer.schedule(exportTask,(RECORD_DURATION * MINUITE_TO_MILISECONDS));

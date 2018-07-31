@@ -18,9 +18,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.Packet;
@@ -58,6 +60,8 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private JFXSpinner spinner;
     @FXML
     private JFXButton returnToCaptureBtn;
+    @FXML
+    private Label ipAddr;
 
     public static final int LineRange = 5;
     private final int MAX_DATA_POINTS = 25, MAX = 10, MIN = 5;
@@ -69,7 +73,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private PcapNetworkInterface device;
     private NetworkCapture capture;
     private ScheduledExecutorServiceHandler handler;
-    private String directoryPath;
+    private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
     public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
@@ -86,6 +90,18 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if (validityIP == true) {
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            } else {
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         hamburger.setDisable(true);
         returnToCaptureBtn.setDisable(true);
         xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
@@ -103,10 +119,10 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType) {
         this.device = nif;
         this.handler = handler;
-        this.directoryPath = directoryPath;
+        this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
         this.capture = capture;
@@ -117,7 +133,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -142,7 +158,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,7 +173,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -19,7 +19,7 @@ public class ControllerAdminSideTab {
     private static PcapNetworkInterface device;
     private static ScheduledExecutorServiceHandler handler;
     private static NetworkCapture capture;
-    private static String directoryPath;
+    private static boolean ARPDetection;
     private static Integer threshold;
     private static AWSSMS SMSHandler;
 
@@ -55,19 +55,19 @@ public class ControllerAdminSideTab {
         return capture;
     }
 
-    public static String getDirectoryPath() {
-        return directoryPath;
+    public static boolean getARPDetection() {
+        return ARPDetection;
     }
 
     public static Integer getThreshold() {
         return threshold;
     }
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler) {
         device = nif;
         ControllerAdminSideTab.handler = handler;
         ControllerAdminSideTab.capture = capture;
-        ControllerAdminSideTab.directoryPath = directoryPath;
+        ControllerAdminSideTab.ARPDetection = ARPDetection;
         ControllerAdminSideTab.threshold = threshold;
         ControllerAdminSideTab.SMSHandler = SMSHandler;
     }
@@ -86,7 +86,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null, false);
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -101,7 +101,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,7 +116,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -140,7 +140,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, null, 0, SMSHandler, null, true);
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -155,7 +155,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,7 +170,7 @@ public class ControllerAdminSideTab {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

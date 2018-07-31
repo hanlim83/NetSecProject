@@ -1,4 +1,5 @@
 import Model.AWSSMS;
+import Model.IPAddressPolicy;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -9,9 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
@@ -39,7 +42,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private JFXTextField chosenInterface;
 
     @FXML
-    private JFXTextField chosenDirectory;
+    private JFXTextField chosenDetection;
 
     @FXML
     private JFXTextField chosenThreshold;
@@ -50,10 +53,13 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     @FXML
     private JFXButton saveBtn;
 
+    @FXML
+    private Label ipAddr;
+
     private PcapNetworkInterface device;
     private Scene myScene;
     private ScheduledExecutorServiceHandler handler;
-    private String directoryPath;
+    private boolean ARPDetection;
     private int threshold;
     private AWSSMS SMSHandler;
     private String intDisplayName;
@@ -62,18 +68,34 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if (validityIP == true) {
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            } else {
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType) {
         this.handler = handler;
         this.device = device;
-        this.directoryPath = directoryPath;
+        this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
         this.CaptureType = CaptureType;
         chosenInterface.setText(intDisplayName);
 //        chosenInterface.setText(device.getName() + " (" + this.intDiplayName + ")");
-        chosenDirectory.setText(directoryPath);
+        if (ARPDetection == true)
+            chosenDetection.setText("Enabled");
+        else {
+            chosenDetection.setText("Not Enabled");
+        }
         if (threshold == 0)
             chosenThreshold.setText("None");
         else
@@ -83,7 +105,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, null, this.ARPDetection, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +120,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName, CaptureType);
+            controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,7 +139,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,7 +154,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -6,8 +6,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCALandingSetOptions">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0"
+            xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ControllerCALandingSetOptions">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
@@ -22,6 +22,16 @@
                 <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                     <font>
                         <Font name="Serif Regular" size="40.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+                    <font>
+                        <Font size="18.0"/>
                     </font>
                 </Label>
             </children>
@@ -66,21 +76,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pcap Files Directory:" GridPane.rowIndex="1">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ARP Spoofing Detection:" GridPane.rowIndex="1">
                     <font>
                         <Font name="Lucida Sans Regular" size="22.0"/>
                     </font>
                 </Text>
-                <JFXTextField fx:id="pcapFilesDirectoryField" editable="false" onMouseClicked="#selectPcapLocation"
-                              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Select a location where the pcap files will be saved">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select whether ARP Spoofing Detection is enabled">
                     <font>
                         <Font name="Lucida Sans Regular" size="14.0"/>
                     </font>
                 </Text>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Select a Threshold for average network traffic before &quot;Abnormal Surge of network Traffic&quot; Alert is raised"
+                      text="Select a Threshold for average network traffic before an alert is raised"
                       GridPane.rowIndex="2">
                     <font>
                         <Font name="Lucida Sans Regular" size="14.0"/>
@@ -93,6 +100,12 @@
                 </Text>
                 <JFXComboBox fx:id="ThresholdChooser" onAction="#checkThresholdValue" prefHeight="25.0"
                              prefWidth="502.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <JFXCheckBox fx:id="ARPSpoofingCheckbox" text="Enable" unCheckedColor="RED" GridPane.columnIndex="1"
+                             GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="18.0"/>
+                    </font>
+                </JFXCheckBox>
             </children>
         </GridPane>
         <JFXButton fx:id="previousBtn" layoutX="207.0" layoutY="504.0" onAction="#goBackPreviousScreen" text="Previous"

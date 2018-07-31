@@ -97,7 +97,7 @@ public class ControllerCALandingSetOptionsOld implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
+            //ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,10 +126,10 @@ public class ControllerCALandingSetOptionsOld implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
-            if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
-            else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
+            // if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
+            //controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
+            //else
+            //controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,10 +147,10 @@ public class ControllerCALandingSetOptionsOld implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingVerifyDetails controller = loader.getController();
-            if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
-            else
-                controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
+            //if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
+            //controller.passVariables(handler, device, directoryPath, 0, SMSHandler, intDisplayName, CaptureType);
+            //else
+            //controller.passVariables(handler, device, directoryPath, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }

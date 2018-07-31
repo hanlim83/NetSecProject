@@ -6,8 +6,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerCALandingVerifyDetails">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0"
+            xmlns="http://javafx.com/javafx/8.0.171" fx:controller="ControllerCALandingVerifyDetails">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
@@ -22,6 +22,16 @@
                 <Label layoutX="489.0" layoutY="5.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                     <font>
                         <Font name="Serif Regular" size="40.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+                    <font>
+                        <Font size="18.0"/>
                     </font>
                 </Label>
             </children>
@@ -66,12 +76,12 @@
                     </font>
                 </Text>
                 <JFXTextField fx:id="chosenInterface" editable="false" GridPane.columnIndex="1"/>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pcap Files Directory:" GridPane.rowIndex="1">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ARP Spoofing Detection:" GridPane.rowIndex="1">
                     <font>
                         <Font name="Lucida Sans Regular" size="22.0"/>
                     </font>
                 </Text>
-                <JFXTextField fx:id="chosenDirectory" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <JFXTextField fx:id="chosenDetection" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Set:" GridPane.rowIndex="2">
                     <font>
                         <Font name="Lucida Sans Regular" size="22.0"/>

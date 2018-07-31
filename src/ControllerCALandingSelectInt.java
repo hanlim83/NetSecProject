@@ -1,4 +1,5 @@
 import Model.AWSSMS;
+import Model.IPAddressPolicy;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -16,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -55,12 +57,15 @@ public class ControllerCALandingSelectInt implements Initializable {
 
     @FXML
     private JFXButton nextBtn;
+    @FXML
+    private Label ipAddr;
+
 
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
     private Scene myScene;
     private ScheduledExecutorServiceHandler handler;
-    private String directoryPath;
+    private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
     private String intDisplayedName = null;
@@ -71,6 +76,18 @@ public class ControllerCALandingSelectInt implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if (validityIP == true) {
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            } else {
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         nextBtn.setDisable(true);
         try {
             System.out.println("Pcap Info: " + Pcaps.libVersion());
@@ -172,10 +189,10 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, String directoryPath, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype) {
         this.handler = handler;
         this.device = device;
-        this.directoryPath = directoryPath;
+        this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
         this.CaptureType = Capturetype;
@@ -190,7 +207,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(null, this.handler, null, null, 0, this.SMSHandler);
+            ctrl.getVariables(null, this.handler, null, this.ARPDetection, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,8 +223,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         close.setButtonType(JFXButton.ButtonType.RAISED);
         close.setStyle("-fx-background-color: #00bfff;");
         JFXButton selectAgain = new JFXButton("Select Again");
-        close.setButtonType(JFXButton.ButtonType.RAISED);
-        close.setStyle("-fx-background-color: #00bfff;");
+        selectAgain.setButtonType(JFXButton.ButtonType.RAISED);
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label(title));
         layout.setBody(new Label(content));
@@ -235,7 +251,7 @@ public class ControllerCALandingSelectInt implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCALandingSetOptions controller = loader.getController();
-                    controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayedName, CaptureType);
+                    controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayedName, CaptureType);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

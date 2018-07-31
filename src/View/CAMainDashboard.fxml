@@ -2,8 +2,7 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.*?>
@@ -56,5 +55,15 @@
         </Label>
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
         <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0"/>
+        <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+        <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
     </children>
 </AnchorPane>

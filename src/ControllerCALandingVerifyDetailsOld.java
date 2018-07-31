@@ -83,7 +83,7 @@ public class ControllerCALandingVerifyDetailsOld implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
+            //ctrl.getVariables(this.device, this.handler, null, null, 0, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class ControllerCALandingVerifyDetailsOld implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName, CaptureType);
+            //controller.passVariables(handler, device, directoryPath, threshold, SMSHandler, intDisplayName, CaptureType);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class ControllerCALandingVerifyDetailsOld implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                //controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,7 +132,7 @@ public class ControllerCALandingVerifyDetailsOld implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
+                //controller.passVariables(device, handler, null, directoryPath, threshold, SMSHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -24,7 +24,7 @@ public class MainAdmin extends Application {
     private ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
-    private String directoryPath = null;
+    private boolean ARPDetection = false;
     private Integer threshold = null;
     private AWSSMS SMSHandler = null;
     private Scene myScene;
@@ -87,7 +87,7 @@ public class MainAdmin extends Application {
                             try {
                                 nextView = loader.load();
                                 ControllerCAMainPackets controller = loader.getController();
-                                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -128,7 +128,7 @@ public class MainAdmin extends Application {
                                             try {
                                                 nextView = loader.load();
                                                 ControllerCAMainPackets controller = loader.getController();
-                                                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -144,7 +144,7 @@ public class MainAdmin extends Application {
                                             TrayIcon trayIcon = new TrayIcon();
                                             try {
                                                 trayIcon.createAndAddApplicationToSystemTray();
-                                                trayIcon.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -164,7 +164,7 @@ public class MainAdmin extends Application {
                             TrayIcon trayIcon = new TrayIcon();
                             try {
                                 trayIcon.createAndAddApplicationToSystemTray();
-                                trayIcon.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -201,7 +201,7 @@ public class MainAdmin extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,7 +215,7 @@ public class MainAdmin extends Application {
             this.handler = ControllerAdminSideTab.getHandler();
             this.capture = ControllerAdminSideTab.getCapture();
             this.device = ControllerAdminSideTab.getDevice();
-            this.directoryPath = ControllerAdminSideTab.getDirectoryPath();
+            this.ARPDetection = ControllerAdminSideTab.getARPDetection();
             this.SMSHandler = ControllerAdminSideTab.getSMSHandler();
             this.threshold = ControllerAdminSideTab.getThreshold();
         } catch (IOException e) {

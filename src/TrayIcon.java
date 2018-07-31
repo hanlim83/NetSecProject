@@ -24,7 +24,7 @@ public class TrayIcon {
     private static PcapNetworkInterface device;
     private static ScheduledExecutorServiceHandler handler;
     private static NetworkCapture capture;
-    private static String directoryPath;
+    private static boolean ARPDetection;
     private static Integer threshold;
     private static AWSSMS SMSHandler;
     final SystemTray tray = SystemTray.getSystemTray();
@@ -35,11 +35,11 @@ public class TrayIcon {
     private Stage primaryStage;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
+    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler) {
         device = nif;
         TrayIcon.handler = handler;
         TrayIcon.capture = capture;
-        TrayIcon.directoryPath = directoryPath;
+        TrayIcon.ARPDetection = ARPDetection;
         TrayIcon.threshold = threshold;
         TrayIcon.SMSHandler = SMSHandler;
     }
@@ -124,7 +124,7 @@ public class TrayIcon {
                                     handler = ControllerAdminSideTab.getHandler();
                                     capture = ControllerAdminSideTab.getCapture();
                                     device = ControllerAdminSideTab.getDevice();
-                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
                                     SMSHandler = ControllerAdminSideTab.getSMSHandler();
                                     threshold = ControllerAdminSideTab.getThreshold();
                                 } catch (IOException e) {
@@ -155,7 +155,7 @@ public class TrayIcon {
                                         try {
                                             nextView = loader.load();
                                             ControllerCAMainPackets controller = loader.getController();
-                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -195,7 +195,7 @@ public class TrayIcon {
                 try {
                     root = loader.load();
                     ControllerCAMainPackets ctrl = loader.getController();
-                    ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                    ctrl.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                 } catch (IOException e3) {
                     e3.printStackTrace();
                 }
@@ -225,7 +225,7 @@ public class TrayIcon {
                                     handler = ControllerAdminSideTab.getHandler();
                                     capture = ControllerAdminSideTab.getCapture();
                                     device = ControllerAdminSideTab.getDevice();
-                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
                                     SMSHandler = ControllerAdminSideTab.getSMSHandler();
                                     threshold = ControllerAdminSideTab.getThreshold();
                                 } catch (IOException e) {
@@ -256,7 +256,7 @@ public class TrayIcon {
                                         try {
                                             nextView = loader.load();
                                             ControllerCAMainPackets controller = loader.getController();
-                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -295,7 +295,7 @@ public class TrayIcon {
                 try {
                     root = loader.load();
                     ControllerCAMainDashboard ctrl = loader.getController();
-                    ctrl.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                    ctrl.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                 } catch (IOException e4) {
                     e4.printStackTrace();
                 }
@@ -325,7 +325,7 @@ public class TrayIcon {
                                     handler = ControllerAdminSideTab.getHandler();
                                     capture = ControllerAdminSideTab.getCapture();
                                     device = ControllerAdminSideTab.getDevice();
-                                    directoryPath = ControllerAdminSideTab.getDirectoryPath();
+                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
                                     SMSHandler = ControllerAdminSideTab.getSMSHandler();
                                     threshold = ControllerAdminSideTab.getThreshold();
                                 } catch (IOException e) {
@@ -356,7 +356,7 @@ public class TrayIcon {
                                         try {
                                             nextView = loader.load();
                                             ControllerCAMainPackets controller = loader.getController();
-                                            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -396,7 +396,7 @@ public class TrayIcon {
                     FXMLLoader loader = new FXMLLoader();
                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                     ControllerAdminSideTab ctrl = loader.getController();
-                    ctrl.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                    ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                 } catch (IOException e4) {
                     e4.printStackTrace();
                 }

@@ -24,7 +24,7 @@ public class CAMain extends Application {
     private ScheduledExecutorServiceHandler handler;
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
-    private String directoryPath = null;
+    private boolean ARPDetection = false;
     private Integer threshold = null;
     private AWSSMS SMSHandler = null;
     private static Stage primaryStage;
@@ -44,7 +44,7 @@ public class CAMain extends Application {
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             handler = new ScheduledExecutorServiceHandler();
-            controller.passVariables(handler, null, null, 0, null, null, true);
+            controller.passVariables(handler, null, false, 0, null, null, true);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
@@ -90,7 +90,7 @@ public class CAMain extends Application {
                             try {
                                 nextView = loader.load();
                                 ControllerCAMainPackets controller = loader.getController();
-                                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -131,7 +131,7 @@ public class CAMain extends Application {
                                             try {
                                                 nextView = loader.load();
                                                 ControllerCAMainPackets controller = loader.getController();
-                                                controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -147,7 +147,7 @@ public class CAMain extends Application {
                                             TrayIcon trayIcon = new TrayIcon();
                                             try {
                                                 trayIcon.createAndAddApplicationToSystemTray();
-                                                trayIcon.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -167,7 +167,7 @@ public class CAMain extends Application {
                             TrayIcon trayIcon = new TrayIcon();
                             try {
                                 trayIcon.createAndAddApplicationToSystemTray();
-                                trayIcon.getVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -204,7 +204,7 @@ public class CAMain extends Application {
             this.handler = ControllerAdminSideTab.getHandler();
             this.capture = ControllerAdminSideTab.getCapture();
             this.device = ControllerAdminSideTab.getDevice();
-            this.directoryPath = ControllerAdminSideTab.getDirectoryPath();
+            this.ARPDetection = ControllerAdminSideTab.getARPDetection();
             this.SMSHandler = ControllerAdminSideTab.getSMSHandler();
             this.threshold = ControllerAdminSideTab.getThreshold();
         } catch (IOException e) {

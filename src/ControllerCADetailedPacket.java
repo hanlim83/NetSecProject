@@ -1,7 +1,4 @@
-import Model.AWSSMS;
-import Model.CapturedPacket;
-import Model.NetworkCapture;
-import Model.ScheduledExecutorServiceHandler;
+import Model.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -14,12 +11,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -46,33 +45,48 @@ public class ControllerCADetailedPacket implements Initializable {
     private JFXDrawer drawer;
     @FXML
     private JFXButton returnCaptureBtn;
+    @FXML
+    private Label ipAddr;
+
     private ScheduledExecutorServiceHandler handler;
     private NetworkCapture capture;
     private PcapNetworkInterface device;
     private CapturedPacket packet;
     private Scene myScene;
-    private String directoryPath;
+    private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if (validityIP == true) {
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            } else {
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, String directoryPath, Integer threshold, AWSSMS SMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
         this.packet = packet;
-        this.directoryPath = directoryPath;
+        this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.directoryPath, this.threshold, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, this.SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -247,7 +261,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.getController();
-            controller.passVariables(device, handler, capture, directoryPath, threshold, SMSHandler);
+            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
