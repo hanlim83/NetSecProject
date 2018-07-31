@@ -394,7 +394,7 @@ public class TrayIcon {
             StopCapture.addActionListener(e -> {
                 capture.stopSniffing();
                 capture.printStat();
-                trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount(), java.awt.TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nThe Network Capture File will be sent to your email shortly", java.awt.TrayIcon.MessageType.INFO);
                 try {
                     FXMLLoader loader = new FXMLLoader();
                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
