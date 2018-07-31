@@ -1,5 +1,6 @@
 import Model.AWSSMS;
 import Model.IPAddressPolicy;
+import Model.OutlookEmail;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -62,6 +63,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
     private boolean ARPDetection;
     private int threshold;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     private String intDisplayName;
     private boolean CaptureType;
 
@@ -82,12 +84,13 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType, OutlookEmail EmailHandler) {
         this.handler = handler;
         this.device = device;
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
+        this.EmailHandler = EmailHandler;
         this.CaptureType = CaptureType;
         chosenInterface.setText(intDisplayName);
 //        chosenInterface.setText(device.getName() + " (" + this.intDiplayName + ")");
@@ -105,7 +108,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, this.ARPDetection, 0, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, null, this.ARPDetection, 0, this.SMSHandler, this.EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,7 +123,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         try {
             nextView = loader.load();
             ControllerCALandingSetOptions controller = loader.getController();
-            controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayName, CaptureType);
+            controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayName, CaptureType, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +142,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -154,7 +157,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler);
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

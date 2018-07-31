@@ -90,6 +90,7 @@ public class ControllerCAMainPackets implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     private tableview tRunnable;
     private capture cRunnable;
     /*private Timer timer = new Timer(true);
@@ -146,13 +147,14 @@ public class ControllerCAMainPackets implements Initializable {
         };*/
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
-        if (SMSHandler == null && threshold != 0) {
+        this.EmailHandler = OEmailHandler;
+        if (SMSHandler == null && threshold != 0 && this.EmailHandler == null) {
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -208,7 +210,7 @@ public class ControllerCAMainPackets implements Initializable {
                         FXMLLoader loader = new FXMLLoader();
                         loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                         ControllerAdminSideTab ctrl = loader.getController();
-                        ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                        ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -272,7 +274,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+            ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -289,7 +291,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -337,7 +339,7 @@ public class ControllerCAMainPackets implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -395,7 +397,7 @@ public class ControllerCAMainPackets implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCADetailedPacket controller = loader.getController();
-                    controller.passVariables(device, handler, capture, selected, ARPDetection, threshold, SMSHandler);
+                    controller.passVariables(device, handler, capture, selected, ARPDetection, threshold, SMSHandler, EmailHandler);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -438,7 +440,7 @@ public class ControllerCAMainPackets implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -455,7 +457,7 @@ public class ControllerCAMainPackets implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, false, 0, SMSHandler, null, true);
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, true, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -484,7 +486,7 @@ public class ControllerCAMainPackets implements Initializable {
                             myScene = anchorPane.getScene();
                             Stage stage = (Stage) (myScene).getWindow();
                             String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
                             JFXButton close = new JFXButton("Close");
                             close.setButtonType(JFXButton.ButtonType.RAISED);
                             close.setStyle("-fx-background-color: #00bfff;");
@@ -515,7 +517,7 @@ public class ControllerCAMainPackets implements Initializable {
                                     try {
                                         nextView = loader.load();
                                         ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), false);
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), false, EmailHandler);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -555,7 +557,7 @@ public class ControllerCAMainPackets implements Initializable {
                             myScene = anchorPane.getScene();
                             Stage stage = (Stage) (myScene).getWindow();
                             String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
                             JFXButton close = new JFXButton("Close");
                             close.setButtonType(JFXButton.ButtonType.RAISED);
                             close.setStyle("-fx-background-color: #00bfff;");

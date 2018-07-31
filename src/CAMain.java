@@ -1,5 +1,6 @@
 import Model.AWSSMS;
 import Model.NetworkCapture;
+import Model.OutlookEmail;
 import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,6 +28,7 @@ public class CAMain extends Application {
     private boolean ARPDetection = false;
     private Integer threshold = null;
     private AWSSMS SMSHandler = null;
+    private OutlookEmail EmailHandler = null;
     private static Stage primaryStage;
     private Scene myScene;
 
@@ -44,7 +46,7 @@ public class CAMain extends Application {
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             handler = new ScheduledExecutorServiceHandler();
-            controller.passVariables(handler, null, false, 0, null, null, true);
+            controller.passVariables(handler, null, false, 0, null, null, true, null);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
@@ -90,7 +92,7 @@ public class CAMain extends Application {
                             try {
                                 nextView = loader.load();
                                 ControllerCAMainPackets controller = loader.getController();
-                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -131,7 +133,7 @@ public class CAMain extends Application {
                                             try {
                                                 nextView = loader.load();
                                                 ControllerCAMainPackets controller = loader.getController();
-                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -147,7 +149,7 @@ public class CAMain extends Application {
                                             TrayIcon trayIcon = new TrayIcon();
                                             try {
                                                 trayIcon.createAndAddApplicationToSystemTray();
-                                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -167,7 +169,7 @@ public class CAMain extends Application {
                             TrayIcon trayIcon = new TrayIcon();
                             try {
                                 trayIcon.createAndAddApplicationToSystemTray();
-                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                                trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -207,6 +209,7 @@ public class CAMain extends Application {
             this.ARPDetection = ControllerAdminSideTab.getARPDetection();
             this.SMSHandler = ControllerAdminSideTab.getSMSHandler();
             this.threshold = ControllerAdminSideTab.getThreshold();
+            this.EmailHandler = ControllerAdminSideTab.getEmailHandler();
         } catch (IOException e) {
             e.printStackTrace();
         }

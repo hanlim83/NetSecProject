@@ -1,5 +1,6 @@
 import Model.AWSSMS;
 import Model.IPAddressPolicy;
+import Model.OutlookEmail;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -61,6 +62,7 @@ public class ControllerCALandingSetOptions implements Initializable {
     private Scene myScene;
     private ScheduledExecutorServiceHandler handler;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     private String intDisplayName;
     private boolean CaptureType;
 
@@ -93,10 +95,11 @@ public class ControllerCALandingSetOptions implements Initializable {
         ThresholdChooser.setValue("Select Threshold");
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType, OutlookEmail EmailHandler) {
         this.handler = handler;
         this.device = device;
         this.SMSHandler = SMSHandler;
+        this.EmailHandler = EmailHandler;
         this.CaptureType = CaptureType;
         if (ARPDetection == true)
             ARPSpoofingCheckbox.setSelected(true);
@@ -112,7 +115,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, null, ARPDetection, 0, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, null, ARPDetection, 0, this.SMSHandler, this.EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -142,9 +145,9 @@ public class ControllerCALandingSetOptions implements Initializable {
             nextView = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
             if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), 0, SMSHandler, intDisplayName, CaptureType);
+                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
             else
-                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
+                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,9 +185,9 @@ public class ControllerCALandingSetOptions implements Initializable {
                     nextView = loader.load();
                     ControllerCALandingVerifyDetails controller = loader.getController();
                     if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                        controller.passVariables(handler, device, false, 0, SMSHandler, intDisplayName, CaptureType);
+                        controller.passVariables(handler, device, false, 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
                     else
-                        controller.passVariables(handler, device, false, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
+                        controller.passVariables(handler, device, false, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -205,9 +208,9 @@ public class ControllerCALandingSetOptions implements Initializable {
                 nextView = loader.load();
                 ControllerCALandingVerifyDetails controller = loader.getController();
                 if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                    controller.passVariables(handler, device, true, 0, SMSHandler, intDisplayName, CaptureType);
+                    controller.passVariables(handler, device, true, 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
                 else
-                    controller.passVariables(handler, device, true, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType);
+                    controller.passVariables(handler, device, true, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

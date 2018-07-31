@@ -1,5 +1,6 @@
 import Model.AWSSMS;
 import Model.IPAddressPolicy;
+import Model.OutlookEmail;
 import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -68,6 +69,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     private String intDisplayedName = null;
     private ArrayList<String> duplicateAdapterName;
     private ArrayList<Integer> duplicateValuses;
@@ -189,12 +191,13 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype) {
+    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype, OutlookEmail EmailHandler) {
         this.handler = handler;
         this.device = device;
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
+        this.EmailHandler = EmailHandler;
         this.CaptureType = Capturetype;
         if (intDisplayedName != null || intDisplayedName == null) {
             this.device = null;
@@ -207,7 +210,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(null, this.handler, null, this.ARPDetection, 0, this.SMSHandler);
+            ctrl.getVariables(null, this.handler, null, this.ARPDetection, 0, this.SMSHandler, this.EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -251,7 +254,7 @@ public class ControllerCALandingSelectInt implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerCALandingSetOptions controller = loader.getController();
-                    controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayedName, CaptureType);
+                    controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayedName, CaptureType, EmailHandler);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -56,6 +56,7 @@ public class ControllerCADetailedPacket implements Initializable {
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,7 +75,7 @@ public class ControllerCADetailedPacket implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
@@ -82,11 +83,12 @@ public class ControllerCADetailedPacket implements Initializable {
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = SMSHandler;
+        this.EmailHandler = EmailHandler;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, this.SMSHandler, this.EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -261,7 +263,7 @@ public class ControllerCADetailedPacket implements Initializable {
         try {
             nextView = loader.load();
             ControllerCAMainPackets controller = loader.getController();
-            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }

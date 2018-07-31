@@ -76,6 +76,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
     private XYChart.Series<Number, Number> dataSeries;
     private NumberAxis xAxis;
@@ -119,12 +120,13 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
+        this.EmailHandler = OEmailHandler;
         this.capture = capture;
         this.captureType = captureType;
         this.captureType = captureType;
@@ -133,7 +135,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -158,7 +160,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -173,7 +175,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCAMainPackets controller = loader.getController();
-                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler);
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

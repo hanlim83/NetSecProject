@@ -80,6 +80,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private ArrayList<String> adminPN;
     private admin_DB db;
     private AWSSMS SMSHandler;
+    private OutlookEmail EmailHandler;
     private ArrayList<Integer> TPS;
     private int xSeriesData = 0;
     private XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
@@ -178,7 +179,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,7 +191,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
                 ControllerAdminSideTab ctrl = loader.getController();
-                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+                ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -200,7 +201,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 nextView = loader.load();
                 ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, false, 0, SMSHandler, null, false);
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, false, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -212,12 +213,13 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.showAndWait();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
+        this.EmailHandler = OEmailHandler;
         if (SMSHandler == null && threshold != 0) {
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -326,7 +328,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -420,7 +422,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, this.threshold, this.SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, this.threshold, this.SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -464,7 +466,7 @@ public class ControllerCAMainDashboard implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
-            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler);
+            ctrl.getVariables(this.device, this.handler, this.capture, ARPDetection, threshold, SMSHandler, EmailHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -487,7 +489,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             myScene = anchorPane.getScene();
                             Stage stage = (Stage) (myScene).getWindow();
                             String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
                             JFXButton close = new JFXButton("Close");
                             close.setButtonType(JFXButton.ButtonType.RAISED);
                             close.setStyle("-fx-background-color: #00bfff;");
@@ -518,7 +520,7 @@ public class ControllerCAMainDashboard implements Initializable {
                                     try {
                                         nextView = loader.load();
                                         ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), true);
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), true, EmailHandler);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -554,7 +556,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             myScene = anchorPane.getScene();
                             Stage stage = (Stage) (myScene).getWindow();
                             String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file (" + capture.getSpecificExportFileName() + ") containing packets before the event has been generated for you.";
+                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
                             JFXButton close = new JFXButton("Close");
                             close.setButtonType(JFXButton.ButtonType.RAISED);
                             close.setStyle("-fx-background-color: #00bfff;");
