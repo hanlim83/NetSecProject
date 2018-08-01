@@ -11,7 +11,8 @@ public class OutlookTesting {
 //        EmailHandler.sendEmail("Testing","Hello, \nThis is for testing purposes only!!!");
         admin_DB SQL = new admin_DB();
         EmailHandler.setAdminEmailAddresses(SQL.getAllEmail());
-        EmailHandler.sendBatchEmail("Do not be alarmed 2", "This is just a test of Outlook message class");
+//        EmailHandler.sendBatchEmail("Do not be alarmed 2", "This is just a test of Outlook message class");
+        EmailHandler.sendParitalPcap("C:\\Users\\Hansen Lim\\Downloads\\20170706_131908.gif");
     }
 
 }

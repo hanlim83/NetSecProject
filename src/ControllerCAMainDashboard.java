@@ -32,6 +32,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -92,6 +93,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private AnimationTimer timer;
     private charts chartRunnable;
     private capture captureRunnable;
+    private sendEmailF sendFull;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,6 +148,7 @@ public class ControllerCAMainDashboard implements Initializable {
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
         chartRunnable = new charts();
         captureRunnable = new capture();
+        sendFull = new sendEmailF();
     }
 
     @FXML
@@ -239,6 +242,11 @@ public class ControllerCAMainDashboard implements Initializable {
                         }
                         EmailHandler = new OutlookEmail(adminEA);
                         System.out.println("Email created");
+                        oAuth2Login = new OAuth2Login();
+                        oAuth2Login.login();
+                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                        System.out.println(oAuth2Login.getEmail());
+                        System.out.println("Added own email");
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -248,13 +256,22 @@ public class ControllerCAMainDashboard implements Initializable {
                             }
                         });
                     } catch (SQLException e) {
+                        try {
+                            oAuth2Login = new OAuth2Login();
+                            oAuth2Login.login();
+                            System.out.println(oAuth2Login.getEmail());
+                            EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
+                            System.out.println("Email Created");
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 spinner.setVisible(false);
                                 myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
-                                String title = "SMS Alerts are not available";
+                                String title = "Certain Functions are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers and email addresses that the alerts will be sent to. SMS and email broadcast alerts will not be available. You will still be able to receive Pcap Files";
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
@@ -279,6 +296,10 @@ public class ControllerCAMainDashboard implements Initializable {
                                 hamburger.setDisable(false);
                             }
                         });
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     try {
                         FXMLLoader loader = new FXMLLoader();
@@ -476,6 +497,7 @@ public class ControllerCAMainDashboard implements Initializable {
         handler.cancelchartDataRunnable();
         TimelineCtrl(false);
         capture.Generalexport();
+        handler.setsendEmailRunnable(ScheduledExecutorServiceHandler.getService().schedule(sendFull, 1, TimeUnit.SECONDS));
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -526,6 +548,8 @@ public class ControllerCAMainDashboard implements Initializable {
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
                     capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -593,6 +617,8 @@ public class ControllerCAMainDashboard implements Initializable {
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
                     capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -651,6 +677,14 @@ public class ControllerCAMainDashboard implements Initializable {
         @Override
         public void run() {
             capture.startSniffing();
+        }
+    }
+
+    private class sendEmailF implements Runnable {
+        @Override
+        public void run() {
+            String pcapFilePath = capture.getFullPcapExportPath();
+            EmailHandler.sendFullPcap(pcapFilePath);
         }
     }
 

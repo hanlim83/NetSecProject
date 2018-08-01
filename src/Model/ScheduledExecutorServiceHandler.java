@@ -11,6 +11,7 @@ public class ScheduledExecutorServiceHandler {
     private static ScheduledFuture getSQLRunnable;
     private static ScheduledFuture chartDataRunnable;
     private static ScheduledFuture showDataRunnable;
+    private static ScheduledFuture sendEmailRunnable;
 
     public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -110,5 +111,21 @@ public class ScheduledExecutorServiceHandler {
 
     public void cancelshowDataRunnable() {
         showDataRunnable.cancel(true);
+    }
+
+    public ScheduledFuture getsendEmailRunnable() {
+        return sendEmailRunnable;
+    }
+
+    public void setsendEmailRunnable(ScheduledFuture sendEmailRunnable) {
+        ScheduledExecutorServiceHandler.sendEmailRunnable = sendEmailRunnable;
+    }
+
+    public boolean getStatussendEmailRunnable() {
+        return !sendEmailRunnable.isDone();
+    }
+
+    public void cancelsendEmailRunnable() {
+        sendEmailRunnable.cancel(true);
     }
 }

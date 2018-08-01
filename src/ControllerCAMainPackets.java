@@ -31,6 +31,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -95,6 +96,7 @@ public class ControllerCAMainPackets implements Initializable {
     private OutlookEmail EmailHandler;
     private tableview tRunnable;
     private capture cRunnable;
+    private sendEmailF sendFull;
     /*private Timer timer = new Timer(true);
     private TimerTask exportTask;
     private boolean timerTaskinProgress = false;
@@ -139,6 +141,7 @@ public class ControllerCAMainPackets implements Initializable {
         captureToggle.setDisable(true);
         tRunnable = new tableview();
         cRunnable = new capture();
+        sendFull = new sendEmailF();
         /*exportTask = new TimerTask() {
             @Override
             public void run() {
@@ -173,6 +176,11 @@ public class ControllerCAMainPackets implements Initializable {
                         }
                         EmailHandler = new OutlookEmail(adminEA);
                         System.out.println("Email created");
+                        oAuth2Login = new OAuth2Login();
+                        oAuth2Login.login();
+                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                        System.out.println(oAuth2Login.getEmail());
+                        System.out.println("Added own email");
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -182,13 +190,22 @@ public class ControllerCAMainPackets implements Initializable {
                             }
                         });
                     } catch (SQLException e) {
+                        try {
+                            oAuth2Login = new OAuth2Login();
+                            oAuth2Login.login();
+                            System.out.println(oAuth2Login.getEmail());
+                            EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
+                            System.out.println("Email Created");
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 spinner.setVisible(false);
                                 myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
-                                String title = "SMS Alerts are not available";
+                                String title = "Certain Functions are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers and email addresses that the alerts will be sent to. SMS and email broadcast alerts will not be available. You will still be able to receive Pcap Files";
                                 JFXButton close = new JFXButton("Close");
                                 close.setButtonType(JFXButton.ButtonType.RAISED);
@@ -213,6 +230,10 @@ public class ControllerCAMainPackets implements Initializable {
                                 hamburger.setDisable(false);
                             }
                         });
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     try {
                         FXMLLoader loader = new FXMLLoader();
@@ -341,6 +362,7 @@ public class ControllerCAMainPackets implements Initializable {
         packetstable.setItems(OLpackets);
         packetstable.refresh();
         capture.Generalexport();
+        handler.setsendEmailRunnable(ScheduledExecutorServiceHandler.getService().schedule(sendFull, 1, TimeUnit.SECONDS));
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -515,6 +537,8 @@ public class ControllerCAMainPackets implements Initializable {
                         timerTaskinProgress = true;
                     }*/
                     capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -586,6 +610,8 @@ public class ControllerCAMainPackets implements Initializable {
                         timerTaskinProgress = true;
                     }*/
                     capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -648,6 +674,14 @@ public class ControllerCAMainPackets implements Initializable {
         @Override
         public void run() {
             capture.startSniffing();
+        }
+    }
+
+    private class sendEmailF implements Runnable {
+        @Override
+        public void run() {
+            String pcapFilePath = capture.getFullPcapExportPath();
+            EmailHandler.sendFullPcap(pcapFilePath);
         }
     }
 

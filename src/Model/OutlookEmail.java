@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -24,6 +25,7 @@ public class OutlookEmail {
 
     public OutlookEmail(String receiverAddress) {
         this.receiverAddress = receiverAddress;
+        this.adminEmailAddresses = new ArrayList<String>();
         props = new Properties();
         props.put("mail.smtp.auth", AuthTLS);
         props.put("mail.smtp.starttls.enable", AuthTLS);
@@ -39,6 +41,7 @@ public class OutlookEmail {
 
     public OutlookEmail() {
         receiverAddress = "";
+        this.adminEmailAddresses = new ArrayList<String>();
         props = new Properties();
         props.put("mail.smtp.auth", AuthTLS);
         props.put("mail.smtp.starttls.enable", AuthTLS);
@@ -115,7 +118,7 @@ public class OutlookEmail {
         else {
             try {
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(host));
+                message.setFrom(new InternetAddress(username));
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(receiverAddress));
                 message.setSubject(subject);
@@ -126,7 +129,7 @@ public class OutlookEmail {
                 messageBodyPart = new MimeBodyPart();
                 DataSource source = new FileDataSource(attachmentPath);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(attachmentPath);
+                messageBodyPart.setFileName(new File(attachmentPath).getName());
                 multipart.addBodyPart(messageBodyPart);
                 message.setContent(multipart);
                 Transport.send(message);
@@ -171,7 +174,7 @@ public class OutlookEmail {
         else {
             try {
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(host));
+                message.setFrom(new InternetAddress(username));
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(receiverAddress));
                 for (String s : adminEmailAddresses) {
@@ -186,7 +189,7 @@ public class OutlookEmail {
                 messageBodyPart = new MimeBodyPart();
                 DataSource source = new FileDataSource(attachmentPath);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(attachmentPath);
+                messageBodyPart.setFileName(new File(attachmentPath).getName());
                 multipart.addBodyPart(messageBodyPart);
                 message.setContent(multipart);
                 Transport.send(message);
@@ -198,7 +201,7 @@ public class OutlookEmail {
     }
 
     public void sendParitalPcap(String pcapFilePath) {
-        if (receiverAddress.isEmpty() || adminEmailAddresses.isEmpty())
+        if (receiverAddress.isEmpty() && adminEmailAddresses.isEmpty())
             throw new RuntimeException("Nobody to send it to!");
         else if (pcapFilePath.isEmpty())
             throw new RuntimeException("Missing Parameters!");
@@ -206,22 +209,24 @@ public class OutlookEmail {
             try {
                 // Create a default MimeMessage object.
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(host));
+                message.setFrom(new InternetAddress(username));
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(receiverAddress));
-                for (String s : adminEmailAddresses) {
-                    if (!s.equals(receiverAddress))
-                        message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(s));
+                if (!adminEmailAddresses.isEmpty()) {
+                    for (String s : adminEmailAddresses) {
+                        if (!s.equals(receiverAddress))
+                            message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(s));
+                    }
                 }
                 message.setSubject("Suspicious Network Event");
                 BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText("Dear Admin,\n\nA suspicious network event has been detected on the network, for your convenience, the Pcap File Generated has been atatched in this email.\n\nFireE Admin App\nThis is a system generated email, no signature is required");
+                messageBodyPart.setText("Dear Admin,\n\nA suspicious network event has been detected on the network, for your convenience, the Pcap File Generated has been attached in this email.\n\nFireE Admin App\nThis is a system generated email, no signature is required");
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
                 messageBodyPart = new MimeBodyPart();
                 DataSource source = new FileDataSource(pcapFilePath);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(pcapFilePath);
+                messageBodyPart.setFileName(new File(pcapFilePath).getName());
                 multipart.addBodyPart(messageBodyPart);
                 message.setContent(multipart);
                 Transport.send(message);
@@ -240,18 +245,18 @@ public class OutlookEmail {
         else {
             try {
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(host));
+                message.setFrom(new InternetAddress(username));
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(receiverAddress));
                 message.setSubject("Network Capture Completed");
                 BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText("Dear Admin,\n\nA Network Capture has been recently stopped. For your convenience, the Pcap File Generated has been atatched in this email.\n\nFireE Admin App\nThis is a system generated email, no signature is required");
+                messageBodyPart.setText("Dear Admin,\n\nA Network Capture has been recently stopped. For your convenience, the Pcap File Generated has been attached in this email.\n\nFireE Admin App\nThis is a system generated email, no signature is required");
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
                 messageBodyPart = new MimeBodyPart();
                 DataSource source = new FileDataSource(pcapFilePath);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(pcapFilePath);
+                messageBodyPart.setFileName(new File(pcapFilePath).getName());
                 multipart.addBodyPart(messageBodyPart);
                 message.setContent(multipart);
                 Transport.send(message);
