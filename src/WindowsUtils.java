@@ -1,3 +1,6 @@
+import Database.Device_Build_NumberDB;
+import Model.OSVersion;
+
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,20 +54,22 @@ public class WindowsUtils{
         return osBuildNo;
     }
 
-    private ArrayList<String> SupportedVersions = new ArrayList<String>();
+    private ArrayList<OSVersion> SupportedVersions = new ArrayList<OSVersion>();
     String currentOSVersion;
     public boolean checkWindowsApproved() throws SQLException {
         boolean windowsApproved = false;
         String currentOSVersion=getEdition();
-        CheckSupportedVersion();
+        Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
+        SupportedVersions=device_build_numberDB.CheckSupportedVersion();
+//        CheckSupportedVersion();
 //        run();
-        for(String s:SupportedVersions) {
-            if (s.equals(currentOSVersion)) {
-                System.out.println("Current Version: "+currentOSVersion+" ArrList: "+s);
+        for(OSVersion o:SupportedVersions) {
+            if (o.getVersionNumber().equals(currentOSVersion)) {
+                System.out.println("Current Version: "+currentOSVersion+" ArrList: "+o);
                 windowsApproved=true;
                 break;
             } else {
-                System.out.println(s);
+                System.out.println(o);
                 windowsApproved=false;
             }
         }
@@ -72,38 +77,38 @@ public class WindowsUtils{
     }
 
     //TODO Migrate this to the otherDB
-    public void CheckSupportedVersion() throws SQLException {
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "device_build_number";
-        String username = "root";
-        String password = "root";
-
-        System.out.printf("The edition of Windows you are using is: %s%n", getEdition());
-
-        //[START doc-example]
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
-
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //same
-        System.out.println(jdbcUrl);
-
-        //check this
-        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
-
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT versionNumber FROM entries");
-            while (resultSet.next()) {
-                //System.out.println(resultSet.getString(1));
-                SupportedVersions.add(resultSet.getString(1));
-            }
-        }
-    }
+//    public void CheckSupportedVersion() throws SQLException {
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "device_build_number";
+//        String username = "root";
+//        String password = "root";
+//
+//        System.out.printf("The edition of Windows you are using is: %s%n", getEdition());
+//
+//        //[START doc-example]
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+//        //same
+//        System.out.println(jdbcUrl);
+//
+//        //check this
+//        //Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+//        //[END doc-example]
+//
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//            ResultSet resultSet = statement.executeQuery("SELECT versionNumber FROM entries");
+//            while (resultSet.next()) {
+//                //System.out.println(resultSet.getString(1));
+//                SupportedVersions.add(resultSet.getString(1));
+//            }
+//        }
+//    }
 
 //    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String email) throws SQLException {
 //        //maybe change to boolean next time

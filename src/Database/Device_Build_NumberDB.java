@@ -1,4 +1,6 @@
-package Model;
+package Database;
+
+import Model.OSVersion;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,34 +10,30 @@ public class Device_Build_NumberDB {
     public ArrayList<OSVersion> CheckSupportedVersion() throws SQLException {
         ArrayList<OSVersion> OSVersionList = new ArrayList<OSVersion>();
 
-        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-        String databaseName = "device_build_number";
-        String username = "root";
-        String password = "root";
-
-//            if (instanceConnectionName.equals("<device-supported-versions>")) {
-//                System.err.println("Please update the sample to specify the instance connection name.");
-//                System.exit(1);
-//            }
+//        String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//        String databaseName = "device_build_number";
+//        String username = "root";
+//        String password = "root";
 //
-//            if (password.equals("<insert_password>")) {
-//                System.err.println("Please update the sample to specify the mysql password.");
-//                System.exit(1);
-//            }
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        //[START doc-example]
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        //[END doc-example]
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+            preparedStatement=connection.prepareStatement("SELECT * FROM entriesDeviceSupportedVersion");
+
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 OSVersion osVersion = new OSVersion();
                 osVersion.setVersionName(resultSet.getString("versionName"));
@@ -44,7 +42,19 @@ public class Device_Build_NumberDB {
                 OSVersionList.add(osVersion);
 //                    SupportedVersions.add(resultSet.getString(1));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+
+//        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+
+//        }
         return OSVersionList;
     }
 

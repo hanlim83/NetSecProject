@@ -78,25 +78,44 @@ public class admin_DB {
     public String getAdminAccStatus(String email) throws SQLException {
         String state = "";
 
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT EXISTS(SELECT * FROM entries WHERE email=?)");
-        preparedStatement.setString(1,email);
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT EXISTS(SELECT * FROM entriesAdmin WHERE email=?)");
+            preparedStatement.setString(1,email);
+
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 //System.out.println(resultSet.getString(1));
                 state=resultSet.getString(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
+//
+//        }
 //        if (state==)
         System.out.println(state);
         return state;

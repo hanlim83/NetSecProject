@@ -42,7 +42,7 @@ public class MainAdmin extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
 //            loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
-            loader.setLocation(getClass().getResource("AdminHome.fxml"));
+            loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 1056, 600);
             scene.getStylesheets().add("Style.css");
