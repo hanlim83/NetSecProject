@@ -88,6 +88,8 @@ public class ControllerCAMainPackets implements Initializable {
     private boolean ARPDetection;
     private Integer threshold;
     private ArrayList<String> adminPN;
+    private ArrayList<String> adminEA;
+    private OAuth2Login oAuth2Login;
     private admin_DB db;
     private AWSSMS SMSHandler;
     private OutlookEmail EmailHandler;
@@ -154,7 +156,7 @@ public class ControllerCAMainPackets implements Initializable {
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
         this.EmailHandler = OEmailHandler;
-        if (SMSHandler == null && threshold != 0 && this.EmailHandler == null) {
+        if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
             handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -165,6 +167,12 @@ public class ControllerCAMainPackets implements Initializable {
                             System.out.println(s);
                         }
                         System.out.println("SMS Created");
+                        adminEA = db.getAllEmail();
+                        for (String s : adminEA) {
+                            System.out.println(s);
+                        }
+                        EmailHandler = new OutlookEmail(adminEA);
+                        System.out.println("Email created");
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -178,7 +186,141 @@ public class ControllerCAMainPackets implements Initializable {
                             @Override
                             public void run() {
                                 spinner.setVisible(false);
-                                /*myScene = anchorPane.getScene();
+                                myScene = anchorPane.getScene();
+                                Stage stage = (Stage) (myScene).getWindow();
+                                String title = "SMS Alerts are not available";
+                                String content = "FireE is currently unable to retrieve the phone numbers and email addresses that the alerts will be sent to. SMS and email broadcast alerts will not be available. You will still be able to receive Pcap Files";
+                                JFXButton close = new JFXButton("Close");
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                                close.setStyle("-fx-background-color: #00bfff;");
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(close);
+                                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                alert.setOverlayClose(true);
+                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert.setContent(layout);
+                                alert.initModality(Modality.NONE);
+                                close.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent __) {
+                                        alert.hideWithAnimation();
+                                    }
+                                });
+                                alert.showAndWait();
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+                    }
+                    try {
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                        ControllerAdminSideTab ctrl = loader.getController();
+                        ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 2, TimeUnit.SECONDS));
+        } else if (threshold != 0) {
+            this.SMSHandler = USMSHandler;
+            handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        adminPN = db.getAllPhoneNo();
+                        SMSHandler.setAdminPN(adminPN);
+                        for (String s : adminPN) {
+                            System.out.println(s);
+                        }
+                        System.out.println("SMS Updated!");
+                        adminEA = db.getAllEmail();
+                        for (String s : adminEA) {
+                            System.out.println(s);
+                        }
+                        EmailHandler.setAdminEmailAddresses(adminEA);
+                        System.out.println("Email Updated!");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+                    } catch (SQLException e) {
+                        System.err.println("SQL Error");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+
+                    }
+                }
+            }, 1, TimeUnit.SECONDS));
+        } else {
+            if (EmailHandler == null) {
+                try {
+                    oAuth2Login = new OAuth2Login();
+                    oAuth2Login.login();
+                    EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
+                    System.out.println(oAuth2Login.getEmail());
+                    System.out.println("Email Created");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    oAuth2Login = new OAuth2Login();
+                    oAuth2Login.login();
+                    EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                    System.out.println(oAuth2Login.getEmail());
+                    System.out.println("Email Updated");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            spinner.setVisible(false);
+            captureToggle.setDisable(false);
+            hamburger.setDisable(false);
+        }
+       /* if (SMSHandler == null && threshold != 0 && EmailHandler == null) {
+            handler.setgetSQLRunnable(ScheduledExecutorServiceHandler.getService().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        adminPN = db.getAllPhoneNo();
+                        SMSHandler = new AWSSMS(adminPN);
+                        for (String s : adminPN) {
+                            System.out.println(s);
+                        }
+                        System.out.println("SMS Created");
+                        adminEA = db.getAllEmail();
+                        for (String s : adminEA) {
+                            System.out.println(s);
+                        }
+                        EmailHandler = new OutlookEmail(adminEA);
+                        System.out.println("Email created");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                captureToggle.setDisable(false);
+                                hamburger.setDisable(false);
+                            }
+                        });
+                    } catch (SQLException e) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisible(false);
+                                *//*myScene = anchorPane.getScene();
                                 Stage stage = (Stage) (myScene).getWindow();
                                 String title = "SMS Alerts are not available";
                                 String content = "FireE is currently unable to retrieve the phone numbers that the SMS alerts will be sent to. SMS alerts will not be available";
@@ -200,7 +342,7 @@ public class ControllerCAMainPackets implements Initializable {
                                         alert.hideWithAnimation();
                                     }
                                 });
-                                alert.showAndWait();*/
+                                alert.showAndWait();*//*
                                 captureToggle.setDisable(false);
                                 hamburger.setDisable(false);
                             }
@@ -254,7 +396,7 @@ public class ControllerCAMainPackets implements Initializable {
             spinner.setVisible(false);
             captureToggle.setDisable(false);
             hamburger.setDisable(false);
-        }
+        }*/
         if (capture == null)
             clearCaptureBtn.setDisable(true);
         else if (capture.isRunning()) {
@@ -517,7 +659,7 @@ public class ControllerCAMainPackets implements Initializable {
                                     try {
                                         nextView = loader.load();
                                         ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecficExportFilePath(), false, EmailHandler);
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
