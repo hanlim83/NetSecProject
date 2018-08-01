@@ -1,8 +1,6 @@
 import Database.User_InfoDB;
-import Model.Device_Build_NumberDB;
 import Model.MyBlob;
 import Model.OAuth2Login;
-import Model.OSVersion;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
@@ -11,7 +9,6 @@ import com.google.cloud.storage.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -27,7 +24,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.*;
@@ -37,8 +33,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ControllerUserHome implements Initializable {
     @FXML
@@ -126,14 +120,6 @@ public class ControllerUserHome implements Initializable {
     public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
     public void getObservableList(){
          blobs = FXCollections.observableArrayList();
-//        users.add(new TreeTableDemo.User(COMPUTER_DEPARTMENT, "23", "CD 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "22", "Employee 1"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "24", "Employee 2"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "25", "Employee 4"));
-//        users.add(new TreeTableDemo.User(SALES_DEPARTMENT, "27", "Employee 5"));
-//        users.add(new TreeTableDemo.User(IT_DEPARTMENT, "42", "ID 2"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "21", "HR 1"));
-//        users.add(new TreeTableDemo.User(HR_DEPARTMENT, "28", "HR 2"));
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         String email = null;
         try {
@@ -149,7 +135,7 @@ public class ControllerUserHome implements Initializable {
         Page<Blob> blobList = storage.list(privateBucketName);
         for (Blob blob : blobList.iterateAll()) {
 //            BlobList.add(new MyBlob(blob));
-            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
+            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"General"));
         }
 
 //        ControllerSecureCloudStorage controllerSecureCloudStorage=new ControllerSecureCloudStorage();
@@ -276,7 +262,7 @@ public class ControllerUserHome implements Initializable {
     void onClickRSAButton(ActionEvent event) throws Exception {
         User_InfoDB user_infoDB=new User_InfoDB();
         System.out.println(user_infoDB.checkPassword("WrongPassword","Email here"));
-//        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
+//        Database.RSAKeyGenerator rsaKeyGenerator = new Database.RSAKeyGenerator();
 //        rsaKeyGenerator.buildKeyPair();
 //        System.out.println("=====================Public Key==========================");
 //        System.out.println(rsaKeyGenerator.getPublicKeyString());

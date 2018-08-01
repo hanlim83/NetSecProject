@@ -1,4 +1,14 @@
+import Model.OAuth2Login;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.gax.paging.Page;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.jfoenix.controls.JFXButton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +22,10 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
 public class ControllerUserSideTab {
 
@@ -27,11 +41,12 @@ public class ControllerUserSideTab {
     @FXML
     private JFXButton LogoutButton;
 
-
     private Scene myScene;
 
+//    private static int SecureCloudStorageCounter=0;
+
     @FXML
-    void onClickSecureCloudStorageButton(ActionEvent event) throws IOException {
+    void onClickSecureCloudStorageButton(ActionEvent event) throws Exception {
         //go back to user home and reference the observablelist
         //pass data to next page
 
@@ -43,12 +58,51 @@ public class ControllerUserSideTab {
 
 
         ControllerSecureCloudStorage controller = loader.<ControllerSecureCloudStorage>getController();
-        controller.passData(ControllerUserHome.blobs);
+//        if (SecureCloudStorageCounter==0) {
+            controller.passData(getObservableList());
+//            SecureCloudStorageCounter++;
+//        }else {
+//            controller.rebuildTable();
+//        }
         //controller.passData(admin);
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    private Credential credential;
+    private OAuth2Login login = new OAuth2Login();
+
+//    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
+    public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
+        credential=login.login();
+        ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
+        blobs = FXCollections.observableArrayList();
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        String email = null;
+        try {
+            email = login.getEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront = s.next();
+        emailFront = emailFront.replace(".", "");
+        String privateBucketName = emailFront + "nspj";
+//        String bucketname="hugochiaxyznspj";
+        Page<Blob> blobList = storage.list(privateBucketName);
+        for (Blob blob : blobList.iterateAll()) {
+//            BlobList.add(new MyBlob(blob));
+            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"General"));
+        }
+        return blobs;
+    }
+
+    public String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
     }
 
     @FXML
