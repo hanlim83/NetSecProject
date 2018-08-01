@@ -21,7 +21,7 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
+        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entriesAdmin");
 
         try (Statement statement = connection.createStatement()) {
 //            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
@@ -46,7 +46,7 @@ public class admin_DB {
 
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entries (email,phoneNumber) VALUES (?,?)");
+        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entriesAdmin (email,phoneNumber) VALUES (?,?)");
         preparedStatement.setString(1,email);
         preparedStatement.setString(2,phoneNo);
 
@@ -57,22 +57,38 @@ public class admin_DB {
     }
 
     public void deleteAdmin(String email,String phoneNo) throws SQLException {
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE email=? AND phoneNumber=?");
-        preparedStatement.setString(1,email);
-        preparedStatement.setString(2,phoneNo);
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
+            preparedStatement=connection.prepareStatement("DELETE FROM entriesAdmin WHERE email=? AND phoneNumber=?");
+            preparedStatement.setString(1,email);
+            preparedStatement.setString(2,phoneNo);
+
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+        
+//        try (Statement statement = connection.createStatement()) {
+////            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
+//        }
     }
 
     public String getAdminAccStatus(String email) throws SQLException {
@@ -110,8 +126,6 @@ public class admin_DB {
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-
-
 //        try (Statement statement = connection.createStatement()) {
 ////            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM entries WHERE email = '"+email+"')");
 //
@@ -124,70 +138,123 @@ public class admin_DB {
     public ArrayList<String> getAllPhoneNo() throws SQLException {
         ArrayList<String> phoneNoList=new ArrayList<String>();
 
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries");
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entriesAdmin");
+
+
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 phoneNoList.add(resultSet.getString(1));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+//
+//        }
         return phoneNoList;
     }
 
     public String getPhoneNo(String email) throws SQLException {
         String phoneNo = null;
 
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entries WHERE email=?");
-        preparedStatement.setString(1,email);
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries WHERE email='"+email+"'");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT phoneNumber FROM entriesAdmin WHERE email=?");
+            preparedStatement.setString(1,email);
+
+
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 phoneNo=resultSet.getString(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries WHERE email='"+email+"'");
+//        }
         return phoneNo;
     }
 
     public ArrayList<String> getAllEmail() throws SQLException {
         ArrayList<String> emailList=new ArrayList<String>();
 
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT email FROM entries");
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT email FROM entries");
+
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 emailList.add(resultSet.getString(1));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT phoneNumber FROM entries");
+//
+//        }
         return emailList;
     }
 }

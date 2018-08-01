@@ -72,44 +72,8 @@ public class User_InfoDB {
         return UserList;
     }
 
-    public String getAccStatus(String email) throws SQLException, IOException, PropertyVetoException {
-//        System.out.println("Getting account status");
+    public String getAccStatus(String email){
         String state = "";
-//        //[START doc-example]
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-////        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-//        //[END doc-example]
-//
-//        DataSource.getInstance();
-//        DataSource dataSource = null;
-//        Connection connection1=dataSource.getConnection();
-//
-//        PreparedStatement preparedStatement=connection1.prepareStatement("SELECT status FROM entries WHERE email=?");
-//        preparedStatement.setString(1,email);
-//
-//        ResultSet resultSet=preparedStatement.executeQuery();
-//        while (resultSet.next()) {
-//            //System.out.println(resultSet.getString(1));
-//            state=resultSet.getString(1);
-//        }
-//
-//        connection1.close();
-
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-////            ResultSet resultSet = statement.executeQuery("SELECT status FROM entries WHERE email='"+email+"'");
-//            ResultSet resultSet=preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                //System.out.println(resultSet.getString(1));
-//                state=resultSet.getString(1);
-//            }
-//        }
-
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
