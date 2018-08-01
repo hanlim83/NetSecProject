@@ -1,11 +1,15 @@
 import Database.extension_DB;
+import Model.IPAddressPolicy;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,6 +44,9 @@ public class ControllerAdminExtensionBlocker implements Initializable {
     @FXML
     private JFXCheckBox wavSetter;
 
+    @FXML
+    private Label ipAddr;
+
     private String txt;
     private String docx;
     private String exe;
@@ -49,6 +56,20 @@ public class ControllerAdminExtensionBlocker implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         extension_DB add = new extension_DB();
         try {

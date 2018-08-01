@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -25,6 +26,7 @@
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <AnchorPane fx:id="TableAnchor" layoutX="160.0" layoutY="244.0" prefHeight="301.0" prefWidth="747.0" />
       <JFXTextField fx:id="searchBar" layoutX="785.0" layoutY="103.0" promptText="Search" />
-      <JFXButton layoutX="809.0" layoutY="164.0" onAction="#transferFile" prefHeight="43.0" prefWidth="121.0" text="Transfer file" />
+      <JFXButton fx:id="transfer" layoutX="866.0" layoutY="164.0" onAction="#transferFile" prefHeight="43.0" prefWidth="121.0" text="Transfer a file" />
+      <JFXComboBox fx:id="emailBox" layoutX="619.0" layoutY="170.0" prefHeight="31.0" prefWidth="247.0" promptText="Email" />
     </children>
 </AnchorPane>

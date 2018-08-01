@@ -191,4 +191,5 @@ public class StorageSnippets {
     public ArrayList<CloudBuckets> getCloudbucketsList() {
         return cloudbucketsList;
     }
+
 }
