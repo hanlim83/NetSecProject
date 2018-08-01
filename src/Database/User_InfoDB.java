@@ -499,7 +499,7 @@ public class User_InfoDB {
         return rsaKeyGenerator.getPublicKey(publicKeyString);
     }
 
-    public PrivateKey getPrivateKey(String email) throws Exception {
+    public PrivateKey getPrivateKey(String email, String password) throws Exception {
         String encryptedPrivateKeyString = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
