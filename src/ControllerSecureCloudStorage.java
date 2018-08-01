@@ -98,18 +98,22 @@ public class ControllerSecureCloudStorage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-//        filterField.getStylesheets().add(this.getClass().getResource("styles.css").toExternalForm());
-//        TextFlow textFlow = new TextFlow();
-//        ImageView imageView = new ImageView("baseline_search_black_18dp.png");
-//        // Remove :) from text
-//        Text text = null;
-//        text.setText("Search");
-//        textFlow.getChildren().addAll(imageView,text);
-//        filterField.setPromptText(textFlow);
         try {
             credential = login.login();
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Path path = FileSystems.getDefault().getPath("src/View/baseline_cloud_upload_black_18dp_small.png");
+        File file = new File(path.toUri());
+        Image imageForFile;
+        try {
+            imageForFile = new Image(file.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            UploadButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
@@ -610,11 +614,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            //commented out credential to test new optimization techniques
 ////            credential = login.login();
 //            // set up global Oauth2 instance
-//            FileChooser fileChooser = new FileChooser();
-//            fileChooser.setTitle("Open Resource File");
-//            //FEATURE: stage now loads as 1 page instead of 2
-//            Stage stage = (Stage) anchorPane.getScene().getWindow();
-//            File file = fileChooser.showOpenDialog(stage);
 //            if (file != null) {
 //                String pathsInfo = "";
 //                pathsInfo += "getPath(): " + file.getPath() + "\n";
@@ -630,7 +629,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                }
 //                System.out.println(pathsInfo);
 //                // authorization + Get Buckets
-////                Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
 //                getStorage();
 //                //Testing for storage
 //                Page<Bucket> buckets = storage.list();
@@ -665,6 +663,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     private String tempPassword;
 
     //TODO DELETE THIS AFTER sufficient testing
+    //TODO UPDATE DEPRECATE THIS SOON
 //    private void checkUserPassword() {
 //        myScene = anchorPane.getScene();
 //        Stage stage = (Stage) (myScene).getWindow();
@@ -899,7 +898,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
         });
 
-        typeColumn.setPrefWidth(150);
+        typeColumn.setPrefWidth(156);
         typeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (typeColumn.validateValue(param)) {
                 return param.getValue().getValue().type;

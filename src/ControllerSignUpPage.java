@@ -2,6 +2,7 @@ import Model.SignUpPage;
 import Model.TextAuthentication;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -56,6 +58,32 @@ public class ControllerSignUpPage implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        PasswordField.setFocusColor(Color.BLUE);
+        ConfirmPasswordField.setFocusColor(Color.BLUE);
+        PasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            if (validate(PasswordField.getText()) == true) {
+                PasswordField.setFocusColor(Color.GREEN);
+            }
+            else{
+                System.out.println("Use stronger password");
+                PasswordField.setFocusColor(Color.RED);
+            }
+            if (!PasswordField.getText().equals((ConfirmPasswordField).getText())){
+                ConfirmPasswordField.setFocusColor(Color.RED);
+            }else{
+                ConfirmPasswordField.setFocusColor(Color.GREEN);
+            }
+        });
+        ConfirmPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            if (PasswordField.getText().equals((ConfirmPasswordField).getText())) {
+                ConfirmPasswordField.setFocusColor(Color.GREEN);
+            }else{
+                System.out.println("Passwords do not match!");
+                ConfirmPasswordField.setFocusColor(Color.RED);
+            }
+        });
     }
 
     @FXML
@@ -86,10 +114,10 @@ public class ControllerSignUpPage implements Initializable {
 
     @FXML
     void onClickConfirmButton(ActionEvent event) throws Exception {
-        passwordValidation();
+        passwordValidationAlert();
     }
 
-    private void passwordValidation() throws Exception {
+    private void passwordValidationAlert() throws Exception {
         if (PasswordField.getText().isEmpty() || ConfirmPasswordField.getText().isEmpty() || PhoneNoField.getText().isEmpty()) {
             System.out.println("Fill up all fields!");
             showAlert(anchorPane.getScene(), "", "Please fill up all fields", "Close");
@@ -114,7 +142,6 @@ public class ControllerSignUpPage implements Initializable {
             verifyText.sendAuth(PhoneNoField.getText());
 
             OTPAlert();
-
         }
     }
 
