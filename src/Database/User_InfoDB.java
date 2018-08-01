@@ -406,7 +406,7 @@ public class User_InfoDB {
             preparedStatement.setString(1,hashPassword);
             preparedStatement.setString(2,email);
 
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.executeQuery();
 //            resultSet = preparedStatement.executeQuery();
