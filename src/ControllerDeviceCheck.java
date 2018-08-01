@@ -90,6 +90,14 @@ public class ControllerDeviceCheck implements Initializable {
                 LoadingSpinner.setVisible(false);
                 RestartDeviceCheckButton.setVisible(true);
                 RestartDeviceCheckButton.setDisable(false);
+                Process p;
+                try {
+                    p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
+                    p.waitFor();
+                } catch (IOException | InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
                 Platform.runLater(() -> {
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();

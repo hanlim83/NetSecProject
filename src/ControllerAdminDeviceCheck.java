@@ -40,7 +40,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
     public static AnchorPane rootP;
     private WindowsUtils utils = new WindowsUtils();
 
-    //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
     private boolean WindowsStatus;
     private boolean WirelessEncryption;
@@ -64,92 +63,95 @@ public class ControllerAdminDeviceCheck implements Initializable {
         process.setOnSucceeded(e -> {
             process.reset();
             if (AllFirewallStatus==false){
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Please turn on your firewall and try again.";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Please turn on your firewall and try again.";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleUI("Please turn on your firewall and try again.");
             } else if(WirelessEncryption==false) {
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleUI("Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler");
             }else if(WindowsStatus==false){
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Your device version is not supported. Please update or use a device with a newer software.";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Your device version is not supported. Please update or use a device with a newer software.";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleUI("Your device version is not supported. Please update or use a device with a newer software.");
             } else{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AdminHome.fxml"));
@@ -326,5 +328,37 @@ public class ControllerAdminDeviceCheck implements Initializable {
             WindowsStatus=false;
             System.out.println("Not supported VERSION!");
         }
+    }
+
+    private void handleUI(String message){
+        //To pass in String content next time
+        LoadingSpinner.setVisible(false);
+        RestartDeviceCheckButton.setVisible(true);
+        RestartDeviceCheckButton.setDisable(false);
+        Platform.runLater(() -> {
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "";
+            String content = message;
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
+        });
     }
 }
