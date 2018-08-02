@@ -232,7 +232,7 @@ public class ControllerEmployeePage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         Path path = FileSystems.getDefault().getPath("src\\View\\addingpicture.png");
         File file = new File(path.toUri());
         Image imageForFile;

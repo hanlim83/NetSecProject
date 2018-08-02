@@ -36,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -64,6 +65,9 @@ public class ControllerLoggingPage implements Initializable {
     private Label ipAddr;
 
     @FXML
+    private Line appearLine;
+
+    @FXML
     private com.jfoenix.controls.JFXTreeTableView<LogsExtract> JFXTreeTableView;
 
     @FXML
@@ -79,27 +83,6 @@ public class ControllerLoggingPage implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private TableView<LogsExtract> logsTable;
-
-    @FXML
-    private TableColumn<LogsExtract, String> timestamp;
-
-    @FXML
-    private TableColumn<LogsExtract, String> action;
-
-    @FXML
-    private TableColumn<LogsExtract, String> bucketName;
-
-    @FXML
-    private TableColumn<LogsExtract, String> user;
-
-//    @FXML
-//    private TableColumn<LogsExtract, String> projectID;
-
-    @FXML
-    private TableColumn<LogsExtract, String> severity;
-
-    @FXML
     private JFXButton deletedlogs;
 
     @FXML
@@ -110,21 +93,6 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     private AnchorPane popupanchor;
-
-    @FXML
-    private Label timestamp1;
-
-    @FXML
-    private Label action1;
-
-    @FXML
-    private Label bucketName1;
-
-    @FXML
-    private Label user1;
-
-    @FXML
-    private Label severity1;
 
     @FXML
     private JFXTextField searchFunction;
@@ -145,8 +113,18 @@ public class ControllerLoggingPage implements Initializable {
 
     private ObservableList<PieChart.Data> errorReport = FXCollections.observableArrayList();
 
-    private int GLOBALCHECKER = 0;
-//    private ObservableList<TableBlob1> blobs;
+    private int errorCHECKER = 0;
+    private int noticeCHECKER = 0;
+
+    private int errorCHECKER2 = 0;
+    private int noticeCHECKER2 = 0;
+
+    private int errorCHECKER3 = 0;
+    private int noticeCHECKER3 = 0;
+
+    private ArrayList<String> severityLIST = new ArrayList<>();
+    private ArrayList<String> severityLIST2 = new ArrayList<>();
+    private ArrayList<String> severityLIST3 = new ArrayList<>();
 
 
     int colourchecker = 0;
@@ -229,7 +207,7 @@ public class ControllerLoggingPage implements Initializable {
         });
 
         JFXTreeTableColumn<LogsExtract, String> actionCol = new JFXTreeTableColumn<>("Task Category");
-        actionCol.setPrefWidth(130);
+        actionCol.setPrefWidth(120);
         actionCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
             if (actionCol.validateValue(param)) {
                 return param.getValue().getValue().getAction();
@@ -239,7 +217,7 @@ public class ControllerLoggingPage implements Initializable {
         });
 
         JFXTreeTableColumn<LogsExtract, String> severityCol = new JFXTreeTableColumn<>("Severity");
-        severityCol.setPrefWidth(140);
+        severityCol.setPrefWidth(130);
         severityCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
             if (severityCol.validateValue(param)) {
                 return param.getValue().getValue().getSeverity();
@@ -250,7 +228,7 @@ public class ControllerLoggingPage implements Initializable {
         });
 
         JFXTreeTableColumn<LogsExtract, String> bucketCol = new JFXTreeTableColumn<>("Source");
-        bucketCol.setPrefWidth(440);
+        bucketCol.setPrefWidth(430);
         bucketCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
             if (bucketCol.validateValue(param)) {
                 return param.getValue().getValue().getBucketName();
@@ -260,7 +238,7 @@ public class ControllerLoggingPage implements Initializable {
         });
 
         JFXTreeTableColumn<LogsExtract, String> emailCol = new JFXTreeTableColumn<>("Information");
-        emailCol.setPrefWidth(200);
+        emailCol.setPrefWidth(190);
         emailCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<LogsExtract, String> param) -> {
             if (emailCol.validateValue(param)) {
                 return param.getValue().getValue().getFinalEmail();
@@ -326,6 +304,7 @@ public class ControllerLoggingPage implements Initializable {
                             // Get fancy and change color based on data
                             if (item.contains("ERROR")) {
                                 this.setTextFill(Color.RED);
+
                             }
                             setText(item);
                         }
@@ -333,6 +312,7 @@ public class ControllerLoggingPage implements Initializable {
                 };
             }
         });
+
 
         searchFunction.textProperty().addListener((o, oldVal1, newVal1) -> {
             JFXTreeTableView.setPredicate(userProp -> {
@@ -356,10 +336,7 @@ public class ControllerLoggingPage implements Initializable {
             }
         });
 
-        errorReport.add(new PieChart.Data("Error Report",logsextract.getError()));
-        errorReport.add(new PieChart.Data("Notice Report",logsextract.getNotice()));
 
-        piechart1.setData(errorReport);
 
     }
 
@@ -528,7 +505,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handledeleted(MouseEvent event) {
-        GLOBALCHECKER=0;
+        errorReport.clear();
         try {
             myIPAddress= IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
@@ -560,11 +537,29 @@ public class ControllerLoggingPage implements Initializable {
             process.start();
         }
         process.setOnSucceeded(e -> {
+            appearLine.setVisible(true);
             spinner.setVisible(false);
             popupanchor.setVisible(false);
             createdlogs.setDisable(false);
             general.setDisable(false);
             deletedlogs.setDisable(false);
+            severityLIST2 = LogsExtract.severityLIST;
+            System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST2.size());
+
+            for(int i=0;i<severityLIST2.size();i++){
+                if(severityLIST2.get(i).contains("ERROR")){
+                    errorCHECKER2++;
+                }
+                else{
+                    noticeCHECKER2++;
+                }
+            }
+
+            errorReport.add(new PieChart.Data("Errors",errorCHECKER2));
+            errorReport.add(new PieChart.Data("Notices",noticeCHECKER2));
+            piechart1.setTitle("Error Reports");
+            piechart1.setData(errorReport);
+
             process.reset();
         });
         process.setOnCancelled(e -> {
@@ -578,7 +573,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handlecreated(MouseEvent event) {
-        GLOBALCHECKER=0;
+        errorReport.clear();
         try {
             myIPAddress=IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
@@ -610,11 +605,27 @@ public class ControllerLoggingPage implements Initializable {
             process.start();
         }
         process.setOnSucceeded(e -> {
+            appearLine.setVisible(true);
+
             spinner.setVisible(false);
             createdlogs.setDisable(false);
             popupanchor.setVisible(false);
             deletedlogs.setDisable(false);
             general.setDisable(false);
+            severityLIST3 = LogsExtract.severityLIST;
+            System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST3.size());
+            for(int i=0;i<severityLIST3.size();i++){
+                if(severityLIST3.get(i).contains("ERROR")){
+                    errorCHECKER3++;
+                }
+                else{
+                    noticeCHECKER3++;
+                }
+            }
+            errorReport.add(new PieChart.Data("Errors",errorCHECKER3));
+            errorReport.add(new PieChart.Data("Notices",noticeCHECKER3));
+            piechart1.setTitle("Error Reports");
+            piechart1.setData(errorReport);
             process.reset();
         });
         process.setOnCancelled(e -> {
@@ -628,7 +639,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handleonetwo(MouseEvent event) {
-        GLOBALCHECKER=0;
+        errorReport.clear();
         try {
             myIPAddress=IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
@@ -658,13 +669,30 @@ public class ControllerLoggingPage implements Initializable {
         }
         else {
             process.start();
+
         }
         process.setOnSucceeded(e -> {
+            appearLine.setVisible(true);
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
             spinner.setVisible(false);
             popupanchor.setVisible(false);
+            severityLIST = LogsExtract.severityLIST;
+            System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST.size());
+
+            for(int i=0;i<severityLIST.size();i++){
+                if(severityLIST.get(i).contains("ERROR")){
+                    errorCHECKER++;
+                }
+                else{
+                    noticeCHECKER++;
+                }
+            }
+            errorReport.add(new PieChart.Data("Errors",errorCHECKER));
+            errorReport.add(new PieChart.Data("Notices",noticeCHECKER));
+            piechart1.setTitle("Error Reports");
+            piechart1.setData(errorReport);
             process.reset();
         });
         process.setOnCancelled(e -> {

@@ -51,7 +51,7 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     int error = 0;
     int notice = 0;
 
-    String string1st;
+    public static ArrayList<String> severityLIST = new ArrayList<>();
 
     int globalchecker = 0;
     ArrayList<Integer> globalChckerList = new ArrayList<>();
@@ -72,17 +72,22 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
         // Get Severity
         severitycolour = logentry.getSeverity().toString();
         this.severity = new SimpleStringProperty(severitycolour);
-        String stringSeverity = String.valueOf(severity);
-        if(stringSeverity.contains("ERROR")){
-            ++error;
-        }else if(stringSeverity.contains("NOTICE")){
-            ++notice;
-        }
 
         // Get type of action -> GCS Bucket / CloudSQL / Project
         this.action = new SimpleStringProperty(logentry.getResource().getType());
         // Get label -> Location, ProjectID, Bucketname
         this.bucketName = new SimpleStringProperty(logentry.getResource().getLabels().toString());
+
+        Scanner sc2 = new Scanner(severitycolour);
+        severityLIST.add(sc2.nextLine());
+        while(sc2.hasNextLine()){
+            severityLIST.add(sc2.nextLine());
+        }
+
+        for(int m=0;m<severityLIST.size();m++){
+            System.out.println("SEVERITY IS =============================================================== " + severityLIST.get(m));
+        }
+
 
         this.user = logentry.getPayload().getData().toString();
 
@@ -170,10 +175,6 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     public ArrayList<Integer> getGlobalChckerList() {
         return globalChckerList;
     }
-
-//    public String getNonFinalEmail() {
-//        return nonFinalEmail;
-//    }
 
     public int getGlobalchecker() {
         return globalchecker;

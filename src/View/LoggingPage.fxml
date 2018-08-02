@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerLoggingPage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
@@ -48,17 +48,18 @@
       </HBox>
       <ScrollPane layoutY="165.0" prefHeight="430.0" prefWidth="1063.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="783.0" prefWidth="1045.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="843.0" prefWidth="1045.0">
                <children>
-                  <PieChart fx:id="piechart1" layoutX="63.0" layoutY="52.0" prefHeight="253.0" prefWidth="286.0" />
-                  <AnchorPane fx:id="treeTableAnchor" layoutY="340.0" prefHeight="414.0" prefWidth="1022.0" />
+                  <PieChart fx:id="piechart1" layoutX="51.0" layoutY="10.0" prefHeight="335.0" prefWidth="408.0" />
+                  <AnchorPane fx:id="treeTableAnchor" layoutX="10.0" layoutY="424.0" prefHeight="408.0" prefWidth="1025.0" />
+                  <JFXTextField fx:id="searchFunction" layoutX="845.0" layoutY="370.0" />
+                  <Line fx:id="appearLine" endX="1050.0" layoutY="370.0" visible="false" />
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
       <AnchorPane fx:id="popupanchor" layoutX="43.0" layoutY="177.0" prefHeight="390.0" prefWidth="1013.0" visible="false" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
-      <JFXTextField fx:id="searchFunction" layoutX="859.0" layoutY="106.0" />
       <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0" visible="false" />
     </children>
 </AnchorPane>
