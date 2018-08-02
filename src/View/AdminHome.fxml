@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Label?>
@@ -26,19 +25,16 @@
                 </Label>
             </children>
         </AnchorPane>
-      <JFXButton fx:id="randomButton" layoutX="844.0" layoutY="505.0" mnemonicParsing="false" onAction="#onClickRandomButton" prefHeight="67.0" prefWidth="161.0" text="Get some information" />
-      <JFXButton fx:id="CloudStorageTestButton" layoutX="485.0" layoutY="478.0" mnemonicParsing="false" onAction="#onClickCloudStorageTestButton" prefHeight="94.0" prefWidth="201.0" text="Cloud Storage Test" />
-      <JFXButton fx:id="RSAButton" layoutX="126.0" layoutY="514.0" mnemonicParsing="false" onAction="#onClickRSAButton" prefHeight="67.0" prefWidth="219.0" text="RSA Test Button" />
-      <Label fx:id="LastFileModifiedLabel" alignment="CENTER" layoutX="145.0" layoutY="361.0" prefHeight="84.0" prefWidth="779.0">
+      <Label fx:id="LastFileModifiedLabel" alignment="CENTER" layoutX="145.0" layoutY="395.0" prefHeight="84.0" prefWidth="779.0" text="Your last file was modified on">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label fx:id="TimeLabel" alignment="CENTER" layoutX="319.0" layoutY="140.0" prefHeight="135.0" prefWidth="431.0" text="17:10">
+      <Label fx:id="TimeLabel" alignment="CENTER" layoutX="319.0" layoutY="170.0" prefHeight="169.0" prefWidth="431.0" text="17:10">
          <font>
             <Font size="110.0" />
          </font>
       </Label>
-      <Label fx:id="GreetingsLabel" alignment="CENTER" layoutX="160.0" layoutY="273.0" prefHeight="94.0" prefWidth="749.0" text="Good evening, XXX">
+      <Label fx:id="GreetingsLabel" alignment="CENTER" layoutX="160.0" layoutY="318.0" prefHeight="92.0" prefWidth="749.0" text="Good evening, XXX">
          <font>
             <Font size="39.0" />
          </font>

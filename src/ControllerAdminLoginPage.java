@@ -1,5 +1,5 @@
-import Model.OAuth2Login;
 import Database.admin_DB;
+import Model.OAuth2LoginAdmin;
 import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -40,7 +40,7 @@ public class ControllerAdminLoginPage implements Initializable {
 
     private Scene myScene;
 
-    private OAuth2Login login = new OAuth2Login();
+    private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
     private admin_DB admin_db = new admin_DB();
 
     private Credential credential;

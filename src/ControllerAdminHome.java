@@ -42,15 +42,6 @@ public class ControllerAdminHome implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private JFXButton randomButton;
-
-    @FXML
-    private JFXButton CloudStorageTestButton;
-
-    @FXML
-    private JFXButton RSAButton;
-
-    @FXML
     private Label LastFileModifiedLabel;
 
     @FXML
@@ -65,7 +56,7 @@ public class ControllerAdminHome implements Initializable {
 
     private Credential credential;
     private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
-    WindowsUtils utils = new WindowsUtils();
+//    WindowsUtils utils = new WindowsUtils();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
