@@ -279,7 +279,7 @@ public class User_InfoDB {
             preparedStatement=connection.prepareStatement("SELECT phoneNo FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
