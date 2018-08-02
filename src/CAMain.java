@@ -74,7 +74,7 @@ public class CAMain extends Application {
                         alert.setContentText("The network capture is still running, do you wish to stop the capture or keep the capture running?");
                         ButtonType buttonTypeOne = new ButtonType("Cancel Capture");
                         ButtonType buttonTypeTwo = new ButtonType("Cancel Capture but don't exit");
-                        ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                        ButtonType buttonTypeCancel = new ButtonType("Continue Capture and Minimize", ButtonBar.ButtonData.CANCEL_CLOSE);
                         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
                         Optional<ButtonType> result = alert.showAndWait();
@@ -115,7 +115,7 @@ public class CAMain extends Application {
                                         alert.setContentText("The network capture is still running, do you wish to stop the capture or keep the capture running?");
                                         ButtonType buttonTypeOne = new ButtonType("Cancel Capture");
                                         ButtonType buttonTypeTwo = new ButtonType("Cancel Capture but don't exit");
-                                        ButtonType buttonTypeCancel = new ButtonType("Do not Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+                                        ButtonType buttonTypeCancel = new ButtonType("Continue Capture and Minimize", ButtonBar.ButtonData.CANCEL_CLOSE);
                                         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
                                         Optional<ButtonType> result = alert.showAndWait();

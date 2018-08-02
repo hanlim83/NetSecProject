@@ -90,7 +90,7 @@ public class ControllerCAMainPackets implements Initializable {
     private Integer threshold;
     private ArrayList<String> adminPN;
     private ArrayList<String> adminEA;
-    private OAuth2Login oAuth2Login;
+    private OAuth2LoginAdmin oAuth2Login;
     private admin_DB db;
     private AWSSMS SMSHandler;
     private OutlookEmail EmailHandler;
@@ -178,7 +178,7 @@ public class ControllerCAMainPackets implements Initializable {
                         }
                         EmailHandler = new OutlookEmail(adminEA);
                         System.out.println("Email created");
-                        oAuth2Login = new OAuth2Login();
+                        oAuth2Login = new OAuth2LoginAdmin();
                         oAuth2Login.login();
                         EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
                         System.out.println(oAuth2Login.getEmail());
@@ -193,7 +193,7 @@ public class ControllerCAMainPackets implements Initializable {
                         });
                     } catch (SQLException e) {
                         try {
-                            oAuth2Login = new OAuth2Login();
+                            oAuth2Login = new OAuth2LoginAdmin();
                             oAuth2Login.login();
                             System.out.println(oAuth2Login.getEmail());
                             EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
@@ -290,7 +290,7 @@ public class ControllerCAMainPackets implements Initializable {
         } else {
             if (EmailHandler == null) {
                 try {
-                    oAuth2Login = new OAuth2Login();
+                    oAuth2Login = new OAuth2LoginAdmin();
                     oAuth2Login.login();
                     EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
                     System.out.println(oAuth2Login.getEmail());
@@ -300,7 +300,7 @@ public class ControllerCAMainPackets implements Initializable {
                 }
             } else {
                 try {
-                    oAuth2Login = new OAuth2Login();
+                    oAuth2Login = new OAuth2LoginAdmin();
                     oAuth2Login.login();
                     EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
                     System.out.println(oAuth2Login.getEmail());
