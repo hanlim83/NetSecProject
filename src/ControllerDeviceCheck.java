@@ -44,7 +44,6 @@ public class ControllerDeviceCheck implements Initializable {
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;
-    //    private boolean WindowsStatus=true;
     private boolean WindowsStatus;
     private boolean WirelessEncryption;
 
@@ -132,7 +131,7 @@ public class ControllerDeviceCheck implements Initializable {
                     Stage stage = (Stage) (myScene).getWindow();
 
                     String title = "";
-                    String content = "Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler";
+                    String content = "Please connect to a more secure network. DO NOT use open networks.";
 
                     JFXButton close = new JFXButton("Close");
 

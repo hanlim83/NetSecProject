@@ -121,7 +121,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
 //                    close.setOnAction(__ -> alert.hideWithAnimation());
 //                    alert.show();
 //                });
-                handleUI("Your network security is not strong enough. Please use a WPA2 for your router???? How to make the thing simpler");
+                handleUI("Please connect to a more secure network. DO NOT use open networks.");
             }else if(WindowsStatus==false){
 //                LoadingSpinner.setVisible(false);
 //                RestartDeviceCheckButton.setVisible(true);

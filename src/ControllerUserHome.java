@@ -77,7 +77,7 @@ public class ControllerUserHome implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        processTable.start();
+//        processTable.start();
     }
 
     private static Timer timer;
@@ -105,43 +105,43 @@ public class ControllerUserHome implements Initializable {
         }, 0, 100);
     }
 
-    private Service processTable = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    getObservableList();
-                    return null;
-                }
-            };
-        }
-    };
+//    private Service processTable = new Service() {
+//        @Override
+//        protected Task createTask() {
+//            return new Task() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    getObservableList();
+//                    return null;
+//                }
+//            };
+//        }
+//    };
 
-    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
-    public void getObservableList(){
-         blobs = FXCollections.observableArrayList();
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email = null;
-        try {
-            email = login.getEmail();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        emailFront = emailFront.replace(".", "");
-        String privateBucketName = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobList = storage.list(privateBucketName);
-        for (Blob blob : blobList.iterateAll()) {
-//            BlobList.add(new MyBlob(blob));
-            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"General"));
-        }
-
-//        ControllerSecureCloudStorage controllerSecureCloudStorage=new ControllerSecureCloudStorage();
-//        controllerSecureCloudStorage.passData(blobs);
-    }
+//    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
+//    public void getObservableList(){
+//         blobs = FXCollections.observableArrayList();
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        String email = null;
+//        try {
+//            email = login.getEmail();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Scanner s = new Scanner(email).useDelimiter("@");
+//        String emailFront = s.next();
+//        emailFront = emailFront.replace(".", "");
+//        String privateBucketName = emailFront + "nspj";
+////        String bucketname="hugochiaxyznspj";
+//        Page<Blob> blobList = storage.list(privateBucketName);
+//        for (Blob blob : blobList.iterateAll()) {
+////            BlobList.add(new MyBlob(blob));
+//            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"General"));
+//        }
+//
+////        ControllerSecureCloudStorage controllerSecureCloudStorage=new ControllerSecureCloudStorage();
+////        controllerSecureCloudStorage.passData(blobs);
+//    }
 
     ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
