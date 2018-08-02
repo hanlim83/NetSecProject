@@ -276,7 +276,7 @@ public class User_InfoDB {
             connection = DataSource.getInstance().getConnection();
 //            statement = connection.createStatement();
 
-            preparedStatement=connection.prepareStatement("INSERT INTO entries (email,status) values (?,'Inactive')");
+            preparedStatement=connection.prepareStatement("SELECT phoneNo FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
             preparedStatement.executeUpdate();
