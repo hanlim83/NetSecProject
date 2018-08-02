@@ -1,6 +1,7 @@
 # Specific Requriements #
 ###################
-PcapExport/
+#PcapExport/
+*.pcap
 JsonFile.json
 # Compiled source #
 ###################
