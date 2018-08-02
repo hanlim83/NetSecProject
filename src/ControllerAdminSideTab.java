@@ -1,7 +1,7 @@
 import Model.AWSSMS;
+import Model.ExecutorServiceHandler;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ import java.io.IOException;
 public class ControllerAdminSideTab {
 
     private static PcapNetworkInterface device;
-    private static ScheduledExecutorServiceHandler handler;
+    private static ExecutorServiceHandler handler;
     private static NetworkCapture capture;
     private static boolean ARPDetection;
     private static Integer threshold;
@@ -49,7 +49,7 @@ public class ControllerAdminSideTab {
         return device;
     }
 
-    public static ScheduledExecutorServiceHandler getHandler() {
+    public static ExecutorServiceHandler getHandler() {
         return handler;
     }
 
@@ -69,7 +69,7 @@ public class ControllerAdminSideTab {
         return EmailHandler;
     }
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
+    public void getVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         device = nif;
         ControllerAdminSideTab.handler = handler;
         ControllerAdminSideTab.capture = capture;

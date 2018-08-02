@@ -48,7 +48,7 @@ public class ControllerCADetailedPacket implements Initializable {
     @FXML
     private Label ipAddr;
 
-    private ScheduledExecutorServiceHandler handler;
+    private ExecutorServiceHandler handler;
     private NetworkCapture capture;
     private PcapNetworkInterface device;
     private CapturedPacket packet;
@@ -75,7 +75,7 @@ public class ControllerCADetailedPacket implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;

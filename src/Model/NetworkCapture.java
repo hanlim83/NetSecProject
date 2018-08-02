@@ -431,6 +431,9 @@ public class NetworkCapture {
     }
 
     public boolean isRunning() {
+        if (Phandle == null) {
+            return false;
+        }
         return Phandle.isOpen();
     }
 

@@ -3,21 +3,22 @@ package Model;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class ScheduledExecutorServiceHandler {
-    private static ScheduledExecutorService service;
+public class ExecutorServiceHandler {
+    private static ScheduledThreadPoolExecutor service;
     private static ScheduledFuture tableviewRunnable;
-    private static ScheduledFuture captureRunnable;
     private static ScheduledFuture getSQLRunnable;
     private static ScheduledFuture chartDataRunnable;
     private static ScheduledFuture showDataRunnable;
     private static ScheduledFuture sendEmailRunnable;
     private static ScheduledFuture createTPSRunnable;
 
-    public ScheduledExecutorServiceHandler() {
+    public ExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
         System.out.println(cores);
-        service = Executors.newScheduledThreadPool(cores);
+        service = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(cores);
+        service.setRemoveOnCancelPolicy(true);
     }
 
     public static ScheduledExecutorService getService() {
@@ -39,7 +40,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setTableviewRunnable(ScheduledFuture tableviewRunnable) {
-        ScheduledExecutorServiceHandler.tableviewRunnable = tableviewRunnable;
+        ExecutorServiceHandler.tableviewRunnable = tableviewRunnable;
     }
 
     public boolean getStatusTableviewRunnable() {
@@ -50,28 +51,12 @@ public class ScheduledExecutorServiceHandler {
         tableviewRunnable.cancel(true);
     }
 
-    public ScheduledFuture getcaptureRunnable() {
-        return captureRunnable;
-    }
-
-    public void setcaptureRunnable(ScheduledFuture captureRunnable) {
-        ScheduledExecutorServiceHandler.captureRunnable = captureRunnable;
-    }
-
-    public boolean getStatuscaptureRunnable() {
-        return !captureRunnable.isDone();
-    }
-
-    public void cancelcaptureRunnable() {
-        captureRunnable.cancel(true);
-    }
-
     public ScheduledFuture getgetSQLRunnable() {
         return getSQLRunnable;
     }
 
     public void setgetSQLRunnable(ScheduledFuture getSQLRunnable) {
-        ScheduledExecutorServiceHandler.getSQLRunnable = getSQLRunnable;
+        ExecutorServiceHandler.getSQLRunnable = getSQLRunnable;
     }
 
     public boolean getStatusgetSQLRunnable() {
@@ -87,7 +72,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setchartDataRunnable(ScheduledFuture chartDataRunnable) {
-        ScheduledExecutorServiceHandler.chartDataRunnable = chartDataRunnable;
+        ExecutorServiceHandler.chartDataRunnable = chartDataRunnable;
     }
 
     public boolean getStatuschartDataRunnable() {
@@ -103,7 +88,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setshowDataRunnable(ScheduledFuture showDataRunnable) {
-        ScheduledExecutorServiceHandler.showDataRunnable = showDataRunnable;
+        ExecutorServiceHandler.showDataRunnable = showDataRunnable;
     }
 
     public boolean getStatusshowDataRunnable() {
@@ -119,7 +104,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setsendEmailRunnable(ScheduledFuture sendEmailRunnable) {
-        ScheduledExecutorServiceHandler.sendEmailRunnable = sendEmailRunnable;
+        ExecutorServiceHandler.sendEmailRunnable = sendEmailRunnable;
     }
 
     public boolean getStatussendEmailRunnable() {
@@ -135,7 +120,7 @@ public class ScheduledExecutorServiceHandler {
     }
 
     public void setcreateTPSRunnable(ScheduledFuture createTPSRunnable) {
-        ScheduledExecutorServiceHandler.createTPSRunnable = createTPSRunnable;
+        ExecutorServiceHandler.createTPSRunnable = createTPSRunnable;
     }
 
     public boolean getStatuscreateTPSRunnable() {

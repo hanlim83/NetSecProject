@@ -1,7 +1,7 @@
 import Model.AWSSMS;
+import Model.ExecutorServiceHandler;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class TrayIcon {
 
     private static PcapNetworkInterface device;
-    private static ScheduledExecutorServiceHandler handler;
+    private static ExecutorServiceHandler handler;
     private static NetworkCapture capture;
     private static boolean ARPDetection;
     private static Integer threshold;
@@ -37,7 +37,7 @@ public class TrayIcon {
     private Stage primaryStage;
     private Scene myScene;
 
-    public void getVariables(PcapNetworkInterface nif, ScheduledExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
+    public void getVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         device = nif;
         TrayIcon.handler = handler;
         TrayIcon.capture = capture;
@@ -146,8 +146,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
-                                        if (handler.getStatuscaptureRunnable())
-                                            handler.cancelcaptureRunnable();
+                                        if (capture.isRunning())
+                                            capture.stopSniffing();
 
                                     } else if (result.get() == buttonTypeTwo) {
                                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -247,8 +247,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
-                                        if (handler.getStatuscaptureRunnable())
-                                            handler.cancelcaptureRunnable();
+                                        if (capture.isRunning())
+                                            capture.stopSniffing();
 
                                     } else if (result.get() == buttonTypeTwo) {
                                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -347,8 +347,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
-                                        if (handler.getStatuscaptureRunnable())
-                                            handler.cancelcaptureRunnable();
+                                        if (capture.isRunning())
+                                            capture.stopSniffing();
 
                                     } else if (result.get() == buttonTypeTwo) {
                                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -431,8 +431,8 @@ public class TrayIcon {
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == buttonTypeOne) {
                                 capture.stopSniffing();
-                                if (handler.getStatuscaptureRunnable())
-                                    handler.cancelcaptureRunnable();
+                                if (capture.isRunning())
+                                    capture.stopSniffing();
                                 Platform.exit();
                                 removeTrayicon();
                             } else {

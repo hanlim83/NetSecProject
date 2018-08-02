@@ -1,7 +1,7 @@
 import Model.AWSSMS;
+import Model.ExecutorServiceHandler;
 import Model.IPAddressPolicy;
 import Model.OutlookEmail;
-import Model.ScheduledExecutorServiceHandler;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.event.ActionEvent;
@@ -59,7 +59,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
 
     private PcapNetworkInterface device;
     private Scene myScene;
-    private ScheduledExecutorServiceHandler handler;
+    private ExecutorServiceHandler handler;
     private boolean ARPDetection;
     private int threshold;
     private AWSSMS SMSHandler;
@@ -84,7 +84,7 @@ public class ControllerCALandingVerifyDetails implements Initializable {
         }
     }
 
-    public void passVariables(ScheduledExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType, OutlookEmail EmailHandler) {
+    public void passVariables(ExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayName, boolean CaptureType, OutlookEmail EmailHandler) {
         this.handler = handler;
         this.device = device;
         this.ARPDetection = ARPDetection;

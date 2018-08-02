@@ -1,7 +1,7 @@
 import Model.AWSSMS;
+import Model.ExecutorServiceHandler;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class CAMain extends Application {
-    private ScheduledExecutorServiceHandler handler;
+    private ExecutorServiceHandler handler;
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
     private boolean ARPDetection = false;
@@ -45,7 +45,7 @@ public class CAMain extends Application {
             System.out.println(getClass().getResource("CALandingSelectInt.fxml"));
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
-            handler = new ScheduledExecutorServiceHandler();
+            handler = new ExecutorServiceHandler();
             controller.passVariables(handler, null, false, 0, null, null, true, null);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
@@ -80,8 +80,8 @@ public class CAMain extends Application {
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeOne) {
                             capture.stopSniffing();
-                            if (handler.getStatuscaptureRunnable())
-                                handler.cancelcaptureRunnable();
+                            if (capture.isRunning())
+                                capture.stopSniffing();
 
                         } else if (result.get() == buttonTypeTwo) {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -121,8 +121,8 @@ public class CAMain extends Application {
                                         Optional<ButtonType> result = alert.showAndWait();
                                         if (result.get() == buttonTypeOne) {
                                             capture.stopSniffing();
-                                            if (handler.getStatuscaptureRunnable())
-                                                handler.cancelcaptureRunnable();
+                                            if (capture.isRunning())
+                                                capture.stopSniffing();
 
                                         } else if (result.get() == buttonTypeTwo) {
                                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -189,7 +189,7 @@ public class CAMain extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+        if (!ExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
             FileUtils.cleanDirectory(new File("PcapExport"));

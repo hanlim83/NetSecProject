@@ -1,7 +1,7 @@
 import Model.AWSSMS;
+import Model.ExecutorServiceHandler;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class MainAdmin extends Application {
-    private ScheduledExecutorServiceHandler handler = new ScheduledExecutorServiceHandler();
+    private ExecutorServiceHandler handler = new ExecutorServiceHandler();
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
     private boolean ARPDetection = false;
@@ -77,8 +77,8 @@ public class MainAdmin extends Application {
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeOne) {
                             capture.stopSniffing();
-                            if (handler.getStatuscaptureRunnable())
-                                handler.cancelcaptureRunnable();
+                            if (capture.isRunning())
+                                capture.stopSniffing();
 
                         } else if (result.get() == buttonTypeTwo) {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -118,8 +118,8 @@ public class MainAdmin extends Application {
                                         Optional<ButtonType> result = alert.showAndWait();
                                         if (result.get() == buttonTypeOne) {
                                             capture.stopSniffing();
-                                            if (handler.getStatuscaptureRunnable())
-                                                handler.cancelcaptureRunnable();
+                                            if (capture.isRunning())
+                                                capture.stopSniffing();
 
                                         } else if (result.get() == buttonTypeTwo) {
                                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -188,7 +188,7 @@ public class MainAdmin extends Application {
         File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
         file.delete();
         handler.shutdownService();
-        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+        if (!ExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
             FileUtils.cleanDirectory(new File("PcapExport"));

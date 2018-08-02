@@ -1,4 +1,4 @@
-import Model.ScheduledExecutorServiceHandler;
+import Model.ExecutorServiceHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -19,11 +19,11 @@ public class RunnableLineChart extends Application {
     private NumberAxis xAxis;
     private double sequence = 0;
     private double y = 10;
-    private ScheduledExecutorServiceHandler handler;
+    private ExecutorServiceHandler handler;
 
     public RunnableLineChart() {
-        handler = new ScheduledExecutorServiceHandler();
-        handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
+        handler = new ExecutorServiceHandler();
+        handler.setchartDataRunnable(ExecutorServiceHandler.getService().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 Platform.runLater(new Runnable() {
@@ -102,7 +102,7 @@ public class RunnableLineChart extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (!ScheduledExecutorServiceHandler.getService().isShutdown())
+        if (!ExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
     }
 
