@@ -19,6 +19,8 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -83,6 +85,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     private JFXTextField filterField;
 
+    @FXML
+    private JFXButton homeButton;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -116,6 +121,34 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        Path path1 = FileSystems.getDefault().getPath("src/View/baseline_home_black_18dp.png");
+        File file1 = new File(path1.toUri());
+        Image imageForFile1;
+        try {
+            imageForFile1 = new Image(file1.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile1);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UserHome.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerUserHome controller = loader.<ControllerUserHome>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     public void passData(ObservableList<TableBlob> blobs) {

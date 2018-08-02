@@ -13,19 +13,25 @@ public class admin_DB {
     public ArrayList<Admin> getAdminList() throws SQLException {
         ArrayList<Admin> AdminList = new ArrayList<Admin>();
 
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entriesAdmin");
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet=preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT * FROM entriesAdmin");
+
+            resultSet=preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Admin admin=new Admin();
                 admin.setEmail(resultSet.getString("email"));
@@ -33,27 +39,56 @@ public class admin_DB {
                 admin.setEntryID(resultSet.getString("entryID"));
                 AdminList.add(admin);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//        }
         return AdminList;
     }
 
     public void createAdmin(String email,String phoneNo) throws SQLException {
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entriesAdmin (email,phoneNumber) VALUES (?,?)");
-        preparedStatement.setString(1,email);
-        preparedStatement.setString(2,phoneNo);
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
 
-        try (Statement statement = connection.createStatement()) {
-//            statement.executeUpdate("INSERT INTO entries (email,phoneNumber) VALUES ('"+email+"','"+phoneNo+"')");
+            preparedStatement=connection.prepareStatement("INSERT INTO entriesAdmin (email,phoneNumber) VALUES (?,?)");
+            preparedStatement.setString(1,email);
+            preparedStatement.setString(2,phoneNo);
+
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            statement.executeUpdate("INSERT INTO entries (email,phoneNumber) VALUES ('"+email+"','"+phoneNo+"')");
+//            preparedStatement.executeUpdate();
+//        }
     }
 
     public void deleteAdmin(String email,String phoneNo) throws SQLException {
@@ -237,7 +272,7 @@ public class admin_DB {
             connection = DataSource.getInstance().getConnection();
 //            statement = connection.createStatement();
 
-            preparedStatement=connection.prepareStatement("SELECT email FROM entries");
+            preparedStatement=connection.prepareStatement("SELECT email FROM entriesAdmin");
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
