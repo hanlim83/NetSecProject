@@ -473,10 +473,10 @@ public class User_InfoDB {
             connection = DataSource.getInstance().getConnection();
 //            statement = connection.createStatement();
 
-            preparedStatement=connection.prepareStatement("SELECT privateKey WHERE email=?");
+            preparedStatement=connection.prepareStatement("SELECT privateKey FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.executeQuery();
 //            resultSet = preparedStatement.executeQuery();

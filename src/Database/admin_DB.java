@@ -85,7 +85,7 @@ public class admin_DB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-        
+
 //        try (Statement statement = connection.createStatement()) {
 ////            statement.executeUpdate("DELETE FROM entries WHERE email='"+email+"' AND phoneNumber='"+phoneNo+"'");
 //        }
