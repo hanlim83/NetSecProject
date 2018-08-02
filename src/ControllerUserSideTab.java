@@ -250,5 +250,16 @@ public class ControllerUserSideTab implements Initializable {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        Path path3 = FileSystems.getDefault().getPath("src/View/sharp_cloud_circle_black_18dp.png");
+        File file3 = new File(path3.toUri());
+        Image imageForFile3;
+        try {
+            imageForFile3 = new Image(file3.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile3);
+            SecureCloudTransferButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }

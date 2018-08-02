@@ -169,30 +169,10 @@ public class ControllerSecureCloudStorage implements Initializable {
         TableMethod();
     }
 
-    public void rebuildTable() throws Exception {
-        updateObservableList();
-//        try {
-//            if (storage == null) {
-//                getStorage();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            getStorage();
-//        }
-//        if (privateBucketName == null) {
-//            calculateEmail();
-//        }
-//        Page<Blob> blobList = storage.list(privateBucketName);
-//        for (Blob blob : blobList.iterateAll()) {
-////            BlobList.add(new MyBlob(blob));
-//            blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"General"));
-//        }
-//        TableMethod();
-    }
-
     @FXML
     void onClickBackButton(ActionEvent event) throws Exception {
         updateObservableList();
+        backButton.setVisible(false);
     }
 
     @FXML
@@ -972,7 +952,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                    Image imageEllipsis = new Image(getClass().getResourceAsStream("View/horizontal_ellipsis.png"));
                                     }
                                 }
-//                            }
                         };
                         return cell;
                     }
@@ -997,8 +976,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 return typeColumn.getComputedValue(param);
             }
         });
-
-
 
 //        folderColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
 //                new TextFieldEditorBuilder()));
@@ -1120,6 +1097,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                         JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
                         JFXTreeTableView.getColumns();
                         fileColumn.setPrefWidth(544);
+                        backButton.setVisible(true);
                     }
                 }
 //                try {
@@ -1347,6 +1325,29 @@ public class ControllerSecureCloudStorage implements Initializable {
                 jfxcancelButton.setDisable(false);
                 jfxOKButton.setDisable(false);
                 System.out.println("Wrong password");
+                myScene = anchorPane.getScene();
+                Stage stage1 = (Stage) (myScene).getWindow();
+
+                String title1 = "Alert";
+                String content1 = "Wrong Password";
+
+                JFXButton close1 = new JFXButton("Close");
+
+                close1.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close1.setStyle("-fx-background-color: #00bfff;");
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title1));
+                layout.setBody(new Label(content1));
+                layout.setActions(close1);
+                JFXAlert<Void> alert1 = new JFXAlert<>(stage1);
+                alert1.setOverlayClose(true);
+                alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert1.setContent(layout);
+                alert1.initModality(Modality.NONE);
+                close1.setOnAction(__ -> alert1.hideWithAnimation());
+                alert1.show();
             } else {
                 //if matches continue to encrypt also need to store the password somewhere
                 password = jfxPasswordField.getText();

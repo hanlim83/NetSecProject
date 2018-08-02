@@ -42,6 +42,18 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     private Label emailLabel;
 
+    @FXML
+    private Label passwordLengthLabel;
+
+    @FXML
+    private Label upperCaseLabel;
+
+    @FXML
+    private Label lowerCaseLabel;
+
+    @FXML
+    private Label numberSpecialCharLabel;
+
     private Scene myScene;
     public static String email;
 
@@ -60,19 +72,66 @@ public class ControllerSignUpPage implements Initializable {
         }
         PasswordField.setFocusColor(Color.BLUE);
         ConfirmPasswordField.setFocusColor(Color.BLUE);
+        PhoneNoField.setFocusColor(Color.BLUE);
+        PhoneNoField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (checkPhoneNoRequirements(PhoneNoField.getText()) ==  true){
+                PhoneNoField.setFocusColor(Color.GREEN);
+            } else{
+                PhoneNoField.setFocusColor(Color.RED);
+            }
+        });
         PasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            String password=PasswordField.getText();
             if (validate(PasswordField.getText()) == true) {
                 PasswordField.setFocusColor(Color.GREEN);
             }
             else{
                 System.out.println("Use stronger password");
                 PasswordField.setFocusColor(Color.RED);
+                ConfirmPasswordField.setFocusColor(Color.RED);
             }
             if (!PasswordField.getText().equals((ConfirmPasswordField).getText())){
                 ConfirmPasswordField.setFocusColor(Color.RED);
             }else{
                 ConfirmPasswordField.setFocusColor(Color.GREEN);
+            }
+
+
+            //New Algo
+            String upperCaseChars = "(.*[A-Z].*)";
+            String lowerCaseChars = "(.*[a-z].*)";
+            String numbers = "(.*[0-9].*)";
+            String specialChars = "(.*[,~,!,@,#,$,%,^,&,*,(,),-,_,=,+,[,{,],},|,;,:,<,>,/,?].*$)";
+            if (password == null || password.length() < 8) {
+                passwordLengthLabel.setTextFill(Color.RED);
+            } else{
+                passwordLengthLabel.setTextFill(Color.GREEN);
+            }
+            if (!password.matches(upperCaseChars ))
+            {
+                System.out.println("Password should contain at least one upper case alphabet");
+                upperCaseLabel.setTextFill(Color.RED);
+            }else{
+                upperCaseLabel.setTextFill(Color.GREEN);
+            }
+            if (!password.matches(lowerCaseChars ))
+            {
+                System.out.println("Password should contain at least one lower case alphabet");
+                lowerCaseLabel.setTextFill(Color.RED);
+            }else{
+                lowerCaseLabel.setTextFill(Color.GREEN);
+            }
+            if (!password.matches(numbers ))
+            {
+                System.out.println("Password should contain atleast one number.");
+                numberSpecialCharLabel.setTextFill(Color.RED);
+            }
+            if (!password.matches(specialChars ))
+            {
+                System.out.println("Password should contain atleast one special character");
+                numberSpecialCharLabel.setTextFill(Color.RED);
+            } else{
+                numberSpecialCharLabel.setTextFill(Color.GREEN);
             }
         });
         ConfirmPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -168,33 +227,50 @@ public class ControllerSignUpPage implements Initializable {
     //Will strengthen password validator
     private boolean validate(String password) {
         if (password == null || password.length() < 8) {
+//            passwordLengthLabel.setTextFill(Color.RED);
             return false;
         }
+//        else{
+//            passwordLengthLabel.setTextFill(Color.GREEN);
+//        }
         //New Algo
         String upperCaseChars = "(.*[A-Z].*)";
         if (!password.matches(upperCaseChars ))
         {
-            System.out.println("Password should contain atleast one upper case alphabet");
+            System.out.println("Password should contain at least one upper case alphabet");
+//            upperCaseLabel.setTextFill(Color.RED);
             return false;
         }
+//        else{
+//            upperCaseLabel.setTextFill(Color.GREEN);
+//        }
         String lowerCaseChars = "(.*[a-z].*)";
         if (!password.matches(lowerCaseChars ))
         {
-            System.out.println("Password should contain atleast one lower case alphabet");
+            System.out.println("Password should contain at least one lower case alphabet");
+//            lowerCaseLabel.setTextFill(Color.RED);
             return false;
         }
+//        else{
+//            lowerCaseLabel.setTextFill(Color.GREEN);
+//        }
         String numbers = "(.*[0-9].*)";
         if (!password.matches(numbers ))
         {
             System.out.println("Password should contain atleast one number.");
+//            numberSpecialCharLabel.setTextFill(Color.RED);
             return false;
         }
         String specialChars = "(.*[,~,!,@,#,$,%,^,&,*,(,),-,_,=,+,[,{,],},|,;,:,<,>,/,?].*$)";
         if (!password.matches(specialChars ))
         {
             System.out.println("Password should contain atleast one special character");
+//            numberSpecialCharLabel.setTextFill(Color.RED);
             return false;
         }
+//        else{
+//            numberSpecialCharLabel.setTextFill(Color.GREEN);
+//        }
         return true;
     }
 

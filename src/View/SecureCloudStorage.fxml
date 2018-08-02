@@ -25,15 +25,21 @@
             <JFXButton fx:id="homeButton" buttonType="RAISED" layoutX="992.0" layoutY="10.0" onAction="#onClickHomeButton" prefHeight="44.0" prefWidth="64.0" ripplerFill="#00bfff00" style="-fx-border-radius: 30; -fx-background-color: #4CAF50;" />
          </children>
       </AnchorPane>
-      <JFXButton fx:id="UploadButton" layoutX="873.0" layoutY="76.0" mnemonicParsing="false" onAction="#onClickUploadButton" prefHeight="61.0" prefWidth="184.0" text="Upload file" />
+      <JFXButton fx:id="UploadButton" buttonType="RAISED" layoutX="873.0" layoutY="76.0" mnemonicParsing="false" onAction="#onClickUploadButton" prefHeight="61.0" prefWidth="184.0" style="-fx-background-color: #4CAF50;" text="Upload file">
+         <font>
+            <Font size="15.0" />
+         </font></JFXButton>
       <AnchorPane fx:id="TableAnchorPane" layoutX="9.0" layoutY="138.0" prefHeight="451.0" prefWidth="1048.0" />
-      <JFXTextField fx:id="filterField" layoutX="688.0" layoutY="88.0" prefHeight="31.0" prefWidth="184.0" promptText="Search" />
-      <ImageView layoutX="654.0" layoutY="89.0">
+      <JFXTextField fx:id="filterField" layoutX="685.0" layoutY="103.0" prefHeight="31.0" prefWidth="184.0" promptText="Search">
+         <font>
+            <Font size="14.0" />
+         </font></JFXTextField>
+      <ImageView layoutX="652.0" layoutY="104.0">
          <image>
             <Image url="@baseline_search_black_18dp.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="backButton" layoutX="20.0" layoutY="78.0" onAction="#onClickBackButton" prefHeight="58.0" prefWidth="108.0" text="Back" />
+      <JFXButton fx:id="backButton" layoutX="20.0" layoutY="78.0" onAction="#onClickBackButton" prefHeight="58.0" prefWidth="108.0" text="Back" visible="false" />
       <Label layoutX="156.0" layoutY="85.0" prefHeight="44.0" prefWidth="285.0" text="File Path next time" />
       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>

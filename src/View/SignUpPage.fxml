@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
@@ -23,11 +24,6 @@
                 </Label>
             </children>
         </AnchorPane>
-      <Label layoutX="721.0" layoutY="308.0" prefHeight="109.0" prefWidth="260.0" text="Password requirements:&#13;•At least 8 characters&#13;•Upper/Lowercase&#13;•Numbers and Special Characters" wrapText="true">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
       <Label alignment="CENTER" layoutX="268.0" layoutY="67.0" prefHeight="78.0" prefWidth="535.0" text="Please create a new password to register your usage for the app" wrapText="true">
          <font>
             <Font size="16.0" />
@@ -77,5 +73,34 @@
       </GridPane>
       <JFXButton fx:id="ConfirmButton" layoutX="288.0" layoutY="481.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
       <JFXButton fx:id="CancelButton" layoutX="571.0" layoutY="481.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
+      <VBox layoutX="723.0" layoutY="263.0" prefHeight="157.0" prefWidth="256.0">
+         <children>
+            <Label prefHeight="49.0" prefWidth="256.0" text="Password requirements:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="passwordLengthLabel" prefHeight="53.0" prefWidth="267.0" text="• At least 8 characters">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="upperCaseLabel" prefHeight="53.0" prefWidth="267.0" text="• Contain uppercase character(s)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lowerCaseLabel" prefHeight="53.0" prefWidth="267.0" text="• Contains lowercase character(s)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="numberSpecialCharLabel" prefHeight="53.0" prefWidth="267.0" text="• Numbers and Special Character(s)">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
