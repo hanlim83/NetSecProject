@@ -348,6 +348,33 @@ public class User_InfoDB {
 //        }
     }
 
+    public ArrayList<String> getAllEmail() throws SQLException {
+        ArrayList<String> emailList=new ArrayList<String>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DataSource.getInstance().getConnection();
+
+            preparedStatement=connection.prepareStatement("SELECT email FROM entries");
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                emailList.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+
+        return emailList;
+    }
+
     public boolean checkPassword(String passwordToHash,String email) throws SQLException {
         String hashPassword=get_SHA_512_SecurePassword(passwordToHash,email);
 //        String jdbcUrl = String.format(
