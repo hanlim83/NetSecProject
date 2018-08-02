@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.*;
+import java.security.PublicKey;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -245,17 +246,13 @@ public class ControllerUserHome implements Initializable {
     //To be removed soon
     @FXML
     void onClickRandomButton(ActionEvent event) throws Exception {
-//        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
-
-//        //TODO TESTING DELETE B4 PUSH
-////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
-//        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
-//        user_infoDB.createUser("hugochiaxyz8@gmail.com");
-
-        LocalDateTime now=LocalDateTime.now();
-        String nowString=now.toString();
-        System.out.println(nowString);
+//        LocalDateTime now=LocalDateTime.now();
+//        String nowString=now.toString();
+//        System.out.println(nowString);
 //        long l=now.get
+        User_InfoDB user_infoDB=new User_InfoDB();
+        PublicKey publicKey=user_infoDB.getMyPublicKey("");
+        System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
     }
 
     @FXML

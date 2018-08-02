@@ -37,9 +37,6 @@ public class ControllerLoginPage implements Initializable{
     private JFXSpinner LoadingSpinner;
 
     @FXML
-    private JFXButton TestButton;
-
-    @FXML
     private JFXButton RevokeCredentialsButton;
 
     private Scene myScene;
@@ -335,71 +332,25 @@ public class ControllerLoginPage implements Initializable{
         }
     };
 
-    //redundant codes
-
-    //TODO To be removed soon
-    @FXML
-    void onClickTestButton(ActionEvent event) throws Exception {
-        //login.l.stop();
-//        login.stopLocalServerReciver();
-//        LoadingSpinner.setVisible(false);
-//        LoginButton.setDisable(false);
-
-        try {
-            //login.l.stop();
-            login.stopLocalServerReciver();
-            LoadingSpinner.setVisible(false);
-            LoginButton.setDisable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        endTimer();
-//        Platform.runLater(() -> {
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
+//    Task<Void> task = new Task<Void>() {
+//        @Override
+//        public Void call() {
+//            //System.out.println("Thread running"+thread.getId());
+//            try {
+//                credential = login.login();
 //
-//            String title = "";
-//            String content = "The connection timeout. Please try again";
-//
-//            JFXButton close = new JFXButton("Close");
-//
-//            close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            JFXDialogLayout layout = new JFXDialogLayout();
-//            layout.setHeading(new Label(title));
-//            layout.setBody(new Label(content));
-//            layout.setActions(close);
-//            JFXAlert<Void> alert = new JFXAlert<>(stage);
-//            alert.setOverlayClose(true);
-//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//            alert.setContent(layout);
-//            alert.initModality(Modality.NONE);
-//            close.setOnAction(__ -> alert.hideWithAnimation());
-//            alert.show();
-//        });
-    }
-
-    Task<Void> task = new Task<Void>() {
-        @Override
-        public Void call() {
-            //System.out.println("Thread running"+thread.getId());
-            try {
-                credential = login.login();
-
-            } catch (UnknownHostException u) {
-                Platform.runLater(() -> {
-                    System.out.println("No wifi");
-                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                    snackbar.show("Please check your internet connection", 3000);
-                    //u.printStackTrace();
-                });
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
-            //System.out.println("Thread running"+thread.getId());
-            return null;
-        }
-    };
+//            } catch (UnknownHostException u) {
+//                Platform.runLater(() -> {
+//                    System.out.println("No wifi");
+//                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//                    snackbar.show("Please check your internet connection", 3000);
+//                    //u.printStackTrace();
+//                });
+//            } catch (Exception e) {
+//                //e.printStackTrace();
+//            }
+//            //System.out.println("Thread running"+thread.getId());
+//            return null;
+//        }
+//    };
 }
