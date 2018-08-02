@@ -424,7 +424,7 @@ public class ControllerCAMainDashboard implements Initializable {
             public void run() {
                 for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
                     if (data.isEmpty()) break;
-                    dataSeries.getData().add(new XYChart.Data<>(xSeriesData++, data.remove()));
+                    dataSeries.getData().add(new XYChart.Data<>(xSeriesData, data.remove()));
                     thresholdSeries.getData().add(new XYChart.Data<>(xSeriesData++, threshold));
                 }
                 if (dataSeries.getData().size() > MAX_DATA_POINTS) {
@@ -543,7 +543,7 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 addToQueue();
                 ProtoMakeup();
-                addDataToSeries();
+                //addDataToSeries();
                 TopIPMakeup();
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
@@ -612,7 +612,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 capture.stopSniffing();
                 addToQueue();
                 ProtoMakeup();
-                addDataToSeries();
+                //addDataToSeries();
                 TopIPMakeup();
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
