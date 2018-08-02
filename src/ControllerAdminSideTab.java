@@ -9,11 +9,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class ControllerAdminSideTab {
 
@@ -24,6 +28,7 @@ public class ControllerAdminSideTab {
     private static Integer threshold;
     private static AWSSMS SMSHandler;
     private static OutlookEmail EmailHandler;
+    private static boolean blockOtherPages = false;
 
     @FXML
     private JFXButton databasePage;
@@ -77,6 +82,66 @@ public class ControllerAdminSideTab {
         ControllerAdminSideTab.threshold = threshold;
         ControllerAdminSideTab.SMSHandler = SMSHandler;
         ControllerAdminSideTab.EmailHandler = EmailHandler;
+    }
+
+    public boolean checktokenFileExists() {
+        if (new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential").exists()) {
+            blockOtherPages = false;
+            return true;
+        } else {
+            blockOtherPages = true;
+            return false;
+        }
+    }
+
+    public void blockedAccess(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Access Blocked");
+        alert.setHeaderText("Access Blocked");
+        alert.setContentText("You have minimized FireE and as a safety precaution, you need to sign in to FireE again to access other functions of the app. Do you want to log in again?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminLoginPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerAdminLoginPage controller = loader.getController();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Login Page");
+            stage.show();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+    }
+
+    public void blockedAccess(MouseEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Access Blocked");
+        alert.setHeaderText("Access Blocked");
+        alert.setContentText("You have minimized FireE and as a safety precaution, you need to sign in to FireE again to access other functions of the app. Do you want to log in again?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminLoginPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerAdminLoginPage controller = loader.getController();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Login Page");
+            stage.show();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
     }
 
     public void StopTimeLineCtrl() {
@@ -202,78 +267,98 @@ public class ControllerAdminSideTab {
 
     @FXML
     void onClickBuckets(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BucketsPage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("BucketsPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Buckets Page");
-        stage.show();
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Buckets Page");
+            stage.show();
+        }
     }
 
     @FXML
     void onClickLogs(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LoggingPage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("LoggingPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Logging Page");
-        stage.show();
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Logging Page");
+            stage.show();
+        }
     }
 
     @FXML
     void onClickDatabase(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("EmployeePage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("EmployeePage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Database Page");
-        stage.show();
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Database Page");
+            stage.show();
+        }
     }
 
     @FXML
     void onClickDevice(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Device Build Number Page");
-        stage.show();
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Device Build Number Page");
+            stage.show();
+        }
     }
 
     @FXML
     void goToFileExtensionManager(ActionEvent event) {
-
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            //Put FX Loading Codes here
+        }
     }
 }

@@ -78,7 +78,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private Integer threshold;
     private ArrayList<String> adminPN;
     private ArrayList<String> adminEA;
-    private OAuth2Login oAuth2Login;
+    private OAuth2LoginAdmin oAuth2Login;
     private admin_DB db;
     private AWSSMS SMSHandler;
     private OutlookEmail EmailHandler;
@@ -93,6 +93,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private capture captureRunnable;
     private sendEmailF sendFull;
     private createTPS createTPS;
+    private boolean lookup;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -227,6 +228,14 @@ public class ControllerCAMainDashboard implements Initializable {
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
         this.EmailHandler = OEmailHandler;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.getController();
+            lookup = ctrl.checktokenFileExists();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
             handler.setgetSQLRunnable(ExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -244,7 +253,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         }
                         EmailHandler = new OutlookEmail(adminEA);
                         System.out.println("Email created");
-                        oAuth2Login = new OAuth2Login();
+                        oAuth2Login = new OAuth2LoginAdmin();
                         oAuth2Login.login();
                         EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
                         System.out.println(oAuth2Login.getEmail());
@@ -259,7 +268,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         });
                     } catch (SQLException e) {
                         try {
-                            oAuth2Login = new OAuth2Login();
+                            oAuth2Login = new OAuth2LoginAdmin();
                             oAuth2Login.login();
                             System.out.println(oAuth2Login.getEmail());
                             EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
@@ -356,7 +365,7 @@ public class ControllerCAMainDashboard implements Initializable {
         } else {
             if (EmailHandler == null) {
                 try {
-                    oAuth2Login = new OAuth2Login();
+                    oAuth2Login = new OAuth2LoginAdmin();
                     oAuth2Login.login();
                     EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
                     System.out.println(oAuth2Login.getEmail());
@@ -366,11 +375,15 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             } else {
                 try {
-                    oAuth2Login = new OAuth2Login();
-                    oAuth2Login.login();
-                    EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
-                    System.out.println(oAuth2Login.getEmail());
-                    System.out.println("Email Updated");
+                    if (lookup != false) {
+                        oAuth2Login = new OAuth2LoginAdmin();
+                        oAuth2Login.login();
+                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                        System.out.println(oAuth2Login.getEmail());
+                        System.out.println("Email Updated");
+                    } else
+                        System.out.println("Token not found");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -396,6 +409,7 @@ public class ControllerCAMainDashboard implements Initializable {
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler, EmailHandler);
+            ctrl.checktokenFileExists();
         } catch (IOException e) {
             e.printStackTrace();
         }

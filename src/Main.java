@@ -26,8 +26,11 @@ public class Main extends Application {
     @Override
     public void stop(){
         ControllerUserHome.StopTimer();
-//        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
-//        file.delete();
+        /*try{
+            FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }*/
     }
 
     public static void main(String[] args) {

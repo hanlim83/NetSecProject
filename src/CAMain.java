@@ -173,6 +173,11 @@ public class CAMain extends Application {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            try {
+                                FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     } else {
                         Platform.exit();

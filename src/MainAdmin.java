@@ -170,6 +170,11 @@ public class MainAdmin extends Application {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            try {
+                                FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     } else {
                         Platform.exit();
@@ -185,17 +190,20 @@ public class MainAdmin extends Application {
 
     @Override
     public void stop() {
-        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
-        file.delete();
         handler.shutdownService();
         if (!ExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
+            FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
             FileUtils.cleanDirectory(new File("PcapExport"));
         } catch (IOException e) {
             e.printStackTrace();
+            try {
+                FileUtils.cleanDirectory(new File("PcapExport"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
-        /*}*/
     }
 
     public void loadAdminSideTabCtrl() {

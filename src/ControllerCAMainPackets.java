@@ -96,6 +96,7 @@ public class ControllerCAMainPackets implements Initializable {
     private capture cRunnable;
     private sendEmailF sendFull;
     private createTPS createTPS;
+    private boolean lookup;
     /*private Timer timer = new Timer(true);
     private TimerTask exportTask;
     private boolean timerTaskinProgress = false;
@@ -159,6 +160,14 @@ public class ControllerCAMainPackets implements Initializable {
         this.threshold = threshold;
         this.SMSHandler = USMSHandler;
         this.EmailHandler = OEmailHandler;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.getController();
+            lookup = ctrl.checktokenFileExists();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
             handler.setgetSQLRunnable(ExecutorServiceHandler.getService().schedule(new Runnable() {
                 @Override
@@ -298,11 +307,15 @@ public class ControllerCAMainPackets implements Initializable {
                 }
             } else {
                 try {
-                    oAuth2Login = new OAuth2LoginAdmin();
-                    oAuth2Login.login();
-                    EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
-                    System.out.println(oAuth2Login.getEmail());
-                    System.out.println("Email Updated");
+                    if (lookup != false) {
+                        oAuth2Login = new OAuth2LoginAdmin();
+                        oAuth2Login.login();
+                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                        System.out.println(oAuth2Login.getEmail());
+                        System.out.println("Email Updated");
+                    } else
+                        System.out.println("Token not found");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -331,6 +344,7 @@ public class ControllerCAMainPackets implements Initializable {
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+            ctrl.checktokenFileExists();
         } catch (IOException e) {
             e.printStackTrace();
         }
