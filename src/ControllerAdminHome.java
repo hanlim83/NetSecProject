@@ -1,8 +1,5 @@
-import Database.RSAKeyGenerator;
-import Database.User_InfoDB;
-import Database.Device_Build_NumberDB;
 import Model.MyBlob;
-import Model.OAuth2Login;
+import Model.OAuth2LoginAdmin;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
@@ -17,7 +14,6 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,9 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -70,13 +64,13 @@ public class ControllerAdminHome implements Initializable {
     public static AnchorPane rootP;
 
     private Credential credential;
-    private OAuth2Login login = new OAuth2Login();
+    private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
     WindowsUtils utils = new WindowsUtils();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        timerrprocess.start();
+        timerprocess.start();
         try {
             InfoUpdate();
         } catch (Exception e) {
@@ -140,7 +134,7 @@ public class ControllerAdminHome implements Initializable {
         return format.format(date);
     }
 
-    Service timerrprocess = new Service() {
+    private Service timerprocess = new Service() {
         @Override
         protected Task createTask() {
             return new Task() {
@@ -178,165 +172,6 @@ public class ControllerAdminHome implements Initializable {
         }
         return greetings;
     }
-
-//    Service process = new Service() {
-//        @Override
-//        protected Task createTask() {
-//            return new Task() {
-//                @Override
-//                protected Void call() throws Exception {
-//                    try {
-//                        credential = login.login();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    getLatestFile();
-//                    Collections.sort(BlobList);
-//                    System.out.println("=======================LATEST FILE/TIME===============================");
-//                    System.out.println(BlobList.get(0).toString());
-//                    System.out.println(convertTime(BlobList.get(0).getTime()));
-//                    Platform.runLater(() -> {
-//                        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
-//                        try {
-//                            GreetingsLabel.setText("Good afternoon "+login.getName());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    });
-//                    return null;
-//                }
-//            };
-//        }
-//    };
-
-    //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
-    //To be removed soon
-    @FXML
-    void onClickRandomButton(ActionEvent event) throws Exception {
-        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
-        User_InfoDB user_infoDB = new User_InfoDB();
-////        Scanner s = new Scanner(osName).useDelimiter("                ");
-////        String firstLine=s.next();
-////        String osBuildNoStr=s.next();
-////        //System.out.println("OS version is " + osName);
-////        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
-////        String osBuildNo=sc.next();
-////        System.out.println(osBuildNo);
-//
-//        System.out.println(output.toString());
-//        //Desktop.getDesktop().open(new File("C://"));
-////        Runtime.getRuntime().exec("explorer.exe /select," + "C://");
-//        //output.toString() will contain the result of "netsh advfirewall show all profiles state"
-//        System.out.println(DomainFirewall);
-//        System.out.println(PrivateFirewall);
-//        System.out.println(PublicFirewall);
-
-
-//        //TODO TESTING DELETE B4 PUSH
-////        System.out.println(utils.getAccStatus("<EMAIL SANITIZED>"));
-//        utils.setUserKeyInfo("Testing1","Testing2","Testing3","<EMAIL SANITIZED>");
-        user_infoDB.createUser("hugochiaxyz8@gmail.com");
-    }
-
-    @FXML
-    void onClickRSAButton(ActionEvent event) throws Exception {
-        RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
-        rsaKeyGenerator.buildKeyPair();
-        System.out.println("=====================Public Key==========================");
-        System.out.println(rsaKeyGenerator.getPublicKeyString());
-        System.out.println("================================Private Key================================");
-        String privateKey = rsaKeyGenerator.getPrivateKeyString();
-        System.out.println(privateKey);
-
-        String encryptedPrivateKey = rsaKeyGenerator.getEncryptedPrivateKeyString("pass1233", privateKey);
-        System.out.println("==========================Encrypted Private Key==================================");
-        System.out.println(encryptedPrivateKey);
-
-        System.out.println("==========================Decrypted Private Key==================================");
-        String privateKey2 = rsaKeyGenerator.getPrivateKeyString("pass1233", encryptedPrivateKey);
-        System.out.println(privateKey2);
-        System.out.println(privateKey.equals(privateKey2));
-    }
-
-    @FXML
-    void onClickCloudStorageTestButton(ActionEvent event) throws Exception {
-        System.out.println(getIp());
-        MACaddrTest();
-    }
-
-    public static String getIp() throws Exception {
-        URL whatismyip = new URL("http://checkip.amazonaws.com");
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            String ip = in.readLine();
-            return ip;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void MACaddrTest() throws SocketException, UnknownHostException {
-//        System.out.println("Ip: " + GetNetworkAddress.GetAddress("ip"));
-//        System.out.println("Mac: " + GetNetworkAddress.GetAddress("mac"));
-        InetAddress ip;
-        try {
-
-            ip = InetAddress.getLocalHost();
-            System.out.println("Current IP address : " + ip.getHostAddress());
-
-            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-
-            byte[] mac = network.getHardwareAddress();
-
-            System.out.print("Current MAC address : ");
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-            }
-            System.out.println("MACAddr" + sb.toString());
-
-        } catch (UnknownHostException e) {
-
-            e.printStackTrace();
-
-        } catch (SocketException e) {
-
-            e.printStackTrace();
-
-        }
-        System.out.println("TESTTTTTTTTTTTTTTTTTTTTT" + getMacAddress());
-    }
-
-    public static String getMacAddress() throws UnknownHostException,
-            SocketException {
-        InetAddress ipAddress = InetAddress.getLocalHost();
-        NetworkInterface networkInterface = NetworkInterface
-                .getByInetAddress(ipAddress);
-        byte[] macAddressBytes = networkInterface.getHardwareAddress();
-        StringBuilder macAddressBuilder = new StringBuilder();
-
-        for (int macAddressByteIndex = 0; macAddressByteIndex < macAddressBytes.length; macAddressByteIndex++) {
-            String macAddressHexByte = String.format("%02X",
-                    macAddressBytes[macAddressByteIndex]);
-            macAddressBuilder.append(macAddressHexByte);
-
-            if (macAddressByteIndex != macAddressBytes.length - 1) {
-                macAddressBuilder.append(":");
-            }
-        }
-
-        return macAddressBuilder.toString();
-    }
-
 
     public void hamburgerBar() {
         rootP = anchorPane;
