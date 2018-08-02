@@ -185,8 +185,8 @@ public class MainAdmin extends Application {
 
     @Override
     public void stop() {
-//        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
-//        file.delete();
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+        file.delete();
         handler.shutdownService();
         if (!ScheduledExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();

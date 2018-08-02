@@ -29,6 +29,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -64,6 +65,9 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     private com.jfoenix.controls.JFXTreeTableView<LogsExtract> JFXTreeTableView;
+
+    @FXML
+    private PieChart piechart1;
 
     @FXML
     private AnchorPane treeTableAnchor;
@@ -139,6 +143,9 @@ public class ControllerLoggingPage implements Initializable {
     private String myIPAddress;
     private boolean ipChecker;
 
+    private ObservableList<PieChart.Data> errorReport = FXCollections.observableArrayList();
+
+    private int GLOBALCHECKER = 0;
 //    private ObservableList<TableBlob1> blobs;
 
 
@@ -317,8 +324,9 @@ public class ControllerLoggingPage implements Initializable {
                         if (!isEmpty()) {
                             this.setTextFill(Color.BLUE);
                             // Get fancy and change color based on data
-                            if (item.contains("ERROR"))
+                            if (item.contains("ERROR")) {
                                 this.setTextFill(Color.RED);
+                            }
                             setText(item);
                         }
                     }
@@ -348,6 +356,10 @@ public class ControllerLoggingPage implements Initializable {
             }
         });
 
+        errorReport.add(new PieChart.Data("Error Report",logsextract.getError()));
+        errorReport.add(new PieChart.Data("Notice Report",logsextract.getNotice()));
+
+        piechart1.setData(errorReport);
 
     }
 
@@ -433,7 +445,7 @@ public class ControllerLoggingPage implements Initializable {
         Label LABEL1 = new Label();
 //        LABEL1.setFont(new Font(LABEL0.getFont().getName(),11));
         String severity00= String.valueOf(severity0);
-        if(severity00.equals("ERROR")){
+        if(severity00.contains("ERROR")){
             LABEL1.setTextFill(Color.rgb(255, 0, 0));
             LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
         }else{
@@ -516,6 +528,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handledeleted(MouseEvent event) {
+        GLOBALCHECKER=0;
         try {
             myIPAddress= IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
@@ -565,6 +578,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handlecreated(MouseEvent event) {
+        GLOBALCHECKER=0;
         try {
             myIPAddress=IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
@@ -614,6 +628,7 @@ public class ControllerLoggingPage implements Initializable {
 
     @FXML
     void handleonetwo(MouseEvent event) {
+        GLOBALCHECKER=0;
         try {
             myIPAddress=IPAddressPolicy.getIp();
             System.out.println(myIPAddress);

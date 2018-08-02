@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class LoggingSnippets {
-    private OAuth2Login login = new OAuth2Login();
+    private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
 
     private Logging logging;
     ArrayList<LogsExtract> logsExtractList = new ArrayList<LogsExtract>();

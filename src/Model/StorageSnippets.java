@@ -49,7 +49,7 @@ import static com.google.api.client.util.Charsets.UTF_8;
 
 public class StorageSnippets {
 
-    private OAuth2Login login = new OAuth2Login();
+    private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
     Storage storage;
     Bucket bucket;
     String BUCKETS;

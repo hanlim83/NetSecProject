@@ -48,6 +48,9 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
     ArrayList<String> stringList6 = new ArrayList();
     Iterator listIterator;
 
+    int error = 0;
+    int notice = 0;
+
     String string1st;
 
     int globalchecker = 0;
@@ -69,6 +72,12 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
         // Get Severity
         severitycolour = logentry.getSeverity().toString();
         this.severity = new SimpleStringProperty(severitycolour);
+        String stringSeverity = String.valueOf(severity);
+        if(stringSeverity.contains("ERROR")){
+            ++error;
+        }else if(stringSeverity.contains("NOTICE")){
+            ++notice;
+        }
 
         // Get type of action -> GCS Bucket / CloudSQL / Project
         this.action = new SimpleStringProperty(logentry.getResource().getType());
@@ -144,6 +153,14 @@ public class LogsExtract extends RecursiveTreeObject<LogsExtract> {
 //        TableBlob(timestamp,severity,action,bucketName,finalEmail);
 //
 //        tableblob = new ControllerLoggingPage.TableBlob();
+    }
+
+    public int getError() {
+        return error;
+    }
+
+    public int getNotice() {
+        return notice;
     }
 
     public int getColorchecker() {
