@@ -11,59 +11,101 @@ public class extension_DB {
 
     public ArrayList<String> getExtensionList() throws SQLException {
         ArrayList<String> ExtensionList = new ArrayList<String>();
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM entries");
+        try {
+            connection = DataSource.getInstance().getConnection();
 
-        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-            ResultSet resultSet=preparedStatement.executeQuery();
+            preparedStatement=connection.prepareStatement("SELECT * FROM entriesExtension");
+
+            resultSet=preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ExtensionList.add(resultSet.getString(1));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
+//        }
         return ExtensionList;
     }
 
     public void createExtension(String extension) throws SQLException {
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO entries (extensions) VALUES (?)");
-        preparedStatement.setString(1,extension);
+        try {
+            preparedStatement=connection.prepareStatement("INSERT INTO entriesExtension (extensions) VALUES (?)");
+            preparedStatement.setString(1,extension);
 
-        try (Statement statement = connection.createStatement()) {
-//            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
+//        }
     }
 
     public void deleteExtension(String extension) throws SQLException {
-        String jdbcUrl = String.format(
-                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                databaseName,
-                instanceConnectionName);
+//        String jdbcUrl = String.format(
+//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+//                databaseName,
+//                instanceConnectionName);
+//
+//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE extensions=?");
-        preparedStatement.setString(1,extension);
+        try {
+            preparedStatement=connection.prepareStatement("DELETE FROM entriesExtension WHERE extensions=?");
+            preparedStatement.setString(1,extension);
 
-        try (Statement statement = connection.createStatement()) {
-//            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
+
+//        try (Statement statement = connection.createStatement()) {
+////            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
+//            preparedStatement.executeUpdate();
+//        }
     }
 }
