@@ -12,6 +12,7 @@ public class ScheduledExecutorServiceHandler {
     private static ScheduledFuture chartDataRunnable;
     private static ScheduledFuture showDataRunnable;
     private static ScheduledFuture sendEmailRunnable;
+    private static ScheduledFuture createTPSRunnable;
 
     public ScheduledExecutorServiceHandler() {
         int cores = Runtime.getRuntime().availableProcessors();
@@ -127,5 +128,21 @@ public class ScheduledExecutorServiceHandler {
 
     public void cancelsendEmailRunnable() {
         sendEmailRunnable.cancel(true);
+    }
+
+    public ScheduledFuture getcreateTPSRunnable() {
+        return createTPSRunnable;
+    }
+
+    public void setcreateTPSRunnable(ScheduledFuture createTPSRunnable) {
+        ScheduledExecutorServiceHandler.createTPSRunnable = createTPSRunnable;
+    }
+
+    public boolean getStatuscreateTPSRunnable() {
+        return !createTPSRunnable.isDone();
+    }
+
+    public void cancelcreateTPSRunnable() {
+        createTPSRunnable.cancel(true);
     }
 }

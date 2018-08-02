@@ -94,6 +94,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private charts chartRunnable;
     private capture captureRunnable;
     private sendEmailF sendFull;
+    private createTPS createTPS;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -149,6 +150,7 @@ public class ControllerCAMainDashboard implements Initializable {
         chartRunnable = new charts();
         captureRunnable = new capture();
         sendFull = new sendEmailF();
+        createTPS = new createTPS();
     }
 
     @FXML
@@ -179,7 +181,9 @@ public class ControllerCAMainDashboard implements Initializable {
             data.clear();
             dataSeries.getData().clear();
             thresholdSeries.getData().clear();
+            xSeriesData = 0;
             protocolChart.getData().clear();
+            top10IPChart.getData().clear();
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -382,7 +386,8 @@ public class ControllerCAMainDashboard implements Initializable {
         else if (capture.isRunning()) {
             this.capture = capture;
             captureToggle.setSelected(true);
-            handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(chartRunnable, 2, 6, TimeUnit.SECONDS));
+            addExistingTPS();
+            handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
             TimelineCtrl(true);
         } else if (capture != null) {
             this.capture = capture;
@@ -399,12 +404,11 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     private void addToQueue() {
-        capture.getTrafficPerSecond();
         TPS = capture.PreviousTPS;
         data.add(TPS.get(xSeriesData));
     }
 
-    private void TimelineCtrl(boolean flag) {
+    public void TimelineCtrl(boolean flag) {
         if (timer == null)
             timer = new AnimationTimer() {
                 @Override
@@ -474,13 +478,22 @@ public class ControllerCAMainDashboard implements Initializable {
         });
     }
 
+    public void addExistingTPS() {
+        TPS = capture.PreviousTPS;
+        for (Integer i : TPS) {
+            data.add(i);
+        }
+        addDataToSeries();
+    }
+
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, threshold);
-        handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(chartRunnable, 2, 6, TimeUnit.SECONDS));
+        handler.setchartDataRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable())
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(captureRunnable, 1, TimeUnit.SECONDS));
         clearCaptureBtn.setDisable(true);
+        handler.setcreateTPSRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
         TimelineCtrl(true);
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -494,6 +507,7 @@ public class ControllerCAMainDashboard implements Initializable {
 
     public void stopCapturing() {
         capture.stopSniffing();
+        handler.cancelcreateTPSRunnable();
         handler.cancelchartDataRunnable();
         TimelineCtrl(false);
         capture.Generalexport();
@@ -543,7 +557,6 @@ public class ControllerCAMainDashboard implements Initializable {
             try {
                 addToQueue();
                 ProtoMakeup();
-                //addDataToSeries();
                 TopIPMakeup();
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
@@ -612,7 +625,6 @@ public class ControllerCAMainDashboard implements Initializable {
                 capture.stopSniffing();
                 addToQueue();
                 ProtoMakeup();
-                //addDataToSeries();
                 TopIPMakeup();
                 if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
                     SMSHandler.sendAlert();
@@ -685,6 +697,13 @@ public class ControllerCAMainDashboard implements Initializable {
         public void run() {
             String pcapFilePath = capture.getFullPcapExportPath();
             EmailHandler.sendFullPcap(pcapFilePath);
+        }
+    }
+
+    private class createTPS implements Runnable {
+        @Override
+        public void run() {
+            capture.getTrafficPerSecond();
         }
     }
 

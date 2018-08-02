@@ -97,6 +97,7 @@ public class ControllerCAMainPackets implements Initializable {
     private tableview tRunnable;
     private capture cRunnable;
     private sendEmailF sendFull;
+    private createTPS createTPS;
     /*private Timer timer = new Timer(true);
     private TimerTask exportTask;
     private boolean timerTaskinProgress = false;
@@ -142,6 +143,7 @@ public class ControllerCAMainPackets implements Initializable {
         tRunnable = new tableview();
         cRunnable = new capture();
         sendFull = new sendEmailF();
+        createTPS = new createTPS();
         /*exportTask = new TimerTask() {
             @Override
             public void run() {
@@ -343,6 +345,7 @@ public class ControllerCAMainPackets implements Initializable {
         if (handler.getcaptureRunnable() == null || !handler.getStatuscaptureRunnable())
             handler.setcaptureRunnable(ScheduledExecutorServiceHandler.getService().schedule(cRunnable, 1, TimeUnit.SECONDS));
         clearCaptureBtn.setDisable(true);
+        handler.setcreateTPSRunnable(ScheduledExecutorServiceHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -356,6 +359,7 @@ public class ControllerCAMainPackets implements Initializable {
     public void stopCapturing() {
         capture.stopSniffing();
         handler.cancelTableviewRunnable();
+        handler.cancelcreateTPSRunnable();
         //Refresh TableView for last time
         packets = capture.packets;
         OLpackets = FXCollections.observableArrayList(packets);
@@ -674,6 +678,13 @@ public class ControllerCAMainPackets implements Initializable {
         @Override
         public void run() {
             capture.startSniffing();
+        }
+    }
+
+    private class createTPS implements Runnable {
+        @Override
+        public void run() {
+            capture.getTrafficPerSecond();
         }
     }
 

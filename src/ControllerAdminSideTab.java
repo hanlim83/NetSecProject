@@ -79,12 +79,24 @@ public class ControllerAdminSideTab {
         ControllerAdminSideTab.EmailHandler = EmailHandler;
     }
 
+    public void StopTimeLineCtrl() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("CAMainDashboard.fxml").openStream());
+            ControllerCAMainDashboard ctrl = loader.getController();
+            ctrl.TimelineCtrl(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     void goToCaptureAnalysis(ActionEvent event) {
         if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
             handler.cancelTableviewRunnable();
         if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
             handler.cancelchartDataRunnable();
+        StopTimeLineCtrl();
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();
@@ -139,6 +151,7 @@ public class ControllerAdminSideTab {
             handler.cancelTableviewRunnable();
         if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
             handler.cancelchartDataRunnable();
+        StopTimeLineCtrl();
         if (device == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();

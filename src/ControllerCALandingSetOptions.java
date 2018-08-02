@@ -171,7 +171,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             JFXDialogLayout layout = new JFXDialogLayout();
             layout.setHeading(new Label(title));
             layout.setBody(new Label(content));
-            layout.setActions(yes, no);
+            layout.setActions(no, yes);
             JFXAlert<Void> alert = new JFXAlert<>(stage);
             alert.setOverlayClose(true);
             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
