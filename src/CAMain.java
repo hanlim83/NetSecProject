@@ -80,8 +80,7 @@ public class CAMain extends Application {
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeOne) {
                             capture.stopSniffing();
-                            if (capture.isRunning())
-                                capture.stopSniffing();
+                            Platform.exit();
 
                         } else if (result.get() == buttonTypeTwo) {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
@@ -121,8 +120,7 @@ public class CAMain extends Application {
                                         Optional<ButtonType> result = alert.showAndWait();
                                         if (result.get() == buttonTypeOne) {
                                             capture.stopSniffing();
-                                            if (capture.isRunning())
-                                                capture.stopSniffing();
+                                            Platform.exit();
 
                                         } else if (result.get() == buttonTypeTwo) {
                                             FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainPackets.fxml"));
