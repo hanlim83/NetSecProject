@@ -331,26 +331,4 @@ public class ControllerLoginPage implements Initializable{
             };
         }
     };
-
-//    Task<Void> task = new Task<Void>() {
-//        @Override
-//        public Void call() {
-//            //System.out.println("Thread running"+thread.getId());
-//            try {
-//                credential = login.login();
-//
-//            } catch (UnknownHostException u) {
-//                Platform.runLater(() -> {
-//                    System.out.println("No wifi");
-//                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-//                    snackbar.show("Please check your internet connection", 3000);
-//                    //u.printStackTrace();
-//                });
-//            } catch (Exception e) {
-//                //e.printStackTrace();
-//            }
-//            //System.out.println("Thread running"+thread.getId());
-//            return null;
-//        }
-//    };
 }

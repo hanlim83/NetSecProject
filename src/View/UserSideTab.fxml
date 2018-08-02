@@ -14,7 +14,7 @@
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXButton onAction="#onClickUserSettings" prefHeight="143.0" prefWidth="219.0" text="Settings">
+      <JFXButton fx:id="settingsButton" onAction="#onClickUserSettings" prefHeight="143.0" prefWidth="219.0" text="Settings">
          <font>
             <Font size="16.0" />
          </font></JFXButton>

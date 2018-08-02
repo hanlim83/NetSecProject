@@ -11,8 +11,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -30,7 +28,6 @@ import java.net.*;
 import java.security.PublicKey;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,18 +63,23 @@ public class ControllerUserHome implements Initializable {
 
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
-    WindowsUtils utils = new WindowsUtils();
+
+    private static String lastFile;
+    private static String greetings;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         timerprocess.start();
-        try {
-            InfoUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (counter==0){
+            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            TimeLabel.setText(string);
+        } else{
+            LastFileModifiedLabel.setText(lastFile);
+            GreetingsLabel.setText(greetings);
+            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            TimeLabel.setText(string);
         }
-//        processTable.start();
     }
 
     private static Timer timer;
@@ -143,7 +145,7 @@ public class ControllerUserHome implements Initializable {
 ////        controllerSecureCloudStorage.passData(blobs);
 //    }
 
-    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+    private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
     private void getLatestFile() throws IOException {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
@@ -167,7 +169,7 @@ public class ControllerUserHome implements Initializable {
         }
     }
 
-    public String convertTime(long time) {
+    private String convertTime(long time) {
         Date date = new Date(time);
         Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return format.format(date);
@@ -180,21 +182,30 @@ public class ControllerUserHome implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     updateTimer();
+                    Platform.runLater(() ->{
+                        try {
+                            InfoUpdate();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    });
                     return null;
                 }
             };
         }
     };
 
-    private void InfoUpdate() throws Exception {
+    public void InfoUpdate() throws Exception {
         credential = login.login();
         getLatestFile();
         Collections.sort(BlobList);
         System.out.println("=======================LATEST FILE/TIME===============================");
         System.out.println(BlobList.get(0).toString());
         System.out.println(convertTime(BlobList.get(0).getTime()));
-        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
-        GreetingsLabel.setText(getGreetings() + login.getName());
+        lastFile="Your last file was modified on " + convertTime(BlobList.get(0).getTime());
+        LastFileModifiedLabel.setText(lastFile);
+        greetings=getGreetings() + login.getName();
+        GreetingsLabel.setText(greetings);
     }
 
     private String getGreetings() {

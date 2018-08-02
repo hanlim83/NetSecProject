@@ -39,13 +39,13 @@ import java.util.Scanner;
 public class ControllerUserSideTab implements Initializable {
 
     @FXML
-    private JFXButton testButton;
-
-    @FXML
     private JFXButton SecureCloudStorageButton;
 
     @FXML
     private JFXButton SecureCloudTransferButton;
+
+    @FXML
+    private JFXButton settingsButton;
 
     @FXML
     private JFXButton LogoutButton;
@@ -224,9 +224,29 @@ public class ControllerUserSideTab implements Initializable {
         try {
             imageForFile = new Image(file.toURI().toURL().toExternalForm());
             ImageView imageView = new ImageView(imageForFile);
-//            imageView.setFitHeight(24.5);
-//            imageView.setFitWidth(35);
             LogoutButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Path path1 = FileSystems.getDefault().getPath("src/View/baseline_settings_black_18dp.png");
+        File file1 = new File(path1.toUri());
+        Image imageForFile1;
+        try {
+            imageForFile1 = new Image(file1.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile1);
+            settingsButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Path path2 = FileSystems.getDefault().getPath("src/View/sharp_lock_black_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile2);
+            SecureCloudStorageButton.setGraphic(imageView);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

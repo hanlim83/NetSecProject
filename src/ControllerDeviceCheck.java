@@ -201,7 +201,8 @@ public class ControllerDeviceCheck implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerUserHome controller = loader.<ControllerUserHome>getController();
-                } catch (IOException u) {
+                    controller.InfoUpdate();
+                } catch (Exception u) {
                     u.printStackTrace();
                 }
                 stage.setScene(new Scene(nextView));
