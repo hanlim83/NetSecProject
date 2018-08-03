@@ -144,7 +144,7 @@ public class ControllerAdminHome implements Initializable {
         }
     };
 
-    private boolean firstTime;
+    private static boolean firstTime;
     private void InfoUpdate() throws Exception {
         credential = login.login();
         String email;
@@ -156,16 +156,16 @@ public class ControllerAdminHome implements Initializable {
                 firstTime=true;
             }else{
                 lastLogin=convertTime(admin_db.getLastLoginTime(email));
-                LocalDateTime now=LocalDateTime.now();
-                String ActivationTime=now.toString();
-                admin_db.setLastLoginTime(ActivationTime,email);
-                loginCounter++;
                 LastLoginLabel.setText("Your last login was on " + lastLogin);
                 //else this^
                 //also make this reference the static timing instead
-                GreetingsLabel.setText(getGreetings() + login.getName());
                 firstTime=false;
             }
+            LocalDateTime now=LocalDateTime.now();
+            String ActivationTime=now.toString();
+            admin_db.setLastLoginTime(ActivationTime,email);
+            loginCounter++;
+            GreetingsLabel.setText(getGreetings() + login.getName());
         }else{
             if (firstTime==true){
                 LastLoginLabel.setText("Welcome this is your first time logging in");
