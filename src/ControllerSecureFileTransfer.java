@@ -4,33 +4,63 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.ReadChannel;
+import com.google.cloud.storage.*;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
+import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.sun.jna.platform.win32.Netapi32Util;
+import com.sun.jna.platform.win32.WinNT;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.*;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.security.spec.KeySpec;
+import java.sql.SQLException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,11 +88,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     @FXML
     private JFXComboBox<String> emailBox;
 
-    //    private KeyPairGenerator keyGen;
-//    private KeyPair pair;
-//    private PrivateKey privateKey;
-//    private PublicKey publicKey;
-//    private Scene myScene;
+
     public static AnchorPane rootP;
     private String privateBucketName;
     private Storage storage;
@@ -73,13 +99,35 @@ public class ControllerSecureFileTransfer implements Initializable {
     public ControllerSecureFileTransfer () throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.cipher = Cipher.getInstance("RSA");
     }
-    ObservableList<String> Email = FXCollections.observableArrayList("fenderxrs@gmail.com", "hugochiaxyz@gmail.com", "hansenhappy83@gmail.com", "winstonlim2000@gmail.com");
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        User_InfoDB user = new User_InfoDB();
+        ObservableList<String> Email = null;
+
+        try {
+
+            credential = login.login();
+            ArrayList <String> newEmail = user.getAllEmail();
+            newEmail.remove(login.getEmail());
+
+            Email = FXCollections.observableArrayList(newEmail);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         hamburgerBar();
         emailBox.setItems(Email);
+
     }
 
 
@@ -100,22 +148,21 @@ public class ControllerSecureFileTransfer implements Initializable {
         String AbsolutePath = file.getAbsolutePath();
         String filename = file.getName();
         User_InfoDB user = new User_InfoDB();
+        System.out.println(emailBox.getValue()+" "+ filename);
 
-        System.out.println(emailBox.getValue());
-
+//        decryptFile(getFileInBytes(file),file, user.getPrivateKey("fenderxrs@gmail.com", "Pass123!"));
         encryptFile(getFileInBytes(file),file, user.getPublicKey(emailBox.getValue()));
         uploadFile(filename,getFileInBytes(file));
     }
 
     private void uploadFile(String filename, byte[] out) throws Exception {
 
-        Page<Bucket> buckets = storage.list();
+        getStorage();
+        Page <Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
             if (bucket.toString().contains(privateBucketName)) {
                 System.out.println(bucket.toString());
                 InputStream input = new ByteArrayInputStream(out);
-//                InputStream targetStream = new FileInputStream(initialFile);
-//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
                 Blob blob = bucket.create(filename, input, "text/plain");
             }
         }
@@ -147,6 +194,12 @@ public class ControllerSecureFileTransfer implements Initializable {
         writeToFile(output, this.cipher.doFinal(input));
     }
 
+    public void decryptFile(byte[] input, File output, PrivateKey key)
+            throws IOException, GeneralSecurityException {
+        this.cipher.init(Cipher.DECRYPT_MODE, key);
+        writeToFile(output, this.cipher.doFinal(input));
+    }
+
 
     public byte[] getFileInBytes(File f) throws IOException {
         FileInputStream fis = new FileInputStream(f);
@@ -155,8 +208,6 @@ public class ControllerSecureFileTransfer implements Initializable {
         fis.close();
         return fbytes;
     }
-
-
 
 
     public void hamburgerBar() {
@@ -168,7 +219,7 @@ public class ControllerSecureFileTransfer implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerSecureCloudStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerSecureFileTransfer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
@@ -189,4 +240,4 @@ public class ControllerSecureFileTransfer implements Initializable {
         });
     }
 
-}
+    }

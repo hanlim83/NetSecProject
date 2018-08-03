@@ -814,6 +814,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
         }
 
+
         JFXTreeTableView.unGroup(folderColumn);
         JFXTreeTableView.unGroup(typeColumn);
         JFXTreeTableView.getColumns().clear();

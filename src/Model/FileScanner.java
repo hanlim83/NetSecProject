@@ -96,11 +96,11 @@ public class FileScanner {
 
             if (testPositive >= 5) {
 
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("FireE");
-                alert.setHeaderText("This file is malicious!");
-                alert.setContentText("This file will not be pushed to the cloud as our systems detects this file to be malicious.");
-                alert.showAndWait();
+//                Alert alert = new Alert(Alert.AlertType.WARNING);
+//                alert.setTitle("FireE");
+//                alert.setHeaderText("This file is malicious!");
+//                alert.setContentText("This file will not be pushed to the cloud as our systems detects this file to be malicious.");
+//                alert.showAndWait();
 
                 System.out.println("\033[31;1mThis file is malicious!\033[0m");
 
