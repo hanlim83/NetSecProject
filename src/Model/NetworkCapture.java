@@ -434,10 +434,10 @@ public class NetworkCapture {
 
     public void addAlert(boolean Type) {
         if (Type) {
-            Alert tempt = new Alert("ARP Spoofing");
+            Alert tempt = new Alert("ARP Spoofing", specificPcapExportPath);
             alerts.add(tempt);
         } else {
-            Alert tempt = new Alert("Exceed Pre-Defined Threshold");
+            Alert tempt = new Alert("Exceed Pre-Defined Threshold", specificPcapExportPath);
             alerts.add(tempt);
         }
     }

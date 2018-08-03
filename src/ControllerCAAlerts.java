@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
@@ -71,6 +73,7 @@ public class ControllerCAAlerts implements Initializable {
     private JFXTreeTableView<Alert> alertsView;
     private JFXTreeTableColumn<Alert, String> typeColumn;
     private JFXTreeTableColumn<Alert, String> tdColumn;
+    private JFXTreeTableColumn<Alert, String> gtColumn;
     private TreeItem<Alert> root;
     private ObservableList<Alert> OLalerts;
 
@@ -89,13 +92,14 @@ public class ControllerCAAlerts implements Initializable {
         alertsView.setEditable(false);
         alertsView.setShowRoot(false);
         stackpane.getChildren().add(alertsView);
-        alertsView.getColumns().setAll(typeColumn, tdColumn);
+        alertsView.getColumns().setAll(typeColumn, tdColumn, gtColumn);
         groupToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (groupToggle.isSelected())
                 ExecutorServiceHandler.getService().execute(() -> alertsView.group(typeColumn));
             else
                 ExecutorServiceHandler.getService().execute(() -> alertsView.unGroup(typeColumn));
         });
+        alertCount.setText("Suspicious Events Count: " + capture.getEvents());
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -151,6 +155,40 @@ public class ControllerCAAlerts implements Initializable {
                 return tdColumn.getComputedValue(param);
             }
         });
+        gtColumn = new JFXTreeTableColumn<>("Go to Alert Dashboard");
+        gtColumn.setPrefWidth(300);
+        Callback<TreeTableColumn<Alert, String>, TreeTableCell<Alert, String>> cellFactory
+                =
+                new Callback<TreeTableColumn<Alert, String>, TreeTableCell<Alert, String>>() {
+                    @Override
+                    public TreeTableCell call(final TreeTableColumn<Alert, String> param) {
+                        final TreeTableCell<Alert, String> cell = new TreeTableCell<Alert, String>() {
+                            JFXButton btn = new JFXButton();
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    System.out.println(item);
+                                    btn.setText("Go to Alert Dashboard");
+                                    btn.setOnAction(event -> {
+                                        System.out.println("Working");
+                                    });
+                                    btn.setId("tableJFXButton");
+                                    btn.getStylesheets().add("Style.css");
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        gtColumn.setCellFactory(cellFactory);
     }
 
     @FXML
