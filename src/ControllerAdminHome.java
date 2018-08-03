@@ -144,23 +144,34 @@ public class ControllerAdminHome implements Initializable {
         }
     };
 
+    private boolean firstTime;
     private void InfoUpdate() throws Exception {
         credential = login.login();
         String email;
         email=login.getEmail();
         admin_DB admin_db=new admin_DB();
         if (loginCounter == 0) {
-            lastLogin=convertTime(admin_db.getLastLoginTime(email));
-            LocalDateTime now=LocalDateTime.now();
-            String ActivationTime=now.toString();
-            admin_db.setLastLoginTime(ActivationTime,email);
-            loginCounter++;
-            LastLoginLabel.setText("Your last login was on " + lastLogin);
-            //else this^
-            //also make this reference the static timing instead
-            GreetingsLabel.setText(getGreetings() + login.getName());
+            if (admin_db.getLastLoginTime(email)==null){
+                LastLoginLabel.setText("Welcome this is your first time logging in");
+                firstTime=true;
+            }else{
+                lastLogin=convertTime(admin_db.getLastLoginTime(email));
+                LocalDateTime now=LocalDateTime.now();
+                String ActivationTime=now.toString();
+                admin_db.setLastLoginTime(ActivationTime,email);
+                loginCounter++;
+                LastLoginLabel.setText("Your last login was on " + lastLogin);
+                //else this^
+                //also make this reference the static timing instead
+                GreetingsLabel.setText(getGreetings() + login.getName());
+                firstTime=false;
+            }
         }else{
-            LastLoginLabel.setText("Your last login was on " + lastLogin);
+            if (firstTime==true){
+                LastLoginLabel.setText("Welcome this is your first time logging in");
+            } else{
+                LastLoginLabel.setText("Your last login was on " + lastLogin);
+            }
             GreetingsLabel.setText(getGreetings() + login.getName());
         }
 //        System.out.println(lastLogin);
