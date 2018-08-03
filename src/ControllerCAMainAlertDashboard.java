@@ -106,9 +106,6 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         }
         hamburger.setDisable(true);
         returnToCaptureBtn.setDisable(true);
-//        xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
-//        final NumberAxis yAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
-//        xAxis = new NumberAxis(0, MAX_DATA_POINTS, MAX_DATA_POINTS / 10);
         xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
@@ -278,12 +275,6 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             for (index = 0; index < max; index++) {
                 data.add(new PieChart.Data(ProtocolMakeupProtocols.get(index), ProtocolMakeupData.get(index)));
             }
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    protocolChart.setData(data);
-                }
-            });
             //Extracted from getTop5IP
             TopIPObject tempt = null;
             int recordedIndex = 0;
@@ -322,12 +313,6 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             for (TopIPObject d : Top5IPMakeup) {
                 data1.add(new PieChart.Data(d.getKey(), d.getValue()));
             }
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    top10IPChart.setData(data1);
-                }
-            });
             //Based from getTrafficPerSecond
             try {
                 Timestamp firstPacket = packets.get(0).getOrignalTimeStamp();
@@ -358,10 +343,14 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //Based on Runnable Line Chart
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+                    //Extracted from ProtoMakeup
+                    protocolChart.setData(data);
+                    //Extracted from TopIPMakeup
+                    top10IPChart.setData(data1);
+                    //Based on Runnable Line Chart
                     int Chartindex = 0;
                     for (Integer i : TPS) {
                         dataSeries1.getData().add(new XYChart.Data<>(Chartindex, threshold));

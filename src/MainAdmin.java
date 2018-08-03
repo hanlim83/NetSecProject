@@ -192,7 +192,9 @@ public class MainAdmin extends Application {
         if (!ExecutorServiceHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
-            FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
+            //FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
+            /*File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+            file.delete();*/
             FileUtils.cleanDirectory(new File("PcapExport"));
         } catch (IOException e) {
             e.printStackTrace();

@@ -39,7 +39,7 @@ public class CATest extends Application {
             Parent root = loader.load();
             ControllerCAMainAlertDashboard controller = loader.getController();
             handler = new ExecutorServiceHandler();
-            controller.passVariables(null, handler, null, false, 0, null, new File("C:\\Users\\Hansen Lim\\Documents\\Hello.pcap").getAbsolutePath(), false, null);
+            controller.passVariables(null, handler, null, false, 25, null, new File("C:\\Users\\Hansen Lim\\Documents\\Hello.pcap").getAbsolutePath(), false, null);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
