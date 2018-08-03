@@ -19,6 +19,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -28,8 +30,12 @@ import org.pcap4j.core.*;
 import org.pcap4j.packet.Packet;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +68,8 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private JFXButton returnToCaptureBtn;
     @FXML
     private Label ipAddr;
+    @FXML
+    private JFXButton homeButton;
 
     public static final int LineRange = 5;
     private final int MAX_DATA_POINTS = 25, MAX = 10, MIN = 5;
@@ -102,6 +110,18 @@ public class ControllerCAMainAlertDashboard implements Initializable {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         hamburger.setDisable(true);
@@ -371,6 +391,20 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             hamburger.setDisable(false);
             returnToCaptureBtn.setDisable(false);
         }
+    }
+
+    @FXML
+    public void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        Scene myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+        ControllerAdminHome controller = loader.getController();
+        //controller.passData(admin);
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Home Page");
+        stage.show();
     }
 
 }

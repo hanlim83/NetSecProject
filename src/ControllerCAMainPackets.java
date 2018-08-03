@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -29,9 +31,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -77,6 +83,8 @@ public class ControllerCAMainPackets implements Initializable {
     private JFXSpinner spinner;
     @FXML
     private Label ipAddr;
+    @FXML
+    private JFXButton homeButton;
 
     private PcapNetworkInterface device;
     private Scene myScene;
@@ -111,6 +119,18 @@ public class ControllerCAMainPackets implements Initializable {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         tableColPN.setCellValueFactory(new PropertyValueFactory<CapturedPacket, Integer>("number"));
@@ -809,4 +829,17 @@ public class ControllerCAMainPackets implements Initializable {
         }
     }
 
+    @FXML
+    public void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        Scene myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+        ControllerAdminHome controller = loader.getController();
+        //controller.passData(admin);
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Home Page");
+        stage.show();
+    }
 }

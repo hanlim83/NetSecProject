@@ -9,12 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -24,8 +27,12 @@ import javafx.util.Callback;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.packet.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +54,8 @@ public class ControllerCADetailedPacket implements Initializable {
     private JFXButton returnCaptureBtn;
     @FXML
     private Label ipAddr;
+    @FXML
+    private JFXButton homeButton;
 
     private ExecutorServiceHandler handler;
     private NetworkCapture capture;
@@ -73,6 +82,18 @@ public class ControllerCADetailedPacket implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void passVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
@@ -97,7 +118,6 @@ public class ControllerCADetailedPacket implements Initializable {
 
     public void hamburgerBar() {
         rootP = anchorPane;
-
         try {
             VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
@@ -271,4 +291,21 @@ public class ControllerCADetailedPacket implements Initializable {
         stage.setTitle("Capture - Packets View");
         stage.show();
     }
+
+    @FXML
+    void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerAdminHome controller = loader.getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Home Page");
+        stage.show();
+    }
+
 }

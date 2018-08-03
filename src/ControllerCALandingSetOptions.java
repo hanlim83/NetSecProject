@@ -11,9 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -22,8 +25,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -58,6 +65,9 @@ public class ControllerCALandingSetOptions implements Initializable {
     @FXML
     private Label ipAddr;
 
+    @FXML
+    private JFXButton homeButton;
+
     private PcapNetworkInterface device;
     private Scene myScene;
     private ExecutorServiceHandler handler;
@@ -79,6 +89,18 @@ public class ControllerCALandingSetOptions implements Initializable {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         nextBtn.setDisable(true);
@@ -248,6 +270,20 @@ public class ControllerCALandingSetOptions implements Initializable {
                 drawer.setDisable(false);
             }
         });
+    }
+
+    @FXML
+    public void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        Scene myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+        ControllerAdminHome controller = loader.getController();
+        //controller.passData(admin);
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Home Page");
+        stage.show();
     }
 }
 
