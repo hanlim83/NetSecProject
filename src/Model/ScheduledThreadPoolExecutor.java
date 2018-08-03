@@ -25,8 +25,6 @@ public class ScheduledThreadPoolExecutor {
     }
 
     public void shutdownService() {
-        if (showDataRunnable != null)
-            cancelshowDataRunnable();
         service.shutdown();
     }
 
