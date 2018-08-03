@@ -144,23 +144,20 @@ public class ControllerUserSideTab implements Initializable {
     }
 
     @FXML
-    void onHoverTest(MouseEvent event) {
+    void onHover(MouseEvent event) {
 //        SecureCloudStorageButton.setStyle("-fx-background-color: red;");
-        SecureCloudStorageButton.setRipplerFill(Color.RED);
+//        SecureCloudStorageButton.setRipplerFill(Color.RED);
 //        SecureCloudStorageButton.setDisableVisualFocus(false);
         SecureCloudStorageButton.setButtonType(JFXButton.ButtonType.RAISED);
-        System.out.println("Hovering");
     }
 
     @FXML
-    void onHoverExitTest(MouseEvent event) {
+    void onHoverExit(MouseEvent event) {
         SecureCloudStorageButton.setButtonType(JFXButton.ButtonType.FLAT);
-        System.out.println("Unhovering");
     }
 
     @FXML
     void onClickSecureCloudTransferButton(ActionEvent event) throws IOException {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -173,7 +170,16 @@ public class ControllerUserSideTab implements Initializable {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
 
+    @FXML
+    void onHover1(MouseEvent event) {
+        SecureCloudTransferButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit1(MouseEvent event) {
+        SecureCloudTransferButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
@@ -190,6 +196,16 @@ public class ControllerUserSideTab implements Initializable {
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
+    }
+
+    @FXML
+    void onHover2(MouseEvent event) {
+        settingsButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit2(MouseEvent event) {
+        settingsButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
@@ -212,9 +228,16 @@ public class ControllerUserSideTab implements Initializable {
         stage.show();
     }
 
-//    public void setLogoutImage(){
-//
-//    }
+    @FXML
+    void onHover3(MouseEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit3(MouseEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.FLAT);
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
