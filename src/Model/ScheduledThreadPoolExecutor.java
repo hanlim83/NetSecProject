@@ -25,8 +25,8 @@ public class ScheduledThreadPoolExecutor {
     }
 
     public void shutdownService() {
-        if (tableviewRunnable != null)
-            cancelTableviewRunnable();
+        if (showDataRunnable != null)
+            cancelshowDataRunnable();
         service.shutdown();
     }
 
