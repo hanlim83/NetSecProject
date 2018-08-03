@@ -29,9 +29,6 @@ public class ControllerDeviceCheck implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
-    private JFXButton tempButton;
-
-    @FXML
     private JFXButton RestartDeviceCheckButton;
 
     @FXML
@@ -47,7 +44,6 @@ public class ControllerDeviceCheck implements Initializable {
     private boolean WindowsStatus;
     private boolean WirelessEncryption;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -60,35 +56,15 @@ public class ControllerDeviceCheck implements Initializable {
         RestartDeviceCheckButton.setDisable(true);
     }
 
-    //TODO
-    //Remove this in the future
-    @FXML
-    void onClickTempButton(ActionEvent event) throws IOException, SQLException, InterruptedException {
-        runCheck();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("UserHome.fxml"));
-//        myScene = anchorPane.getScene();
-//        Stage stage = (Stage) (myScene).getWindow();
-//        Parent nextView = loader.load();
-//
-//        //Will change to Device Checking Page next time
-//        ControllerUserHome controller = loader.<ControllerUserHome>getController();
-//        //controller.passData(login.getEmail());
-//
-//        stage.setScene(new Scene(nextView));
-//        stage.setTitle("NSPJ");
-//        stage.show();
-    }
-
     //TODO Include error handling for cloud next time
-    public void runCheck() throws IOException, InterruptedException, SQLException {
+    public void runCheck(){
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
             if (AllFirewallStatus == false) {
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
                 Process p;
                 try {
                     p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
@@ -97,90 +73,93 @@ public class ControllerDeviceCheck implements Initializable {
                     e1.printStackTrace();
                 }
 
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Please turn on your firewall and try again.";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Please turn on your firewall and try again.";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleAlert("Please turn on your firewall and try again.");
             } else if(WirelessEncryption==false) {
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Please connect to a more secure network. DO NOT use open networks.";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Please connect to a more secure network. DO NOT use open networks.";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleAlert("Please connect to a more secure network. DO NOT use open networks.");
             }
             else if (WindowsStatus == false) {
-                LoadingSpinner.setVisible(false);
-                RestartDeviceCheckButton.setVisible(true);
-                RestartDeviceCheckButton.setDisable(false);
-                Platform.runLater(() -> {
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-
-                    String title = "";
-                    String content = "Your device version is not supported. Please update or use a device with a newer software.";
-
-                    JFXButton close = new JFXButton("Close");
-
-                    close.setButtonType(JFXButton.ButtonType.RAISED);
-
-                    close.setStyle("-fx-background-color: #00bfff;");
-
-                    JFXDialogLayout layout = new JFXDialogLayout();
-                    layout.setHeading(new Label(title));
-                    layout.setBody(new Label(content));
-                    layout.setActions(close);
-                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(layout);
-                    alert.initModality(Modality.NONE);
-                    close.setOnAction(__ -> alert.hideWithAnimation());
-                    alert.show();
-                });
+//                LoadingSpinner.setVisible(false);
+//                RestartDeviceCheckButton.setVisible(true);
+//                RestartDeviceCheckButton.setDisable(false);
+//                Platform.runLater(() -> {
+//                    myScene = anchorPane.getScene();
+//                    Stage stage = (Stage) (myScene).getWindow();
+//
+//                    String title = "";
+//                    String content = "Your device version is not supported. Please update or use a device with a newer software.";
+//
+//                    JFXButton close = new JFXButton("Close");
+//
+//                    close.setButtonType(JFXButton.ButtonType.RAISED);
+//
+//                    close.setStyle("-fx-background-color: #00bfff;");
+//
+//                    JFXDialogLayout layout = new JFXDialogLayout();
+//                    layout.setHeading(new Label(title));
+//                    layout.setBody(new Label(content));
+//                    layout.setActions(close);
+//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
+//                    alert.setOverlayClose(true);
+//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                    alert.setContent(layout);
+//                    alert.initModality(Modality.NONE);
+//                    close.setOnAction(__ -> alert.hideWithAnimation());
+//                    alert.show();
+//                });
+                handleAlert("Your device version is not supported. Please update or use a device with a newer software.");
             } else {
                 OAuth2Login auth = new OAuth2Login();
                 String mail = null;
@@ -368,5 +347,38 @@ public class ControllerDeviceCheck implements Initializable {
             WindowsStatus = false;
             System.out.println("Not supported VERSION!");
         }
+    }
+
+    private void handleAlert(String message){
+        Platform.runLater(() -> {
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            Platform.runLater(() -> {
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+
+                String title = "";
+                String content = message;
+
+                JFXButton close = new JFXButton("Close");
+
+                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close.setStyle("-fx-background-color: #00bfff;");
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
+        });
     }
 }

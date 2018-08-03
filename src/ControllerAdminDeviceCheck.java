@@ -62,7 +62,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
         process.setOnSucceeded(e -> {
             process.reset();
             if (!AllFirewallStatus){
-                handleAlert("Please turn on your firewall and try again.");
                 Process p;
                 try {
                     p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
@@ -70,8 +69,8 @@ public class ControllerAdminDeviceCheck implements Initializable {
                 } catch (IOException | InterruptedException e1) {
                     e1.printStackTrace();
                 }
+                handleAlert("Please turn on your firewall and try again.");
             } else if(!WirelessEncryption) {
-//                });
                 handleAlert("Please connect to a more secure network. DO NOT use open networks.");
             }else if(!WindowsStatus){
                 handleAlert("Your device version is not supported. Please update or use a device with a newer software.");
@@ -253,33 +252,35 @@ public class ControllerAdminDeviceCheck implements Initializable {
     }
 
     private void handleAlert(String message){
-        LoadingSpinner.setVisible(false);
-        RestartDeviceCheckButton.setVisible(true);
-        RestartDeviceCheckButton.setDisable(false);
         Platform.runLater(() -> {
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            Platform.runLater(() -> {
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
 
-            String title = "";
-            String content = message;
+                String title = "";
+                String content = message;
 
-            JFXButton close = new JFXButton("Close");
+                JFXButton close = new JFXButton("Close");
 
-            close.setButtonType(JFXButton.ButtonType.RAISED);
+                close.setButtonType(JFXButton.ButtonType.RAISED);
 
-            close.setStyle("-fx-background-color: #00bfff;");
+                close.setStyle("-fx-background-color: #00bfff;");
 
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(close);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.NONE);
-            close.setOnAction(__ -> alert.hideWithAnimation());
-            alert.show();
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
         });
     }
 }
