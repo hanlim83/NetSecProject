@@ -77,6 +77,7 @@ public class ControllerLoginPage implements Initializable{
         }
 
         LoginButton.setDisable(true);
+        RevokeCredentialsButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
             endTimer();
@@ -85,6 +86,7 @@ public class ControllerLoginPage implements Initializable{
                 System.out.println("No email");
                 process.reset();
                 LoginButton.setDisable(false);
+                RevokeCredentialsButton.setDisable(false);
                 LoadingSpinner.setVisible(false);
             } else {
                 if (AccStatus.equals("Inactive")) {
@@ -121,6 +123,7 @@ public class ControllerLoginPage implements Initializable{
                 } else {
                     process.reset();
                     LoginButton.setDisable(false);
+                    RevokeCredentialsButton.setDisable(false);
                     LoadingSpinner.setVisible(false);
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();
@@ -161,6 +164,7 @@ public class ControllerLoginPage implements Initializable{
                     System.out.println("No email");
                     process.reset();
                     LoginButton.setDisable(false);
+                    RevokeCredentialsButton.setDisable(false);
                     LoadingSpinner.setVisible(false);
                 } else {
                     endTimer();
@@ -209,6 +213,7 @@ public class ControllerLoginPage implements Initializable{
             alert.show();
             process.reset();
             LoginButton.setDisable(false);
+            RevokeCredentialsButton.setDisable(false);
             LoadingSpinner.setVisible(false);
         });
     }
@@ -221,6 +226,7 @@ public class ControllerLoginPage implements Initializable{
                     login.stopLocalServerReciver();
                     LoadingSpinner.setVisible(false);
                     LoginButton.setDisable(false);
+                    RevokeCredentialsButton.setDisable(false);
                     endTimer();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -252,7 +258,6 @@ public class ControllerLoginPage implements Initializable{
                 });
             }
         };
-        //TODO change timer back to 60000
         timer.schedule(Task, 60000);
     }
 

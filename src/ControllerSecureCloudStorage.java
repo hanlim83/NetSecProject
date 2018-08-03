@@ -178,25 +178,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     @FXML
     void onClickUploadButton(ActionEvent event) throws Exception {
-//        checkUserPassword();
-//        uploadProcess.start();
-
-        //TODO IMPORTANT UNCOMMENT THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         checkUserDownloadDelete("Upload");
-
-////        UploadFileTest();
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Choose File to Upload");
-//        //FEATURE: stage now loads as 1 page instead of 2
-//        Stage stage = (Stage) anchorPane.getScene().getWindow();
-//        File file = fileChooser.showOpenDialog(stage);
-//        if (checkNameTaken(file.getName()) == true) {
-//            System.out.println("Change NAME!!!! Add showing alert");
-//        } else {
-//            encryptFileNew(file);
-//            //may need to move update Table somewhere else instead
-//            updateTable();
-//        }
     }
 
     private boolean checkNameTaken(String fileName) throws Exception {
@@ -530,7 +512,9 @@ public class ControllerSecureCloudStorage implements Initializable {
         if (deleted) {
             // the blob was deleted
             System.out.println("Deleted");
-            //show toast deleted
+            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+            snackbar.show("Delete success", 3000);
+            snackbar.getStylesheets().add("Style.css");
         } else {
             // the blob was not found
             System.out.println("Not deleted not found");
@@ -915,7 +899,16 @@ public class ControllerSecureCloudStorage implements Initializable {
                                             blobName = tableBlob.getBlobName();
                                             System.out.println(tableBlob.getDate());
                                             Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                            showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY());
+                                            Bounds boundsInScene1 = anchorPane.localToScene(anchorPane.getBoundsInLocal());
+                                            if (boundsInScene1.getMaxY()-boundsInScene.getMaxY()>100){
+                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY(),true);
+                                                //down is true
+                                                System.out.println("going down");
+                                            } else{
+                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMinY()-100,false);
+                                                System.out.println("going up");
+                                                //up is false
+                                            }
                                         });
 
                                         btn.setId("tableJFXButton");
@@ -1119,10 +1112,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
     }
 
-    private void onEdit() throws Exception {
-
-    }
-
     private VBox vBox = new VBox();
     private JFXButton jfxDownloadButton = new JFXButton();
     private JFXButton jfxDeleteButton = new JFXButton();
@@ -1130,20 +1119,32 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private double minX;
     private double maxY;
+    private boolean direction;
 
     private String blobName;
 
-    private void showVbox(double minX, double maxY) {
+    private void showVbox(double minX, double maxY, boolean direction) {
+        System.out.println("showing Vbox");
         double minWidth = 100;
         double minHeight = 100;
         this.minX = minX;
         this.maxY = maxY;
+        this.direction=direction;
         if (vBoxCounter == 0) {
-            vBox.setLayoutX(minX);
-            vBox.setLayoutY(maxY);
-            vBox.setMinSize(minWidth, minHeight);
-            Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
-            vBox.setBackground(unfocusBackground);
+            if (direction == false) {
+                vBox.setLayoutX(minX);
+                vBox.setLayoutY(maxY);
+                vBox.setMinSize(minWidth, minHeight);
+                Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
+                vBox.setBackground(unfocusBackground);
+            } else{
+                vBox.setLayoutX(minX);
+                vBox.setLayoutY(maxY);
+                vBox.setMinSize(minWidth, minHeight);
+                Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
+                vBox.setBackground(unfocusBackground);
+            }
+
             jfxDownloadButton.setText("Download");
             jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
             jfxDownloadButton.setOnAction(__ -> {
@@ -1233,12 +1234,21 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            });
             vBox.setVisible(true);
         } else {
-            vBox.setLayoutX(minX);
-            vBox.setLayoutY(maxY);
-//            vBox.setMinSize(100, 200);
-            Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
-            vBox.setBackground(unfocusBackground);
-            vBox.setVisible(true);
+            if (direction == false) {
+                vBox.setLayoutX(minX);
+                vBox.setLayoutY(maxY);
+                vBox.setMinSize(minWidth, minHeight);
+                Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
+                vBox.setBackground(unfocusBackground);
+                vBox.setVisible(true);
+            } else{
+                vBox.setLayoutX(minX);
+                vBox.setLayoutY(maxY);
+                vBox.setMinSize(minWidth, minHeight);
+                Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
+                vBox.setBackground(unfocusBackground);
+                vBox.setVisible(true);
+            }
         }
         myScene = anchorPane.getScene();
         myScene.addEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
@@ -1485,12 +1495,22 @@ public class ControllerSecureCloudStorage implements Initializable {
         public void handle(MouseEvent mouseEvent) {
             System.out.println("mouse click detected! " + mouseEvent.getSource());
             System.out.println(minX + " " + maxY);
-            if (mouseEvent.getX() >= minX && mouseEvent.getX() <= minX + 100 && mouseEvent.getY() >= maxY && mouseEvent.getY() <= maxY + 200) {
-                System.out.println("Inside the vbox");
-            } else {
-                vBox.setVisible(false);
-                myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
-//                addListeners();
+            if (direction == true) {
+                if (mouseEvent.getX() >= minX && mouseEvent.getX() <= minX + 100 && mouseEvent.getY() >= maxY && mouseEvent.getY() <= maxY + 100) {
+                    System.out.println("Inside the vbox");
+                } else {
+                    vBox.setVisible(false);
+                    myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+                    System.out.println("Close VBox");
+                }
+            } else{
+                if (mouseEvent.getX() >= minX && mouseEvent.getX() <= minX + 100 && mouseEvent.getY() >= maxY && mouseEvent.getY() <= maxY + 100) {
+                    System.out.println("Inside the vbox");
+                } else {
+                    vBox.setVisible(false);
+                    myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+                    System.out.println("Close VBox");
+                }
             }
         }
     };
