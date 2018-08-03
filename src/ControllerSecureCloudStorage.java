@@ -35,6 +35,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -1011,6 +1012,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         JFXTreeTableView.setShowRoot(false);
         JFXTreeTableView.getColumns().setAll(typeColumn, fileColumn, dateColumn, settingsColumn);
         JFXTreeTableView.setEditable(false);
+        JFXTreeTableView.setPrefHeight(451);
         TableAnchorPane.getChildren().add(JFXTreeTableView);
 
 //        FlowPane main = new FlowPane();
@@ -1038,6 +1040,14 @@ public class ControllerSecureCloudStorage implements Initializable {
                         || blob.blobName.get().contains(newVal)
                         || blob.date.get().contains(newVal);
             });
+        });
+
+        JFXTreeTableView.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent scrollEvent) {
+                System.out.println("Scrolled.");
+                vBox.setVisible(false);
+            }
         });
 
         JFXTreeTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {

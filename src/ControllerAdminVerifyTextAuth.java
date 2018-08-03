@@ -63,10 +63,6 @@ public class ControllerAdminVerifyTextAuth {
 
             } catch (IOException u) {
                 u.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
 
             stage.setScene(new Scene(nextView));

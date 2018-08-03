@@ -58,7 +58,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
     }
 
     //TODO Include error handling for cloud next time
-    public void runCheck() throws IOException, InterruptedException, SQLException {
+    public void runCheck(){
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
@@ -92,6 +92,13 @@ public class ControllerAdminDeviceCheck implements Initializable {
 //                    alert.show();
 //                });
                 handleUI("Please turn on your firewall and try again.");
+                Process p;
+                try {
+                    p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
+                    p.waitFor();
+                } catch (IOException | InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             } else if(WirelessEncryption==false) {
 //                LoadingSpinner.setVisible(false);
 //                RestartDeviceCheckButton.setVisible(true);
@@ -244,7 +251,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     localDeviceFirewallCheck();
-                    //Error when connecting to cloud. need to handle all errors, and also the button to force reset and stuff after a certain amount of time
                     checkWirelessConnectionEncryption();
                     checkWindowsApproved();
                     return null;
