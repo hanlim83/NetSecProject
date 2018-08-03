@@ -421,6 +421,9 @@ public class ControllerCAMainDashboard implements Initializable {
             TimelineCtrl(true);
         } else if (capture != null) {
             this.capture = capture;
+            addExistingTPS();
+            ProtoMakeup();
+            TopIPMakeup();
             clearCaptureBtn.setDisable(false);
         }
         try {
