@@ -1326,10 +1326,12 @@ public class ControllerSecureCloudStorage implements Initializable {
                     try {
                         if (checkNameTaken(file.getName()) == true) {
                             System.out.println("Change NAME!!!! Add showing alert");
-                            changeNameAlert();
+                            changeNameAlert("Please change your file name");
+                        } else if (CheckFileSafe(file.getAbsolutePath())==false){
+                            changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
+                            //if false means virus so show alert
                         } else {
                             encryptFileNew(file);
-                            //may need to move update Table somewhere else instead
                             updateTable();
                         }
                     } catch (Exception e1) {
@@ -1402,10 +1404,12 @@ public class ControllerSecureCloudStorage implements Initializable {
                         try {
                             if (checkNameTaken(file.getName()) == true) {
                                 System.out.println("Change NAME!!!! Add showing alert");
-                                changeNameAlert();
-                            } else {
+                                changeNameAlert("Please change your file name");
+                            } else if (CheckFileSafe(file.getAbsolutePath())==false){
+                                changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
+                                //if false means virus so show alert
+                            }  else {
                                 encryptFileNew(file);
-                                //may need to move update Table somewhere else instead
                                 updateTable();
                             }
                         } catch (Exception e1) {
@@ -1465,12 +1469,18 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
-    private void changeNameAlert(){
+    private boolean CheckFileSafe(String filepath){
+        FileScanner fileScanner = new FileScanner();
+        fileScanner.Scanner(filepath);
+        return fileScanner.scannerReport();
+    }
+
+    private void changeNameAlert(String message){
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
 
         String title = "";
-        String content = "Please change your file name";
+        String content = message;
 
         JFXButton close = new JFXButton("Close");
 
