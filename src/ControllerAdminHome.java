@@ -1,3 +1,4 @@
+import Database.admin_DB;
 import Model.MyBlob;
 import Model.OAuth2LoginAdmin;
 import com.google.api.client.auth.oauth2.Credential;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.net.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +44,7 @@ public class ControllerAdminHome implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private Label LastFileModifiedLabel;
+    private Label LastLoginLabel;
 
     @FXML
     private Label TimeLabel;
@@ -56,10 +58,20 @@ public class ControllerAdminHome implements Initializable {
 
     private Credential credential;
     private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
-//    WindowsUtils utils = new WindowsUtils();
+
+    private static String lastLogin;
+    private static int loginCounter=0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+//        admin_DB admin_db=new admin_DB();
+        String email = null;
+        try {
+            credential=login.login();
+            email=login.getEmail();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         hamburgerBar();
         timerprocess.start();
         try {
@@ -95,35 +107,29 @@ public class ControllerAdminHome implements Initializable {
     }
 
 
-    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
+//    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
-    private void getLatestFile() throws IOException {
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email = login.getEmail();
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        emailFront = emailFront.replace(".", "");
-        String bucketname = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobs = storage.list(bucketname);
-        for (Blob blob : blobs.iterateAll()) {
-            // do something with the blob
-            BlobList.add(new MyBlob(blob));
-            System.out.println("FROM METHOD" + blob);
-            System.out.println(convertTime(blob.getCreateTime()));
-            System.out.println("FROM METHOD" + blob.getName());
-//            if (fileName.equals(blob.getName())) {
-//                System.out.println("Choose Different NAME!");
-//                return true;
-//            }
-        }
-    }
-
-    public String convertTime(long time) {
-        Date date = new Date(time);
-        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return format.format(date);
-    }
+//    private void getLatestFile() throws IOException {
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        String email = login.getEmail();
+//        Scanner s = new Scanner(email).useDelimiter("@");
+//        String emailFront = s.next();
+//        emailFront = emailFront.replace(".", "");
+//        String bucketname = emailFront + "nspj";
+////        String bucketname="hugochiaxyznspj";
+//        Page<Blob> blobs = storage.list(bucketname);
+//        for (Blob blob : blobs.iterateAll()) {
+//            // do something with the blob
+//            BlobList.add(new MyBlob(blob));
+//            System.out.println("FROM METHOD" + blob);
+//            System.out.println(convertTime(blob.getCreateTime()));
+//            System.out.println("FROM METHOD" + blob.getName());
+////            if (fileName.equals(blob.getName())) {
+////                System.out.println("Choose Different NAME!");
+////                return true;
+////            }
+//        }
+//    }
 
     private Service timerprocess = new Service() {
         @Override
@@ -140,13 +146,58 @@ public class ControllerAdminHome implements Initializable {
 
     private void InfoUpdate() throws Exception {
         credential = login.login();
-        getLatestFile();
-        Collections.sort(BlobList);
-        System.out.println("=======================LATEST FILE/TIME===============================");
-        System.out.println(BlobList.get(0).toString());
-        System.out.println(convertTime(BlobList.get(0).getTime()));
-        LastFileModifiedLabel.setText("Your last file was modified on " + convertTime(BlobList.get(0).getTime()));
-        GreetingsLabel.setText(getGreetings() + login.getName());
+        String email;
+        email=login.getEmail();
+        admin_DB admin_db=new admin_DB();
+        if (loginCounter == 0) {
+            lastLogin=convertTime(admin_db.getLastLoginTime(email));
+            LocalDateTime now=LocalDateTime.now();
+            String ActivationTime=now.toString();
+            admin_db.setLastLoginTime(ActivationTime,email);
+            loginCounter++;
+            LastLoginLabel.setText("Your last login was on " + lastLogin);
+            //else this^
+            //also make this reference the static timing instead
+            GreetingsLabel.setText(getGreetings() + login.getName());
+        }else{
+            LastLoginLabel.setText("Your last login was on " + lastLogin);
+            GreetingsLabel.setText(getGreetings() + login.getName());
+        }
+//        System.out.println(lastLogin);
+
+        //if last login null show another msg
+
+        //set timing DB here
+        //set static timing
+        //increase counter
+
+//        //contact DB to store last login time
+//        if (loginCounter==0){
+//            lastLogin=admin_db.getLastLoginTime(email);
+//            loginCounter++;
+//        }
+//        //set new login time
+    }
+
+    private String convertTime(String time) {
+        //Upgrade to string builder next time
+        String dateDisplay;
+        String timeDisplay;
+        Scanner s = new Scanner(time).useDelimiter("T");
+        String dateGeneral = s.next();
+        timeDisplay = s.next();
+        Scanner s1 = new Scanner(dateGeneral).useDelimiter("-");
+        String year = s1.next();
+        String month = s1.next();
+        String date = s1.next();
+        dateDisplay = date + "/" + month + "/" + year;
+//        Scanner s2 = new Scanner(timeGeneral).useDelimiter(".");
+//        timeDisplay = s2.next();
+//        String minute = s2.next();
+//        String second = s2.next();
+//        String time =
+
+        return dateDisplay + " " + timeDisplay.substring(0,8);
     }
 
     private String getGreetings() {

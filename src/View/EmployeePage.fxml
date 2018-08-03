@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerEmployeePage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerEmployeePage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
             <children>
@@ -36,6 +36,7 @@
                     <font>
                         <Font size="18.0" />
                     </font></Label>
+                <JFXButton fx:id="homeButton" buttonType="RAISED" layoutX="634.0" layoutY="10.0" onAction="#onClickHomeButton" prefHeight="44.0" prefWidth="64.0" ripplerFill="#00bfff00" style="-fx-border-radius: 30; -fx-background-color: #4CAF50;" />
             </children>
         </AnchorPane>
       <AnchorPane fx:id="secondAnchor" layoutY="160.0" prefHeight="438.0" prefWidth="1066.0" visible="false">
