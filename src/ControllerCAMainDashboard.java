@@ -131,7 +131,6 @@ public class ControllerCAMainDashboard implements Initializable {
         xAxis.setMinorTickVisible(false);
         NumberAxis yAxis = new NumberAxis();
         networkTrafficChart = new LineChart<Number, Number>(xAxis, yAxis) {
-            // Override to remove symbols on each data point
             @Override
             protected void dataItemAdded(Series<Number, Number> series, int itemIndex, Data<Number, Number> item) {
             }
@@ -574,7 +573,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 addToQueue();
                 ProtoMakeup();
                 TopIPMakeup();
-                if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
+                if (capture.checkThreshold()) {
                     SMSHandler.sendAlert();
                     capture.Specficexport();
                     String pcapFilePath = capture.getSpecificPcapExportPath();
@@ -595,7 +594,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             JFXDialogLayout layout = new JFXDialogLayout();
                             layout.setHeading(new Label(title));
                             layout.setBody(new Label(content));
-                            layout.setActions(close);
+                            layout.setActions(show, close);
                             JFXAlert<Void> alert = new JFXAlert<>(stage);
                             alert.setOverlayClose(true);
                             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
@@ -616,7 +615,62 @@ public class ControllerCAMainDashboard implements Initializable {
                                     try {
                                         nextView = loader.load();
                                         ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), true, EmailHandler);
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    stage.setScene(new Scene(nextView));
+                                    stage.setTitle("Alert Dashboard");
+                                    alert.close();
+                                    stage.show();
+                                }
+                            });
+                            alert.show();
+                        }
+                    });
+                } else if (capture.checkARP() && ARPDetection != false) {
+                    SMSHandler.sendAlert();
+                    capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            myScene = anchorPane.getScene();
+                            Stage stage = (Stage) (myScene).getWindow();
+                            String title = "Suspicious Network Event Detected!";
+                            String content = "A Suspicious network event has been detected! ARP spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
+                            JFXButton close = new JFXButton("Close");
+                            close.setButtonType(JFXButton.ButtonType.RAISED);
+                            close.setStyle("-fx-background-color: #00bfff;");
+                            JFXButton show = new JFXButton("Show Alert Dashboard");
+                            show.setButtonType(JFXButton.ButtonType.RAISED);
+                            show.setStyle("-fx-background-color: #ff90bb;");
+                            JFXDialogLayout layout = new JFXDialogLayout();
+                            layout.setHeading(new Label(title));
+                            layout.setBody(new Label(content));
+                            layout.setActions(show, close);
+                            JFXAlert<Void> alert = new JFXAlert<>(stage);
+                            alert.setOverlayClose(true);
+                            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                            alert.setContent(layout);
+                            alert.initModality(Modality.NONE);
+                            close.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent __) {
+                                    alert.hideWithAnimation();
+                                }
+                            });
+                            show.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                    myScene = ((Node) event.getSource()).getScene();
+                                    Parent nextView = null;
+                                    try {
+                                        nextView = loader.load();
+                                        ControllerCAMainAlertDashboard controller = loader.getController();
+                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -643,7 +697,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     addToQueue();
                     ProtoMakeup();
                     TopIPMakeup();
-                    if (capture.checkThreshold() || (capture.checkARP() && ARPDetection != false)) {
+                    if (capture.checkThreshold()) {
                         SMSHandler.sendAlert();
                         capture.Specficexport();
                         String pcapFilePath = capture.getSpecificPcapExportPath();
@@ -664,7 +718,7 @@ public class ControllerCAMainDashboard implements Initializable {
                                 JFXDialogLayout layout = new JFXDialogLayout();
                                 layout.setHeading(new Label(title));
                                 layout.setBody(new Label(content));
-                                layout.setActions(close);
+                                layout.setActions(show, close);
                                 JFXAlert<Void> alert = new JFXAlert<>(stage);
                                 alert.setOverlayClose(true);
                                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
@@ -679,7 +733,75 @@ public class ControllerCAMainDashboard implements Initializable {
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
-
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                        myScene = ((Node) event.getSource()).getScene();
+                                        Parent nextView = null;
+                                        try {
+                                            nextView = loader.load();
+                                            ControllerCAMainAlertDashboard controller = loader.getController();
+                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        stage.setScene(new Scene(nextView));
+                                        stage.setTitle("Alert Dashboard");
+                                        alert.close();
+                                        stage.show();
+                                    }
+                                });
+                                alert.show();
+                            }
+                        });
+                    } else if (capture.checkARP() && ARPDetection != false) {
+                        SMSHandler.sendAlert();
+                        capture.Specficexport();
+                        String pcapFilePath = capture.getSpecificPcapExportPath();
+                        EmailHandler.sendParitalPcap(pcapFilePath);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                myScene = anchorPane.getScene();
+                                Stage stage = (Stage) (myScene).getWindow();
+                                String title = "Suspicious Network Event Detected!";
+                                String content = "A Suspicious network event has been detected! ARP spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
+                                JFXButton close = new JFXButton("Close");
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                                close.setStyle("-fx-background-color: #00bfff;");
+                                JFXButton show = new JFXButton("Show Alert Dashboard");
+                                show.setButtonType(JFXButton.ButtonType.RAISED);
+                                show.setStyle("-fx-background-color: #ff90bb;");
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(show, close);
+                                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                                alert.setOverlayClose(true);
+                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert.setContent(layout);
+                                alert.initModality(Modality.NONE);
+                                close.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent __) {
+                                        alert.hideWithAnimation();
+                                    }
+                                });
+                                show.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                        myScene = ((Node) event.getSource()).getScene();
+                                        Parent nextView = null;
+                                        try {
+                                            nextView = loader.load();
+                                            ControllerCAMainAlertDashboard controller = loader.getController();
+                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        stage.setScene(new Scene(nextView));
+                                        stage.setTitle("Alert Dashboard");
+                                        alert.close();
+                                        stage.show();
                                     }
                                 });
                                 alert.show();

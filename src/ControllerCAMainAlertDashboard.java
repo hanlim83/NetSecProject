@@ -109,8 +109,9 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
-        xAxis.setLabel("Duration");
+        xAxis.setLabel("Duration per 5 Seconds");
         yAxis.setLabel("Packets Recieved");
+        yAxis.setTickUnit(LineRange);
         dataSeries = new XYChart.Series<>();
         dataSeries.setName("Network Traffic");
         dataSeries1 = new XYChart.Series<>();
