@@ -25,11 +25,11 @@
                 </Label>
             </children>
         </AnchorPane>
-      <Label fx:id="LastFileModifiedLabel" alignment="CENTER" layoutX="145.0" layoutY="395.0" prefHeight="84.0" prefWidth="779.0" text="Your last file was modified on">
+      <Label fx:id="LastLoginLabel" alignment="CENTER" layoutX="145.0" layoutY="395.0" prefHeight="84.0" prefWidth="779.0" text="Your last login was on">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label fx:id="TimeLabel" alignment="CENTER" layoutX="319.0" layoutY="170.0" prefHeight="169.0" prefWidth="431.0" text="17:10">
+      <Label fx:id="TimeLabel" alignment="CENTER" layoutX="319.0" layoutY="170.0" prefHeight="169.0" prefWidth="431.0" text="17:10:55">
          <font>
             <Font size="110.0" />
          </font>

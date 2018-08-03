@@ -71,14 +71,19 @@ public class ControllerUserHome implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         timerprocess.start();
-        if (counter==0){
-            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
-            TimeLabel.setText(string);
-        } else{
-            LastFileModifiedLabel.setText(lastFile);
-            GreetingsLabel.setText(greetings);
-            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
-            TimeLabel.setText(string);
+//        if (counter==0){
+//            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
+//            TimeLabel.setText(string);
+//        } else{
+//            LastFileModifiedLabel.setText(lastFile);
+//            GreetingsLabel.setText(greetings);
+//            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
+//            TimeLabel.setText(string);
+//        }
+        try {
+            InfoUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -182,13 +187,13 @@ public class ControllerUserHome implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     updateTimer();
-                    Platform.runLater(() ->{
-                        try {
-                            InfoUpdate();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    });
+//                    Platform.runLater(() ->{
+//                        try {
+//                            InfoUpdate();
+//                        } catch (Exception e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    });
                     return null;
                 }
             };
