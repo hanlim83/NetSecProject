@@ -78,19 +78,31 @@
                         <Font name="Lucida Sans Regular" size="22.0"/>
                     </font>
                 </Text>
-                <JFXTextField fx:id="chosenInterface" editable="false" GridPane.columnIndex="1"/>
+                <JFXTextField fx:id="chosenInterface" editable="false" GridPane.columnIndex="1">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="16.0"/>
+                    </font>
+                </JFXTextField>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ARP Spoofing Detection:" GridPane.rowIndex="1">
                     <font>
                         <Font name="Lucida Sans Regular" size="22.0"/>
                     </font>
                 </Text>
-                <JFXTextField fx:id="chosenDetection" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <JFXTextField fx:id="chosenDetection" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="16.0"/>
+                    </font>
+                </JFXTextField>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Set:" GridPane.rowIndex="2">
                     <font>
                         <Font name="Lucida Sans Regular" size="22.0"/>
                     </font>
                 </Text>
-                <JFXTextField fx:id="chosenThreshold" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <JFXTextField fx:id="chosenThreshold" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="16.0"/>
+                    </font>
+                </JFXTextField>
             </children>
         </GridPane>
         <JFXButton fx:id="previousBtn" layoutX="207.0" layoutY="504.0" onAction="#goBackPreviousScreen" text="Previous"
