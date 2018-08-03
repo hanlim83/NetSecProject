@@ -7,9 +7,7 @@ import java.util.concurrent.ScheduledFuture;
 public class ScheduledThreadPoolExecutor {
     private static java.util.concurrent.ScheduledThreadPoolExecutor service;
     private static ScheduledFuture tableviewRunnable;
-    private static ScheduledFuture getSQLRunnable;
     private static ScheduledFuture chartDataRunnable;
-    private static ScheduledFuture showDataRunnable;
     private static ScheduledFuture sendEmailRunnable;
     private static ScheduledFuture createTPSRunnable;
 
@@ -48,22 +46,6 @@ public class ScheduledThreadPoolExecutor {
         tableviewRunnable.cancel(true);
     }
 
-    public ScheduledFuture getgetSQLRunnable() {
-        return getSQLRunnable;
-    }
-
-    public void setgetSQLRunnable(ScheduledFuture getSQLRunnable) {
-        ScheduledThreadPoolExecutor.getSQLRunnable = getSQLRunnable;
-    }
-
-    public boolean getStatusgetSQLRunnable() {
-        return !getSQLRunnable.isDone();
-    }
-
-    public void cancelgetSQLRunnable() {
-        getSQLRunnable.cancel(true);
-    }
-
     public ScheduledFuture getchartDataRunnable() {
         return chartDataRunnable;
     }
@@ -78,22 +60,6 @@ public class ScheduledThreadPoolExecutor {
 
     public void cancelchartDataRunnable() {
         chartDataRunnable.cancel(true);
-    }
-
-    public ScheduledFuture getshowDataRunnable() {
-        return showDataRunnable;
-    }
-
-    public void setshowDataRunnable(ScheduledFuture showDataRunnable) {
-        ScheduledThreadPoolExecutor.showDataRunnable = showDataRunnable;
-    }
-
-    public boolean getStatusshowDataRunnable() {
-        return !showDataRunnable.isDone();
-    }
-
-    public void cancelshowDataRunnable() {
-        showDataRunnable.cancel(true);
     }
 
     public ScheduledFuture getsendEmailRunnable() {

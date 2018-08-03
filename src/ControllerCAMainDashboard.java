@@ -256,160 +256,145 @@ public class ControllerCAMainDashboard implements Initializable {
             e.printStackTrace();
         }
         if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
-            handler.setgetSQLRunnable(ScheduledThreadPoolExecutor.getService().schedule(new Runnable() {
-                @Override
-                public void run() {
+            ScheduledThreadPoolExecutor.getService().execute(() -> {
+                try {
+                    adminPN = db.getAllPhoneNo();
+                    SMSHandler = new AWSSMS(adminPN);
+                    for (String s : adminPN) {
+                        System.out.println(s);
+                    }
+                    System.out.println("SMS Created");
+                    adminEA = db.getAllEmail();
+                    for (String s : adminEA) {
+                        System.out.println(s);
+                    }
+                    EmailHandler = new OutlookEmail(adminEA);
+                    System.out.println("Email created");
+                    oAuth2Login = new OAuth2LoginAdmin();
+                    oAuth2Login.login();
+                    EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                    System.out.println(oAuth2Login.getEmail());
+                    System.out.println("Added own email");
+                    Platform.runLater(() -> {
+                        spinner.setVisible(false);
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
+                    });
+                } catch (SQLException e) {
                     try {
-                        adminPN = db.getAllPhoneNo();
-                        SMSHandler = new AWSSMS(adminPN);
-                        for (String s : adminPN) {
-                            System.out.println(s);
-                        }
-                        System.out.println("SMS Created");
-                        adminEA = db.getAllEmail();
-                        for (String s : adminEA) {
-                            System.out.println(s);
-                        }
-                        EmailHandler = new OutlookEmail(adminEA);
-                        System.out.println("Email created");
                         oAuth2Login = new OAuth2LoginAdmin();
                         oAuth2Login.login();
-                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
                         System.out.println(oAuth2Login.getEmail());
-                        System.out.println("Added own email");
-                        Platform.runLater(new Runnable() {
+                        EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
+                        System.out.println("Email Created");
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        spinner.setVisible(false);
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+                        String title = "Certain Functions are not available";
+                        String content = "FireE is currently unable to retrieve the phone numbers and email addresses that the alerts will be sent to. SMS and email broadcast alerts will not be available. You will still be able to receive Pcap Files";
+                        JFXButton close = new JFXButton("Close");
+                        close.setButtonType(JFXButton.ButtonType.RAISED);
+                        close.setStyle("-fx-background-color: #00bfff;");
+                        JFXDialogLayout layout = new JFXDialogLayout();
+                        layout.setHeading(new Label(title));
+                        layout.setBody(new Label(content));
+                        layout.setActions(close);
+                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+                        alert.setOverlayClose(true);
+                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                        alert.setContent(layout);
+                        alert.initModality(Modality.NONE);
+                        close.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
-                            public void run() {
-                                spinner.setVisible(false);
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
+                            public void handle(ActionEvent __) {
+                                alert.hideWithAnimation();
                             }
                         });
-                    } catch (SQLException e) {
-                        try {
-                            oAuth2Login = new OAuth2LoginAdmin();
-                            oAuth2Login.login();
-                            System.out.println(oAuth2Login.getEmail());
-                            EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
-                            System.out.println("Email Created");
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinner.setVisible(false);
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Certain Functions are not available";
-                                String content = "FireE is currently unable to retrieve the phone numbers and email addresses that the alerts will be sent to. SMS and email broadcast alerts will not be available. You will still be able to receive Pcap Files";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
-                                alert.showAndWait();
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
-                            }
-                        });
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
+                        alert.showAndWait();
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
+                    });
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                    ControllerAdminSideTab ctrl = loader.getController();
+                    ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else if (threshold != 0) {
+            this.SMSHandler = USMSHandler;
+            ScheduledThreadPoolExecutor.getService().execute(() -> {
+                try {
+                    adminPN = db.getAllPhoneNo();
+                    SMSHandler.setAdminPN(adminPN);
+                    for (String s : adminPN) {
+                        System.out.println(s);
+                    }
+                    System.out.println("SMS Updated!");
+                    adminEA = db.getAllEmail();
+                    for (String s : adminEA) {
+                        System.out.println(s);
+                    }
+                    EmailHandler.setAdminEmailAddresses(adminEA);
+                    System.out.println("Email Updated!");
+                    Platform.runLater(() -> {
+                        spinner.setVisible(false);
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
+                    });
+                } catch (SQLException e) {
+                    System.err.println("SQL Error");
+                    Platform.runLater(() -> {
+                        spinner.setVisible(false);
+                        captureToggle.setDisable(false);
+                        hamburger.setDisable(false);
+                    });
+                }
+            });
+        } else {
+            ScheduledThreadPoolExecutor.getService().execute(() -> {
+                if (EmailHandler == null) {
+                    try {
+                        oAuth2Login = new OAuth2LoginAdmin();
+                        oAuth2Login.login();
+                        EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
+                        System.out.println(oAuth2Login.getEmail());
+                        System.out.println("Email Created");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
                     try {
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                        ControllerAdminSideTab ctrl = loader.getController();
-                        ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
-                    } catch (IOException e) {
+                        if (lookup != false) {
+                            oAuth2Login = new OAuth2LoginAdmin();
+                            oAuth2Login.login();
+                            EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
+                            System.out.println(oAuth2Login.getEmail());
+                            System.out.println("Email Updated");
+                        } else
+                            System.out.println("Token not found");
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            }, 2, TimeUnit.SECONDS));
-        } else if (threshold != 0) {
-            this.SMSHandler = USMSHandler;
-            handler.setgetSQLRunnable(ScheduledThreadPoolExecutor.getService().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        adminPN = db.getAllPhoneNo();
-                        SMSHandler.setAdminPN(adminPN);
-                        for (String s : adminPN) {
-                            System.out.println(s);
-                        }
-                        System.out.println("SMS Updated!");
-                        adminEA = db.getAllEmail();
-                        for (String s : adminEA) {
-                            System.out.println(s);
-                        }
-                        EmailHandler.setAdminEmailAddresses(adminEA);
-                        System.out.println("Email Updated!");
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinner.setVisible(false);
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
-                            }
-                        });
-                    } catch (SQLException e) {
-                        System.err.println("SQL Error");
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinner.setVisible(false);
-                                captureToggle.setDisable(false);
-                                hamburger.setDisable(false);
-                            }
-                        });
-
-                    }
-                }
-            }, 1, TimeUnit.SECONDS));
-        } else {
-            if (EmailHandler == null) {
-                try {
-                    oAuth2Login = new OAuth2LoginAdmin();
-                    oAuth2Login.login();
-                    EmailHandler = new OutlookEmail(oAuth2Login.getEmail());
-                    System.out.println(oAuth2Login.getEmail());
-                    System.out.println("Email Created");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    if (lookup != false) {
-                        oAuth2Login = new OAuth2LoginAdmin();
-                        oAuth2Login.login();
-                        EmailHandler.setReceiverAddress(oAuth2Login.getEmail());
-                        System.out.println(oAuth2Login.getEmail());
-                        System.out.println("Email Updated");
-                    } else
-                        System.out.println("Token not found");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            spinner.setVisible(false);
-            captureToggle.setDisable(false);
-            hamburger.setDisable(false);
+                Platform.runLater(() -> {
+                    spinner.setVisible(false);
+                    captureToggle.setDisable(false);
+                    hamburger.setDisable(false);
+                });
+            });
         }
         if (capture == null)
             clearCaptureBtn.setDisable(true);

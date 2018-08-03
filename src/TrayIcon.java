@@ -118,8 +118,6 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                if (handler.getshowDataRunnable() != null)
-                                    handler.cancelshowDataRunnable();
                                 try {
                                     FXMLLoader loader = new FXMLLoader();
                                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -217,8 +215,6 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                if (handler.getshowDataRunnable() != null)
-                                    handler.cancelshowDataRunnable();
                                 try {
                                     FXMLLoader loader = new FXMLLoader();
                                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -342,8 +338,6 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                if (handler.getshowDataRunnable() != null)
-                                    handler.cancelshowDataRunnable();
                                 try {
                                     FXMLLoader loader = new FXMLLoader();
                                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());

@@ -64,8 +64,6 @@ public class CAMain extends Application {
                         handler.cancelTableviewRunnable();
                     if (handler.getchartDataRunnable() != null)
                         handler.cancelchartDataRunnable();
-                    if (handler.getshowDataRunnable() != null)
-                        handler.cancelshowDataRunnable();
                     getVariables();
                     if (capture != null && capture.isRunning()) {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -104,8 +102,6 @@ public class CAMain extends Application {
                                         handler.cancelTableviewRunnable();
                                     if (handler.getchartDataRunnable() != null)
                                         handler.cancelchartDataRunnable();
-                                    if (handler.getshowDataRunnable() != null)
-                                        handler.cancelshowDataRunnable();
                                     getVariables();
                                     if (capture != null && capture.isRunning()) {
                                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

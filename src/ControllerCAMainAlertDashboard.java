@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -163,7 +162,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.handler.setshowDataRunnable(ScheduledThreadPoolExecutor.getService().schedule(sRunnable, 3, TimeUnit.SECONDS));
+        ScheduledThreadPoolExecutor.getService().execute(sRunnable);
     }
 
     synchronized private void incrementCount() {
