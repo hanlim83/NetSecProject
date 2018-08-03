@@ -265,18 +265,6 @@ public class ControllerBucketsPage implements Initializable {
             if (event.getClickCount() == 2) {
                 //Checking double click
                 expandedDetails(anchorPane.getScene(), "Close");
-
-//                processExpanding.start();
-//
-//                processExpanding.setOnSucceeded(e -> {
-//                    processExpanding.reset();
-//                });
-//                processExpanding.setOnCancelled(e -> {
-//                    processExpanding.reset();
-//                });
-//                processExpanding.setOnFailed(e -> {
-//                    processExpanding.reset();
-//                });
             }
         } catch (com.google.cloud.logging.LoggingException e1) {
             e1.printStackTrace();
@@ -388,8 +376,8 @@ public class ControllerBucketsPage implements Initializable {
         secondTitledPane.setContent(content2);
         thirdTiltedPane.setContent(content3);
 
-
         Accordion root= new Accordion();
+        System.out.println("EXPANDED PROPERTY "+root.getExpandedPane());
         root.getPanes().addAll(firstTitledPane, secondTitledPane,thirdTiltedPane);
         root.setPadding(new Insets(0, 0, 70, 0));
 
@@ -427,8 +415,9 @@ public class ControllerBucketsPage implements Initializable {
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
-        String message = "\nPlease input the follow required data to edit bucket.";
-        String title = "Edit Bucket Permission";
+        String message = "\nPlease input the follow required data to edit buckets." + "\n" + "Changes made to buckets must be approved by the owner and other respective administrators in charge.";
+
+        String title = "Edit Bucket Permission"+ "\n" + message;
 
         JFXButton no = new JFXButton(buttonContent);
         no.setButtonType(JFXButton.ButtonType.RAISED);
@@ -440,7 +429,10 @@ public class ControllerBucketsPage implements Initializable {
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setPrefSize(670, 350);
-        layout.setHeading(new Label(title));
+        Label heading = new Label();
+        heading.setText(title);
+        heading.setWrapText(true);
+        layout.setHeading(heading);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -466,11 +458,13 @@ public class ControllerBucketsPage implements Initializable {
         grid.add(new Label(chooserole), 0, 1);
         grid.add(bucketroles, 1, 1);
 
-//        JFXCheckBox checkbox1 = new JFXCheckBox("Grant read permission for all viewers role and above.");
-//        checkbox1.setWrapText(true);
-//        grid.add(checkbox1, 0, 2);
+        JFXCheckBox checkbox1 = new JFXCheckBox("Removing generic all viewers from the bucket.");
+        checkbox1.setWrapText(true);
 
-        layout.setBody(grid);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(grid,checkbox1);
+
+        layout.setBody(vbox);
 
         layout.setActions(no, yes);
 
@@ -494,21 +488,49 @@ public class ControllerBucketsPage implements Initializable {
             String bucketROLE = bucketroles.getSelectionModel().getSelectedItem();
             String finalBucketRole = null;
 
-            if (bucketROLE == "Reader") {
-                finalBucketRole = "roles/storage.legacyBucketReader";
-            } else if (bucketROLE == "Writer") {
-                finalBucketRole = "roles/storage.legacyBucketWriter";
-            } else if (bucketROLE == "Owner") {
-                finalBucketRole = "roles/storage.legacyBucketOwner";
+            String successfulMessage1 = null;
+            if(checkbox1.isSelected()){
+                bucketiam.removeBucketIamMember(finalBucketName, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
+                successfulMessage1 = "All generic viewers of project has been revoked of access to this bucket, " + finalBucketName +".";
             }
 
-            System.out.println("Final Bucket Role: " + finalBucketRole);
-            String member="user:"+inputMEMBER;
-            System.out.println("Member is " + member);
-            System.out.println("BUCKET NAME IS THIS " + finalBucketName);
-            bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+            String successfulMessage2 = null;
+            if (bucketROLE == "Reader") {
+                finalBucketRole = "roles/storage.legacyBucketReader";
+                System.out.println("Final Bucket Role: " + finalBucketRole);
+                String member="user:"+inputMEMBER;
+                System.out.println("Member is " + member);
+                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
+            } else if (bucketROLE == "Writer") {
+                finalBucketRole = "roles/storage.legacyBucketWriter";
+                System.out.println("Final Bucket Role: " + finalBucketRole);
+                String member="user:"+inputMEMBER;
+                System.out.println("Member is " + member);
+                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
+            } else if (bucketROLE == "Owner") {
+                finalBucketRole = "roles/storage.legacyBucketOwner";
+                System.out.println("Final Bucket Role: " + finalBucketRole);
+                String member="user:"+inputMEMBER;
+                System.out.println("Member is " + member);
+                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
+            }
 
-            successfulMessage = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
+
+            if(successfulMessage2!=null && successfulMessage1!=null){
+                successfulMessage = successfulMessage1 + "\n" + successfulMessage2;
+            }
+            else if(successfulMessage1!=null){
+                successfulMessage=successfulMessage1;
+            }else{
+                successfulMessage=successfulMessage2;
+            }
+
             successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
 
             alert.hideWithAnimation();
@@ -516,7 +538,7 @@ public class ControllerBucketsPage implements Initializable {
         no.setOnAction(__addEvent -> {
             checker2 = 0;
             System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
-            errorMessage = "Member was not added successfully.";
+            errorMessage = "Buckets were not edited successfully.";
             errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             alert.hideWithAnimation();
         });
@@ -566,25 +588,28 @@ public class ControllerBucketsPage implements Initializable {
 
         JFXCheckBox checkbox1 = new JFXCheckBox("Grant read permission for all viewers role and above.");
         checkbox1.setWrapText(true);
-        grid.add(checkbox1, 0, 2);
+//        grid.add(checkbox1, 0, 0);
 
-//        Label addMembers = new Label();
-//        addMembers.setText("Add Members: ");
-//
-//        JFXTextField inputMember = new JFXTextField();
-//        inputMember.setPrefWidth(250);
-//        inputMember.setPromptText("Type Member Here");
-//
-//        grid.add(addMembers,0,2);
-//        grid.add(inputMember,1,2);
+        Label addMembers = new Label();
+        addMembers.setText("Add Members: ");
 
-//        String chooserole = "Choose Role: ";
-//        JFXComboBox<String> bucketroles = new JFXComboBox<>();
-//        bucketroles.getItems().addAll("Reader","Writer","Owner");
-//        grid.add(new Label(chooserole), 0, 3);
-//        grid.add(bucketroles, 1, 3);
+        JFXTextField inputMember = new JFXTextField();
+        inputMember.setPrefWidth(250);
+        inputMember.setPromptText("Type Member Here");
 
-        layout.setBody(grid);
+        grid.add(addMembers,0,1);
+        grid.add(inputMember,1,1);
+
+        String chooserole = "Choose Role: ";
+        JFXComboBox<String> bucketroles = new JFXComboBox<>();
+        bucketroles.getItems().addAll("Reader","Writer","Owner");
+        grid.add(new Label(chooserole), 0, 2);
+        grid.add(bucketroles, 1, 2);
+
+        VBox vbox1 = new VBox();
+        vbox1.getChildren().addAll(checkbox1,grid);
+
+        layout.setBody(vbox1);
 
         layout.setActions(no, yes);
 
@@ -600,7 +625,8 @@ public class ControllerBucketsPage implements Initializable {
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
             inputBUCKETNAME = inputBucketName.getText();
-//            inputMEMBER = inputMember.getText();
+            inputMEMBER = inputMember.getText();
+            String bucketROLE = bucketroles.getSelectionModel().getSelectedItem();
 
             System.out.println("Bucket name is : " + inputBUCKETNAME);
 
@@ -610,6 +636,23 @@ public class ControllerBucketsPage implements Initializable {
                 if (checkbox1.isSelected()) {
                     storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
 
+                    String finalBucketRole = null;
+
+                    if (bucketROLE == "Reader") {
+                        finalBucketRole = "roles/storage.legacyBucketReader";
+                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+
+                    } else if (bucketROLE == "Writer") {
+                        finalBucketRole = "roles/storage.legacyBucketWriter";
+                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+
+                    } else if (bucketROLE == "Owner") {
+                        finalBucketRole = "roles/storage.legacyBucketOwner";
+                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+
+                    }
+
+
                     JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                     snackbar.getStylesheets().add("Style.css");
                     snackbar.show("Updating The Database", 3000);
@@ -618,7 +661,18 @@ public class ControllerBucketsPage implements Initializable {
                     //Remove all viewers from the bucket
                     bucketiam.removeBucketIamMember(inputBUCKETNAME, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
 
-//                    bucketiam.addBucketIamMember(inputBUCKETNAME,"roles/storage.legacyBucketReader",inputMEMBER);
+                    String finalBucketRole = null;
+
+                    if (bucketROLE == "Reader") {
+                        finalBucketRole = "roles/storage.legacyBucketReader";
+                    } else if (bucketROLE == "Writer") {
+                        finalBucketRole = "roles/storage.legacyBucketWriter";
+                    } else if (bucketROLE == "Owner") {
+                        finalBucketRole = "roles/storage.legacyBucketOwner";
+                    }
+
+                    bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+
                     JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                     snackbar.getStylesheets().add("Style.css");
                     snackbar.show("Updating The Database", 3000);
@@ -627,13 +681,14 @@ public class ControllerBucketsPage implements Initializable {
                 errorMessage = "-";
                 checkEligible(inputBUCKETNAME);
                 if (errorMessage.equals("-")) {
-                    errorMessage = "Bucket with this name already exist";
-                    System.out.println(errorMessage);
-                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-                } else {
+                    errorMessage = "Error with creating this bucket. Please try again.";
                     System.out.println(errorMessage);
                     errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
                 }
+//                else {
+//                    System.out.println(errorMessage);
+//                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+//                }
             }
 
             if (errorMessage.equals("")) {
@@ -646,7 +701,6 @@ public class ControllerBucketsPage implements Initializable {
 
                 alert.hideWithAnimation();
             }
-
 
         });
         no.setOnAction(__addEvent -> {
