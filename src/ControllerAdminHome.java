@@ -65,13 +65,13 @@ public class ControllerAdminHome implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        admin_DB admin_db=new admin_DB();
-        String email = null;
-        try {
-            credential=login.login();
-            email=login.getEmail();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String email = null;
+//        try {
+//            credential=login.login();
+//            email=login.getEmail();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         hamburgerBar();
         timerprocess.start();
         try {
