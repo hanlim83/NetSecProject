@@ -15,6 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -74,6 +76,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private ArrayList<String> duplicateAdapterName;
     private ArrayList<Integer> duplicateValuses;
     private boolean CaptureType;
+    private TreeItem previousTreeItem = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -153,6 +156,9 @@ public class ControllerCALandingSelectInt implements Initializable {
             }
             intDisplay.setRoot(dummyRoot);
             intDisplay.setShowRoot(false);
+            for (TreeItem t : dummyRoot.getChildren()) {
+                t.setExpanded(true);
+            }
             intDisplayCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
                 @Override
                 public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<String, String> param) {
@@ -187,6 +193,16 @@ public class ControllerCALandingSelectInt implements Initializable {
                     intDisplayedName = selected.getValue();
                 }
             }
+            if (previousTreeItem == null) {
+                selected.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("baseline_check_black_18dp.png"))));
+                previousTreeItem = selected;
+            } else {
+                previousTreeItem.setGraphic(null);
+                selected.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("baseline_check_black_18dp.png"))));
+                previousTreeItem = selected;
+                intDisplay.refresh();
+            }
+
             nextBtn.setDisable(false);
         }
     }
