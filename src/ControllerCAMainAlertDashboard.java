@@ -79,6 +79,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private OutlookEmail EmailHandler;
     public ArrayList<TopIPObject> Top5IPMakeup = new ArrayList<TopIPObject>();
     private XYChart.Series<Number, Number> dataSeries;
+    private XYChart.Series<Number, Number> dataSeries1;
     private NumberAxis xAxis;
     private double sequence = 0;
     private double y = 10;
@@ -105,16 +106,21 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         }
         hamburger.setDisable(true);
         returnToCaptureBtn.setDisable(true);
-        xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
-        final NumberAxis yAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
-        xAxis = new NumberAxis(0, MAX_DATA_POINTS, MAX_DATA_POINTS / 10);
+//        xAxis = new NumberAxis(0, MAX_DATA_POINTS + 1, 2);
+//        final NumberAxis yAxis = new NumberAxis(MIN - 1, MAX + 1, 1);
+//        xAxis = new NumberAxis(0, MAX_DATA_POINTS, MAX_DATA_POINTS / 10);
+        xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
         xAxis.setForceZeroInRange(false);
-        yAxis.setLabel("Duration");
-        yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis, "$", null));
+        xAxis.setLabel("Duration");
+        yAxis.setLabel("Packets Recieved");
         dataSeries = new XYChart.Series<>();
         dataSeries.setName("Network Traffic");
-
+        dataSeries1 = new XYChart.Series<>();
+        dataSeries1.setName("Threshold");
+        networkTrafficChart = new LineChart<Number, Number>(xAxis, yAxis);
         networkTrafficChart.getData().add(dataSeries);
+        networkTrafficChart.getData().add(dataSeries1);
         networkTrafficChart.setPrefWidth(1051);
         networkTrafficChart.setPrefHeight(334);
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
@@ -323,49 +329,58 @@ public class ControllerCAMainAlertDashboard implements Initializable {
                 }
             });
             //Based from getTrafficPerSecond
-            Timestamp firstPacket = packets.get(0).getOrignalTimeStamp();
-            boolean finished = false;
-            while (finished != true) {
+            try {
+                Timestamp firstPacket = packets.get(0).getOrignalTimeStamp();
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(firstPacket.getTime());
                 cal.add(Calendar.SECOND, LineRange);
                 Timestamp later = new Timestamp(cal.getTime().getTime());
-                int packetRecord = 0;
-                for (CapturedPacket c : packets) {
-                    if (c.getOrignalTimeStamp().after(firstPacket) && c.getOrignalTimeStamp().before(later)) {
-                        ++packetRecord;
+                Timestamp next = null;
+                boolean finished = false;
+                while (finished != true) {
+                    int packetRecord = 0;
+                    for (CapturedPacket c : packets) {
+                        if (next == null && c.getOrignalTimeStamp().after(firstPacket) && c.getOrignalTimeStamp().before(later)) {
+                            ++packetRecord;
+                        } else if (next != null && c.getOrignalTimeStamp().after(next) && c.getOrignalTimeStamp().before(later))
+                            ++packetRecord;
                     }
+                    if (packetRecord != 0) {
+                        TPS.add(packetRecord);
+                        next = later;
+                        cal = Calendar.getInstance();
+                        cal.setTimeInMillis(later.getTime());
+                        cal.add(Calendar.SECOND, LineRange);
+                        later = new Timestamp(cal.getTime().getTime());
+                    } else
+                        finished = true;
                 }
-                if (packetRecord != 0)
-                    TPS.add(packetRecord);
-                else
-                    finished = true;
-            }
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(firstPacket.getTime());
-            cal.add(Calendar.SECOND, LineRange);
-            Timestamp later = new Timestamp(cal.getTime().getTime());
-            int packetRecord = 0;
-            for (CapturedPacket c : packets) {
-                if (c.getOrignalTimeStamp().after(firstPacket) && c.getOrignalTimeStamp().before(later)) {
-                    ++packetRecord;
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             //Based on Runnable Line Chart
-            int Chartindex = 0;
-            for (Integer i : TPS) {
-                dataSeries.getData().add(new XYChart.Data<Number, Number>(Chartindex++, i));
-                if (sequence > MAX_DATA_POINTS) {
-                    dataSeries.getData().remove(0);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    int Chartindex = 0;
+                    for (Integer i : TPS) {
+                        dataSeries1.getData().add(new XYChart.Data<>(Chartindex, threshold));
+                        dataSeries.getData().add(new XYChart.Data<>(Chartindex++, i));
+                        if (sequence > MAX_DATA_POINTS) {
+                            dataSeries.getData().remove(0);
+                            dataSeries1.getData().remove(0);
+                        }
+                        if (sequence > MAX_DATA_POINTS - 1) {
+                            xAxis.setLowerBound(xAxis.getLowerBound() + 1);
+                            xAxis.setUpperBound(xAxis.getUpperBound() + 1);
+                        }
+                    }
                 }
-                if (sequence > MAX_DATA_POINTS - 1) {
-                    xAxis.setLowerBound(xAxis.getLowerBound() + 1);
-                    xAxis.setUpperBound(xAxis.getUpperBound() + 1);
-                }
-            }
+            });
             spinner.setVisible(false);
             hamburger.setDisable(false);
             returnToCaptureBtn.setDisable(false);
         }
     }
+
 }
