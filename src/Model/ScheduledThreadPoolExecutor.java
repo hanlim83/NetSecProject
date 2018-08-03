@@ -3,10 +3,9 @@ package Model;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class ExecutorServiceHandler {
-    private static ScheduledThreadPoolExecutor service;
+public class ScheduledThreadPoolExecutor {
+    private static java.util.concurrent.ScheduledThreadPoolExecutor service;
     private static ScheduledFuture tableviewRunnable;
     private static ScheduledFuture getSQLRunnable;
     private static ScheduledFuture chartDataRunnable;
@@ -14,10 +13,10 @@ public class ExecutorServiceHandler {
     private static ScheduledFuture sendEmailRunnable;
     private static ScheduledFuture createTPSRunnable;
 
-    public ExecutorServiceHandler() {
+    public ScheduledThreadPoolExecutor() {
         int cores = Runtime.getRuntime().availableProcessors();
         System.out.println(cores);
-        service = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(cores);
+        service = (java.util.concurrent.ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(cores);
         service.setRemoveOnCancelPolicy(true);
     }
 
@@ -40,7 +39,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setTableviewRunnable(ScheduledFuture tableviewRunnable) {
-        ExecutorServiceHandler.tableviewRunnable = tableviewRunnable;
+        ScheduledThreadPoolExecutor.tableviewRunnable = tableviewRunnable;
     }
 
     public boolean getStatusTableviewRunnable() {
@@ -56,7 +55,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setgetSQLRunnable(ScheduledFuture getSQLRunnable) {
-        ExecutorServiceHandler.getSQLRunnable = getSQLRunnable;
+        ScheduledThreadPoolExecutor.getSQLRunnable = getSQLRunnable;
     }
 
     public boolean getStatusgetSQLRunnable() {
@@ -72,7 +71,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setchartDataRunnable(ScheduledFuture chartDataRunnable) {
-        ExecutorServiceHandler.chartDataRunnable = chartDataRunnable;
+        ScheduledThreadPoolExecutor.chartDataRunnable = chartDataRunnable;
     }
 
     public boolean getStatuschartDataRunnable() {
@@ -88,7 +87,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setshowDataRunnable(ScheduledFuture showDataRunnable) {
-        ExecutorServiceHandler.showDataRunnable = showDataRunnable;
+        ScheduledThreadPoolExecutor.showDataRunnable = showDataRunnable;
     }
 
     public boolean getStatusshowDataRunnable() {
@@ -104,7 +103,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setsendEmailRunnable(ScheduledFuture sendEmailRunnable) {
-        ExecutorServiceHandler.sendEmailRunnable = sendEmailRunnable;
+        ScheduledThreadPoolExecutor.sendEmailRunnable = sendEmailRunnable;
     }
 
     public boolean getStatussendEmailRunnable() {
@@ -120,7 +119,7 @@ public class ExecutorServiceHandler {
     }
 
     public void setcreateTPSRunnable(ScheduledFuture createTPSRunnable) {
-        ExecutorServiceHandler.createTPSRunnable = createTPSRunnable;
+        ScheduledThreadPoolExecutor.createTPSRunnable = createTPSRunnable;
     }
 
     public boolean getStatuscreateTPSRunnable() {

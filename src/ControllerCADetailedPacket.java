@@ -57,7 +57,7 @@ public class ControllerCADetailedPacket implements Initializable {
     @FXML
     private JFXButton homeButton;
 
-    private ExecutorServiceHandler handler;
+    private ScheduledThreadPoolExecutor handler;
     private NetworkCapture capture;
     private PcapNetworkInterface device;
     private CapturedPacket packet;
@@ -96,7 +96,7 @@ public class ControllerCADetailedPacket implements Initializable {
         }
     }
 
-    public void passVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutor handler, NetworkCapture capture, CapturedPacket packet, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;

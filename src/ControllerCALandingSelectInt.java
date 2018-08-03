@@ -1,7 +1,7 @@
 import Model.AWSSMS;
-import Model.ExecutorServiceHandler;
 import Model.IPAddressPolicy;
 import Model.OutlookEmail;
+import Model.ScheduledThreadPoolExecutor;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -74,7 +74,7 @@ public class ControllerCALandingSelectInt implements Initializable {
     private List<PcapNetworkInterface> devices;
     private PcapNetworkInterface device;
     private Scene myScene;
-    private ExecutorServiceHandler handler;
+    private ScheduledThreadPoolExecutor handler;
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
@@ -226,7 +226,7 @@ public class ControllerCALandingSelectInt implements Initializable {
         }
     }
 
-    public void passVariables(ExecutorServiceHandler handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype, OutlookEmail EmailHandler) {
+    public void passVariables(ScheduledThreadPoolExecutor handler, PcapNetworkInterface device, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, String intDisplayedName, boolean Capturetype, OutlookEmail EmailHandler) {
         this.handler = handler;
         this.device = device;
         this.ARPDetection = ARPDetection;

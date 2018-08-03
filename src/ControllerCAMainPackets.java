@@ -91,7 +91,7 @@ public class ControllerCAMainPackets implements Initializable {
     private ArrayList<CapturedPacket> packets;
     private ObservableList<CapturedPacket> OLpackets;
     private NetworkCapture capture;
-    private ExecutorServiceHandler handler;
+    private ScheduledThreadPoolExecutor handler;
     private boolean ARPDetection;
     private Integer threshold;
     private ArrayList<String> adminPN;
@@ -160,7 +160,7 @@ public class ControllerCAMainPackets implements Initializable {
         createTPS = new createTPS();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ExecutorServiceHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutor handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
@@ -176,7 +176,7 @@ public class ControllerCAMainPackets implements Initializable {
             e.printStackTrace();
         }
         if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
-            handler.setgetSQLRunnable(ExecutorServiceHandler.getService().schedule(new Runnable() {
+            handler.setgetSQLRunnable(ScheduledThreadPoolExecutor.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -263,7 +263,7 @@ public class ControllerCAMainPackets implements Initializable {
             }, 2, TimeUnit.SECONDS));
         } else if (threshold != 0) {
             this.SMSHandler = USMSHandler;
-            handler.setgetSQLRunnable(ExecutorServiceHandler.getService().schedule(new Runnable() {
+            handler.setgetSQLRunnable(ScheduledThreadPoolExecutor.getService().schedule(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -336,7 +336,7 @@ public class ControllerCAMainPackets implements Initializable {
         else if (capture.isRunning()) {
             this.capture = capture;
             captureToggle.setSelected(true);
-            handler.setTableviewRunnable(ExecutorServiceHandler.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
+            handler.setTableviewRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
 
         } else if (capture != null) {
             this.capture = capture;
@@ -360,11 +360,11 @@ public class ControllerCAMainPackets implements Initializable {
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, threshold);
-        handler.setTableviewRunnable(ExecutorServiceHandler.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
+        handler.setTableviewRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
         if (!capture.isRunning())
-            ExecutorServiceHandler.getService().execute(cRunnable);
+            ScheduledThreadPoolExecutor.getService().execute(cRunnable);
         clearCaptureBtn.setDisable(true);
-        handler.setcreateTPSRunnable(ExecutorServiceHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        handler.setcreateTPSRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -385,7 +385,7 @@ public class ControllerCAMainPackets implements Initializable {
         packetstable.setItems(OLpackets);
         packetstable.refresh();
         capture.Generalexport();
-        handler.setsendEmailRunnable(ExecutorServiceHandler.getService().schedule(sendFull, 1, TimeUnit.SECONDS));
+        handler.setsendEmailRunnable(ScheduledThreadPoolExecutor.getService().schedule(sendFull, 1, TimeUnit.SECONDS));
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -789,7 +789,7 @@ public class ControllerCAMainPackets implements Initializable {
                             }
                         });
                     }
-                    ExecutorServiceHandler.getService().execute(cRunnable);
+                    ScheduledThreadPoolExecutor.getService().execute(cRunnable);
                     packets = capture.packets;
                     OLpackets = FXCollections.observableArrayList(packets);
                     Platform.runLater(new Runnable() {
