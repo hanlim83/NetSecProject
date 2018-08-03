@@ -33,6 +33,7 @@ public class NetworkCapture {
     public ArrayList<Integer> ProtocolMakeupData;
     public ArrayList<String> ProtocolMakeupProtocols;
     public ArrayList<TopIPObject> Top5IPMakeup;
+    public ArrayList<Alert> alerts;
     private ArrayList<ARPObject> ARPDatabase;
     private PcapNetworkInterface Netinterface;
     private PcapHandle Phandle;
@@ -89,6 +90,7 @@ public class NetworkCapture {
         ProtocolMakeupProtocols = new ArrayList<String>();
         Top5IPMakeup = new ArrayList<TopIPObject>();
         ARPDatabase = new ArrayList<ARPObject>();
+        alerts = new ArrayList<Alert>();
     }
 
     public long getPacketsReceived() {
@@ -427,6 +429,16 @@ public class NetworkCapture {
                 ARPDatabase.add(newObject);
                 return;
             }
+        }
+    }
+
+    public void addAlert(boolean Type) {
+        if (Type) {
+            Alert tempt = new Alert("ARP Spoofing");
+            alerts.add(tempt);
+        } else {
+            Alert tempt = new Alert("Exceed Pre-Defined Threshold");
+            alerts.add(tempt);
         }
     }
 

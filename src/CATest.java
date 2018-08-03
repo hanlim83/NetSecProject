@@ -34,12 +34,17 @@ public class CATest extends Application {
         CATest.primaryStage = primaryStage;
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("CAMainAlertDashboard.fxml"));
-            System.out.println(getClass().getResource("CAMainAlertDashboard.fxml"));
+//            loader.setLocation(getClass().getResource("CAMainAlertDashboard.fxml"));
+            loader.setLocation(getClass().getResource("CAAlerts.fxml"));
+            System.out.println(getClass().getResource("CAAlerts.fxml"));
             Parent root = loader.load();
-            ControllerCAMainAlertDashboard controller = loader.getController();
+            ControllerCAAlerts controller = loader.getController();
             handler = new ExecutorServiceHandler();
-            controller.passVariables(null, handler, null, false, 25, null, new File("C:\\Users\\Hansen Lim\\Documents\\Hello.pcap").getAbsolutePath(), false, null);
+            NetworkCapture capture = new NetworkCapture(null, 0);
+            capture.addAlert(true);
+            capture.addAlert(false);
+            controller.passVariables(null, handler, capture, false, 0, null, null);
+//            controller.passVariables(null, handler, null, false, 0, null, new File("C:\\Users\\Hansen Lim\\Documents\\Hello.pcap").getAbsolutePath(), false, null);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
             scene.getStylesheets().add(css);

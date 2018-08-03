@@ -1,26 +1,41 @@
 package Model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Alert {
-    private Calendar dateTime;
-    private String alertContent;
+public class Alert extends RecursiveTreeObject<Alert> {
+    private StringProperty dateTime;
+    private Calendar calendar;
+    private StringProperty type;
 
-    public Alert(String alertContent) {
-        this.alertContent = alertContent;
-        dateTime = Calendar.getInstance();
+    public Alert(String type) {
+        this.calendar = Calendar.getInstance();
+        this.type = new SimpleStringProperty(type);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.dateTime = new SimpleStringProperty(sdf.format(calendar.getTime()));
     }
 
-    public Alert(Calendar dateTime, String alertContent) {
-        this.dateTime = dateTime;
-        this.alertContent = alertContent;
+    public String getDateTime() {
+        return dateTime.get();
     }
 
-    public Calendar getDateTime() {
+    public StringProperty dateTimeProperty() {
         return dateTime;
     }
 
-    public String getAlertContent() {
-        return alertContent;
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public String getType() {
+        return type.get();
+    }
+
+    public StringProperty typeProperty() {
+        return type;
     }
 }
