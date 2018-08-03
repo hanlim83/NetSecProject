@@ -276,6 +276,8 @@ public class ControllerCALandingSelectInt implements Initializable {
             public void handle(ActionEvent __) {
                 alert.hideWithAnimation();
                 device = null;
+                previousTreeItem.setGraphic(null);
+                intDisplay.refresh();
                 nextBtn.setDisable(true);
             }
         });
