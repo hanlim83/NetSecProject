@@ -5,21 +5,13 @@ import java.util.ArrayList;
 
 public class admin_DB {
     //TODO check if migration is successful
-    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-    private static String databaseName = "admin_DB";
-    private static String username = "root";
-    private static String password = "root";
+//    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//    private static String databaseName = "admin_DB";
+//    private static String username = "root";
+//    private static String password = "root";
 
     public ArrayList<Admin> getAdminList() throws SQLException {
         ArrayList<Admin> AdminList = new ArrayList<Admin>();
-
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -27,7 +19,6 @@ public class admin_DB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT * FROM entriesAdmin");
 
@@ -47,11 +38,6 @@ public class admin_DB {
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-
-
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//        }
         return AdminList;
     }
 
@@ -291,5 +277,60 @@ public class admin_DB {
 //
 //        }
         return emailList;
+    }
+
+    public void setLastLoginTime(String date, String email){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DataSource.getInstance().getConnection();
+//            statement = connection.createStatement();
+
+            preparedStatement=connection.prepareStatement("UPDATE entriesAdmin SET lastLogin=? WHERE email=?");
+            preparedStatement.setString(1,date);
+            preparedStatement.setString(2,email);
+
+            preparedStatement.executeUpdate();
+
+//            resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                emailList.add(resultSet.getString(1));
+//            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+    }
+
+    public String getLastLoginTime(String email){
+        String date = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DataSource.getInstance().getConnection();
+
+            preparedStatement=connection.prepareStatement("SELECT lastLogin FROM entriesAdmin WHERE email=?");
+            preparedStatement.setString(1,email);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                date=resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
+            if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
+        }
+        return date;
     }
 }
