@@ -40,4 +40,13 @@ public class Alert extends RecursiveTreeObject<Alert> {
     public StringProperty typeProperty() {
         return type;
     }
+
+    public String getPcapPath() {
+        return pcapPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Alert Generated: " + dateTime.getValue() + " | Alert Type: " + type.getValue();
+    }
 }

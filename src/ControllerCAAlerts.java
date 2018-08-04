@@ -164,7 +164,6 @@ public class ControllerCAAlerts implements Initializable {
                     public TreeTableCell call(final TreeTableColumn<Alert, String> param) {
                         final TreeTableCell<Alert, String> cell = new TreeTableCell<Alert, String>() {
                             JFXButton btn = new JFXButton();
-
                             @Override
                             public void updateItem(String item, boolean empty) {
                                 super.updateItem(item, empty);
@@ -173,14 +172,38 @@ public class ControllerCAAlerts implements Initializable {
                                     setText(null);
                                 } else {
                                     System.out.println(item);
-                                    btn.setText("Go to Alert Dashboard");
-                                    btn.setOnAction(event -> {
-                                        System.out.println("Working");
-                                    });
-                                    btn.setId("tableJFXButton");
-                                    btn.getStylesheets().add("Style.css");
-                                    setGraphic(btn);
-                                    setText(null);
+                                    int selectIndex = getTreeTableRow().getIndex();
+                                    System.out.println(selectIndex);
+                                    try {
+                                        Alert rItem = alertsView.getSelectionModel().getModelItem(selectIndex).getValue();
+                                        btn.setText("Go to Alert Dashboard");
+                                        btn.setOnAction(event -> {
+                                            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                            myScene = ((Node) event.getSource()).getScene();
+                                            Stage stage = (Stage) (myScene).getWindow();
+                                            Parent nextView = null;
+                                            try {
+                                                nextView = loader.load();
+                                                ControllerCAMainAlertDashboard controller = loader.getController();
+                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, rItem.getPcapPath(), false, EmailHandler);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            stage.setScene(new Scene(nextView));
+                                            stage.setTitle("Login Page");
+                                            stage.show();
+                                        });
+                                        btn.setId("tableJFXButton");
+                                        btn.getStylesheets().add("Style.css");
+                                        setGraphic(btn);
+                                        setText(null);
+                                    } catch (ClassCastException e) {
+                                        alertsView.refresh();
+                                        return;
+                                    } catch (NullPointerException e1) {
+                                        alertsView.refresh();
+                                        return;
+                                    }
                                 }
                             }
                         };
