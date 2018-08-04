@@ -91,6 +91,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     private JFXTextField filterField;
 
     @FXML
+    private Label FilePathLabel;
+
+    @FXML
     private JFXButton homeButton;
 
     @FXML
@@ -141,12 +144,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-//        try {
-//            initialUpdate();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        process.start();
     }
 
     @FXML
@@ -174,6 +171,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     void onClickBackButton(ActionEvent event) throws Exception {
         updateObservableList();
         backButton.setVisible(false);
+        FilePathLabel.setText("/");
     }
 
     @FXML
@@ -1117,6 +1115,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                         JFXTreeTableView.getColumns();
                         fileColumn.setPrefWidth(544);
                         backButton.setVisible(true);
+                        FilePathLabel.setText("/"+folderName);
                     }
                 }
 //                try {

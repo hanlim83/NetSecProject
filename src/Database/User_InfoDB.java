@@ -294,15 +294,12 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT publicKey FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
-//            preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.executeQuery();
-//            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 publicKeyString=resultSet.getString(1);
             }
