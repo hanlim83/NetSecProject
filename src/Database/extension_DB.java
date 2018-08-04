@@ -4,20 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class extension_DB {
-    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-    private static String databaseName = "extension_DB";
-    private static String username = "root";
-    private static String password = "root";
+//    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//    private static String databaseName = "extension_DB";
+//    private static String username = "root";
+//    private static String password = "root";
 
-    public ArrayList<String> getExtensionList() throws SQLException {
+    public ArrayList<String> getExtensionList(){
         ArrayList<String> ExtensionList = new ArrayList<String>();
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -40,20 +33,10 @@ public class extension_DB {
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//        }
         return ExtensionList;
     }
 
-    public void createExtension(String extension) throws SQLException {
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+    public void createExtension(String extension){
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -71,21 +54,9 @@ public class extension_DB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-//        try (Statement statement = connection.createStatement()) {
-////            statement.executeUpdate("INSERT INTO entries (extensions) VALUES ('"+extension+"')");
-//        }
     }
 
-    public void deleteExtension(String extension) throws SQLException {
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
+    public void deleteExtension(String extension){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -102,10 +73,5 @@ public class extension_DB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-//        try (Statement statement = connection.createStatement()) {
-////            statement.executeUpdate("DELETE FROM entries WHERE extensions='"+extension+"'");
-//            preparedStatement.executeUpdate();
-//        }
     }
 }

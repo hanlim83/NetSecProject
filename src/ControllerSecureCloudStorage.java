@@ -891,22 +891,23 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                    JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName()
 //                                    if (JFXTreeTableView.getSelectionModel().getSelectedItem()) {
 //                                    if cannot revoke -> disable
-                                    System.out.println(item);
+                                    try {
+//                                        System.out.println(item);
+                                        int selectdIndex = getTreeTableRow().getIndex();
+                                        System.out.println(selectdIndex);
+                                        TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
                                         btn.setOnAction(event -> {
-                                            int selectdIndex = getTreeTableRow().getIndex();
-                                            System.out.println(selectdIndex);
-                                            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
                                             System.out.println(tableBlob.getBlobName());
                                             blobName = tableBlob.getBlobName();
                                             System.out.println(tableBlob.getDate());
                                             Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
                                             Bounds boundsInScene1 = anchorPane.localToScene(anchorPane.getBoundsInLocal());
-                                            if (boundsInScene1.getMaxY()-boundsInScene.getMaxY()>100){
-                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY(),true);
+                                            if (boundsInScene1.getMaxY() - boundsInScene.getMaxY() > 100) {
+                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY(), true);
                                                 //down is true
                                                 System.out.println("going down");
-                                            } else{
-                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMinY()-100,false);
+                                            } else {
+                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMinY() - 100, false);
                                                 System.out.println("going up");
                                                 //up is false
                                             }
@@ -945,8 +946,17 @@ public class ControllerSecureCloudStorage implements Initializable {
                                         setGraphic(btn);
                                         setText(null);
 //                                    Image imageEllipsis = new Image(getClass().getResourceAsStream("View/horizontal_ellipsis.png"));
+                                    } catch (ClassCastException e) {
+//                                        e.printStackTrace();
+                                        JFXTreeTableView.refresh();
+                                        return;
+                                    } catch (NullPointerException e) {
+//                                        e.printStackTrace();
+                                        JFXTreeTableView.refresh();
+                                        return;
                                     }
                                 }
+                            }
                         };
                         return cell;
                     }
