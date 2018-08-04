@@ -977,11 +977,11 @@ public class ControllerEmployeePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    try {
+//                    try {
                         adminList = adminDB.getAdminList();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
 
                     Platform.runLater(() -> {
                         adminObservableList = FXCollections.observableList(adminList);
@@ -1023,11 +1023,11 @@ public class ControllerEmployeePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    try {
+//                    try {
                         adminList = adminDB.getAdminList();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
                     Platform.runLater(() -> {
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
@@ -1325,11 +1325,11 @@ public class ControllerEmployeePage implements Initializable {
             } else {
                 if (CreateAdmin.contains("@gmail.com") && !creatingAdminRoles.getSelectionModel().isEmpty()) {
                     if (CreateHandphone.matches(numbers) && CreateHandphone.length() == 8 && (CreateHandphone.startsWith("8") || CreateHandphone.startsWith("9"))) {
-                        try {
+//                        try {
                             adminDB.createAdmin(CreateAdmin, CreateHandphone);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+//                        } catch (SQLException e) {
+//                            e.printStackTrace();
+//                        }
                         newProcessA();
 
                         if (CreateAdminRole.equals("Owner")) {
@@ -1512,11 +1512,11 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             } else {
-                try {
+//                try {
                     adminDB.deleteAdmin(emailAdmin, hpAdmin);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
                 String sendingMessage = "You, " + emailAdmin + " have been removed from FireE's Cloud Administrator Database. Contact Administrator if unknown.";
                 System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
                 sendSMS.sendSMS(hpAdmin, sendingMessage);

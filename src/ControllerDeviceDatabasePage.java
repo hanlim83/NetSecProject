@@ -125,11 +125,11 @@ public class ControllerDeviceDatabasePage implements Initializable {
                     versionNumber.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("versionNumber"));
                     entryID.setCellValueFactory(new PropertyValueFactory<OSVersion, String>("entryID"));
 
-                    try {
+//                    try {
                         osList = deviceDB.CheckSupportedVersion();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
 
                     revoke.setCellFactory(ActionButtonTableCell.<OSVersion>forTableColumn("Revoke", (OSVersion OSVERSIONS) -> {
                         //get entry id first
@@ -238,11 +238,11 @@ public class ControllerDeviceDatabasePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    try {
+//                    try {
                         osList = deviceDB.CheckSupportedVersion();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
                     Platform.runLater(() -> {
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
@@ -337,11 +337,11 @@ public class ControllerDeviceDatabasePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
             else {
-                try {
+//                try {
                     deviceDB.insertNewOSVersion(verName, verNumber);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
                 process1.start();
                 successfulMessage = "This OS Version " + verName + " was created and added into the cloud. The device number is " + verNumber + ".";
                 successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
@@ -407,11 +407,11 @@ public class ControllerDeviceDatabasePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             }
             else {
-                try {
+//                try {
                     deviceDB.deleteOSVersion(entryid);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
                 deviceTable.getItems().remove(osvers);
                 successfulMessage = "OS Version removed Successfully";
                 successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
