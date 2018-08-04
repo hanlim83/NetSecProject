@@ -222,10 +222,9 @@ public class ControllerEmployeePage implements Initializable {
             String whatismyIP = IPAddressPolicy.getIp();
             ipAddr.setText(whatismyIP);
             Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
-            if(validityIP==true){
+            if (validityIP == true) {
                 ipAddr.setTextFill(Color.rgb(1, 0, 199));
-            }
-            else{
+            } else {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
@@ -333,7 +332,7 @@ public class ControllerEmployeePage implements Initializable {
                     handphone1.setCellValueFactory(new PropertyValueFactory<Admin, String>("phoneNo"));
 
 //                    try {
-                        userList = userinfodb.getUserList();
+                    userList = userinfodb.getUserList();
 //                    } catch (SQLException e) {
 //                        e.printStackTrace();
 //                    }
@@ -787,6 +786,7 @@ public class ControllerEmployeePage implements Initializable {
                         revokePermissions.setCellFactory(new Callback<TableColumn<IAMExtract, Button>, TableCell<IAMExtract, Button>>() {
                             String oneEmail;
                             Boolean checkingde = null;
+
                             @Override
                             public TableCell<IAMExtract, Button> call(TableColumn<IAMExtract, Button> param) {
                                 return new TableCell<IAMExtract, Button>() {
@@ -798,9 +798,9 @@ public class ControllerEmployeePage implements Initializable {
                                         if (empty) {
                                             System.out.println("EMPTY");
                                             setItem(null);
-                                        }else{
+                                        } else {
 //                                            btn.setDisable(true);
-                                            System.out.println("STRING ARRAYLIST SIZE IS = " +stringArrayList.size());
+                                            System.out.println("STRING ARRAYLIST SIZE IS = " + stringArrayList.size());
                                             for (int r = 0; r < stringArrayList.size(); r++) {
                                                 oneEmail = stringArrayList.get(r);
                                                 if (oneEmail.contains("user:")) {
@@ -857,8 +857,7 @@ public class ControllerEmployeePage implements Initializable {
 
                                                         return iamExtracts;
                                                     }));
-                                                }
-                                                else{
+                                                } else {
                                                     checkingde = false;
                                                     revokePermissions.setCellFactory(ActionButtonTableCell.<IAMExtract>forTableColumn("Revoke", checkingde, (IAMExtract iamExtracts) -> {
                                                         iamExtract(iamExtracts);
@@ -956,7 +955,7 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
 //                    try {
-                        userList = userinfodb.getUserList();
+                    userList = userinfodb.getUserList();
 //                    } catch (SQLException e) {
 //                        e.printStackTrace();
 //                    }
@@ -1002,7 +1001,7 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
 //                    try {
-                        userList = userinfodb.getUserList();
+                    userList = userinfodb.getUserList();
 //                    } catch (SQLException e) {
 //                        e.printStackTrace();
 //                    }
@@ -1159,6 +1158,7 @@ public class ControllerEmployeePage implements Initializable {
             System.out.println("INPUT NAME IS : " + CreateUser);
             CreateRole = creatingRoles.getSelectionModel().getSelectedItem();
 
+
             ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
             System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
             if (ipChecker == false) {
@@ -1167,59 +1167,56 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             } else {
                 if (CreateUser.contains("@gmail.com") && !creatingRoles.getSelectionModel().isEmpty()) {
-//                    try {
                         userinfodb.createUser(CreateUser);
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-                    newProcess();
 
-                    if (CreateRole.equals("Owner")) {
-                        CreateRole = "roles/owner";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Editor") {
-                        CreateRole = "roles/editor";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Viewer") {
-                        CreateRole = "roles/viewer";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "CloudSQL Admin") {
-                        CreateRole = "roles/cloudsql.admin";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Firebase Rules System") {
-                        CreateRole = "roles/firebaserules.system";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Compute Engine Service") {
-                        CreateRole = "roles/compute.serviceAgent";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Logging Admin") {
-                        CreateRole = "roles/logging.admin";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Storage Admin") {
-                        CreateRole = "roles/storage.admin";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "Monitoring Admin") {
-                        CreateRole = "roles/monitoring.admin";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    } else if (CreateRole == "API Keys Admin") {
-                        CreateRole = "roles/serviceusage.apiKeysAdmin";
-                        System.out.println("CHOOSE " + CreateRole);
-                        permissions.addPermissions(CreateUser, CreateRole);
-                    }
+                        newProcess();
 
-                    successfulMessage = "This user " + CreateUser + " was created and added into the cloud.";
-                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                        if (CreateRole.equals("Owner")) {
+                            CreateRole = "roles/owner";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Editor") {
+                            CreateRole = "roles/editor";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Viewer") {
+                            CreateRole = "roles/viewer";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "CloudSQL Admin") {
+                            CreateRole = "roles/cloudsql.admin";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Firebase Rules System") {
+                            CreateRole = "roles/firebaserules.system";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Compute Engine Service") {
+                            CreateRole = "roles/compute.serviceAgent";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Logging Admin") {
+                            CreateRole = "roles/logging.admin";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Storage Admin") {
+                            CreateRole = "roles/storage.admin";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "Monitoring Admin") {
+                            CreateRole = "roles/monitoring.admin";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        } else if (CreateRole == "API Keys Admin") {
+                            CreateRole = "roles/serviceusage.apiKeysAdmin";
+                            System.out.println("CHOOSE " + CreateRole);
+                            permissions.addPermissions(CreateUser, CreateRole);
+                        }
 
-                    alert.hideWithAnimation();
+                        successfulMessage = "This user " + CreateUser + " was created and added into the cloud.";
+                        successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+
+                        alert.hideWithAnimation();
                 } else if (creatingRoles.getSelectionModel().isEmpty()) {
                     System.out.println("NO ROLE CHOSEN! PLEASE CHOOSE A ROLE");
                     errorMessage = "Please try again. Choose a role for the specified user.";
@@ -1588,20 +1585,19 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             } else {
 //                try {
-                    userinfodb.deleteUser(email1);
+                userinfodb.deleteUser(email1);
 //                } catch (SQLException e) {
 //                    e.printStackTrace();
 //                }
                 String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Contact Administrator if unknown.";
                 System.out.println("SENDING SMS HP NUMBER " + handphoneNUMBER);
-                if(handphoneNUMBER==null){
+                if (handphoneNUMBER == null) {
                     System.out.println("NO PHONE NUMBER BUT STILL DELETING");
                     employeeTable.getItems().remove(users);
                     successfulMessage = "This user " + email1 + " was successfully removed.";
                     successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
                     alert.hideWithAnimation();
-                }
-                else{
+                } else {
                     sendSMS.sendSMS(handphoneNUMBER, sendingMessage);
                     employeeTable.getItems().remove(users);
                     successfulMessage = "This user " + email1 + " was successfully removed.";
