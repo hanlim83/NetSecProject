@@ -234,11 +234,17 @@ public class ControllerAdminDeviceCheck implements Initializable {
         String line;
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
-            if(line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))){
-                //set global variable
+            if (line.contains("State") && (line.contains("disconnected"))){
+                System.out.println("Probably on LAN");
                 WirelessEncryption=true;
-                System.out.println("Wireless Secure!!!");
                 break;
+            } else{
+                if(line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))){
+                    //set global variable
+                    WirelessEncryption=true;
+                    System.out.println("Wireless Secure!!!");
+                    break;
+                }
             }
             WirelessEncryption=false;
         }
