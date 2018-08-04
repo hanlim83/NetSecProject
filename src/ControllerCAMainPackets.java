@@ -579,6 +579,7 @@ public class ControllerCAMainPackets implements Initializable {
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
+                                    handler.cancelTableviewRunnable();
                                     FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                     myScene = ((Node) event.getSource()).getScene();
                                     Parent nextView = null;
@@ -630,6 +631,7 @@ public class ControllerCAMainPackets implements Initializable {
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
+                                    handler.cancelTableviewRunnable();
                                     FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                     myScene = ((Node) event.getSource()).getScene();
                                     Parent nextView = null;
@@ -696,6 +698,7 @@ public class ControllerCAMainPackets implements Initializable {
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
+                                        handler.cancelTableviewRunnable();
                                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                         myScene = ((Node) event.getSource()).getScene();
                                         Parent nextView = null;
@@ -747,6 +750,7 @@ public class ControllerCAMainPackets implements Initializable {
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
+                                        handler.cancelTableviewRunnable();
                                         FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                         myScene = ((Node) event.getSource()).getScene();
                                         Parent nextView = null;
@@ -792,13 +796,7 @@ public class ControllerCAMainPackets implements Initializable {
     private class createTPS implements Runnable {
         @Override
         public void run() {
-            try {
-                capture.getTrafficPerSecond();
-            } catch (ConcurrentModificationException e) {
-                capture.stopSniffing();
-                capture.getTrafficPerSecond();
-                capture.startSniffing();
-            }
+            capture.getTrafficPerSecond();
         }
     }
 

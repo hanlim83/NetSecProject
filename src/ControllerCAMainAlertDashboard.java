@@ -152,7 +152,6 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         this.EmailHandler = OEmailHandler;
         this.capture = capture;
         this.captureType = captureType;
-        this.captureType = captureType;
         this.partialCaptureFilePath = absolutePath;
         try {
             FXMLLoader loader = new FXMLLoader();

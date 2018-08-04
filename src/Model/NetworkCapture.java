@@ -16,8 +16,7 @@ import java.util.*;
 
 public class NetworkCapture {
     //Pre-Defined Variables
-    private static final String COUNT_KEY = NetworkCapture.class.getName() + ".count";
-    private static final int COUNT = Integer.getInteger(COUNT_KEY, -1); // -1 -> loop infinite
+    private static final int COUNT = -1;
     private static final String READ_TIMEOUT_KEY = NetworkCapture.class.getName() + ".readTimeout";
     private static final int READ_TIMEOUT = Integer.getInteger(READ_TIMEOUT_KEY, 100); // [ms]
     private static final String SNAPLEN_KEY = NetworkCapture.class.getName() + ".snaplen";
@@ -96,10 +95,6 @@ public class NetworkCapture {
     public long getPacketsReceived() {
         return PacketsReceived;
     }
-
-//    public long getPacketsDropped() {
-//        return PacketsDropped;
-//    }
 
     //Packet count increment
     synchronized private void incrementCount() {
