@@ -341,11 +341,11 @@ public class ControllerEmployeePage implements Initializable {
                     status1.setCellValueFactory(new PropertyValueFactory<Admin, String>("status"));
                     hashpassword1.setCellValueFactory(new PropertyValueFactory<Admin, String>("hashPassword"));
 
-                    try {
+//                    try {
                         userList = userinfodb.getUserList();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
 
 
                     deletingEmployees.setCellFactory(ActionButtonTableCell.<User>forTableColumn("Revoke", (User users) -> {
@@ -964,11 +964,11 @@ public class ControllerEmployeePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    try {
+//                    try {
                         userList = userinfodb.getUserList();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
 
                     Platform.runLater(() -> {
                         userObservableList = FXCollections.observableList(userList);
@@ -1010,11 +1010,11 @@ public class ControllerEmployeePage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    try {
+//                    try {
                         userList = userinfodb.getUserList();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
                     Platform.runLater(() -> {
                         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                         snackbar.getStylesheets().add("Style.css");
@@ -1176,11 +1176,11 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             } else {
                 if (CreateUser.contains("@gmail.com") && !creatingRoles.getSelectionModel().isEmpty()) {
-                    try {
+//                    try {
                         userinfodb.createUser(CreateUser);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
                     newProcess();
 
                     if (CreateRole.equals("Owner")) {
@@ -1596,11 +1596,11 @@ public class ControllerEmployeePage implements Initializable {
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
             } else {
-                try {
+//                try {
                     userinfodb.deleteUser(email1);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
                 String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Contact Administrator if unknown.";
                 System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
                 sendSMS.sendSMS(handphoneNUMBER, sendingMessage);

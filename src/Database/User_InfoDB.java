@@ -1,7 +1,5 @@
 package Database;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,22 +10,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class User_InfoDB {
-    //TODO check if migration was successful
-    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-    private static String databaseName = "user_info";
-    private static String username = "root";
-    private static String password = "root";
+//    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
+//    private static String databaseName = "user_info";
+//    private static String username = "root";
+//    private static String password = "root";
 
-    public ArrayList<User> getUserList() throws SQLException {
+    public ArrayList<User> getUserList(){
         ArrayList<User> UserList = new ArrayList<User>();
-
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -35,7 +24,6 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT * FROM entries");
 
@@ -60,15 +48,6 @@ public class User_InfoDB {
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
 
-
-//        PreparedStatement
-//
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//        }
-//        connection.close();
         return UserList;
     }
 
@@ -80,7 +59,6 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT status FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
@@ -101,24 +79,13 @@ public class User_InfoDB {
         return state;
     }
 
-    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String phoneNo, String activationTime, String email) throws SQLException {
-        //maybe change to boolean next time
-
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
+    public void setUserKeyInfo(String hashPassword, String publicKey, String encryptedPrivateKey,String phoneNo, String activationTime, String email){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("UPDATE entries SET status='Active', hashPassword=?, publicKey=?, privateKey=?, phoneNo=?, activationTime=? WHERE email=?");
             preparedStatement.setString(1,hashPassword);
@@ -130,10 +97,6 @@ public class User_InfoDB {
 
             preparedStatement.executeUpdate();
 
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                state=resultSet.getString(1);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -141,53 +104,20 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-
-
-
-        //Here no need to return any result so how?
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//            ResultSet resultSet = statement.executeQuery("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateLKey='"+privateKey+"' WHERE email='"+email+"'");
-//            while (resultSet.next()) {
-//                //System.out.println(resultSet.getString(1));
-//                state=resultSet.getString(1);
-//            }
-//            statement.executeUpdate("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateKey='"+encryptedPrivateKey+"', phoneNo='"+phoneNo+"' WHERE email='"+email+"'");
-
-//        }
     }
 
-    public void deleteUser(String email) throws SQLException {
-        //maybe change to boolean next time
-
-//        String state = "";
-
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
+    public void deleteUser(String email){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("DELETE FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
             preparedStatement.executeUpdate();
-
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                state=resultSet.getString(1);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -195,48 +125,20 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-
-
-        //Here no need to return any result so how?
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//            ResultSet resultSet = statement.executeQuery("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateLKey='"+privateKey+"' WHERE email='"+email+"'");
-//            while (resultSet.next()) {
-//                //System.out.println(resultSet.getString(1));
-//                state=resultSet.getString(1);
-//            }
-//            statement.executeUpdate("DELETE FROM entries WHERE email='" + email + "'");
-//            preparedStatement.executeUpdate();
-//        }
     }
 
-    public void createUser(String email) throws SQLException {
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
+    public void createUser(String email){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("INSERT INTO entries (email,status) values (?,'Inactive')");
             preparedStatement.setString(1,email);
 
             preparedStatement.executeUpdate();
-
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                state=resultSet.getString(1);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -244,29 +146,10 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-        //Here no need to return any result so how?
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-//            ResultSet resultSet = statement.executeQuery("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateLKey='"+privateKey+"' WHERE email='"+email+"'");
-//            while (resultSet.next()) {
-//                //System.out.println(resultSet.getString(1));
-//                state=resultSet.getString(1);
-//            }
-//            statement.executeUpdate("INSERT INTO entries (email,status) values ('"+email+"','Inactive')");
-//            preparedStatement.executeUpdate();
-//        }
     }
 
-    public String getPhoneNumber(String email) throws SQLException {
+    public String getPhoneNumber(String email){
         String phoneNo = null;
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -274,12 +157,9 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT phoneNo FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
-
-//            preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -292,37 +172,16 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-//        preparedStatement=connection.prepareStatement("SELECT phoneNo FROM entries WHERE email=?");
-//        preparedStatement.setString(1,email);
-
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-////            ResultSet resultSet = statement.executeQuery("SELECT phoneNo FROM entries WHERE email='"+email+"'");
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                phoneNo=resultSet.getString(1);
-//            }
-//        }
         return phoneNo;
     }
 
-    public void setPhoneNo(String phoneNo, String email) throws SQLException {
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
+    public void setPhoneNo(String phoneNo, String email){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("UPDATE entries SET phoneNo=? WHERE email=?");
             preparedStatement.setString(1,phoneNo);
@@ -330,10 +189,6 @@ public class User_InfoDB {
 
             preparedStatement.executeUpdate();
 
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                state=resultSet.getString(1);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -341,14 +196,9 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-//        try (Statement statement = connection.createStatement()) {
-////            statement.executeUpdate("UPDATE entries SET phoneNo='"+phoneNo+"' WHERE email='"+email+"'");
-//            preparedStatement.executeUpdate();
-//        }
     }
 
-    public ArrayList<String> getAllEmail() throws SQLException {
+    public ArrayList<String> getAllEmail(){
         ArrayList<String> emailList=new ArrayList<String>();
 
         Connection connection = null;
@@ -375,15 +225,8 @@ public class User_InfoDB {
         return emailList;
     }
 
-    public boolean checkPassword(String passwordToHash,String email) throws SQLException {
+    public boolean checkPassword(String passwordToHash,String email){
         String hashPassword=get_SHA_512_SecurePassword(passwordToHash,email);
-//        String jdbcUrl = String.format(
-//                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-//                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                databaseName,
-//                instanceConnectionName);
-//
-//        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -391,16 +234,12 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT CASE WHEN hashPassword=? THEN 1 ELSE 0 END FROM entries WHERE email=?");
             preparedStatement.setString(1,hashPassword);
             preparedStatement.setString(2,email);
 
-//            preparedStatement.executeUpdate();
-
             resultSet = preparedStatement.executeQuery();
-//            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 if(resultSet.getString(1).equals("1")){
                     return true;
@@ -415,12 +254,6 @@ public class User_InfoDB {
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) {e.printStackTrace();}
             if (connection != null) try { connection.close(); } catch (SQLException e) {e.printStackTrace();}
         }
-
-//        try (Statement statement = connection.createStatement()) {
-////            ResultSet resultSet = statement.executeQuery("SELECT * FROM entries");
-////            ResultSet resultSet = statement.executeQuery("SELECT CASE WHEN hashPassword='"+hashPassword+"' THEN 1 ELSE 0 END FROM entries WHERE email='"+email+"'");
-//
-//        }
         return false;
     }
 
@@ -432,15 +265,11 @@ public class User_InfoDB {
 
         try {
             connection = DataSource.getInstance().getConnection();
-//            statement = connection.createStatement();
 
             preparedStatement=connection.prepareStatement("SELECT publicKey FROM entries WHERE email=?");
             preparedStatement.setString(1,email);
 
-//            preparedStatement.executeUpdate();
-
             resultSet = preparedStatement.executeQuery();
-//            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 publicKeyString=resultSet.getString(1);
             }
