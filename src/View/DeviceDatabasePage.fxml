@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerDeviceDatabasePage">
     <children>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #f4c325;">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #FFC107;">
             <children>
                 <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
                 <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
@@ -35,6 +35,7 @@
                     <font>
                         <Font size="18.0" />
                     </font></Label>
+                <JFXButton fx:id="homeButton" buttonType="RAISED" layoutX="413.0" layoutY="10.0" onAction="#onClickHomeButton" prefHeight="44.0" prefWidth="64.0" ripplerFill="#00bfff00" style="-fx-border-radius: 30; -fx-background-color: #607D8B;" />
             </children>
         </AnchorPane>
       <TableView fx:id="deviceTable" layoutX="120.0" layoutY="150.0" prefHeight="389.0" prefWidth="850.0">

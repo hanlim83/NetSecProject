@@ -23,6 +23,14 @@
                         <Font name="Serif Regular" size="40.0" />
                     </font>
                 </Label>
+                <Label fx:id="ipAddr" layoutX="911.0" layoutY="38.0" prefHeight="27.0" prefWidth="151.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
+                <Label layoutX="773.0" layoutY="37.0" text="Your IP Address :">
+                    <font>
+                        <Font size="18.0" />
+                    </font></Label>
             </children>
         </AnchorPane>
       <Label fx:id="LastLoginLabel" alignment="CENTER" layoutX="145.0" layoutY="395.0" prefHeight="84.0" prefWidth="779.0" text="Your last login was on">

@@ -1,4 +1,5 @@
 import Database.admin_DB;
+import Model.IPAddressPolicy;
 import Model.MyBlob;
 import Model.OAuth2LoginAdmin;
 import com.google.api.client.auth.oauth2.Credential;
@@ -23,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.*;
@@ -52,6 +54,9 @@ public class ControllerAdminHome implements Initializable {
     @FXML
     private Label GreetingsLabel;
 
+    @FXML
+    private Label ipAddr;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -61,6 +66,10 @@ public class ControllerAdminHome implements Initializable {
 
     private static String lastLogin;
     private static int loginCounter=0;
+
+    private String myIPAddress;
+    private boolean ipChecker;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,6 +81,20 @@ public class ControllerAdminHome implements Initializable {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+        try {
+            String whatismyIP = IPAddressPolicy.getIp();
+            ipAddr.setText(whatismyIP);
+            Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
+            if(validityIP==true){
+                ipAddr.setTextFill(Color.rgb(1, 0, 199));
+            }
+            else{
+                ipAddr.setTextFill(Color.rgb(255, 0, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         hamburgerBar();
         timerprocess.start();
         try {

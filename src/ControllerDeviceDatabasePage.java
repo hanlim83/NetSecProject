@@ -8,13 +8,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -23,8 +28,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -72,6 +81,9 @@ public class ControllerDeviceDatabasePage implements Initializable {
 
     @FXML
     private JFXSpinner spinner;
+
+    @FXML
+    private JFXButton homeButton;
 
     private Scene myScene;
 
@@ -163,6 +175,19 @@ public class ControllerDeviceDatabasePage implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         initializeProcess.setOnSucceeded(e -> {
             initializeProcess.reset();
         });
@@ -172,6 +197,22 @@ public class ControllerDeviceDatabasePage implements Initializable {
         initializeProcess.setOnFailed(e -> {
             initializeProcess.reset();
         });
+    }
+
+    @FXML
+    void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     @FXML

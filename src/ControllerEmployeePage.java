@@ -121,12 +121,6 @@ public class ControllerEmployeePage implements Initializable {
     private TableColumn<Admin, String> handphone1;
 
     @FXML
-    private TableColumn<Admin, String> status1;
-
-    @FXML
-    private TableColumn<Admin, String> hashpassword1;
-
-    @FXML
     private TableColumn<Admin, Button> deletingAdmins;
 
     @FXML
@@ -264,6 +258,19 @@ public class ControllerEmployeePage implements Initializable {
             e.printStackTrace();
         }
 
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         createUser.setVisible(true);
         createAdmin.setVisible(false);
         spinner.setVisible(true);
@@ -284,19 +291,6 @@ public class ControllerEmployeePage implements Initializable {
         initializeProcess.setOnFailed(e -> {
             initializeProcess.reset();
         });
-
-        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
-        File file2 = new File(path2.toUri());
-        Image imageForFile2;
-        try {
-            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
-            ImageView imageView1 = new ImageView(imageForFile2);
-//            imageView.setFitHeight(24.5);
-//            imageView.setFitWidth(35);
-            homeButton.setGraphic(imageView1);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -322,7 +316,6 @@ public class ControllerEmployeePage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
 
-
 //                    Image addPerson = new Image(getClass().getResourceAsStream("View/addPerson.svg"));
 //                    createUser.setGraphic(new ImageView(addPerson));
 
@@ -338,8 +331,6 @@ public class ControllerEmployeePage implements Initializable {
                     entryID1.setCellValueFactory(new PropertyValueFactory<Admin, String>("entryID"));
                     email2.setCellValueFactory(new PropertyValueFactory<Admin, String>("email"));
                     handphone1.setCellValueFactory(new PropertyValueFactory<Admin, String>("phoneNo"));
-                    status1.setCellValueFactory(new PropertyValueFactory<Admin, String>("status"));
-                    hashpassword1.setCellValueFactory(new PropertyValueFactory<Admin, String>("hashPassword"));
 
 //                    try {
                         userList = userinfodb.getUserList();
@@ -1602,12 +1593,22 @@ public class ControllerEmployeePage implements Initializable {
 //                    e.printStackTrace();
 //                }
                 String sendingMessage = "You, " + email1 + " have been removed from FireE's Cloud Database. Contact Administrator if unknown.";
-                System.out.println("SENDING SMS HP NUMBER " + hpAdmin);
-                sendSMS.sendSMS(handphoneNUMBER, sendingMessage);
-                employeeTable.getItems().remove(users);
-                successfulMessage = "This user " + email1 + " was successfully removed.";
-                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-                alert.hideWithAnimation();
+                System.out.println("SENDING SMS HP NUMBER " + handphoneNUMBER);
+                if(handphoneNUMBER==null){
+                    System.out.println("NO PHONE NUMBER BUT STILL DELETING");
+                    employeeTable.getItems().remove(users);
+                    successfulMessage = "This user " + email1 + " was successfully removed.";
+                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                    alert.hideWithAnimation();
+                }
+                else{
+                    sendSMS.sendSMS(handphoneNUMBER, sendingMessage);
+                    employeeTable.getItems().remove(users);
+                    successfulMessage = "This user " + email1 + " was successfully removed.";
+                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                    alert.hideWithAnimation();
+                }
+
             }
         });
         no.setOnAction(__addEvent -> {

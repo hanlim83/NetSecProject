@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerEmployeePage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerEmployeePage">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #FFC107;">
             <children>
@@ -64,11 +64,9 @@
       <TableView fx:id="adminTable" layoutX="71.0" layoutY="159.0" onMouseClicked="#onClickItem" prefHeight="393.0" prefWidth="937.0" visible="false">
         <columns>
           <TableColumn fx:id="entryID1" prefWidth="92.0" text="Entry ID" />
-          <TableColumn fx:id="email2" prefWidth="216.0" text="Email" />
-            <TableColumn fx:id="handphone1" prefWidth="142.0" text="Handphone" />
-            <TableColumn fx:id="status1" prefWidth="122.0" text="Status" />
-            <TableColumn fx:id="hashpassword1" prefWidth="150.0" text="Hash Password" />
-            <TableColumn fx:id="deletingAdmins" prefWidth="214.0" text="Delete" />
+          <TableColumn fx:id="email2" prefWidth="375.0" text="Email" />
+            <TableColumn fx:id="handphone1" prefWidth="236.0" text="Handphone" />
+            <TableColumn fx:id="deletingAdmins" prefWidth="233.0" text="Delete" />
         </columns>
       </TableView>
       <JFXButton fx:id="listPermissions" layoutX="382.0" layoutY="108.0" onMouseClicked="#handleListPermissions" prefHeight="40.0" prefWidth="152.0" text="Different Roles">

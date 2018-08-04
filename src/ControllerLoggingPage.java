@@ -27,12 +27,15 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -42,8 +45,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -100,6 +107,9 @@ public class ControllerLoggingPage implements Initializable {
     @FXML
     private JFXSpinner spinner;
 
+    @FXML
+    private JFXButton homeButton;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -144,56 +154,22 @@ public class ControllerLoggingPage implements Initializable {
 
     private ArrayList<Integer> globalCheckerList2 = new ArrayList<Integer>();
 
-//    Service process1 = new Service() {
-//        @Override
-//        protected Task createTask() {
-//            return new Task() {
-//                @Override
-//                protected Void call() throws Exception {
-//                    loggingsnippets = new LoggingSnippets();
-//                    Platform.runLater(() -> {
-//                        options = LoggingOptions.getDefaultInstance();
-//
-//                        popupanchor.setVisible(false);
-//                        logsTable.setVisible(true);
-//                        spinner.setVisible(false);
-//
-//                        timestamp.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("timestamp"));
-//                        severity.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("severity"));
-//                        action.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("action"));
-//                        bucketName.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("bucketName"));
-//                        globalCheckerList2 = logsextract.getGlobalChckerList();
-////                      user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("nonFinalEmail"));
-//                        user.setCellValueFactory(new PropertyValueFactory<LogsExtract, String>("finalEmail"));
-//
-//                        severity.setCellFactory(new Callback<TableColumn<LogsExtract, String>, TableCell<LogsExtract, String>>() {
-//                            @Override
-//                            public TableCell<LogsExtract, String> call(TableColumn<LogsExtract, String> param) {
-//                                return new TableCell<LogsExtract, String>() {
-//
-//                                    @Override
-//                                    public void updateItem(String item, boolean empty) {
-//                                        super.updateItem(item, empty);
-//                                        if (!isEmpty()) {
-//                                            this.setTextFill(Color.BLACK);
-//                                            // Get fancy and change color based on data
-//                                            if (item.contains("ERROR"))
-//                                                this.setTextFill(Color.RED);
-//                                            setText(item);
-//
-//                                        }
-//                                    }
-//
-//                                };
-//                            }
-//                        });
-//                        logsList = loggingsnippets.getLogsExtractList();
-//                    });
-//                    return null;
-//                }
-//            };
-//        }
-//    };
+
+    @FXML
+    void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+    }
 
     private void TableMethod() {
         JFXTreeTableColumn<LogsExtract, String> timestampCol = new JFXTreeTableColumn<>("Timestamp");
@@ -317,16 +293,16 @@ public class ControllerLoggingPage implements Initializable {
         searchFunction.textProperty().addListener((o, oldVal1, newVal1) -> {
             JFXTreeTableView.setPredicate(userProp -> {
                 final LogsExtract extracted = userProp.getValue();
-                    return extracted.getTimestamp().get().toLowerCase().contains(newVal1.toLowerCase())
-                            || extracted.getAction().get().toLowerCase().contains(newVal1.toLowerCase())
-                            || extracted.getBucketName().get().toLowerCase().contains(newVal1.toLowerCase())
-                            || extracted.getFinalEmail().get().toLowerCase().contains(newVal1.toLowerCase())
-                            || extracted.getSeverity().get().toLowerCase().contains(newVal1.toLowerCase())
-                            || extracted.getTimestamp().get().contains(newVal1)
-                            || extracted.getAction().get().contains(newVal1)
-                            || extracted.getBucketName().get().contains(newVal1)
-                            || extracted.getFinalEmail().get().contains(newVal1)
-                            || extracted.getSeverity().get().contains(newVal1);
+                return extracted.getTimestamp().get().toLowerCase().contains(newVal1.toLowerCase())
+                        || extracted.getAction().get().toLowerCase().contains(newVal1.toLowerCase())
+                        || extracted.getBucketName().get().toLowerCase().contains(newVal1.toLowerCase())
+                        || extracted.getFinalEmail().get().toLowerCase().contains(newVal1.toLowerCase())
+                        || extracted.getSeverity().get().toLowerCase().contains(newVal1.toLowerCase())
+                        || extracted.getTimestamp().get().contains(newVal1)
+                        || extracted.getAction().get().contains(newVal1)
+                        || extracted.getBucketName().get().contains(newVal1)
+                        || extracted.getFinalEmail().get().contains(newVal1)
+                        || extracted.getSeverity().get().contains(newVal1);
             });
         });
 
@@ -335,7 +311,6 @@ public class ControllerLoggingPage implements Initializable {
                 onEdit();
             }
         });
-
 
 
     }
@@ -356,10 +331,9 @@ public class ControllerLoggingPage implements Initializable {
             String whatismyIP = IPAddressPolicy.getIp();
             ipAddr.setText(whatismyIP);
             Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
-            if(validityIP==true){
+            if (validityIP == true) {
                 ipAddr.setTextFill(Color.rgb(1, 0, 199));
-            }
-            else{
+            } else {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
@@ -370,6 +344,19 @@ public class ControllerLoggingPage implements Initializable {
         logsObservableList = FXCollections.observableList(logsList);
 
         searchFunction.setVisible(false);
+
+        Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file2 = new File(path2.toUri());
+        javafx.scene.image.Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -402,7 +389,7 @@ public class ControllerLoggingPage implements Initializable {
         layout.setHeading(new Label(title));
 
         GridPane grid = new GridPane();
-        grid.setPrefSize(650,330);
+        grid.setPrefSize(650, 330);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(10, 100, 10, 0));
@@ -421,11 +408,11 @@ public class ControllerLoggingPage implements Initializable {
         StringProperty severity0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getSeverity();
         Label LABEL1 = new Label();
 //        LABEL1.setFont(new Font(LABEL0.getFont().getName(),11));
-        String severity00= String.valueOf(severity0);
-        if(severity00.contains("ERROR")){
+        String severity00 = String.valueOf(severity0);
+        if (severity00.contains("ERROR")) {
             LABEL1.setTextFill(Color.rgb(255, 0, 0));
             LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
-        }else{
+        } else {
             LABEL1.setTextFill(Color.rgb(1, 0, 199));
             LABEL1.setText(String.valueOf(severity0).substring(23, String.valueOf(severity0).length() - 1));
         }
@@ -507,7 +494,7 @@ public class ControllerLoggingPage implements Initializable {
     void handledeleted(MouseEvent event) {
         errorReport.clear();
         try {
-            myIPAddress= IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -521,9 +508,9 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "delete";
 
-        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-        if(ipChecker==false) {
+        ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+        if (ipChecker == false) {
             //Display not within ip range error message
             errorMessage = "You are not within the company's premises to perform this function.";
             errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
@@ -532,8 +519,7 @@ public class ControllerLoggingPage implements Initializable {
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
-        }
-        else {
+        } else {
             process.start();
         }
         process.setOnSucceeded(e -> {
@@ -546,17 +532,16 @@ public class ControllerLoggingPage implements Initializable {
             severityLIST2 = LogsExtract.severityLIST;
             System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST2.size());
 
-            for(int i=0;i<severityLIST2.size();i++){
-                if(severityLIST2.get(i).contains("ERROR")){
+            for (int i = 0; i < severityLIST2.size(); i++) {
+                if (severityLIST2.get(i).contains("ERROR")) {
                     errorCHECKER2++;
-                }
-                else{
+                } else {
                     noticeCHECKER2++;
                 }
             }
 
-            errorReport.add(new PieChart.Data("Errors",errorCHECKER2));
-            errorReport.add(new PieChart.Data("Notices",noticeCHECKER2));
+            errorReport.add(new PieChart.Data("Errors", errorCHECKER2));
+            errorReport.add(new PieChart.Data("Notices", noticeCHECKER2));
             piechart1.setTitle("Error Reports");
             piechart1.setData(errorReport);
 
@@ -575,7 +560,7 @@ public class ControllerLoggingPage implements Initializable {
     void handlecreated(MouseEvent event) {
         errorReport.clear();
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -589,9 +574,9 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "create";
 
-        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-        if(ipChecker==false) {
+        ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+        if (ipChecker == false) {
             //Display not within ip range error message
             errorMessage = "You are not within the company's premises to perform this function.";
             errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
@@ -600,8 +585,7 @@ public class ControllerLoggingPage implements Initializable {
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
-        }
-        else {
+        } else {
             process.start();
         }
         process.setOnSucceeded(e -> {
@@ -614,16 +598,15 @@ public class ControllerLoggingPage implements Initializable {
             general.setDisable(false);
             severityLIST3 = LogsExtract.severityLIST;
             System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST3.size());
-            for(int i=0;i<severityLIST3.size();i++){
-                if(severityLIST3.get(i).contains("ERROR")){
+            for (int i = 0; i < severityLIST3.size(); i++) {
+                if (severityLIST3.get(i).contains("ERROR")) {
                     errorCHECKER3++;
-                }
-                else{
+                } else {
                     noticeCHECKER3++;
                 }
             }
-            errorReport.add(new PieChart.Data("Errors",errorCHECKER3));
-            errorReport.add(new PieChart.Data("Notices",noticeCHECKER3));
+            errorReport.add(new PieChart.Data("Errors", errorCHECKER3));
+            errorReport.add(new PieChart.Data("Notices", noticeCHECKER3));
             piechart1.setTitle("Error Reports");
             piechart1.setData(errorReport);
             process.reset();
@@ -641,7 +624,7 @@ public class ControllerLoggingPage implements Initializable {
     void handleonetwo(MouseEvent event) {
         errorReport.clear();
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -655,9 +638,9 @@ public class ControllerLoggingPage implements Initializable {
         popupanchor.setVisible(false);
         filters = "one two";
 
-        ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-        System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-        if(ipChecker==false) {
+        ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+        System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+        if (ipChecker == false) {
             //Display not within ip range error message
             errorMessage = "You are not within the company's premises to perform this function.";
             errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
@@ -666,8 +649,7 @@ public class ControllerLoggingPage implements Initializable {
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
-        }
-        else {
+        } else {
             process.start();
 
         }
@@ -681,16 +663,15 @@ public class ControllerLoggingPage implements Initializable {
             severityLIST = LogsExtract.severityLIST;
             System.out.println("SEVERITY LIST SIZE IS!! " + severityLIST.size());
 
-            for(int i=0;i<severityLIST.size();i++){
-                if(severityLIST.get(i).contains("ERROR")){
+            for (int i = 0; i < severityLIST.size(); i++) {
+                if (severityLIST.get(i).contains("ERROR")) {
                     errorCHECKER++;
-                }
-                else{
+                } else {
                     noticeCHECKER++;
                 }
             }
-            errorReport.add(new PieChart.Data("Errors",errorCHECKER));
-            errorReport.add(new PieChart.Data("Notices",noticeCHECKER));
+            errorReport.add(new PieChart.Data("Errors", errorCHECKER));
+            errorReport.add(new PieChart.Data("Notices", noticeCHECKER));
             piechart1.setTitle("Error Reports");
             piechart1.setData(errorReport);
             process.reset();
