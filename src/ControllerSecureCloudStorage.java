@@ -896,56 +896,61 @@ public class ControllerSecureCloudStorage implements Initializable {
                                         int selectdIndex = getTreeTableRow().getIndex();
                                         System.out.println(selectdIndex);
                                         TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
-                                        btn.setOnAction(event -> {
-                                            System.out.println(tableBlob.getBlobName());
-                                            blobName = tableBlob.getBlobName();
-                                            System.out.println(tableBlob.getDate());
-                                            Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-                                            Bounds boundsInScene1 = anchorPane.localToScene(anchorPane.getBoundsInLocal());
-                                            if (boundsInScene1.getMaxY() - boundsInScene.getMaxY() > 100) {
-                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY(), true);
-                                                //down is true
-                                                System.out.println("going down");
-                                            } else {
-                                                showVbox(boundsInScene.getMinX(), boundsInScene.getMinY() - 100, false);
-                                                System.out.println("going up");
-                                                //up is false
-                                            }
-                                        });
+//                                        if (tableBlob.getType2().equals("Folder")){
+//                                            JFXTreeTableView.refresh();
+//                                            return;
+//                                        }else{
+                                            btn.setOnAction(event -> {
+                                                System.out.println(tableBlob.getBlobName());
+                                                blobName = tableBlob.getBlobName();
+                                                System.out.println(tableBlob.getDate());
+                                                Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
+                                                Bounds boundsInScene1 = anchorPane.localToScene(anchorPane.getBoundsInLocal());
+                                                if (boundsInScene1.getMaxY() - boundsInScene.getMaxY() > 100) {
+                                                    showVbox(boundsInScene.getMinX(), boundsInScene.getMaxY(), true);
+                                                    //down is true
+                                                    System.out.println("going down");
+                                                } else {
+                                                    showVbox(boundsInScene.getMinX(), boundsInScene.getMinY() - 100, false);
+                                                    System.out.println("going up");
+                                                    //up is false
+                                                }
+                                            });
 
-                                        btn.setId("tableJFXButton");
+                                            btn.setId("tableJFXButton");
 
 //                                    Image imageEllipsis = new Image("https://www.google.com.sg/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiLuLWN8cbcAhWEdH0KHQ5xAXIQjRx6BAgBEAU&url=https%3A%2F%2Fwww.charbase.com%2F22ef-unicode-midline-horizontal-ellipsis&psig=AOvVaw3K7nmLaegBi6CsmUh6izNv&ust=1533042128558435");
 //                                    btn.setGraphic(new ImageView(imageEllipsis));
 
-                                        Path path = FileSystems.getDefault().getPath("src\\View\\more.png");
-                                        File file = new File(path.toUri());
-                                        Image imageForFile;
-                                        try {
-                                            imageForFile = new Image(file.toURI().toURL().toExternalForm());
-                                            ImageView iv1 = new ImageView(imageForFile);
-                                            iv1.setFitHeight(24.5);
-                                            iv1.setFitWidth(35);
-                                            btn.setGraphic(iv1);
-                                        } catch (MalformedURLException e) {
-                                            e.printStackTrace();
-                                        }
+                                            Path path = FileSystems.getDefault().getPath("src\\View\\more.png");
+                                            File file = new File(path.toUri());
+                                            Image imageForFile;
+                                            try {
+                                                imageForFile = new Image(file.toURI().toURL().toExternalForm());
+                                                ImageView iv1 = new ImageView(imageForFile);
+                                                iv1.setFitHeight(24.5);
+                                                iv1.setFitWidth(35);
+                                                btn.setGraphic(iv1);
+                                            } catch (MalformedURLException e) {
+                                                e.printStackTrace();
+                                            }
 //                                    btn.setBorder(new Border(new BorderStroke(Color.BLACK,
 //                                            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 //                                    btn.setStyle("-fx-border-width: 5;");
 //                                    btn.setStyle("-fx-border-radius: 5;");
-                                        btn.getStylesheets().add("Style.css");
-                                        btn.setOnMouseEntered(event -> {
+                                            btn.getStylesheets().add("Style.css");
+                                            btn.setOnMouseEntered(event -> {
 //                                        btn.setStyle("-fx-border-radius: 5;");
-                                        });
+                                            });
 
-                                        btn.setOnMouseExited(event -> {
+                                            btn.setOnMouseExited(event -> {
 
-                                        });
+                                            });
 
-                                        setGraphic(btn);
-                                        setText(null);
+                                            setGraphic(btn);
+                                            setText(null);
 //                                    Image imageEllipsis = new Image(getClass().getResourceAsStream("View/horizontal_ellipsis.png"));
+//                                        }
                                     } catch (ClassCastException e) {
 //                                        e.printStackTrace();
                                         JFXTreeTableView.refresh();
@@ -1660,6 +1665,19 @@ public class ControllerSecureCloudStorage implements Initializable {
         public void setType(String type) {
             this.type.set(type);
         }
+
+        public String getType2() {
+            return type2.get();
+        }
+
+        public StringProperty type2Property() {
+            return type2;
+        }
+
+        public void setType2(String type2) {
+            this.type2.set(type2);
+        }
+
     }
 
     public void hamburgerBar() {

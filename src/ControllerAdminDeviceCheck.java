@@ -1,3 +1,5 @@
+import Database.Device_Build_NumberDB;
+import Model.OSVersion;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -38,7 +41,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
     private Scene myScene;
 
     public static AnchorPane rootP;
-    private WindowsUtils utils = new WindowsUtils();
+//    private WindowsUtils utils = new WindowsUtils();
 
     private boolean AllFirewallStatus;
     private boolean WindowsStatus;
@@ -242,7 +245,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
     }
 
     private void checkWindowsApproved() throws SQLException {
-        if (utils.checkWindowsApproved()==true) {
+        if (checkWindowsApprovedOld()==true) {
             System.out.println("SUPPORTED VERSION");
             WindowsStatus=true;
         }else{
@@ -282,5 +285,57 @@ public class ControllerAdminDeviceCheck implements Initializable {
                 alert.show();
             });
         });
+    }
+
+    private String findSysInfo(String term) {
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"" + term + "\"");
+            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            return in.readLine();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return "";
+    }
+
+    private String getEdition() {
+        String osName = findSysInfo("OS Version:");
+//        if (!osName.isEmpty()) {
+//            for (String edition : EDITIONS) {
+//                if (osName.contains(edition)) {
+//                    return edition;
+//                }
+//            }
+//        }
+        Scanner s = new Scanner(osName).useDelimiter("                ");
+        String firstLine=s.next();
+        String osBuildNoStr=s.next();
+        //System.out.println("OS version is " + osName);
+        Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
+        String osBuildNo=sc.next();
+        System.out.println(osBuildNo);
+        return osBuildNo;
+    }
+
+    String currentOSVersion;
+    private boolean checkWindowsApprovedOld() throws SQLException {
+        boolean windowsApproved = false;
+        String currentOSVersion=getEdition();
+        Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
+        ArrayList<OSVersion> supportedVersions = device_build_numberDB.CheckSupportedVersion();
+//        CheckSupportedVersion();
+//        run();
+        for(OSVersion o: supportedVersions) {
+            if (o.getVersionNumber().equals(currentOSVersion)) {
+                System.out.println("Current Version: "+currentOSVersion+" ArrList: "+o);
+                windowsApproved=true;
+                break;
+            } else {
+                System.out.println(o);
+                windowsApproved=false;
+            }
+        }
+        return windowsApproved;
     }
 }

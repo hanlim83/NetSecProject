@@ -23,18 +23,6 @@ public class WindowsUtils{
         return "";
     }
 
-//    public static String findSysInfo2(String term) {
-//        try {
-//            Runtime rt = Runtime.getRuntime();
-//            Process pr = rt.exec("systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\"");
-//            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-//            return in.readLine();
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
-//        return "";
-//    }
-
     public String getEdition() {
         String osName = findSysInfo("OS Version:");
 //        if (!osName.isEmpty()) {
@@ -165,15 +153,5 @@ public class WindowsUtils{
 //            statement.executeUpdate("UPDATE entries SET status='Active', hashPassword='"+hashPassword+"', publicKey='"+publicKey+"', privateKey='"+encryptedPrivateKey+"' WHERE email='"+email+"'");
 //        }
 //
-//    }
-
-//    @Override
-//    public void run() {
-//        currentOSVersion=getEdition();
-//        try {
-//            CheckSupportedVersion();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 //    }
 }

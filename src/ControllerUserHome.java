@@ -43,12 +43,6 @@ public class ControllerUserHome implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private JFXButton randomButton;
-
-    @FXML
-    private JFXButton RSAButton;
-
-    @FXML
     private Label LastFileModifiedLabel;
 
     @FXML
