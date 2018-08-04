@@ -896,10 +896,10 @@ public class ControllerSecureCloudStorage implements Initializable {
                                         int selectdIndex = getTreeTableRow().getIndex();
                                         System.out.println(selectdIndex);
                                         TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
-//                                        if (tableBlob.getType2().equals("Folder")){
-//                                            JFXTreeTableView.refresh();
-//                                            return;
-//                                        }else{
+                                        if (tableBlob.getType2().equals("Folder")){
+                                            JFXTreeTableView.refresh();
+                                            return;
+                                        }else{
                                             btn.setOnAction(event -> {
                                                 System.out.println(tableBlob.getBlobName());
                                                 blobName = tableBlob.getBlobName();
@@ -950,7 +950,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                                             setGraphic(btn);
                                             setText(null);
 //                                    Image imageEllipsis = new Image(getClass().getResourceAsStream("View/horizontal_ellipsis.png"));
-//                                        }
+                                        }
                                     } catch (ClassCastException e) {
 //                                        e.printStackTrace();
                                         JFXTreeTableView.refresh();
@@ -1105,7 +1105,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                String fileName = null;
                                 if (s.hasNext()){
                                     String fileName=s.next();
-                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()),folderName,"File","Folder"));
+                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()),folderName,"File","File"));
                                 }
                             }
                         }
