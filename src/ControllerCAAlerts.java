@@ -178,14 +178,14 @@ public class ControllerCAAlerts implements Initializable {
                                         Alert rItem = alertsView.getSelectionModel().getModelItem(selectIndex).getValue();
                                         btn.setText("Go to Alert Dashboard");
                                         btn.setOnAction(event -> {
-                                            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAAlertDashboard.fxml"));
                                             myScene = ((Node) event.getSource()).getScene();
                                             Stage stage = (Stage) (myScene).getWindow();
                                             Parent nextView = null;
                                             try {
                                                 nextView = loader.load();
-                                                ControllerCAMainAlertDashboard controller = loader.getController();
-                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, rItem.getPcapPath(), false, EmailHandler);
+                                                ControllerCAAlertDashboard controller = loader.getController();
+                                                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, rItem.getPcapPath(), EmailHandler);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -231,7 +231,7 @@ public class ControllerCAAlerts implements Initializable {
     public void hamburgerBar() {
         rootP = anchorPane;
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("SideTab.fxml"));
+            VBox box = FXMLLoader.load(getClass().getResource("AdminSideTab.fxml"));
             drawer.setSidePane(box);
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);

@@ -331,6 +331,10 @@ public class ControllerCAMainPackets implements Initializable {
             packetstable.setItems(OLpackets);
             packetstable.refresh();
         }
+        if (this.capture != null)
+            alertCount.setText("Suspicious Events Count: " + Integer.toString(this.capture.getEvents()));
+        else
+            alertCount.setText("Suspicious Events Count: 0");
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -349,7 +353,12 @@ public class ControllerCAMainPackets implements Initializable {
         if (!capture.isRunning())
             ScheduledThreadPoolExecutorHandler.getService().execute(cRunnable);
         clearCaptureBtn.setDisable(true);
-        handler.setcreateTPSRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        if (handler.getStatusbackgroundRunnable()) {
+            handler.cancelbackgroundRunnable();
+            handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        } else {
+            handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        }
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -363,7 +372,7 @@ public class ControllerCAMainPackets implements Initializable {
     public void stopCapturing() {
         capture.stopSniffing();
         handler.cancelTableviewRunnable();
-        handler.cancelcreateTPSRunnable();
+        handler.cancelbackgroundRunnable();
         //Refresh TableView for last time
         packets = capture.packets;
         OLpackets = FXCollections.observableArrayList(packets);
@@ -783,7 +792,13 @@ public class ControllerCAMainPackets implements Initializable {
     private class createTPS implements Runnable {
         @Override
         public void run() {
-            capture.getTrafficPerSecond();
+            try {
+                capture.getTrafficPerSecond();
+            } catch (ConcurrentModificationException e) {
+                capture.stopSniffing();
+                capture.getTrafficPerSecond();
+                capture.startSniffing();
+            }
         }
     }
 

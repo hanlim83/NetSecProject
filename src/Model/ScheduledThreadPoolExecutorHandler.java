@@ -9,7 +9,7 @@ public class ScheduledThreadPoolExecutorHandler {
     private static ScheduledThreadPoolExecutor service;
     private static ScheduledFuture tableviewRunnable;
     private static ScheduledFuture chartDataRunnable;
-    private static ScheduledFuture createTPSRunnable;
+    private static ScheduledFuture backgroundRunnable;
 
     public ScheduledThreadPoolExecutorHandler() {
         if (service == null) {
@@ -43,7 +43,11 @@ public class ScheduledThreadPoolExecutorHandler {
     }
 
     public boolean getStatusTableviewRunnable() {
-        return !tableviewRunnable.isDone();
+        if (tableviewRunnable != null)
+            return !tableviewRunnable.isDone();
+        else {
+            return false;
+        }
     }
 
     public void cancelTableviewRunnable() {
@@ -59,26 +63,34 @@ public class ScheduledThreadPoolExecutorHandler {
     }
 
     public boolean getStatuschartDataRunnable() {
-        return !chartDataRunnable.isDone();
+        if (chartDataRunnable != null)
+            return !chartDataRunnable.isDone();
+        else {
+            return false;
+        }
     }
 
     public void cancelchartDataRunnable() {
         chartDataRunnable.cancel(true);
     }
 
-    public ScheduledFuture getcreateTPSRunnable() {
-        return createTPSRunnable;
+    public ScheduledFuture getbackgroundRunnable() {
+        return backgroundRunnable;
     }
 
-    public void setcreateTPSRunnable(ScheduledFuture createTPSRunnable) {
-        ScheduledThreadPoolExecutorHandler.createTPSRunnable = createTPSRunnable;
+    public void setbackgroundRunnable(ScheduledFuture backgroundRunnable) {
+        ScheduledThreadPoolExecutorHandler.backgroundRunnable = backgroundRunnable;
     }
 
-    public boolean getStatuscreateTPSRunnable() {
-        return !createTPSRunnable.isDone();
+    public boolean getStatusbackgroundRunnable() {
+        if (backgroundRunnable != null)
+            return !backgroundRunnable.isDone();
+        else {
+            return false;
+        }
     }
 
-    public void cancelcreateTPSRunnable() {
-        createTPSRunnable.cancel(true);
+    public void cancelbackgroundRunnable() {
+        backgroundRunnable.cancel(true);
     }
 }

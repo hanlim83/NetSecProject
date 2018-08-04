@@ -18,7 +18,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class TrayIcon {
 
@@ -31,11 +33,11 @@ public class TrayIcon {
     private static OutlookEmail EmailHandler;
     final SystemTray tray = SystemTray.getSystemTray();
     String TOOL_TIP = "FireE Tool Tip";
-    String MESSAGE_HEADER = "FireE";
     java.awt.TrayIcon processTrayIcon = null;
     private static boolean running = false;
     private Stage primaryStage;
     private Scene myScene;
+    private backgroundChecking bgC;
 
     public void getVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutorHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         device = nif;
@@ -45,6 +47,11 @@ public class TrayIcon {
         TrayIcon.threshold = threshold;
         TrayIcon.SMSHandler = SMSHandler;
         TrayIcon.EmailHandler = EmailHandler;
+    }
+
+    public void startBackgroundCheck() {
+        bgC = new backgroundChecking();
+        handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(bgC, 2, 4, TimeUnit.SECONDS));
     }
 
     public void resetPrimaryStage() {
@@ -59,12 +66,10 @@ public class TrayIcon {
                 System.err.println("SystemTray is not supported");
                 return;
             }
-
             final PopupMenu popup = new PopupMenu();
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             InputStream inputStream = classLoader.getResourceAsStream("FireIcon.png");
             Image img = ImageIO.read(inputStream);
-
             final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(img, TOOL_TIP);
             this.processTrayIcon = trayIcon;
             MenuItem alertsPage = new MenuItem("Show Alerts Generated");
@@ -171,9 +176,11 @@ public class TrayIcon {
                                         alert1.setHeaderText("FireE will minimize to Tray Icon");
                                         alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                                         alert1.showAndWait();
+                                        handler.cancelbackgroundRunnable();
                                         TrayIcon trayIcon = new TrayIcon();
                                         try {
                                             trayIcon.createAndAddApplicationToSystemTray();
+                                            startBackgroundCheck();
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -268,9 +275,11 @@ public class TrayIcon {
                                         alert1.setHeaderText("FireE will minimize to Tray Icon");
                                         alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                                         alert1.showAndWait();
+                                        handler.cancelbackgroundRunnable();
                                         TrayIcon trayIcon = new TrayIcon();
                                         try {
                                             trayIcon.createAndAddApplicationToSystemTray();
+                                            startBackgroundCheck();
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -365,9 +374,11 @@ public class TrayIcon {
                                         alert1.setHeaderText("FireE will minimize to Tray Icon");
                                         alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                                         alert1.showAndWait();
+                                        handler.cancelbackgroundRunnable();
                                         TrayIcon trayIcon = new TrayIcon();
                                         try {
                                             trayIcon.createAndAddApplicationToSystemTray();
+                                            startBackgroundCheck();
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -386,9 +397,13 @@ public class TrayIcon {
             });
             StopCapture.addActionListener(e -> {
                 capture.stopSniffing();
-                handler.cancelcreateTPSRunnable();
+                handler.cancelbackgroundRunnable();
                 capture.printStat();
                 trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nThe Network Capture File will be sent to your email shortly", java.awt.TrayIcon.MessageType.INFO);
+                ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
+                    capture.Generalexport();
+                    EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
+                });
                 try {
                     FXMLLoader loader = new FXMLLoader();
                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -488,9 +503,11 @@ public class TrayIcon {
                                         alert1.setHeaderText("FireE will minimize to Tray Icon");
                                         alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                                         alert1.showAndWait();
+                                        handler.cancelbackgroundRunnable();
                                         TrayIcon trayIcon = new TrayIcon();
                                         try {
                                             trayIcon.createAndAddApplicationToSystemTray();
+                                            startBackgroundCheck();
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -523,8 +540,11 @@ public class TrayIcon {
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == buttonTypeOne) {
                                 capture.stopSniffing();
+                                handler.cancelbackgroundRunnable();
+                                capture.Generalexport();
                                 Platform.exit();
                                 removeTrayicon();
+                                EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                             }
                         }
                     });
@@ -535,12 +555,54 @@ public class TrayIcon {
             });
         } else
             System.err.println("Tray Icon Already Running");
-//            throw new RuntimeException("Tray Icon Already Running");
     }
 
     public void removeTrayicon() {
         tray.remove(processTrayIcon);
         running = false;
+    }
+
+    private class backgroundChecking implements Runnable {
+        @Override
+        public void run() {
+            try {
+                capture.getTrafficPerSecond();
+                if (capture.checkThreshold()) {
+                    SMSHandler.sendAlert();
+                    capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(false);
+                    processTrayIcon.displayMessage("Network Traffic Exceeded Threshold", "Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.\nTo Open the alert dashboard, select the tray iocn and select view alerts generated.", java.awt.TrayIcon.MessageType.WARNING);
+                } else if (capture.checkARP() && ARPDetection != false) {
+                    SMSHandler.sendAlert();
+                    capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(true);
+                    processTrayIcon.displayMessage("Network Traffic Exceeded Threshold", "ARP Spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.\nTo Open the alert dashboard, select the tray iocn and select view alerts generated.", java.awt.TrayIcon.MessageType.WARNING);
+                }
+            } catch (ConcurrentModificationException e) {
+                capture.stopSniffing();
+                capture.getTrafficPerSecond();
+                if (capture.checkThreshold()) {
+                    SMSHandler.sendAlert();
+                    capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(false);
+                    processTrayIcon.displayMessage("Network Traffic Exceeded Threshold", "Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.\nTo Open the alert dashboard, select the tray iocn and select view alerts generated.", java.awt.TrayIcon.MessageType.WARNING);
+                } else if (capture.checkARP() && ARPDetection != false) {
+                    SMSHandler.sendAlert();
+                    capture.Specficexport();
+                    String pcapFilePath = capture.getSpecificPcapExportPath();
+                    EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(true);
+                    processTrayIcon.displayMessage("Network Traffic Exceeded Threshold", "ARP Spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.\nTo Open the alert dashboard, select the tray iocn and select view alerts generated.", java.awt.TrayIcon.MessageType.WARNING);
+                }
+                capture.startSniffing();
+            }
+        }
     }
 
 }

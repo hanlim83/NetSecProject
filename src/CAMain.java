@@ -140,10 +140,12 @@ public class CAMain extends Application {
                                             alert1.setHeaderText("FireE will minimize to Tray Icon");
                                             alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                                             alert1.showAndWait();
+                                            handler.cancelbackgroundRunnable();
                                             TrayIcon trayIcon = new TrayIcon();
                                             try {
                                                 trayIcon.createAndAddApplicationToSystemTray();
                                                 trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+                                                trayIcon.startBackgroundCheck();
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -160,10 +162,12 @@ public class CAMain extends Application {
                             alert1.setHeaderText("FireE will minimize to Tray Icon");
                             alert1.setContentText("Fire will be minimize to tray icon. To manage FireE, please find the Tray Icon.");
                             alert1.showAndWait();
+                            handler.cancelbackgroundRunnable();
                             TrayIcon trayIcon = new TrayIcon();
                             try {
                                 trayIcon.createAndAddApplicationToSystemTray();
                                 trayIcon.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+                                trayIcon.startBackgroundCheck();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

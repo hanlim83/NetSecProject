@@ -406,6 +406,10 @@ public class ControllerCAMainDashboard implements Initializable {
             TopIPMakeup();
             clearCaptureBtn.setDisable(false);
         }
+        if (this.capture != null)
+            alertCount.setText("Suspicious Events Count: " + Integer.toString(this.capture.getEvents()));
+        else
+            alertCount.setText("Suspicious Events Count: 0");
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -498,7 +502,12 @@ public class ControllerCAMainDashboard implements Initializable {
         if (!capture.isRunning())
             ScheduledThreadPoolExecutorHandler.getService().execute(captureRunnable);
         clearCaptureBtn.setDisable(true);
-        handler.setcreateTPSRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        if (handler.getStatusbackgroundRunnable()) {
+            handler.cancelbackgroundRunnable();
+            handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        } else {
+            handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        }
         TimelineCtrl(true);
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -512,7 +521,7 @@ public class ControllerCAMainDashboard implements Initializable {
 
     public void stopCapturing() {
         capture.stopSniffing();
-        handler.cancelcreateTPSRunnable();
+        handler.cancelbackgroundRunnable();
         handler.cancelchartDataRunnable();
         TimelineCtrl(false);
         capture.Generalexport();
@@ -799,7 +808,13 @@ public class ControllerCAMainDashboard implements Initializable {
     private class createTPS implements Runnable {
         @Override
         public void run() {
-            capture.getTrafficPerSecond();
+            try {
+                capture.getTrafficPerSecond();
+            } catch (ConcurrentModificationException e) {
+                capture.stopSniffing();
+                capture.getTrafficPerSecond();
+                capture.startSniffing();
+            }
         }
     }
 
