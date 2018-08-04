@@ -40,7 +40,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -546,243 +545,122 @@ public class ControllerCAMainPackets implements Initializable {
     private class tableview implements Runnable {
         @Override
         public void run() {
-            try {
-                if (capture.checkThreshold()) {
-                    SMSHandler.sendAlert();
-                    capture.Specficexport();
-                    String pcapFilePath = capture.getSpecificPcapExportPath();
-                    EmailHandler.sendParitalPcap(pcapFilePath);
-                    capture.addAlert(false);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            myScene = anchorPane.getScene();
-                            Stage stage = (Stage) (myScene).getWindow();
-                            String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
-                            JFXButton close = new JFXButton("Close");
-                            close.setButtonType(JFXButton.ButtonType.RAISED);
-                            close.setStyle("-fx-background-color: #00bfff;");
-                            JFXButton show = new JFXButton("Show Alert Dashboard");
-                            show.setButtonType(JFXButton.ButtonType.RAISED);
-                            show.setStyle("-fx-background-color: #ff90bb;");
-                            JFXDialogLayout layout = new JFXDialogLayout();
-                            layout.setHeading(new Label(title));
-                            layout.setBody(new Label(content));
-                            layout.setActions(show, close);
-                            JFXAlert<Void> alert = new JFXAlert<>(stage);
-                            alert.setOverlayClose(true);
-                            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                            alert.setContent(layout);
-                            alert.initModality(Modality.NONE);
-                            close.setOnAction(__ -> alert.hideWithAnimation());
-                            show.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    handler.cancelTableviewRunnable();
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
-                                    myScene = ((Node) event.getSource()).getScene();
-                                    Parent nextView = null;
-                                    try {
-                                        nextView = loader.load();
-                                        ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    stage.setScene(new Scene(nextView));
-                                    stage.setTitle("Alert Dashboard");
-                                    alert.close();
-                                    stage.show();
-                                }
-                            });
-                            alert.show();
-                        }
-                    });
-                } else if (capture.checkARP() && ARPDetection != false) {
-                    SMSHandler.sendAlert();
-                    capture.Specficexport();
-                    String pcapFilePath = capture.getSpecificPcapExportPath();
-                    EmailHandler.sendParitalPcap(pcapFilePath);
-                    capture.addAlert(true);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            myScene = anchorPane.getScene();
-                            Stage stage = (Stage) (myScene).getWindow();
-                            String title = "Suspicious Network Event Detected!";
-                            String content = "A Suspicious network event has been detected! ARP spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
-                            JFXButton close = new JFXButton("Close");
-                            close.setButtonType(JFXButton.ButtonType.RAISED);
-                            close.setStyle("-fx-background-color: #00bfff;");
-                            JFXButton show = new JFXButton("Show Alert Dashboard");
-                            show.setButtonType(JFXButton.ButtonType.RAISED);
-                            show.setStyle("-fx-background-color: #ff90bb;");
-                            JFXDialogLayout layout = new JFXDialogLayout();
-                            layout.setHeading(new Label(title));
-                            layout.setBody(new Label(content));
-                            layout.setActions(show, close);
-                            JFXAlert<Void> alert = new JFXAlert<>(stage);
-                            alert.setOverlayClose(true);
-                            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                            alert.setContent(layout);
-                            alert.initModality(Modality.NONE);
-                            close.setOnAction(__ -> alert.hideWithAnimation());
-                            show.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    handler.cancelTableviewRunnable();
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
-                                    myScene = ((Node) event.getSource()).getScene();
-                                    Parent nextView = null;
-                                    try {
-                                        nextView = loader.load();
-                                        ControllerCAMainAlertDashboard controller = loader.getController();
-                                        controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    stage.setScene(new Scene(nextView));
-                                    stage.setTitle("Alert Dashboard");
-                                    alert.close();
-                                    stage.show();
-                                }
-                            });
-                            alert.show();
-                        }
-                    });
-                }
-                packets = capture.packets;
-                OLpackets = FXCollections.observableArrayList(packets);
+            if (capture.checkThreshold()) {
+                capture.stopSniffing();
+                //SMSHandler.sendAlert();
+                capture.Specficexport();
+                String pcapFilePath = capture.getSpecificPcapExportPath();
+                //EmailHandler.sendParitalPcap(pcapFilePath);
+                capture.addAlert(false);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        packetstable.setItems(OLpackets);
-                        packetstable.refresh();
-                        alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+                        String title = "Suspicious Network Event Detected!";
+                        String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
+                        JFXButton close = new JFXButton("Close");
+                        close.setButtonType(JFXButton.ButtonType.RAISED);
+                        close.setStyle("-fx-background-color: #00bfff;");
+                        JFXButton show = new JFXButton("Show Alert Dashboard");
+                        show.setButtonType(JFXButton.ButtonType.RAISED);
+                        show.setStyle("-fx-background-color: #ff90bb;");
+                        JFXDialogLayout layout = new JFXDialogLayout();
+                        layout.setHeading(new Label(title));
+                        layout.setBody(new Label(content));
+                        layout.setActions(show, close);
+                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+                        alert.setOverlayClose(true);
+                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                        alert.setContent(layout);
+                        alert.initModality(Modality.NONE);
+                        close.setOnAction(__ -> alert.hideWithAnimation());
+                        show.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                handler.cancelTableviewRunnable();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                myScene = ((Node) event.getSource()).getScene();
+                                Parent nextView = null;
+                                try {
+                                    nextView = loader.load();
+                                    ControllerCAMainAlertDashboard controller = loader.getController();
+                                    controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                stage.setScene(new Scene(nextView));
+                                stage.setTitle("Alert Dashboard");
+                                alert.close();
+                                stage.show();
+                            }
+                        });
+                        alert.show();
                     }
                 });
-            } catch (ConcurrentModificationException e) {
-                try {
-                    System.err.println("ConcurrentModification Detected");
-                    capture.stopSniffing();
-                    if (capture.checkThreshold()) {
-                        SMSHandler.sendAlert();
-                        capture.Specficexport();
-                        String pcapFilePath = capture.getSpecificPcapExportPath();
-                        EmailHandler.sendParitalPcap(pcapFilePath);
-                        capture.addAlert(false);
-                        Platform.runLater(new Runnable() {
+                ScheduledThreadPoolExecutorHandler.getService().execute(cRunnable);
+            } else if (capture.checkARP() && ARPDetection != false) {
+                capture.stopSniffing();
+                SMSHandler.sendAlert();
+                capture.Specficexport();
+                String pcapFilePath = capture.getSpecificPcapExportPath();
+                EmailHandler.sendParitalPcap(pcapFilePath);
+                capture.addAlert(true);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+                        String title = "Suspicious Network Event Detected!";
+                        String content = "A Suspicious network event has been detected! ARP spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
+                        JFXButton close = new JFXButton("Close");
+                        close.setButtonType(JFXButton.ButtonType.RAISED);
+                        close.setStyle("-fx-background-color: #00bfff;");
+                        JFXButton show = new JFXButton("Show Alert Dashboard");
+                        show.setButtonType(JFXButton.ButtonType.RAISED);
+                        show.setStyle("-fx-background-color: #ff90bb;");
+                        JFXDialogLayout layout = new JFXDialogLayout();
+                        layout.setHeading(new Label(title));
+                        layout.setBody(new Label(content));
+                        layout.setActions(show, close);
+                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+                        alert.setOverlayClose(true);
+                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                        alert.setContent(layout);
+                        alert.initModality(Modality.NONE);
+                        close.setOnAction(__ -> alert.hideWithAnimation());
+                        show.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
-                            public void run() {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Suspicious Network Event Detected!";
-                                String content = "A Suspicious network event has been detected! Current network traffic has exceeded the threshold. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXButton show = new JFXButton("Show Alert Dashboard");
-                                show.setButtonType(JFXButton.ButtonType.RAISED);
-                                show.setStyle("-fx-background-color: #ff90bb;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(show, close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(__ -> alert.hideWithAnimation());
-                                show.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        handler.cancelTableviewRunnable();
-                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
-                                        myScene = ((Node) event.getSource()).getScene();
-                                        Parent nextView = null;
-                                        try {
-                                            nextView = loader.load();
-                                            ControllerCAMainAlertDashboard controller = loader.getController();
-                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        stage.setScene(new Scene(nextView));
-                                        stage.setTitle("Alert Dashboard");
-                                        alert.close();
-                                        stage.show();
-                                    }
-                                });
-                                alert.show();
+                            public void handle(ActionEvent event) {
+                                handler.cancelTableviewRunnable();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
+                                myScene = ((Node) event.getSource()).getScene();
+                                Parent nextView = null;
+                                try {
+                                    nextView = loader.load();
+                                    ControllerCAMainAlertDashboard controller = loader.getController();
+                                    controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                stage.setScene(new Scene(nextView));
+                                stage.setTitle("Alert Dashboard");
+                                alert.close();
+                                stage.show();
                             }
                         });
-                    } else if (capture.checkARP() && ARPDetection != false) {
-                        SMSHandler.sendAlert();
-                        capture.Specficexport();
-                        String pcapFilePath = capture.getSpecificPcapExportPath();
-                        EmailHandler.sendParitalPcap(pcapFilePath);
-                        capture.addAlert(true);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
-                                String title = "Suspicious Network Event Detected!";
-                                String content = "A Suspicious network event has been detected! ARP spoofing has been detected. A pcap file containing packets before the event has been generated for you and will be sent shortly via email.";
-                                JFXButton close = new JFXButton("Close");
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
-                                close.setStyle("-fx-background-color: #00bfff;");
-                                JFXButton show = new JFXButton("Show Alert Dashboard");
-                                show.setButtonType(JFXButton.ButtonType.RAISED);
-                                show.setStyle("-fx-background-color: #ff90bb;");
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(show, close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(__ -> alert.hideWithAnimation());
-                                show.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        handler.cancelTableviewRunnable();
-                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
-                                        myScene = ((Node) event.getSource()).getScene();
-                                        Parent nextView = null;
-                                        try {
-                                            nextView = loader.load();
-                                            ControllerCAMainAlertDashboard controller = loader.getController();
-                                            controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, capture.getSpecificPcapExportPath(), false, EmailHandler);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        stage.setScene(new Scene(nextView));
-                                        stage.setTitle("Alert Dashboard");
-                                        alert.close();
-                                        stage.show();
-                                    }
-                                });
-                                alert.show();
-                            }
-                        });
+                        alert.show();
                     }
-                    ScheduledThreadPoolExecutorHandler.getService().execute(cRunnable);
-                    packets = capture.packets;
-                    OLpackets = FXCollections.observableArrayList(packets);
-                    Platform.runLater(() -> {
-                        packetstable.setItems(OLpackets);
-                        packetstable.refresh();
-                        alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                    });
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+                });
+                ScheduledThreadPoolExecutorHandler.getService().execute(cRunnable);
             }
+            packets = capture.packets;
+            OLpackets = FXCollections.observableArrayList(packets);
+            Platform.runLater(() -> {
+                packetstable.setItems(OLpackets);
+                packetstable.refresh();
+                alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
+            });
         }
     }
 

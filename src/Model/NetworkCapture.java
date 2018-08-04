@@ -203,7 +203,6 @@ public class NetworkCapture {
             System.out.println("Incremented and sent alert");
             incrementEvents();
             sendLimit = true;
-            renewCount = false;
             timer.schedule(sendExpiry, (ALERT_LIMIT * MINUTE_TO_MILISECONDS));
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(System.currentTimeMillis());
