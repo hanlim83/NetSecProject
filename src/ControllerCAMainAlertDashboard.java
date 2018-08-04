@@ -79,7 +79,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private Scene myScene;
     private PcapNetworkInterface device;
     private NetworkCapture capture;
-    private ScheduledThreadPoolExecutor handler;
+    private ScheduledThreadPoolExecutorHandler handler;
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
@@ -143,7 +143,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         LineChartAnchorPane.getChildren().add(networkTrafficChart);
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutor handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType, OutlookEmail OEmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutorHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, String absolutePath, boolean captureType, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
@@ -162,7 +162,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ScheduledThreadPoolExecutor.getService().execute(sRunnable);
+        ScheduledThreadPoolExecutorHandler.getService().execute(sRunnable);
     }
 
     synchronized private void incrementCount() {

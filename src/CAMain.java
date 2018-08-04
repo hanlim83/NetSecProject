@@ -1,7 +1,7 @@
 import Model.AWSSMS;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledThreadPoolExecutor;
+import Model.ScheduledThreadPoolExecutorHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class CAMain extends Application {
-    private ScheduledThreadPoolExecutor handler;
+    private ScheduledThreadPoolExecutorHandler handler;
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
     private boolean ARPDetection = false;
@@ -45,7 +45,7 @@ public class CAMain extends Application {
             System.out.println(getClass().getResource("CALandingSelectInt.fxml"));
             Parent root = loader.load();
             ControllerCALandingSelectInt controller = loader.getController();
-            handler = new ScheduledThreadPoolExecutor();
+            handler = new ScheduledThreadPoolExecutorHandler();
             controller.passVariables(handler, null, false, 0, null, null, true, null);
             Scene scene = new Scene(root, 1056, 600);
             String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
@@ -188,7 +188,7 @@ public class CAMain extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (!ScheduledThreadPoolExecutor.getService().isShutdown())
+        if (!ScheduledThreadPoolExecutorHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
             FileUtils.cleanDirectory(new File("PcapExport"));

@@ -1,7 +1,7 @@
 import Model.AWSSMS;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledThreadPoolExecutor;
+import Model.ScheduledThreadPoolExecutorHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class CATest extends Application {
     private static Stage primaryStage;
-    private ScheduledThreadPoolExecutor handler;
+    private ScheduledThreadPoolExecutorHandler handler;
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
     private boolean ARPDetection = false;
@@ -40,7 +40,7 @@ public class CATest extends Application {
             Parent root = loader.load();
 //            ControllerCAMainAlertDashboard controller = loader.getController();
             ControllerCAAlerts controller = loader.getController();
-            handler = new ScheduledThreadPoolExecutor();
+            handler = new ScheduledThreadPoolExecutorHandler();
             NetworkCapture capture = new NetworkCapture(null, 0);
 //            capture.setSpecificPcapExportPath("C:\\Users\\Hansen Lim\\Documents\\Hello.pcap");
             capture.addAlert(true);
@@ -66,7 +66,7 @@ public class CATest extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (!ScheduledThreadPoolExecutor.getService().isShutdown())
+        if (!ScheduledThreadPoolExecutorHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
             FileUtils.cleanDirectory(new File("PcapExport"));

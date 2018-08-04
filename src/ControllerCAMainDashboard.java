@@ -81,7 +81,7 @@ public class ControllerCAMainDashboard implements Initializable {
     private Scene myScene;
     private PcapNetworkInterface device;
     private NetworkCapture capture;
-    private ScheduledThreadPoolExecutor handler;
+    private ScheduledThreadPoolExecutorHandler handler;
     private boolean ARPDetection;
     private Integer threshold;
     private ArrayList<String> adminPN;
@@ -240,7 +240,7 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.showAndWait();
     }
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutor handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutorHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS USMSHandler, OutlookEmail OEmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.ARPDetection = ARPDetection;
@@ -256,7 +256,7 @@ public class ControllerCAMainDashboard implements Initializable {
             e.printStackTrace();
         }
         if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
-            ScheduledThreadPoolExecutor.getService().execute(() -> {
+            ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                 try {
                     adminPN = db.getAllPhoneNo();
                     SMSHandler = new AWSSMS(adminPN);
@@ -329,7 +329,7 @@ public class ControllerCAMainDashboard implements Initializable {
             });
         } else if (threshold != 0) {
             this.SMSHandler = USMSHandler;
-            ScheduledThreadPoolExecutor.getService().execute(() -> {
+            ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                 try {
                     adminPN = db.getAllPhoneNo();
                     SMSHandler.setAdminPN(adminPN);
@@ -358,7 +358,7 @@ public class ControllerCAMainDashboard implements Initializable {
                 }
             });
         } else {
-            ScheduledThreadPoolExecutor.getService().execute(() -> {
+            ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                 if (EmailHandler == null) {
                     try {
                         oAuth2Login = new OAuth2LoginAdmin();
@@ -397,7 +397,7 @@ public class ControllerCAMainDashboard implements Initializable {
             this.capture = capture;
             captureToggle.setSelected(true);
             addExistingTPS();
-            handler.setchartDataRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
+            handler.setchartDataRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
             TimelineCtrl(true);
         } else if (capture != null) {
             this.capture = capture;
@@ -494,11 +494,11 @@ public class ControllerCAMainDashboard implements Initializable {
     public void startCapturing() {
         if (capture == null)
             capture = new NetworkCapture(device, threshold);
-        handler.setchartDataRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
+        handler.setchartDataRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(chartRunnable, 3, 6, TimeUnit.SECONDS));
         if (!capture.isRunning())
-            ScheduledThreadPoolExecutor.getService().execute(captureRunnable);
+            ScheduledThreadPoolExecutorHandler.getService().execute(captureRunnable);
         clearCaptureBtn.setDisable(true);
-        handler.setcreateTPSRunnable(ScheduledThreadPoolExecutor.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
+        handler.setcreateTPSRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(createTPS, 2, 4, TimeUnit.SECONDS));
         TimelineCtrl(true);
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -516,7 +516,7 @@ public class ControllerCAMainDashboard implements Initializable {
         handler.cancelchartDataRunnable();
         TimelineCtrl(false);
         capture.Generalexport();
-        handler.setsendEmailRunnable(ScheduledThreadPoolExecutor.getService().schedule(sendFull, 1, TimeUnit.SECONDS));
+        ScheduledThreadPoolExecutorHandler.getService().execute(sendFull);
         //Alert below
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
@@ -772,7 +772,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             }
                         });
                     }
-                    ScheduledThreadPoolExecutor.getService().execute(captureRunnable);
+                    ScheduledThreadPoolExecutorHandler.getService().execute(captureRunnable);
                     Platform.runLater(() -> alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents())));
                 } catch (Exception e1) {
                     e1.printStackTrace();

@@ -1,7 +1,7 @@
 import Model.AWSSMS;
 import Model.NetworkCapture;
 import Model.OutlookEmail;
-import Model.ScheduledThreadPoolExecutor;
+import Model.ScheduledThreadPoolExecutorHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class MainAdmin extends Application {
-    private ScheduledThreadPoolExecutor handler = new ScheduledThreadPoolExecutor();
+    private ScheduledThreadPoolExecutorHandler handler = new ScheduledThreadPoolExecutorHandler();
     private NetworkCapture capture = null;
     private PcapNetworkInterface device = null;
     private boolean ARPDetection = false;
@@ -185,7 +185,7 @@ public class MainAdmin extends Application {
     @Override
     public void stop() {
         handler.shutdownService();
-        if (!ScheduledThreadPoolExecutor.getService().isShutdown())
+        if (!ScheduledThreadPoolExecutorHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
             //FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));

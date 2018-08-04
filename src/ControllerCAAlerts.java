@@ -65,7 +65,7 @@ public class ControllerCAAlerts implements Initializable {
     private Scene myScene;
     private PcapNetworkInterface device;
     private NetworkCapture capture;
-    private ScheduledThreadPoolExecutor handler;
+    private ScheduledThreadPoolExecutorHandler handler;
     private boolean ARPDetection;
     private Integer threshold;
     private AWSSMS SMSHandler;
@@ -78,7 +78,7 @@ public class ControllerCAAlerts implements Initializable {
     private ObservableList<Alert> OLalerts;
 
 
-    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutor handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
+    public void passVariables(PcapNetworkInterface nif, ScheduledThreadPoolExecutorHandler handler, NetworkCapture capture, boolean ARPDetection, Integer threshold, AWSSMS SMSHandler, OutlookEmail EmailHandler) {
         this.device = nif;
         this.handler = handler;
         this.capture = capture;
@@ -95,9 +95,9 @@ public class ControllerCAAlerts implements Initializable {
         alertsView.getColumns().setAll(typeColumn, tdColumn, gtColumn);
         groupToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (groupToggle.isSelected())
-                ScheduledThreadPoolExecutor.getService().execute(() -> alertsView.group(typeColumn));
+                ScheduledThreadPoolExecutorHandler.getService().execute(() -> alertsView.group(typeColumn));
             else
-                ScheduledThreadPoolExecutor.getService().execute(() -> alertsView.unGroup(typeColumn));
+                ScheduledThreadPoolExecutorHandler.getService().execute(() -> alertsView.unGroup(typeColumn));
         });
         alertCount.setText("Suspicious Events Count: " + capture.getEvents());
         try {
