@@ -97,7 +97,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     private TableColumn<Inbox, String> action;
 
 
-    private ObservableList <Inbox> thisInbox;
+    private ObservableList<Inbox> thisInbox;
 
     private Scene myScene;
     public static AnchorPane rootP;
@@ -107,10 +107,9 @@ public class ControllerSecureFileTransfer implements Initializable {
     private OAuth2Login login = new OAuth2Login();
     private Cipher cipher;
 
-    public ControllerSecureFileTransfer () throws NoSuchAlgorithmException, NoSuchPaddingException {
+    public ControllerSecureFileTransfer() throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.cipher = Cipher.getInstance("RSA");
     }
-
 
 
     @Override
@@ -122,11 +121,11 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             credential = login.login();
-            ArrayList <String> newEmail = user.getAllEmail();
+            ArrayList<String> newEmail = user.getAllEmail();
             newEmail.remove(login.getEmail());
-            for (int i=0;i<newEmail.size();i++) {
+            for (int i = 0; i < newEmail.size(); i++) {
 
-                if (user.getAccStatus(newEmail.get(i)).equals("Inactive")){
+                if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
 
                     newEmail.remove(newEmail.get(i));
 
@@ -149,51 +148,79 @@ public class ControllerSecureFileTransfer implements Initializable {
     }
 
 
-
     @FXML
     void transferFile(ActionEvent event) throws Exception {
+        Scanner sc = new Scanner(emailBox.getValue());
+        System.out.println(emailBox.getValue());
+        sc.useDelimiter("@gmail.com");
+        String sending = sc.next();
 
-        process.start();
-        process.setOnSucceeded(e -> {
-            process.reset();
-            Platform.runLater(() -> {
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.getStylesheets().add("Style.css");
-                snackbar.show("Upload success", 3000);
-            });
+        privateBucketName = "inbox-" + sending;
 
-        });
-        process.setOnFailed(e -> {
-            process.reset();
-            Platform.runLater(() -> {
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.getStylesheets().add("Style.css");
-                snackbar.show("Updating", 3000);
-
-            });
-        });
-
-        process.setOnCancelled(e -> {
-            process.reset();
-            Platform.runLater(() -> {
-                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                snackbar.getStylesheets().add("Style.css");
-                snackbar.show("Updating The Logs", 3000);
-
-            });
-        });
+        System.out.print(sending);
 
 
+        File file;
 
-        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        file = fileChooser.showOpenDialog(null);
 
 
+        FileScanner scan = new FileScanner();
+        scan.Scanner(file.getAbsolutePath());
+
+//        if (scan.scannerReport() == false) {
+//
+//            popAlert("Your file contains virus. It will not be allowed to be uploaded");
+//
+//        } else {
+
+            String filename = file.getName();
+            User_InfoDB user = new User_InfoDB();
+            System.out.println(emailBox.getValue() + " " + filename);
+
+            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
+//        }
+
+//        process.start();
+//        process.setOnSucceeded(e -> {
+//            process.reset();
+//            Platform.runLater(() -> {
+//                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//                snackbar.getStylesheets().add("Style.css");
+//                snackbar.show("Upload success", 3000);
+//            });
+//
+//        });
+//        process.setOnFailed(e -> {
+//            process.reset();
+//            Platform.runLater(() -> {
+//                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//                snackbar.getStylesheets().add("Style.css");
+//                snackbar.show("Updating", 3000);
+//
+//            });
+//        });
+//
+//        process.setOnCancelled(e -> {
+//            process.reset();
+//            Platform.runLater(() -> {
+//                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//                snackbar.getStylesheets().add("Style.css");
+//                snackbar.show("Updating The Logs", 3000);
+//
+//            });
+//        });
+
+
+    }
 
 
     private void uploadFile(String filename, byte[] out) throws Exception {
 
         getStorage();
-        Page <Bucket> buckets = storage.list();
+        Page<Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
             if (bucket.toString().contains(privateBucketName)) {
                 System.out.println(bucket.toString());
@@ -201,18 +228,20 @@ public class ControllerSecureFileTransfer implements Initializable {
                 Blob blob = bucket.create(filename, input, "text/plain");
             }
         }
+        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+        snackbar.getStylesheets().add("Style.css");
+        snackbar.show("Upload success", 3000);
     }
 
-        private void getStorage() throws Exception {
-            if (credential.getExpiresInSeconds() < 250) {
-                credential = login.login();
-                storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-            }
-            if (storage == null) {
-                storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-            }
+    private void getStorage() throws Exception {
+        if (credential.getExpiresInSeconds() < 250) {
+            credential = login.login();
+            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         }
-
+        if (storage == null) {
+            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+        }
+    }
 
 
     private void writeToFile(File output, byte[] toWrite) throws IllegalBlockSizeException, BadPaddingException, IOException {
@@ -231,7 +260,7 @@ public class ControllerSecureFileTransfer implements Initializable {
 //      writeToFile(output, this.cipher.doFinal(input));
     }
 
-    public byte [] decryptFile(byte[] input, PrivateKey key)
+    public byte[] decryptFile(byte[] input, PrivateKey key)
             throws IOException, GeneralSecurityException {
         this.cipher.init(Cipher.DECRYPT_MODE, key);
 
@@ -249,7 +278,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         return fbytes;
     }
 
-    private void popAlert (String message){
+    private void popAlert(String message) {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -275,86 +304,86 @@ public class ControllerSecureFileTransfer implements Initializable {
         alert.show();
     }
 
-    Service process = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
+//    Service process = new Service() {
+//        @Override
+//        protected Task createTask() {
+//            return new Task() {
+//                @Override
+//                protected Void call() throws Exception {
+//
+//                    Scanner sc = new Scanner(emailBox.getValue());
+//                    System.out.println(emailBox.getValue());
+//                    sc.useDelimiter("@gmail.com");
+//                    String sending = sc.next();
+//
+//                    privateBucketName = "inbox-" + sending;
+//
+//                    System.out.print(sending);
+//
+//
+//                    File file;
+//
+//                    Platform.runLater(() -> {
+//
+//                        FileChooser fileChooser = new FileChooser();
+//                        fileChooser.setTitle("Open Resource File");
+//                        file = fileChooser.showOpenDialog(null);
+//
+//
+//                    });
+//
+//
+//                    FileScanner scan = new FileScanner();
+//                    scan.Scanner(file.getAbsolutePath());
+//
+//                    if (scan.scannerReport() == false) {
+//
+//                        popAlert("Your file contains virus. It will not be allowed to be uploaded");
+//
+//                    } else {
+//
+//                        String filename = file.getName();
+//                        User_InfoDB user = new User_InfoDB();
+//                        System.out.println(emailBox.getValue() + " " + filename);
+//
+//                        uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
+//                    }
+//
+//                    return null;
+//                }
+//            };
+//        }
+//    };
 
-                    Scanner sc = new Scanner(emailBox.getValue());
-                    System.out.println(emailBox.getValue());
-                    sc.useDelimiter("@gmail.com");
-                    String sending = sc.next();
 
-                    privateBucketName = "inbox-" + sending;
+    public void hamburgerBar() {
+        rootP = anchorPane;
 
-                    System.out.print(sending);
-
-
-                    File file;
-
-                    Platform.runLater(() -> {
-
-                        FileChooser fileChooser = new FileChooser();
-                        fileChooser.setTitle("Open Resource File");
-                        file = fileChooser.showOpenDialog(null);
-
-
-                    });
-                    
-
-                    FileScanner scan = new FileScanner();
-                    scan.Scanner(file.getAbsolutePath());
-
-                    if (scan.scannerReport() == false) {
-
-                        popAlert("Your file contains virus. It will not be allowed to be uploaded");
-
-                    } else {
-
-                        String filename = file.getName();
-                        User_InfoDB user = new User_InfoDB();
-                        System.out.println(emailBox.getValue() + " " + filename);
-
-                        uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
-                    }
-
-                    return null;
-                }
-            };
+        try {
+            VBox box = FXMLLoader.load(getClass().getResource("UserSideTab.fxml"));
+            drawer.setSidePane(box);
+            drawer.setVisible(false);
+            drawer.setDefaultDrawerSize(219);
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerSecureFileTransfer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    };
 
+        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+        transition.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
 
-        public void hamburgerBar() {
-            rootP = anchorPane;
-
-            try {
-                VBox box = FXMLLoader.load(getClass().getResource("UserSideTab.fxml"));
-                drawer.setSidePane(box);
-                drawer.setVisible(false);
-                drawer.setDefaultDrawerSize(219);
-            } catch (IOException ex) {
-                Logger.getLogger(ControllerSecureFileTransfer.class.getName()).log(Level.SEVERE, null, ex);
+            if (drawer.isOpened()) {
+                drawer.close();
+                drawer.setDisable(true);
+                //drawer.setVisible(false);
+            } else {
+                drawer.open();
+                drawer.setVisible(true);
+                drawer.setDisable(false);
             }
-
-            HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
-            transition.setRate(-1);
-            hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                transition.setRate(transition.getRate() * -1);
-                transition.play();
-
-                if (drawer.isOpened()) {
-                    drawer.close();
-                    drawer.setDisable(true);
-                    //drawer.setVisible(false);
-                } else {
-                    drawer.open();
-                    drawer.setVisible(true);
-                    drawer.setDisable(false);
-                }
-            });
-        }
-
+        });
     }
+
+}
