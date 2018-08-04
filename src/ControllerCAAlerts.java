@@ -190,7 +190,7 @@ public class ControllerCAAlerts implements Initializable {
                                                 e.printStackTrace();
                                             }
                                             stage.setScene(new Scene(nextView));
-                                            stage.setTitle("Login Page");
+                                            stage.setTitle("Alert Dashboard");
                                             stage.show();
                                         });
                                         btn.setId("tableJFXButton");
