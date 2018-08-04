@@ -2,7 +2,7 @@ package Model;
 
 public class Inbox {
 
-    public Inbox () {
+    public Inbox (String filename, String date) {
 
 
     }

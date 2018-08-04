@@ -1,4 +1,5 @@
 import Database.User_InfoDB;
+import Model.FileScanner;
 import Model.Inbox;
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
@@ -15,6 +16,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.sun.jna.platform.win32.Netapi32Util;
 import com.sun.jna.platform.win32.WinNT;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -28,6 +30,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -46,6 +49,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -95,7 +99,7 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     private ObservableList <Inbox> thisInbox;
 
-
+    private Scene myScene;
     public static AnchorPane rootP;
     private String privateBucketName;
     private Storage storage;
@@ -139,7 +143,6 @@ public class ControllerSecureFileTransfer implements Initializable {
             e.printStackTrace();
         }
 
-
         hamburgerBar();
         emailBox.setItems(Email);
 
@@ -150,25 +153,42 @@ public class ControllerSecureFileTransfer implements Initializable {
     @FXML
     void transferFile(ActionEvent event) throws Exception {
 
-        Scanner sc = new Scanner(emailBox.getValue());
-        sc.useDelimiter("@gmail.com");
-        String sending = sc.next();
+        process.start();
+        process.setOnSucceeded(e -> {
+            process.reset();
+            Platform.runLater(() -> {
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.getStylesheets().add("Style.css");
+                snackbar.show("Upload success", 3000);
+            });
 
-        this.privateBucketName = "inbox-" + sending;
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+            Platform.runLater(() -> {
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.getStylesheets().add("Style.css");
+                snackbar.show("Updating", 3000);
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        File file = fileChooser.showOpenDialog(null);
+            });
+        });
 
-        String AbsolutePath = file.getAbsolutePath();
-        String filename = file.getName();
-        User_InfoDB user = new User_InfoDB();
-        System.out.println(emailBox.getValue()+" "+ filename);
+        process.setOnCancelled(e -> {
+            process.reset();
+            Platform.runLater(() -> {
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.getStylesheets().add("Style.css");
+                snackbar.show("Updating The Logs", 3000);
 
-//        decryptFile(getFileInBytes(file),file, user.getPrivateKey("fenderxrs@gmail.com", "Pass123!"));
-        encryptFile(getFileInBytes(file),file, user.getPublicKey(emailBox.getValue()));
-        uploadFile(filename,getFileInBytes(file));
-    }
+            });
+        });
+
+
+
+        }
+
+
+
 
     private void uploadFile(String filename, byte[] out) throws Exception {
 
@@ -203,16 +223,21 @@ public class ControllerSecureFileTransfer implements Initializable {
     }
 
 
-    public void encryptFile(byte[] input, File output, PublicKey key)
+    public byte[] encryptFile(byte[] input, PublicKey key)
             throws IOException, GeneralSecurityException {
         this.cipher.init(Cipher.ENCRYPT_MODE, key);
-        writeToFile(output, this.cipher.doFinal(input));
+
+        return this.cipher.doFinal(input);
+//      writeToFile(output, this.cipher.doFinal(input));
     }
 
-    public void decryptFile(byte[] input, File output, PrivateKey key)
+    public byte [] decryptFile(byte[] input, PrivateKey key)
             throws IOException, GeneralSecurityException {
         this.cipher.init(Cipher.DECRYPT_MODE, key);
-        writeToFile(output, this.cipher.doFinal(input));
+
+        return this.cipher.doFinal(input);
+
+//        writeToFile(output, this.cipher.doFinal(input));
     }
 
 
@@ -224,35 +249,112 @@ public class ControllerSecureFileTransfer implements Initializable {
         return fbytes;
     }
 
+    private void popAlert (String message){
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
 
-    public void hamburgerBar() {
-        rootP = anchorPane;
+        String title = "";
+        String content = message;
 
-        try {
-            VBox box = FXMLLoader.load(getClass().getResource("UserSideTab.fxml"));
-            drawer.setSidePane(box);
-            drawer.setVisible(false);
-            drawer.setDefaultDrawerSize(219);
-        } catch (IOException ex) {
-            Logger.getLogger(ControllerSecureFileTransfer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        JFXButton close = new JFXButton("Close");
 
-        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
-        transition.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            transition.setRate(transition.getRate() * -1);
-            transition.play();
+        close.setButtonType(JFXButton.ButtonType.RAISED);
 
-            if (drawer.isOpened()) {
-                drawer.close();
-                drawer.setDisable(true);
-                //drawer.setVisible(false);
-            } else {
-                drawer.open();
-                drawer.setVisible(true);
-                drawer.setDisable(false);
-            }
-        });
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
     }
+
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+
+                    Scanner sc = new Scanner(emailBox.getValue());
+                    System.out.println(emailBox.getValue());
+                    sc.useDelimiter("@gmail.com");
+                    String sending = sc.next();
+
+                    privateBucketName = "inbox-" + sending;
+
+                    System.out.print(sending);
+
+
+                    File file;
+
+                    Platform.runLater(() -> {
+
+                        FileChooser fileChooser = new FileChooser();
+                        fileChooser.setTitle("Open Resource File");
+                        file = fileChooser.showOpenDialog(null);
+
+
+                    });
+                    
+
+                    FileScanner scan = new FileScanner();
+                    scan.Scanner(file.getAbsolutePath());
+
+                    if (scan.scannerReport() == false) {
+
+                        popAlert("Your file contains virus. It will not be allowed to be uploaded");
+
+                    } else {
+
+                        String filename = file.getName();
+                        User_InfoDB user = new User_InfoDB();
+                        System.out.println(emailBox.getValue() + " " + filename);
+
+                        uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
+                    }
+
+                    return null;
+                }
+            };
+        }
+    };
+
+
+        public void hamburgerBar() {
+            rootP = anchorPane;
+
+            try {
+                VBox box = FXMLLoader.load(getClass().getResource("UserSideTab.fxml"));
+                drawer.setSidePane(box);
+                drawer.setVisible(false);
+                drawer.setDefaultDrawerSize(219);
+            } catch (IOException ex) {
+                Logger.getLogger(ControllerSecureFileTransfer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+            transition.setRate(-1);
+            hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                transition.setRate(transition.getRate() * -1);
+                transition.play();
+
+                if (drawer.isOpened()) {
+                    drawer.close();
+                    drawer.setDisable(true);
+                    //drawer.setVisible(false);
+                } else {
+                    drawer.open();
+                    drawer.setVisible(true);
+                    drawer.setDisable(false);
+                }
+            });
+        }
 
     }
