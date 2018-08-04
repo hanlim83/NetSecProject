@@ -105,6 +105,7 @@ public class ControllerCAAlerts implements Initializable {
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+            ctrl.checktokenFileExists();
         } catch (IOException e) {
             e.printStackTrace();
         }

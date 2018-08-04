@@ -538,10 +538,10 @@ public class ControllerCAMainPackets implements Initializable {
         public void run() {
             if (capture.checkThreshold()) {
                 capture.stopSniffing();
-                //SMSHandler.sendAlert();
+                SMSHandler.sendAlert();
                 capture.Specficexport();
                 String pcapFilePath = capture.getSpecificPcapExportPath();
-                //EmailHandler.sendParitalPcap(pcapFilePath);
+                EmailHandler.sendParitalPcap(pcapFilePath);
                 capture.addAlert(false);
                 Platform.runLater(new Runnable() {
                     @Override

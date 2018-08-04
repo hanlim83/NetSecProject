@@ -542,9 +542,9 @@ public class TrayIcon {
                                 capture.stopSniffing();
                                 handler.cancelbackgroundRunnable();
                                 capture.Generalexport();
+                                EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                 Platform.exit();
                                 removeTrayicon();
-                                EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                             }
                         }
                     });
