@@ -120,12 +120,17 @@ public class ControllerSecureFileTransfer implements Initializable {
             credential = login.login();
             ArrayList <String> newEmail = user.getAllEmail();
             newEmail.remove(login.getEmail());
+            for (int i=0;i<newEmail.size();i++) {
+
+                if (user.getAccStatus(newEmail.get(i)).equals("Inactive")){
+
+                    newEmail.remove(newEmail.get(i));
+
+                }
+
+            }
+
             Email = FXCollections.observableArrayList(newEmail);
-//            for (int i=0;i<newEmail.size();i++) {
-//
-//                if (user)
-//
-//            }
 
 
         } catch (IOException e) {
