@@ -329,7 +329,6 @@ public class ControllerCAMainDashboard implements Initializable {
         } else if (threshold != 0) {
             this.SMSHandler = USMSHandler;
             ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
-                try {
                     adminPN = db.getAllPhoneNo();
                     SMSHandler.setAdminPN(adminPN);
                     for (String s : adminPN) {
@@ -347,14 +346,6 @@ public class ControllerCAMainDashboard implements Initializable {
                         captureToggle.setDisable(false);
                         hamburger.setDisable(false);
                     });
-                } catch (SQLException e) {
-                    System.err.println("SQL Error");
-                    Platform.runLater(() -> {
-                        spinner.setVisible(false);
-                        captureToggle.setDisable(false);
-                        hamburger.setDisable(false);
-                    });
-                }
             });
         } else {
             ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
