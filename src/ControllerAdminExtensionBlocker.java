@@ -89,7 +89,7 @@ public class ControllerAdminExtensionBlocker implements Initializable {
 
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

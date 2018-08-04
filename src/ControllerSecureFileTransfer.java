@@ -1,4 +1,5 @@
 import Database.User_InfoDB;
+import Model.Inbox;
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
@@ -28,10 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -77,16 +75,25 @@ public class ControllerSecureFileTransfer implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private AnchorPane TableAnchor;
-
-    @FXML
-    private JFXTextField searchBar;
-
-    @FXML
     private JFXButton transfer;
 
     @FXML
     private JFXComboBox<String> emailBox;
+
+    @FXML
+    private TableView userInbox;
+
+    @FXML
+    private TableColumn<Inbox, String> filename;
+
+    @FXML
+    private TableColumn<Inbox, String> date;
+
+    @FXML
+    private TableColumn<Inbox, String> action;
+
+
+    private ObservableList <Inbox> thisInbox;
 
 
     public static AnchorPane rootP;
@@ -113,11 +120,14 @@ public class ControllerSecureFileTransfer implements Initializable {
             credential = login.login();
             ArrayList <String> newEmail = user.getAllEmail();
             newEmail.remove(login.getEmail());
-
             Email = FXCollections.observableArrayList(newEmail);
+//            for (int i=0;i<newEmail.size();i++) {
+//
+//                if (user)
+//
+//            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
