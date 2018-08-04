@@ -363,26 +363,23 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    //Extracted from ProtoMakeup
-                    protocolChart.setData(data);
-                    //Extracted from TopIPMakeup
-                    top10IPChart.setData(data1);
-                    //Based on Runnable Line Chart
-                    int Chartindex = 0;
-                    for (Integer i : TPS) {
-                        dataSeries1.getData().add(new XYChart.Data<>(Chartindex, threshold));
-                        dataSeries.getData().add(new XYChart.Data<>(Chartindex++, i));
-                        if (sequence > MAX_DATA_POINTS) {
-                            dataSeries.getData().remove(0);
-                            dataSeries1.getData().remove(0);
-                        }
-                        if (sequence > MAX_DATA_POINTS - 1) {
-                            xAxis.setLowerBound(xAxis.getLowerBound() + 1);
-                            xAxis.setUpperBound(xAxis.getUpperBound() + 1);
-                        }
+            Platform.runLater(() -> {
+                //Extracted from ProtoMakeup
+                protocolChart.setData(data);
+                //Extracted from TopIPMakeup
+                top10IPChart.setData(data1);
+                //Based on Runnable Line Chart
+                int Chartindex = 0;
+                for (Integer i : TPS) {
+                    dataSeries1.getData().add(new XYChart.Data<>(Chartindex, threshold));
+                    dataSeries.getData().add(new XYChart.Data<>(Chartindex++, i));
+                    if (sequence > MAX_DATA_POINTS) {
+                        dataSeries.getData().remove(0);
+                        dataSeries1.getData().remove(0);
+                    }
+                    if (sequence > MAX_DATA_POINTS - 1) {
+                        xAxis.setLowerBound(xAxis.getLowerBound() + 1);
+                        xAxis.setUpperBound(xAxis.getUpperBound() + 1);
                     }
                 }
             });

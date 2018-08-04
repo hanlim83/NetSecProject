@@ -6,7 +6,6 @@ import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,7 +23,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -178,12 +176,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             for (TreeItem t : dummyRoot.getChildren()) {
                 t.setExpanded(true);
             }
-            intDisplayCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
-                @Override
-                public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<String, String> param) {
-                    return new SimpleStringProperty(param.getValue().getValue());
-                }
-            });
+            intDisplayCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue()));
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pcap4j Error Occurred");

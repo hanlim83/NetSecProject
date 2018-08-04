@@ -308,12 +308,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                         alert.setContent(layout);
                         alert.initModality(Modality.NONE);
-                        close.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent __) {
-                                alert.hideWithAnimation();
-                            }
-                        });
+                        close.setOnAction(__ -> alert.hideWithAnimation());
                         alert.showAndWait();
                         captureToggle.setDisable(false);
                         hamburger.setDisable(false);
@@ -446,21 +441,18 @@ public class ControllerCAMainDashboard implements Initializable {
     }
 
     private void addDataToSeries() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
-                    if (data.isEmpty()) break;
-                    dataSeries.getData().add(new XYChart.Data<>(xSeriesData, data.remove()));
-                    thresholdSeries.getData().add(new XYChart.Data<>(xSeriesData++, threshold));
-                }
-                if (dataSeries.getData().size() > MAX_DATA_POINTS) {
-                    dataSeries.getData().remove(0, dataSeries.getData().size() - MAX_DATA_POINTS);
-                    thresholdSeries.getData().remove(0, thresholdSeries.getData().size() - MAX_DATA_POINTS);
-                }
-                xAxis.setLowerBound(xSeriesData - MAX_DATA_POINTS);
-                xAxis.setUpperBound(xSeriesData - 1);
+        Platform.runLater(() -> {
+            for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
+                if (data.isEmpty()) break;
+                dataSeries.getData().add(new XYChart.Data<>(xSeriesData, data.remove()));
+                thresholdSeries.getData().add(new XYChart.Data<>(xSeriesData++, threshold));
             }
+            if (dataSeries.getData().size() > MAX_DATA_POINTS) {
+                dataSeries.getData().remove(0, dataSeries.getData().size() - MAX_DATA_POINTS);
+                thresholdSeries.getData().remove(0, thresholdSeries.getData().size() - MAX_DATA_POINTS);
+            }
+            xAxis.setLowerBound(xSeriesData - MAX_DATA_POINTS);
+            xAxis.setUpperBound(xSeriesData - 1);
         });
     }
 
@@ -476,12 +468,7 @@ public class ControllerCAMainDashboard implements Initializable {
         for (index = 0; index < max; index++) {
             data.add(new PieChart.Data(protoMakeUp.get(index), valueMakeup.get(index)));
         }
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                protocolChart.setData(data);
-            }
-        });
+        Platform.runLater(() -> protocolChart.setData(data));
     }
 
     public void TopIPMakeup() {
@@ -493,12 +480,7 @@ public class ControllerCAMainDashboard implements Initializable {
         for (TopIPObject d : IPData) {
             data.add(new PieChart.Data(d.getKey(), d.getValue()));
         }
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                top10IPChart.setData(data);
-            }
-        });
+        Platform.runLater(() -> top10IPChart.setData(data));
     }
 
     public void addExistingTPS() {
@@ -556,12 +538,7 @@ public class ControllerCAMainDashboard implements Initializable {
         alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
         alert.setContent(layout);
         alert.initModality(Modality.NONE);
-        close.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent __) {
-                alert.hideWithAnimation();
-            }
-        });
+        close.setOnAction(__ -> alert.hideWithAnimation());
         alert.show();
         clearCaptureBtn.setDisable(false);
         try {
@@ -586,6 +563,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     capture.Specficexport();
                     String pcapFilePath = capture.getSpecificPcapExportPath();
                     EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(false);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -608,12 +586,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                             alert.setContent(layout);
                             alert.initModality(Modality.NONE);
-                            close.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent __) {
-                                    alert.hideWithAnimation();
-                                }
-                            });
+                            close.setOnAction(__ -> alert.hideWithAnimation());
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -641,6 +614,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     capture.Specficexport();
                     String pcapFilePath = capture.getSpecificPcapExportPath();
                     EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(true);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -663,12 +637,7 @@ public class ControllerCAMainDashboard implements Initializable {
                             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                             alert.setContent(layout);
                             alert.initModality(Modality.NONE);
-                            close.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent __) {
-                                    alert.hideWithAnimation();
-                                }
-                            });
+                            close.setOnAction(__ -> alert.hideWithAnimation());
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -692,12 +661,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         }
                     });
                 }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                    }
-                });
+                Platform.runLater(() -> alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents())));
             } catch (ConcurrentModificationException e) {
                 try {
                     System.err.println("ConcurrentModification Detected");
@@ -710,6 +674,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         capture.Specficexport();
                         String pcapFilePath = capture.getSpecificPcapExportPath();
                         EmailHandler.sendParitalPcap(pcapFilePath);
+                        capture.addAlert(false);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -732,12 +697,7 @@ public class ControllerCAMainDashboard implements Initializable {
                                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                                 alert.setContent(layout);
                                 alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
+                                close.setOnAction(__ -> alert.hideWithAnimation());
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
@@ -765,6 +725,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         capture.Specficexport();
                         String pcapFilePath = capture.getSpecificPcapExportPath();
                         EmailHandler.sendParitalPcap(pcapFilePath);
+                        capture.addAlert(true);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -787,12 +748,7 @@ public class ControllerCAMainDashboard implements Initializable {
                                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                                 alert.setContent(layout);
                                 alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
+                                close.setOnAction(__ -> alert.hideWithAnimation());
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
@@ -817,12 +773,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         });
                     }
                     ScheduledThreadPoolExecutor.getService().execute(captureRunnable);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                        }
-                    });
+                    Platform.runLater(() -> alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents())));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

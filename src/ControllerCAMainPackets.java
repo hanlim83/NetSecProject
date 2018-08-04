@@ -543,6 +543,7 @@ public class ControllerCAMainPackets implements Initializable {
                     capture.Specficexport();
                     String pcapFilePath = capture.getSpecificPcapExportPath();
                     EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(false);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -565,12 +566,7 @@ public class ControllerCAMainPackets implements Initializable {
                             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                             alert.setContent(layout);
                             alert.initModality(Modality.NONE);
-                            close.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent __) {
-                                    alert.hideWithAnimation();
-                                }
-                            });
+                            close.setOnAction(__ -> alert.hideWithAnimation());
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -598,6 +594,7 @@ public class ControllerCAMainPackets implements Initializable {
                     capture.Specficexport();
                     String pcapFilePath = capture.getSpecificPcapExportPath();
                     EmailHandler.sendParitalPcap(pcapFilePath);
+                    capture.addAlert(true);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -620,12 +617,7 @@ public class ControllerCAMainPackets implements Initializable {
                             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                             alert.setContent(layout);
                             alert.initModality(Modality.NONE);
-                            close.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent __) {
-                                    alert.hideWithAnimation();
-                                }
-                            });
+                            close.setOnAction(__ -> alert.hideWithAnimation());
                             show.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -668,6 +660,7 @@ public class ControllerCAMainPackets implements Initializable {
                         capture.Specficexport();
                         String pcapFilePath = capture.getSpecificPcapExportPath();
                         EmailHandler.sendParitalPcap(pcapFilePath);
+                        capture.addAlert(false);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -690,12 +683,7 @@ public class ControllerCAMainPackets implements Initializable {
                                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                                 alert.setContent(layout);
                                 alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
+                                close.setOnAction(__ -> alert.hideWithAnimation());
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
@@ -723,6 +711,7 @@ public class ControllerCAMainPackets implements Initializable {
                         capture.Specficexport();
                         String pcapFilePath = capture.getSpecificPcapExportPath();
                         EmailHandler.sendParitalPcap(pcapFilePath);
+                        capture.addAlert(true);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -745,12 +734,7 @@ public class ControllerCAMainPackets implements Initializable {
                                 alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
                                 alert.setContent(layout);
                                 alert.initModality(Modality.NONE);
-                                close.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent __) {
-                                        alert.hideWithAnimation();
-                                    }
-                                });
+                                close.setOnAction(__ -> alert.hideWithAnimation());
                                 show.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
@@ -777,13 +761,10 @@ public class ControllerCAMainPackets implements Initializable {
                     ScheduledThreadPoolExecutor.getService().execute(cRunnable);
                     packets = capture.packets;
                     OLpackets = FXCollections.observableArrayList(packets);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            packetstable.setItems(OLpackets);
-                            packetstable.refresh();
-                            alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
-                        }
+                    Platform.runLater(() -> {
+                        packetstable.setItems(OLpackets);
+                        packetstable.refresh();
+                        alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents()));
                     });
                 } catch (Exception e1) {
                     e1.printStackTrace();
