@@ -44,13 +44,13 @@
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="356.0" layoutY="67.0"
                    stroke="#e1e1e1" strokeType="INSIDE" width="358.0"/>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="74.0" layoutX="711.0" layoutY="67.0"
-                   stroke="#e1e1e1" strokeType="INSIDE" width="358.0"/>
+                   stroke="#e1e1e1" strokeType="INSIDE" width="355.0"/>
         <Text layoutX="20.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 1: Choose Interface">
             <font>
                 <Font name="Lucida Sans Regular" size="27.0"/>
             </font>
         </Text>
-        <JFXProgressBar fx:id="progressBar" layoutX="1.0" layoutY="129.0" prefHeight="12.0" prefWidth="1069.0"
+        <JFXProgressBar fx:id="progressBar" layoutX="1.0" layoutY="129.0" prefHeight="12.0" prefWidth="1066.0"
                         progress="0.85"/>
         <Text layoutX="409.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 2: Set Options">
             <font>

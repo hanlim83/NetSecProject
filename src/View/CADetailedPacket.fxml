@@ -42,7 +42,7 @@
             </children>
         </AnchorPane>
         <StackPane layoutY="115.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                   prefHeight="394.0" prefWidth="1069.0">
+                   prefHeight="394.0" prefWidth="1067.0">
             <children>
                 <TreeTableView fx:id="packetDetailsTable">
                     <columns>

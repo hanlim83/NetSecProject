@@ -43,7 +43,7 @@
             </children>
         </AnchorPane>
         <StackPane fx:id="stackpane" layoutY="139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                   minWidth="-Infinity" prefHeight="461.0" prefWidth="1069.0"/>
+                   minWidth="-Infinity" prefHeight="461.0" prefWidth="1067.0"/>
         <Label fx:id="alertCount" layoutX="110.0" layoutY="97.0" prefHeight="26.0" prefWidth="353.0"
                text="Suspicious Events Count: &lt;Number&gt;">
             <font>

@@ -39,7 +39,7 @@
                            style="-fx-border-radius: 30; -fx-background-color: #607D8B;"/>
             </children>
         </AnchorPane>
-        <ScrollPane layoutY="66.0" prefHeight="475.0" prefWidth="1069.0">
+        <ScrollPane layoutY="66.0" prefHeight="475.0" prefWidth="1067.0">
             <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                     <children>
