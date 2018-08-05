@@ -126,8 +126,8 @@ public class ControllerSecureFileTransfer implements Initializable {
 
                getStorage();
                 downloadFile(storage,ownBucketName,downloadThis);
-                deleteFile(ownBucketName, downloadThis);
-                updateInbox();
+//                deleteFile(ownBucketName, downloadThis);
+//                updateInbox();
 
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -390,11 +390,10 @@ public class ControllerSecureFileTransfer implements Initializable {
 
         Platform.runLater(() -> {
 
-            myScene = anchorPane.getScene();
+//            myScene = anchorPane.getScene();
         FileChooser fileChooser = new FileChooser();
-        Stage stage = (Stage) anchorPane.getScene().getWindow();
         fileChooser.setInitialFileName(objectName);
-        File filePath = fileChooser.showSaveDialog(stage);
+        File filePath = fileChooser.showSaveDialog(null);
 
         if (filePath != null) {
             String filePathString = filePath.getAbsolutePath();
@@ -445,6 +444,9 @@ public class ControllerSecureFileTransfer implements Initializable {
             }
 
         }
+
+
+
         });
     }
 
