@@ -152,6 +152,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
+                                        capture.Generalexport();
+                                        EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                         Platform.exit();
 
                                     } else if (result.get() == buttonTypeTwo) {
@@ -251,6 +253,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
+                                        capture.Generalexport();
+                                        EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                         Platform.exit();
 
                                     } else if (result.get() == buttonTypeTwo) {
@@ -350,6 +354,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
+                                        capture.Generalexport();
+                                        EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                         Platform.exit();
 
                                     } else if (result.get() == buttonTypeTwo) {
@@ -400,8 +406,8 @@ public class TrayIcon {
                 handler.cancelbackgroundRunnable();
                 capture.printStat();
                 trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nThe Network Capture File will be sent to your email shortly", java.awt.TrayIcon.MessageType.INFO);
+                capture.Generalexport();
                 ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
-                    capture.Generalexport();
                     EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                 });
                 try {
@@ -479,6 +485,8 @@ public class TrayIcon {
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == buttonTypeOne) {
                                         capture.stopSniffing();
+                                        capture.Generalexport();
+                                        EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                         Platform.exit();
 
                                     } else if (result.get() == buttonTypeTwo) {

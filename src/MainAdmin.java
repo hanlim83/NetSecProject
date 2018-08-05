@@ -75,6 +75,8 @@ public class MainAdmin extends Application {
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == buttonTypeOne) {
                             capture.stopSniffing();
+                            capture.Generalexport();
+                            EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                             Platform.exit();
 
                         } else if (result.get() == buttonTypeTwo) {
@@ -113,6 +115,8 @@ public class MainAdmin extends Application {
                                         Optional<ButtonType> result = alert.showAndWait();
                                         if (result.get() == buttonTypeOne) {
                                             capture.stopSniffing();
+                                            capture.Generalexport();
+                                            EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                                             Platform.exit();
 
                                         } else if (result.get() == buttonTypeTwo) {
