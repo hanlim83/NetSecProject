@@ -447,6 +447,12 @@ public class ControllerBucketsPage implements Initializable {
     }
 
     private void editMember(Scene scene, String buttonContent, String buttonContent2) {
+        try {
+            myIPAddress = IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         checker2 = -1;
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
@@ -526,6 +532,8 @@ public class ControllerBucketsPage implements Initializable {
 
             String successfulMessage1 = null;
 
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
             if (ipChecker == false) {
                 System.out.println("NOT WITHIN COMPANY PREMISES!");
                 //Display not within ip range error message
@@ -591,6 +599,12 @@ public class ControllerBucketsPage implements Initializable {
     }
 
     private void creatingBUCKETS(Scene scene, String buttonContent, String buttonContent2) {
+        try {
+            myIPAddress = IPAddressPolicy.getIp();
+            System.out.println(myIPAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         myScene = scene;
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -673,6 +687,8 @@ public class ControllerBucketsPage implements Initializable {
 
             System.out.println("Bucket name is : " + inputBUCKETNAME);
 
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
             if (ipChecker == false) {
                 System.out.println("NOT WITHIN COMPANY PREMISES!");
                 //Display not within ip range error message
