@@ -54,6 +54,22 @@ public class TrayIcon {
         handler.setbackgroundRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(bgC, 2, 4, TimeUnit.SECONDS));
     }
 
+    private void updateVariables() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+            ControllerAdminSideTab ctrl = loader.getController();
+            handler = ControllerAdminSideTab.getHandler();
+            capture = ControllerAdminSideTab.getCapture();
+            device = ControllerAdminSideTab.getDevice();
+            ARPDetection = ControllerAdminSideTab.getARPDetection();
+            SMSHandler = ControllerAdminSideTab.getSMSHandler();
+            threshold = ControllerAdminSideTab.getThreshold();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void resetPrimaryStage() {
         this.primaryStage = new Stage();
     }
@@ -77,6 +93,7 @@ public class TrayIcon {
             MenuItem CaptureDashboard = new MenuItem("View Network Capture (Dashboard View)");
             MenuItem StopCapture = new MenuItem("Stop Network Capture");
             MenuItem selectInt = new MenuItem("Clear Capture and select new Interface");
+            MenuItem startCapture = new MenuItem("Start Capture with current selected Interface");
             MenuItem Exit = new MenuItem("Exit FireE");
             popup.add(alertsPage);
             popup.addSeparator();
@@ -126,19 +143,7 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                try {
-                                    FXMLLoader loader = new FXMLLoader();
-                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                                    ControllerAdminSideTab ctrl = loader.getController();
-                                    handler = ControllerAdminSideTab.getHandler();
-                                    capture = ControllerAdminSideTab.getCapture();
-                                    device = ControllerAdminSideTab.getDevice();
-                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
-                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
-                                    threshold = ControllerAdminSideTab.getThreshold();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                updateVariables();
                                 if (capture != null && capture.isRunning()) {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Confirmation Dialog");
@@ -227,19 +232,7 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                try {
-                                    FXMLLoader loader = new FXMLLoader();
-                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                                    ControllerAdminSideTab ctrl = loader.getController();
-                                    handler = ControllerAdminSideTab.getHandler();
-                                    capture = ControllerAdminSideTab.getCapture();
-                                    device = ControllerAdminSideTab.getDevice();
-                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
-                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
-                                    threshold = ControllerAdminSideTab.getThreshold();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                updateVariables();
                                 if (capture != null && capture.isRunning()) {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Confirmation Dialog");
@@ -328,19 +321,7 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                try {
-                                    FXMLLoader loader = new FXMLLoader();
-                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                                    ControllerAdminSideTab ctrl = loader.getController();
-                                    handler = ControllerAdminSideTab.getHandler();
-                                    capture = ControllerAdminSideTab.getCapture();
-                                    device = ControllerAdminSideTab.getDevice();
-                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
-                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
-                                    threshold = ControllerAdminSideTab.getThreshold();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                updateVariables();
                                 if (capture != null && capture.isRunning()) {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Confirmation Dialog");
@@ -420,6 +401,7 @@ public class TrayIcon {
                 }
                 popup.remove(StopCapture);
                 popup.remove(Exit);
+                popup.add(startCapture);
                 popup.add(selectInt);
                 popup.add(Exit);
                 tray.remove(trayIcon);
@@ -459,19 +441,7 @@ public class TrayIcon {
                                     handler.cancelTableviewRunnable();
                                 if (handler.getchartDataRunnable() != null)
                                     handler.cancelchartDataRunnable();
-                                try {
-                                    FXMLLoader loader = new FXMLLoader();
-                                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
-                                    ControllerAdminSideTab ctrl = loader.getController();
-                                    handler = ControllerAdminSideTab.getHandler();
-                                    capture = ControllerAdminSideTab.getCapture();
-                                    device = ControllerAdminSideTab.getDevice();
-                                    ARPDetection = ControllerAdminSideTab.getARPDetection();
-                                    SMSHandler = ControllerAdminSideTab.getSMSHandler();
-                                    threshold = ControllerAdminSideTab.getThreshold();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                updateVariables();
                                 if (capture != null && capture.isRunning()) {
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                                     alert.setTitle("Confirmation Dialog");
@@ -531,6 +501,21 @@ public class TrayIcon {
                         resetPrimaryStage();
                     }
                 });
+            });
+            startCapture.addActionListener(e -> {
+                ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
+                    capture.startSniffing();
+                });
+                startBackgroundCheck();
+                processTrayIcon.displayMessage("Capture Started", "Network Capture has been started on " + device.getDescription(), java.awt.TrayIcon.MessageType.INFO);
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
+                    ControllerAdminSideTab ctrl = loader.getController();
+                    ctrl.getVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             });
             Exit.addActionListener(e -> {
                 if (capture != null && capture.isRunning()) {
