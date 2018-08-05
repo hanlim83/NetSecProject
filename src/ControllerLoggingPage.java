@@ -332,9 +332,9 @@ public class ControllerLoggingPage implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loggingsnippets = new LoggingSnippets();
-        options = LoggingOptions.getDefaultInstance();
-
+//        loggingsnippets = new LoggingSnippets();
+//        options = LoggingOptions.getDefaultInstance();
+        initializeProcess.start();
         hamburgerBar();
         spinner.setVisible(false);
 
@@ -347,14 +347,9 @@ public class ControllerLoggingPage implements Initializable {
             } else {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception f) {
+            f.printStackTrace();
         }
-
-        logsList = loggingsnippets.getLogsExtractList();
-        logsObservableList = FXCollections.observableList(logsList);
-
-        searchFunction.setVisible(false);
 
         Path path2 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
         File file2 = new File(path2.toUri());
@@ -365,11 +360,39 @@ public class ControllerLoggingPage implements Initializable {
 //            imageView.setFitHeight(24.5);
 //            imageView.setFitWidth(35);
             homeButton.setGraphic(imageView1);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException g) {
+            g.printStackTrace();
         }
-    }
 
+//        logsList = loggingsnippets.getLogsExtractList();
+//        logsObservableList = FXCollections.observableList(logsList);
+
+        searchFunction.setVisible(false);
+
+        initializeProcess.setOnSucceeded(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnCancelled(e -> {
+            initializeProcess.reset();
+        });
+        initializeProcess.setOnFailed(e -> {
+            initializeProcess.reset();
+        });
+    }
+    Service initializeProcess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    loggingsnippets = new LoggingSnippets();
+                    options = LoggingOptions.getDefaultInstance();
+                    return null;
+                }
+
+            };
+        }
+    };
 
     @FXML
     public void clickItem(MouseEvent event) {
