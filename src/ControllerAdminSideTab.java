@@ -6,20 +6,28 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class ControllerAdminSideTab {
+public class ControllerAdminSideTab implements Initializable {
 
     private static PcapNetworkInterface device;
     private static ScheduledThreadPoolExecutorHandler handler;
@@ -33,17 +41,19 @@ public class ControllerAdminSideTab {
     @FXML
     private JFXButton databasePage;
     @FXML
+    private JFXButton logsButton;
+    @FXML
+    private JFXButton deviceButton;
+    @FXML
     private JFXButton listCreate;
+    @FXML
+    private JFXButton FileExtensionManager;
     @FXML
     private JFXButton pktCapture;
     @FXML
     private JFXButton captureAnalysis;
     @FXML
-    private JFXButton logsButton;
-    @FXML
-    private JFXButton deviceButton;
-    @FXML
-    private JFXButton FileExtensionManager;
+    private JFXButton LogoutButton;
     private Scene myScene;
 
     public static AWSSMS getSMSHandler() {
@@ -361,4 +371,136 @@ public class ControllerAdminSideTab {
             //Put FX Loading Codes here
         }
     }
+
+    @FXML
+    void onClickLogoutButton(ActionEvent event) {
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+        file.delete();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Device Build Number Page");
+        stage.show();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Path path = FileSystems.getDefault().getPath("src/View/database-512.png");
+        File file = new File(path.toUri());
+        Image imageForFile;
+        try {
+            imageForFile = new Image(file.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile);
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+            databasePage.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Path path1 = FileSystems.getDefault().getPath("src/View/log-512.png");
+        File file1 = new File(path1.toUri());
+        Image imageForFile1;
+        try {
+            imageForFile1 = new Image(file1.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile1);
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+            logsButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path2 = FileSystems.getDefault().getPath("src/View/sharp_desktop_windows_black_18dp.png");
+        File file2 = new File(path2.toUri());
+        Image imageForFile2;
+        try {
+            imageForFile2 = new Image(file2.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile2);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            deviceButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path3 = FileSystems.getDefault().getPath("src/View/Bucket-512.png");
+        File file3 = new File(path3.toUri());
+        Image imageForFile3;
+        try {
+            imageForFile3 = new Image(file3.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile3);
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+            listCreate.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path4 = FileSystems.getDefault().getPath("src/View/sharp_attachment_black_18dp.png");
+        File file4 = new File(path4.toUri());
+        Image imageForFile4;
+        try {
+            imageForFile4 = new Image(file4.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile4);
+            FileExtensionManager.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path5 = FileSystems.getDefault().getPath("src/View/Envelope-icon.png");
+        File file5 = new File(path5.toUri());
+        Image imageForFile5;
+        try {
+            imageForFile5 = new Image(file5.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile5);
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+            pktCapture.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path6 = FileSystems.getDefault().getPath("src/View/BarRandom-512.png");
+        File file6 = new File(path6.toUri());
+        Image imageForFile6;
+        try {
+            imageForFile6 = new Image(file6.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile6);
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+            captureAnalysis.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Path path7 = FileSystems.getDefault().getPath("src/View/baseline_exit_to_app_black_18dp.png");
+        File file7 = new File(path7.toUri());
+        Image imageForFile7;
+        try {
+            imageForFile7 = new Image(file7.toURI().toURL().toExternalForm());
+            ImageView imageView = new ImageView(imageForFile7);
+            LogoutButton.setGraphic(imageView);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    @FXML
+//    private JFXButton databasePage;
+//    @FXML
+//    private JFXButton logsButton;
+//    @FXML
+//    private JFXButton deviceButton;
+//    @FXML
+//    private JFXButton listCreate;
+//    @FXML
+//    private JFXButton FileExtensionManager;
+//    @FXML
+//    private JFXButton pktCapture;
+//    @FXML
+//    private JFXButton captureAnalysis;
 }
