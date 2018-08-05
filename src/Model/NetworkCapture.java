@@ -217,8 +217,8 @@ public class NetworkCapture {
     }
 
     public void ProtocolMakeup() {
-        boolean found = false;
         for (CapturedPacket p : packets) {
+            boolean found = false;
             if (ProtocolMakeupData.isEmpty() && ProtocolMakeupProtocols.isEmpty()) {
                 ProtocolMakeupData.add(1);
                 ProtocolMakeupProtocols.add(p.identifyProtocol());
