@@ -24,15 +24,16 @@
                 </Label>
             </children>
         </AnchorPane>
-        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
       <JFXButton fx:id="transfer" layoutX="866.0" layoutY="116.0" onAction="#transferFile" prefHeight="43.0" prefWidth="121.0" text="Transfer a file" />
       <JFXComboBox fx:id="emailBox" layoutX="619.0" layoutY="122.0" prefHeight="31.0" prefWidth="247.0" promptText="Email" />
       <TableView fx:id="userInbox" layoutX="26.0" layoutY="194.0" prefHeight="361.0" prefWidth="1016.0">
         <columns>
-          <TableColumn prefWidth="603.0" text="File Name" />
-            <TableColumn prefWidth="228.0" text="Date" />
-          <TableColumn minWidth="0.0" prefWidth="184.0" text="Download" />
+          <TableColumn fx:id="filename" prefWidth="603.0" text="File Name" />
+            <TableColumn fx:id="date" prefWidth="256.0" text="Date" />
+          <TableColumn fx:id="action" minWidth="0.0" prefWidth="156.0" text="Download" />
         </columns>
       </TableView>
+      <JFXButton layoutX="31.0" layoutY="116.0" onAction="#refresh" prefHeight="43.0" prefWidth="90.0" text="Refresh" />
+        <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>
 </AnchorPane>

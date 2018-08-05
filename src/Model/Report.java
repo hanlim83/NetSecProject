@@ -17,14 +17,16 @@ import java.util.Map;
 
 public class Report {
 
-    private static ArrayList<Integer> indexNo = new ArrayList();
+                private static ArrayList<Integer> indexNo = new ArrayList();
                 private static ArrayList<String> avSoftware = new ArrayList();
                 private static ArrayList<String> softwareVersion = new ArrayList();
                 private static ArrayList<String> results = new ArrayList();
+
                 private int index;
                 private String software;
                 private String version;
                 private String result;
+
                 private ObservableList<Report> reportLister = FXCollections.observableArrayList();
     public Report(int indexx, String softwaree, String versionn, String resultss) {
                     this.index = indexx;

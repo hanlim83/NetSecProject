@@ -1,7 +1,5 @@
 import Database.User_InfoDB;
-import Model.FileScanner;
-import Model.Inbox;
-import Model.OAuth2Login;
+import Model.*;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
@@ -33,6 +31,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -42,7 +41,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -88,16 +86,16 @@ public class ControllerSecureFileTransfer implements Initializable {
     private TableView userInbox;
 
     @FXML
-    private TableColumn<Inbox, String> filename;
+    private TableColumn<ControllerSecureFileTransfer, String> filename;
 
     @FXML
-    private TableColumn<Inbox, String> date;
+    private TableColumn<ControllerSecureFileTransfer, String> date;
 
     @FXML
-    private TableColumn<Inbox, String> action;
+    private TableColumn<ControllerSecureFileTransfer, Button> action;
 
 
-    private ObservableList<Inbox> thisInbox;
+    private ObservableList <ControllerSecureFileTransfer> thisInbox= FXCollections.observableArrayList();
 
     private Scene myScene;
     public static AnchorPane rootP;
@@ -107,10 +105,56 @@ public class ControllerSecureFileTransfer implements Initializable {
     private OAuth2Login login = new OAuth2Login();
     private Cipher cipher;
 
+    private String name;
+    private String detail;
+    private Button button;
+
+    private static String ownBucketName;
+    private static String downloadThis;
+    private static String password;
+
     public ControllerSecureFileTransfer() throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.cipher = Cipher.getInstance("RSA");
     }
 
+    public ControllerSecureFileTransfer (String filename, String date) {
+
+        this.name = filename;
+        this.detail = date;
+        this.button = new Button("Download");
+
+        button.setOnAction(e -> {
+
+           downloadThis = getName();
+           System.out.println(downloadThis);
+
+
+           try {
+
+               getStorage();
+                downloadFile(storage,ownBucketName,downloadThis);
+                deleteFile(ownBucketName, downloadThis);
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+
+        });
+    }
+
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public String getDetail() { return detail; }
+
+    public void setDetail(String detail) { this.detail = detail; }
+
+    public Button getButton() { return button; }
+
+    public void setButton(Button button) { this.button = button; }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -118,9 +162,48 @@ public class ControllerSecureFileTransfer implements Initializable {
         User_InfoDB user = new User_InfoDB();
         ObservableList<String> Email = null;
 
+
+
         try {
 
+
+
             credential = login.login();
+
+            Scanner sc = new Scanner(login.getEmail());
+            System.out.println(login.getEmail());
+            sc.useDelimiter("@gmail.com");
+            String send = sc.next();
+
+            ownBucketName = "inbox-" + send;
+
+            System.out.println(ownBucketName);
+
+            thisInbox = assign(ownBucketName);
+
+            System.out.println(thisInbox);
+
+            filename.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("name"));
+            date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
+            action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
+
+            for (ControllerSecureFileTransfer r : thisInbox){
+                r.toString();
+            }
+            userInbox.setItems(thisInbox);
+
+
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+
             ArrayList<String> newEmail = user.getAllEmail();
             newEmail.remove(login.getEmail());
             for (int i = 0; i < newEmail.size(); i++) {
@@ -147,9 +230,19 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     }
 
+    @FXML
+    void refresh(ActionEvent event) throws Exception {
+
+        updateInbox();
+
+    }
+
 
     @FXML
     void transferFile(ActionEvent event) throws Exception {
+
+        credential = login.login();
+
         Scanner sc = new Scanner(emailBox.getValue());
         System.out.println(emailBox.getValue());
         sc.useDelimiter("@gmail.com");
@@ -157,7 +250,7 @@ public class ControllerSecureFileTransfer implements Initializable {
 
         privateBucketName = "inbox-" + sending;
 
-        System.out.print(sending);
+        System.out.print(privateBucketName);
 
 
         File file;
@@ -170,18 +263,18 @@ public class ControllerSecureFileTransfer implements Initializable {
         FileScanner scan = new FileScanner();
         scan.Scanner(file.getAbsolutePath());
 
-//        if (scan.scannerReport() == false) {
-//
-//            popAlert("Your file contains virus. It will not be allowed to be uploaded");
-//
-//        } else {
+        if (scan.scannerReport() == false) {
+
+            popAlert("Your file contains virus. It will not be allowed to be uploaded");
+
+        } else {
 
             String filename = file.getName();
             User_InfoDB user = new User_InfoDB();
             System.out.println(emailBox.getValue() + " " + filename);
 
             uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
-//        }
+        }
 
 //        process.start();
 //        process.setOnSucceeded(e -> {
@@ -216,6 +309,28 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     }
 
+    public ObservableList assign(String bucketname) throws Exception {
+        getStorage();
+        Page<Blob> blobs = storage.list(bucketname);
+
+        for (Blob blob : blobs.iterateAll()) {
+
+            String namef = blob.getName();
+            System.out.println(namef);
+            String detailf = convertTime(blob.getCreateTime());
+            System.out.println(detailf);
+            thisInbox.add(new ControllerSecureFileTransfer(namef, detailf));
+        }
+        return thisInbox;
+
+    }
+
+    private String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
+    }
+
 
     private void uploadFile(String filename, byte[] out) throws Exception {
 
@@ -234,6 +349,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     }
 
     private void getStorage() throws Exception {
+        credential = login.login();
         if (credential.getExpiresInSeconds() < 250) {
             credential = login.login();
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
@@ -260,13 +376,11 @@ public class ControllerSecureFileTransfer implements Initializable {
 //      writeToFile(output, this.cipher.doFinal(input));
     }
 
-    public byte[] decryptFile(byte[] input, PrivateKey key)
+    public void decryptFile(byte[] input,File output, PrivateKey key)
             throws IOException, GeneralSecurityException {
         this.cipher.init(Cipher.DECRYPT_MODE, key);
 
-        return this.cipher.doFinal(input);
-
-//        writeToFile(output, this.cipher.doFinal(input));
+        writeToFile(output, this.cipher.doFinal(input));
     }
 
 
@@ -277,6 +391,120 @@ public class ControllerSecureFileTransfer implements Initializable {
         fis.close();
         return fbytes;
     }
+
+    private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
+
+        Platform.runLater(() -> {
+
+            myScene = anchorPane.getScene();
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        fileChooser.setInitialFileName(objectName);
+        File filePath = fileChooser.showSaveDialog(stage);
+        if (filePath != null) {
+            String filePathString = filePath.getAbsolutePath();
+            Path downloadTo = Paths.get(filePathString);
+
+            BlobId blobId = BlobId.of(bucketName, objectName);
+            Blob blob = storage.get(blobId);
+            System.out.println(blob);
+            if (blob == null) {
+                System.out.println("No such object");
+                return;
+            }
+            PrintStream writeTo = System.out;
+            if (downloadTo != null) {
+                try {
+                    writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (blob.getSize() < 1_000_000) {
+                // Blob is small read all its content in one request
+                byte[] content = blob.getContent();
+
+                try {
+                    writeTo.write(content);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // When Blob size is big or unknown use the blob's channel reader.
+                try (ReadChannel reader = blob.reader()) {
+                    WritableByteChannel channel = Channels.newChannel(writeTo);
+                    ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                    while (reader.read(bytes) > 0) {
+                        bytes.flip();
+                        channel.write(bytes);
+                        bytes.clear();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (downloadTo == null) {
+                writeTo.println();
+            } else {
+                writeTo.close();
+            }
+
+        }
+        });
+    }
+
+    private void deleteFile(String bucketName, String blobName) throws Exception {
+
+        try {
+            if (storage == null) {
+                getStorage();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            getStorage();
+        }
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        boolean deleted = storage.delete(blobId);
+        if (deleted) {
+            // the blob was deleted
+            System.out.println("Deleted");
+            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+            snackbar.show("Delete success", 3000);
+            snackbar.getStylesheets().add("Style.css");
+        } else {
+            // the blob was not found
+            System.out.println("Not deleted not found");
+        }
+    }
+
+    public void updateInbox() throws Exception {
+
+        credential = login.login();
+
+        Scanner sc = new Scanner(login.getEmail());
+        System.out.println(login.getEmail());
+        sc.useDelimiter("@gmail.com");
+        String send = sc.next();
+
+        String ownBucketName = "inbox-" + send;
+
+        System.out.println(ownBucketName);
+
+        Inbox list = new Inbox();
+        thisInbox = list.assign(ownBucketName);
+
+        System.out.println(thisInbox);
+
+        filename.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("name"));
+        date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
+        action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
+
+        for (ControllerSecureFileTransfer r : thisInbox){
+            r.toString();
+        }
+        userInbox.setItems(thisInbox);
+    }
+
 
     private void popAlert(String message) {
         myScene = anchorPane.getScene();
