@@ -48,7 +48,7 @@
          </font>
       </Text>
        <JFXProgressBar fx:id="progressBar" layoutX="1.0" layoutY="129.0" prefHeight="12.0" prefWidth="1066.0"
-                       progress="0.21"/>
+                       progress="0.19"/>
       <Text layoutX="409.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 2: Set Options">
          <font>
             <Font name="Lucida Sans Regular" size="27.0" />
