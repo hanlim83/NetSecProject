@@ -18,6 +18,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,10 +38,7 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,6 +93,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
     private PcapHandle handle;
     private int pktCount = 0;
     private ShowData sRunnable = new ShowData();
+    private boolean BlockHome = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -158,6 +157,7 @@ public class ControllerCAMainAlertDashboard implements Initializable {
             loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
             ControllerAdminSideTab ctrl = loader.getController();
             ctrl.getVariables(this.device, this.handler, this.capture, this.ARPDetection, this.threshold, SMSHandler, EmailHandler);
+            BlockHome = ctrl.checktokenFileExists();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -390,16 +390,41 @@ public class ControllerCAMainAlertDashboard implements Initializable {
 
     @FXML
     public void onClickHomeButton(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("AdminHome.fxml"));
-        Scene myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
-        ControllerAdminHome controller = loader.getController();
-        //controller.passData(admin);
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Home Page");
-        stage.show();
+        if (!BlockHome) {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Access Blocked");
+            alert.setHeaderText("Access Blocked");
+            alert.setContentText("You have minimized FireE and as a safety precaution, you need to sign in to FireE again to access other functions of the app. Do you want to log in again?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminLoginPage.fxml"));
+                myScene = ((Node) event.getSource()).getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerAdminLoginPage controller = loader.getController();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("Login Page");
+                stage.show();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        } else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("AdminHome.fxml"));
+            Scene myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = loader.load();
+            ControllerAdminHome controller = loader.getController();
+            //controller.passData(admin);
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Home Page");
+            stage.show();
+        }
     }
 
 }
