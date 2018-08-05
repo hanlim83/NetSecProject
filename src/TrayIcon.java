@@ -386,11 +386,11 @@ public class TrayIcon {
                 capture.stopSniffing();
                 handler.cancelbackgroundRunnable();
                 capture.printStat();
-                trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nThe Network Capture File will be sent to your email shortly", java.awt.TrayIcon.MessageType.INFO);
                 capture.Generalexport();
                 ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                     EmailHandler.sendFullPcap(capture.getFullPcapExportPath());
                 });
+                trayIcon.displayMessage("Capture Statistics", "Packets Received By Interface: " + capture.getPacketsReceived() + "\nPackets Dropped By Interface: " + capture.getPacketsDroppedByInt() + "\nTotal Packets Captured: " + capture.getPacketCount() + "\nThe Network Capture File will be sent to your email shortly", java.awt.TrayIcon.MessageType.INFO);
                 try {
                     FXMLLoader loader = new FXMLLoader();
                     loader.load(getClass().getResource("AdminSideTab.fxml").openStream());
@@ -503,6 +503,19 @@ public class TrayIcon {
                 });
             });
             startCapture.addActionListener(e -> {
+                popup.remove(selectInt);
+                popup.remove(startCapture);
+                popup.remove(Exit);
+                popup.add(StopCapture);
+                popup.add(Exit);
+                tray.remove(processTrayIcon);
+                processTrayIcon.setPopupMenu(popup);
+                try {
+                    tray.add(trayIcon);
+                } catch (AWTException e4) {
+                    System.err.println("TrayIcon could not be added.");
+                    return;
+                }
                 ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                     capture.startSniffing();
                 });
