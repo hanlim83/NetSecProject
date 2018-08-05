@@ -1,4 +1,7 @@
+import Database.User_InfoDB;
+import Model.OAuth2Login;
 import Model.TextAuthentication;
+import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.controls.JFXTextField;
 import com.nexmo.client.NexmoClientException;
 import javafx.event.ActionEvent;
@@ -13,11 +16,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class ControllerAdminVerifyTextAuth {
+public class ControllerAdminVerifyTextAuth implements Initializable {
 
     private Scene myScene;
+    private Credential credential;
+    private OAuth2Login login = new OAuth2Login();
 
     @FXML
     private AnchorPane anchorPane;
@@ -79,10 +86,29 @@ public class ControllerAdminVerifyTextAuth {
 
         TextAuthentication auth = new TextAuthentication();
         auth.adminSendAuth(phoneNo);
-        numberViewer.setText(phoneNo);
+//        numberViewer.setText(phoneNo);
         System.out.println(" Correct phone number input");
 
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            credential = login.login();
+
+        User_InfoDB user = new User_InfoDB();
+        String number = user.getPhoneNumber(user.getPhoneNumber(login.getEmail()));
+
+        viewerText.setText("Please enter the OTP sent to this number: ");
+        numberViewer.setText(number);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
 

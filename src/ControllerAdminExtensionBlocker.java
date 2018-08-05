@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXHamburger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -47,6 +48,10 @@ public class ControllerAdminExtensionBlocker implements Initializable {
     @FXML
     private Label ipAddr;
 
+    private Scene myScene;
+
+    public static AnchorPane rootP;
+
     private String txt;
     private String docx;
     private String exe;
@@ -56,6 +61,7 @@ public class ControllerAdminExtensionBlocker implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
 
         try {
             String whatismyIP = IPAddressPolicy.getIp();

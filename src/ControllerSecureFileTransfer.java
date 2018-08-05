@@ -134,6 +134,7 @@ public class ControllerSecureFileTransfer implements Initializable {
                getStorage();
                 downloadFile(storage,ownBucketName,downloadThis);
                 deleteFile(ownBucketName, downloadThis);
+                updateInbox();
 
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -401,6 +402,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         fileChooser.setInitialFileName(objectName);
         File filePath = fileChooser.showSaveDialog(stage);
+
         if (filePath != null) {
             String filePathString = filePath.getAbsolutePath();
             Path downloadTo = Paths.get(filePathString);

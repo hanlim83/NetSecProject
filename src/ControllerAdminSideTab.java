@@ -469,7 +469,23 @@ public class ControllerAdminSideTab implements Initializable {
         if (blockOtherPages)
             blockedAccess(event);
         else {
-            //Put FX Loading Codes here
+
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("AdminExtensionBlocker.fxml"));
+                myScene = (Scene) ((Node) event.getSource()).getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                nextView = loader.load();
+                ControllerAdminExtensionBlocker controller = loader.<ControllerAdminExtensionBlocker>getController();
+                //controller.passData(admin);
+
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
