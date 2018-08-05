@@ -14,7 +14,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -189,12 +188,12 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onHover(DragEvent event) {
+    void onHover(MouseEvent event) {
         databasePage.setButtonType(JFXButton.ButtonType.RAISED);
     }
 
     @FXML
-    void onHoverExit(DragEvent event) {
+    void onHoverExit(MouseEvent event) {
         databasePage.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
@@ -221,148 +220,112 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onHover1(DragEvent event) {
+    void onHover1(MouseEvent event) {
         logsButton.setButtonType(JFXButton.ButtonType.RAISED);
     }
 
     @FXML
-    void onHoverExit1(DragEvent event) {
+    void onHoverExit1(MouseEvent event) {
         logsButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
-    void onHover2(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHover3(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHover4(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHover5(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHover6(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit2(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit3(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit4(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit5(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit6(DragEvent event) {
-
-    }
-
-    @FXML
-    void onClickLogoutButton(ActionEvent event) {
-        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
-        file.delete();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Device Build Number Page");
-        stage.show();
-    }
-
-    @FXML
-    void onHover7(DragEvent event) {
-        LogoutButton.setButtonType(JFXButton.ButtonType.RAISED);
-    }
-
-    @FXML
-    void onHoverExit7(DragEvent event) {
-        LogoutButton.setButtonType(JFXButton.ButtonType.FLAT);
-    }
-
-    @FXML
-    void goToCaptureAnalysis(ActionEvent event) {
-        if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
-            handler.cancelTableviewRunnable();
-        if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
-            handler.cancelchartDataRunnable();
-        StopTimeLineCtrl();
-        if (device == null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
+    void onClickDevice(MouseEvent event) {
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
             myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
-                ControllerCALandingSelectInt controller = loader.getController();
-                controller.passVariables(handler, null, false, 0, SMSHandler, null, false, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             stage.setScene(new Scene(nextView));
-            stage.setTitle("Interface Selection");
-            stage.show();
-        } else if (capture == null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
-            myScene = ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler, EmailHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("Capture - Statistics View");
-            stage.show();
-        } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
-            myScene = ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerCAMainDashboard controller = loader.getController();
-                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("Capture - Statistics View");
+            stage.setTitle("Device Build Number Page");
             stage.show();
         }
+    }
+
+    @FXML
+    void onHover2(MouseEvent event) {
+        deviceButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit2(MouseEvent event) {
+        deviceButton.setButtonType(JFXButton.ButtonType.FLAT);
+    }
+
+    @FXML
+    void onClickBuckets(MouseEvent event) {
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("BucketsPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Buckets Page");
+            stage.show();
+        }
+    }
+
+    @FXML
+    void onHover3(MouseEvent event) {
+        listCreate.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit3(MouseEvent event) {
+        listCreate.setButtonType(JFXButton.ButtonType.FLAT);
+    }
+
+    @FXML
+    void goToFileExtensionManager(ActionEvent event) {
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("AdminExtensionBlocker.fxml"));
+                myScene = (Scene) ((Node) event.getSource()).getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                nextView = loader.load();
+                ControllerAdminExtensionBlocker controller = loader.<ControllerAdminExtensionBlocker>getController();
+                //controller.passData(admin);
+
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    void onHover4(MouseEvent event) {
+        FileExtensionManager.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit4(MouseEvent event) {
+        FileExtensionManager.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
@@ -421,72 +384,108 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onClickBuckets(MouseEvent event) {
-        if (blockOtherPages)
-            blockedAccess(event);
-        else {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("BucketsPage.fxml"));
+    void onHover5(MouseEvent event) {
+        pktCapture.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit5(MouseEvent event) {
+        pktCapture.setButtonType(JFXButton.ButtonType.FLAT);
+    }
+
+    @FXML
+    void goToCaptureAnalysis(ActionEvent event) {
+        if (handler.getTableviewRunnable() != null && handler.getStatusTableviewRunnable())
+            handler.cancelTableviewRunnable();
+        if (handler.getchartDataRunnable() != null && handler.getStatuschartDataRunnable())
+            handler.cancelchartDataRunnable();
+        StopTimeLineCtrl();
+        if (device == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSelectInt.fxml"));
             myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
+                ControllerCALandingSelectInt controller = loader.getController();
+                controller.passVariables(handler, null, false, 0, SMSHandler, null, false, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             stage.setScene(new Scene(nextView));
-            stage.setTitle("Buckets Page");
+            stage.setTitle("Interface Selection");
             stage.show();
-        }
-    }
-
-    @FXML
-    void onClickDevice(MouseEvent event) {
-        if (blockOtherPages)
-            blockedAccess(event);
-        else {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("DeviceDatabasePage.fxml"));
+        } else if (capture == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
             myScene = ((Node) event.getSource()).getScene();
             Stage stage = (Stage) (myScene).getWindow();
             Parent nextView = null;
             try {
                 nextView = loader.load();
+                ControllerCAMainDashboard controller = loader.getController();
+                controller.passVariables(device, handler, null, ARPDetection, threshold, SMSHandler, EmailHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             stage.setScene(new Scene(nextView));
-            stage.setTitle("Device Build Number Page");
+            stage.setTitle("Capture - Statistics View");
+            stage.show();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainDashboard.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+                ControllerCAMainDashboard controller = loader.getController();
+                controller.passVariables(device, handler, capture, ARPDetection, threshold, SMSHandler, EmailHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Capture - Statistics View");
             stage.show();
         }
     }
 
     @FXML
-    void goToFileExtensionManager(ActionEvent event) {
-        if (blockOtherPages)
-            blockedAccess(event);
-        else {
+    void onHover6(MouseEvent event) {
+        captureAnalysis.setButtonType(JFXButton.ButtonType.RAISED);
+    }
 
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("AdminExtensionBlocker.fxml"));
-                myScene = (Scene) ((Node) event.getSource()).getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = null;
-                nextView = loader.load();
-                ControllerAdminExtensionBlocker controller = loader.<ControllerAdminExtensionBlocker>getController();
-                //controller.passData(admin);
+    @FXML
+    void onHoverExit6(MouseEvent event) {
+        captureAnalysis.setButtonType(JFXButton.ButtonType.FLAT);
+    }
 
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("NSPJ");
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @FXML
+    void onClickLogoutButton(ActionEvent event) {
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+        file.delete();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Device Build Number Page");
+        stage.show();
+    }
+
+    @FXML
+    void onHover7(MouseEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit7(MouseEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @Override
