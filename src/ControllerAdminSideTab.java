@@ -199,8 +199,35 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onHover1(DragEvent event) {
+    void onClickLogs(MouseEvent event) {
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("LoggingPage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Logging Page");
+            stage.show();
+        }
+    }
+
+    @FXML
+    void onHover1(DragEvent event) {
+        logsButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit1(DragEvent event) {
+        logsButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
@@ -225,16 +252,6 @@ public class ControllerAdminSideTab implements Initializable {
 
     @FXML
     void onHover6(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHover7(DragEvent event) {
-
-    }
-
-    @FXML
-    void onHoverExit1(DragEvent event) {
 
     }
 
@@ -264,8 +281,33 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onHoverExit7(DragEvent event) {
+    void onClickLogoutButton(ActionEvent event) {
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+        file.delete();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Device Build Number Page");
+        stage.show();
+    }
+
+    @FXML
+    void onHover7(DragEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit7(DragEvent event) {
+        LogoutButton.setButtonType(JFXButton.ButtonType.FLAT);
     }
 
     @FXML
@@ -401,28 +443,6 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onClickLogs(MouseEvent event) {
-        if (blockOtherPages)
-            blockedAccess(event);
-        else {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("LoggingPage.fxml"));
-            myScene = ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("Logging Page");
-            stage.show();
-        }
-    }
-
-    @FXML
     void onClickDevice(MouseEvent event) {
         if (blockOtherPages)
             blockedAccess(event);
@@ -451,26 +471,6 @@ public class ControllerAdminSideTab implements Initializable {
         else {
             //Put FX Loading Codes here
         }
-    }
-
-    @FXML
-    void onClickLogoutButton(ActionEvent event) {
-        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
-        file.delete();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
-        myScene = ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = null;
-        try {
-            nextView = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("Device Build Number Page");
-        stage.show();
     }
 
     @Override
