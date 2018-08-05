@@ -35,7 +35,7 @@ dependencies {
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
-    compile group: 'commons-pool', name: 'commons-pool', version: '1.4'
+    compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.6.0'
     compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
 }
 

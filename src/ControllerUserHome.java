@@ -56,6 +56,7 @@ public class ControllerUserHome implements Initializable {
 
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
+    private static String name;
 
     private static String lastFile;
     private static String greetings;
@@ -64,15 +65,6 @@ public class ControllerUserHome implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
         timerprocess.start();
-//        if (counter==0){
-//            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
-//            TimeLabel.setText(string);
-//        } else{
-//            LastFileModifiedLabel.setText(lastFile);
-//            GreetingsLabel.setText(greetings);
-//            String string = new SimpleDateFormat("HH:mm:ss").format(new Date());
-//            TimeLabel.setText(string);
-//        }
         try {
             InfoUpdate();
         } catch (Exception e) {
@@ -143,16 +135,54 @@ public class ControllerUserHome implements Initializable {
 ////        controllerSecureCloudStorage.passData(blobs);
 //    }
 
+    private String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
+    }
+
+    private Service timerprocess = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    updateTimer();
+                    return null;
+                }
+            };
+        }
+    };
+
+    private void InfoUpdate() throws Exception {
+        getLatestFile();
+        if (!BlobList.isEmpty()) {
+            Collections.sort(BlobList);
+            System.out.println("=======================LATEST FILE/TIME===============================");
+            System.out.println(BlobList.get(0).toString());
+            System.out.println(convertTime(BlobList.get(0).getTime()));
+            lastFile = "Your last file was modified on " + convertTime(BlobList.get(0).getTime());
+            LastFileModifiedLabel.setText(lastFile);
+            greetings = getGreetings() + name;
+            GreetingsLabel.setText(greetings);
+        } else {
+            LastFileModifiedLabel.setText("No file in your storage");
+            greetings = getGreetings() + name;
+            GreetingsLabel.setText(greetings);
+        }
+    }
+
     private ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
 
-    private void getLatestFile() throws IOException {
+    private void getLatestFile() throws Exception {
+        credential = login.login();
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         String email = login.getEmail();
+        name = login.getName();
         Scanner s = new Scanner(email).useDelimiter("@");
         String emailFront = s.next();
         emailFront = emailFront.replace(".", "");
         String bucketname = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
         try {
             Page<Blob> blobs = storage.list(bucketname);
             for (Blob blob : blobs.iterateAll()) {
@@ -192,52 +222,6 @@ public class ControllerUserHome implements Initializable {
                 close.setOnAction(__ -> alert.hideWithAnimation());
                 alert.show();
             });
-        }
-
-    }
-
-    private String convertTime(long time) {
-        Date date = new Date(time);
-        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return format.format(date);
-    }
-
-    private Service timerprocess = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    updateTimer();
-//                    Platform.runLater(() ->{
-//                        try {
-//                            InfoUpdate();
-//                        } catch (Exception e1) {
-//                            e1.printStackTrace();
-//                        }
-//                    });
-                    return null;
-                }
-            };
-        }
-    };
-
-    private void InfoUpdate() throws Exception {
-        credential = login.login();
-        getLatestFile();
-        if (!BlobList.isEmpty()) {
-            Collections.sort(BlobList);
-            System.out.println("=======================LATEST FILE/TIME===============================");
-            System.out.println(BlobList.get(0).toString());
-            System.out.println(convertTime(BlobList.get(0).getTime()));
-            lastFile = "Your last file was modified on " + convertTime(BlobList.get(0).getTime());
-            LastFileModifiedLabel.setText(lastFile);
-            greetings = getGreetings() + login.getName();
-            GreetingsLabel.setText(greetings);
-        } else {
-            LastFileModifiedLabel.setText("No file in your storage");
-            greetings = getGreetings() + login.getName();
-            GreetingsLabel.setText(greetings);
         }
     }
 

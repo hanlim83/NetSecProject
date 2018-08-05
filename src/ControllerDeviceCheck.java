@@ -63,9 +63,6 @@ public class ControllerDeviceCheck implements Initializable {
         process.setOnSucceeded(e -> {
             process.reset();
             if (AllFirewallStatus == false) {
-//                LoadingSpinner.setVisible(false);
-//                RestartDeviceCheckButton.setVisible(true);
-//                RestartDeviceCheckButton.setDisable(false);
                 Process p;
                 try {
                     p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
@@ -80,17 +77,6 @@ public class ControllerDeviceCheck implements Initializable {
             else if (WindowsStatus == false) {
                 handleAlert("Your device version is not supported. Please update or use a device with a newer software.");
             } else {
-                OAuth2Login auth = new OAuth2Login();
-                String mail = null;
-
-                try {
-                    Credential credential = auth.login();
-                    mail = auth.getEmail();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("UserHome.fxml"));
                 myScene = anchorPane.getScene();
@@ -199,7 +185,6 @@ public class ControllerDeviceCheck implements Initializable {
     private void localDeviceFirewallCheck() throws IOException, InterruptedException {
         int count = 1;
         StringBuilder output = new StringBuilder();
-//        String term="state";
         Process p = Runtime.getRuntime().exec("netsh advfirewall show allprofiles state");
         p.waitFor(); //Wait for the process to finish before continuing the Java program.
 
@@ -320,21 +305,18 @@ public class ControllerDeviceCheck implements Initializable {
         Scanner s = new Scanner(in).useDelimiter("                ");
         String firstLine=s.next();
         String osBuildNoStr=s.next();
-        //System.out.println("OS version is " + osName);
         Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
         String osBuildNo=sc.next();
         System.out.println(osBuildNo);
         return osBuildNo;
     }
 
-    private String currentOSVersion;
+//    private String currentOSVersion;
     private boolean checkWindowsApprovedOld() throws SQLException {
         boolean windowsApproved = false;
         String currentOSVersion=getBuildNumber();
         Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
         ArrayList<OSVersion> supportedVersions = device_build_numberDB.CheckSupportedVersion();
-//        CheckSupportedVersion();
-//        run();
         for(OSVersion o: supportedVersions) {
             if (o.getVersionNumber().equals(currentOSVersion)) {
                 System.out.println("Current Version: "+currentOSVersion+" ArrList: "+o);
