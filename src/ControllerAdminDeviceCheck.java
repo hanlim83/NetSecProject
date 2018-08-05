@@ -324,7 +324,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
     }
 
     String currentOSVersion;
-    private boolean checkWindowsApprovedOld() throws SQLException {
+    private boolean checkWindowsApprovedOld(){
         boolean windowsApproved = false;
         String currentOSVersion=getEdition();
         Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();

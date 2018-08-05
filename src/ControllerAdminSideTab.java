@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -163,6 +164,108 @@ public class ControllerAdminSideTab implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void onClickDatabase(MouseEvent event) {
+        if (blockOtherPages)
+            blockedAccess(event);
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("EmployeePage.fxml"));
+            myScene = ((Node) event.getSource()).getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+            Parent nextView = null;
+            try {
+                nextView = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            stage.setScene(new Scene(nextView));
+            stage.setTitle("Database Page");
+            stage.show();
+        }
+    }
+
+    @FXML
+    void onHover(DragEvent event) {
+        databasePage.setButtonType(JFXButton.ButtonType.RAISED);
+    }
+
+    @FXML
+    void onHoverExit(DragEvent event) {
+        databasePage.setButtonType(JFXButton.ButtonType.FLAT);
+    }
+
+    @FXML
+    void onHover1(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover2(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover3(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover4(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover5(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover6(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHover7(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit1(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit2(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit3(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit4(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit5(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit6(DragEvent event) {
+
+    }
+
+    @FXML
+    void onHoverExit7(DragEvent event) {
+
     }
 
     @FXML
@@ -320,28 +423,6 @@ public class ControllerAdminSideTab implements Initializable {
     }
 
     @FXML
-    void onClickDatabase(MouseEvent event) {
-        if (blockOtherPages)
-            blockedAccess(event);
-        else {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("EmployeePage.fxml"));
-            myScene = ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("Database Page");
-            stage.show();
-        }
-    }
-
-    @FXML
     void onClickDevice(MouseEvent event) {
         if (blockOtherPages)
             blockedAccess(event);
@@ -488,19 +569,4 @@ public class ControllerAdminSideTab implements Initializable {
             e.printStackTrace();
         }
     }
-
-//    @FXML
-//    private JFXButton databasePage;
-//    @FXML
-//    private JFXButton logsButton;
-//    @FXML
-//    private JFXButton deviceButton;
-//    @FXML
-//    private JFXButton listCreate;
-//    @FXML
-//    private JFXButton FileExtensionManager;
-//    @FXML
-//    private JFXButton pktCapture;
-//    @FXML
-//    private JFXButton captureAnalysis;
 }

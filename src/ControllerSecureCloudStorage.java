@@ -179,10 +179,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
-    //On succeded do this
-//    this.blobs = blobs;
-//    TableMethod();
-
     private Credential credential1;
     private OAuth2Login login1 = new OAuth2Login();
 

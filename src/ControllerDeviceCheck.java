@@ -307,22 +307,7 @@ public class ControllerDeviceCheck implements Initializable {
         });
     }
 
-//    private String findSysInfo(String term) {
-//        try {
-//            Runtime rt = Runtime.getRuntime();
-//            Process pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"" + term + "\"");
-//            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-//            return in.readLine();
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
-//        return "";
-//    }
-
     private String getBuildNumber() {
-//        String osName = findSysInfo("OS Version:");
-
-        //Test
         Runtime rt = Runtime.getRuntime();
         Process pr = null;
         try {
@@ -331,7 +316,6 @@ public class ControllerDeviceCheck implements Initializable {
             e.printStackTrace();
         }
         BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-        //Test
 
         Scanner s = new Scanner(in).useDelimiter("                ");
         String firstLine=s.next();
@@ -363,5 +347,4 @@ public class ControllerDeviceCheck implements Initializable {
         }
         return windowsApproved;
     }
-
 }

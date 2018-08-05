@@ -5,13 +5,13 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerAdminSideTab">
     <children>
-      <JFXButton fx:id="databasePage" alignment="BASELINE_LEFT" onMouseClicked="#onClickDatabase" prefHeight="75.0" prefWidth="227.0" text="Database" />
-        <JFXButton fx:id="logsButton" alignment="BASELINE_LEFT" onMouseClicked="#onClickLogs" prefHeight="75.0" prefWidth="227.0" text="Loggings" />
-        <JFXButton fx:id="deviceButton" alignment="BASELINE_LEFT" onMouseClicked="#onClickDevice" prefHeight="75.0" prefWidth="227.0" text="Device Build Number" />
-        <JFXButton fx:id="listCreate" alignment="BASELINE_LEFT" onMouseClicked="#onClickBuckets" prefHeight="76.0" prefWidth="219.0" text="Buckets Entry" />
-        <JFXButton fx:id="FileExtensionManager" alignment="BASELINE_LEFT" onAction="#goToFileExtensionManager" prefHeight="75.0" prefWidth="227.0" text="File Extension Manager" />
-        <JFXButton fx:id="pktCapture" alignment="BASELINE_LEFT" onAction="#goToPacketCapture" prefHeight="75.0" prefWidth="227.0" text="Network Capture - Packets View" wrapText="true" />
-        <JFXButton fx:id="captureAnalysis" alignment="BASELINE_LEFT" onAction="#goToCaptureAnalysis" prefHeight="75.0" prefWidth="227.0" text="Network Capture - Statistics View" wrapText="true" />
-      <JFXButton fx:id="LogoutButton" alignment="BASELINE_LEFT" onAction="#onClickLogoutButton" prefHeight="75.0" prefWidth="227.0" text="Logout" />
+      <JFXButton fx:id="databasePage" alignment="BASELINE_LEFT" onDragEntered="#onHover" onDragExited="#onHoverExit" onMouseClicked="#onClickDatabase" prefHeight="75.0" prefWidth="227.0" text="Database" />
+        <JFXButton fx:id="logsButton" alignment="BASELINE_LEFT" onDragEntered="#onHover1" onDragExited="#onHoverExit1" onMouseClicked="#onClickLogs" prefHeight="75.0" prefWidth="227.0" text="Loggings" />
+        <JFXButton fx:id="deviceButton" alignment="BASELINE_LEFT" onDragEntered="#onHover2" onDragExited="#onHoverExit2" onMouseClicked="#onClickDevice" prefHeight="75.0" prefWidth="227.0" text="Device Build Number" />
+        <JFXButton fx:id="listCreate" alignment="BASELINE_LEFT" onDragEntered="#onHover3" onDragExited="#onHoverExit3" onMouseClicked="#onClickBuckets" prefHeight="76.0" prefWidth="219.0" text="Buckets Entry" />
+        <JFXButton fx:id="FileExtensionManager" alignment="BASELINE_LEFT" onAction="#goToFileExtensionManager" onDragEntered="#onHover4" onDragExited="#onHoverExit4" prefHeight="75.0" prefWidth="227.0" text="File Extension Manager" />
+        <JFXButton fx:id="pktCapture" alignment="BASELINE_LEFT" onAction="#goToPacketCapture" onDragEntered="#onHover5" onDragExited="#onHoverExit5" prefHeight="75.0" prefWidth="227.0" text="Network Capture - Packets View" wrapText="true" />
+        <JFXButton fx:id="captureAnalysis" alignment="BASELINE_LEFT" onAction="#goToCaptureAnalysis" onDragEntered="#onHover6" onDragExited="#onHoverExit6" prefHeight="75.0" prefWidth="227.0" text="Network Capture - Statistics View" wrapText="true" />
+      <JFXButton fx:id="LogoutButton" alignment="BASELINE_LEFT" onAction="#onClickLogoutButton" onDragEntered="#onHover7" onDragExited="#onHoverExit7" prefHeight="75.0" prefWidth="227.0" text="Logout" />
     </children>
 </VBox>
