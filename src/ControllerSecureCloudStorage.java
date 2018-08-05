@@ -174,6 +174,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     getObservableList();
+                    //credential
                     return null;
                 }
             };
