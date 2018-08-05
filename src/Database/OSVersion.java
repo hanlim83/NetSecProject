@@ -1,4 +1,4 @@
-package Model;
+package Database;
 
 public class OSVersion {
     private String versionName;

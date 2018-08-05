@@ -1,7 +1,5 @@
 package Database;
 
-import Model.OSVersion;
-
 import java.sql.*;
 import java.util.ArrayList;
 

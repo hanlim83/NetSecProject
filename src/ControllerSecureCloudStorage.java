@@ -148,7 +148,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
-    ObservableList<ControllerSecureCloudStorage.TableBlob> blobsListFirst;
+    private ObservableList<ControllerSecureCloudStorage.TableBlob> blobsListFirst;
     public void loadTableProcess(){
         process.start();
         process.setOnSucceeded(e -> {
@@ -188,7 +188,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private ArrayList<String> arrayFolder1=new ArrayList<String>();
 
-    public ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
+    private ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
     public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
         credential1=login1.login();
         ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
@@ -227,7 +227,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         return blobs1;
     }
 
-    public String convertTime1(long time) {
+    private String convertTime1(long time) {
         Date date = new Date(time);
         Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return format.format(date);
@@ -249,7 +249,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     //restart testing to optimize this page
 
     @FXML
-    void onClickHomeButton(ActionEvent event) throws IOException {
+    private void onClickHomeButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("UserHome.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -270,14 +270,14 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     @FXML
-    void onClickBackButton(ActionEvent event) throws Exception {
+    private void onClickBackButton(ActionEvent event) throws Exception {
         updateObservableList();
         backButton.setVisible(false);
         FilePathLabel.setText("/");
     }
 
     @FXML
-    void onClickUploadButton(ActionEvent event) throws Exception {
+    private void onClickUploadButton(ActionEvent event) throws Exception {
         checkUserDownloadDelete("Upload");
     }
 

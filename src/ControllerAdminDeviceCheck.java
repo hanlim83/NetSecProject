@@ -1,5 +1,5 @@
 import Database.Device_Build_NumberDB;
-import Model.OSVersion;
+import Database.OSVersion;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
