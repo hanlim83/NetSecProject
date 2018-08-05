@@ -126,8 +126,13 @@ public class ControllerSecureFileTransfer implements Initializable {
 
                getStorage();
                 downloadFile(storage,ownBucketName,downloadThis);
+
+               JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+               snackbar.getStylesheets().add("Style.css");
+               snackbar.show("Download success", 3000);
+
 //                deleteFile(ownBucketName, downloadThis);
-//                updateInbox();
+
 
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -199,7 +204,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             ArrayList<String> newEmail = user.getAllEmail();
-            newEmail.remove(login.getEmail());
+//            newEmail.remove(login.getEmail());
             for (int i = 0; i < newEmail.size(); i++) {
 
                 if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
@@ -213,8 +218,6 @@ public class ControllerSecureFileTransfer implements Initializable {
             Email = FXCollections.observableArrayList(newEmail);
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -227,7 +230,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     @FXML
     void refresh(ActionEvent event) throws Exception {
 
-        updateInbox();
+
 
     }
 
@@ -395,7 +398,22 @@ public class ControllerSecureFileTransfer implements Initializable {
         fileChooser.setInitialFileName(objectName);
         File filePath = fileChooser.showSaveDialog(null);
 
-        if (filePath != null) {
+//                User_InfoDB user = new User_InfoDB();
+//
+//            byte [] hi = new byte[0];
+//            try {
+//                hi = getFileInBytes(filePath);
+//
+//
+//                credential = login.login();
+//            decryptFile(hi,filePath, user.getPrivateKey(login.getEmail(),password));
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
+
+            if (filePath != null) {
             String filePathString = filePath.getAbsolutePath();
             Path downloadTo = Paths.get(filePathString);
 
@@ -472,34 +490,6 @@ public class ControllerSecureFileTransfer implements Initializable {
             // the blob was not found
             System.out.println("Not deleted not found");
         }
-    }
-
-    public void updateInbox() throws Exception {
-
-        credential = login.login();
-
-        Scanner sc = new Scanner(login.getEmail());
-        System.out.println(login.getEmail());
-        sc.useDelimiter("@gmail.com");
-        String send = sc.next();
-
-        String ownBucketName = "inbox-" + send;
-
-        System.out.println(ownBucketName);
-
-        Inbox list = new Inbox();
-        thisInbox = list.assign(ownBucketName);
-
-        System.out.println(thisInbox);
-
-        filename.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("name"));
-        date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
-        action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
-
-        for (ControllerSecureFileTransfer r : thisInbox){
-            r.toString();
-        }
-        userInbox.setItems(thisInbox);
     }
 
 
