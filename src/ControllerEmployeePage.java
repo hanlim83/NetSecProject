@@ -698,7 +698,7 @@ public class ControllerEmployeePage implements Initializable {
                             System.out.println("======================" + stringEmail);
                         }
 
-                    } else if (chosenRole == "Editor") {
+                    } else if (chosenRole.equals("Editor")) {
                         globalChecker = 2;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -708,7 +708,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Viewer") {
+                    } else if (chosenRole.equals("Viewer")) {
                         globalChecker = 3;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -717,7 +717,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "CloudSQL Admin") {
+                    } else if (chosenRole.equals("CloudSQL Admin")) {
                         globalChecker = 4;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -726,7 +726,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Firebase Rules System") {
+                    } else if (chosenRole.equals("Firebase Rules System")) {
                         globalChecker = 5;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -735,7 +735,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Compute Engine Service") {
+                    } else if (chosenRole.equals("Compute Engine Service")) {
                         globalChecker = 6;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -744,7 +744,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Logging Admin") {
+                    } else if (chosenRole.equals("Logging Admin")) {
                         globalChecker = 7;
                         stringArrayList = IAMExtract.stringEmailList;
                         getiam.takeinGlobalChecker(globalChecker);
@@ -753,7 +753,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Storage Admin") {
+                    } else if (chosenRole.equals("Storage Admin")) {
                         globalChecker = 8;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -762,7 +762,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole == "Monitoring Admin") {
+                    } else if (chosenRole.equals("Monitoring Admin")) {
                         globalChecker = 9;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();
@@ -1175,39 +1175,39 @@ public class ControllerEmployeePage implements Initializable {
                             CreateRole = "roles/owner";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Editor") {
+                        } else if (CreateRole.equals("Editor")) {
                             CreateRole = "roles/editor";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Viewer") {
+                        } else if (CreateRole.equals("Viewer")) {
                             CreateRole = "roles/viewer";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "CloudSQL Admin") {
+                        } else if (CreateRole.equals("CloudSQL Admin")) {
                             CreateRole = "roles/cloudsql.admin";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Firebase Rules System") {
+                        } else if (CreateRole.equals("Firebase Rules System")) {
                             CreateRole = "roles/firebaserules.system";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Compute Engine Service") {
+                        } else if (CreateRole.equals("Compute Engine Service")) {
                             CreateRole = "roles/compute.serviceAgent";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Logging Admin") {
+                        } else if (CreateRole.equals("Logging Admin")) {
                             CreateRole = "roles/logging.admin";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Storage Admin") {
+                        } else if (CreateRole.equals("Storage Admin")) {
                             CreateRole = "roles/storage.admin";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "Monitoring Admin") {
+                        } else if (CreateRole.equals("Monitoring Admin")) {
                             CreateRole = "roles/monitoring.admin";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
-                        } else if (CreateRole == "API Keys Admin") {
+                        } else if (CreateRole.equals("API Keys Admin")) {
                             CreateRole = "roles/serviceusage.apiKeysAdmin";
                             System.out.println("CHOOSE " + CreateRole);
                             permissions.addPermissions(CreateUser, CreateRole);
@@ -1336,35 +1336,35 @@ public class ControllerEmployeePage implements Initializable {
                             CreateAdminRole = "roles/owner";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateAdminRole == "Editor") {
+                        } else if (CreateAdminRole.equals("Editor")) {
                             CreateAdminRole = "roles/editor";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "CloudSQL Admin") {
+                        } else if (CreateRole.equals("CloudSQL Admin")) {
                             CreateRole = "roles/cloudsql.admin";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "Firebase Rules System") {
+                        } else if (CreateRole.equals("Firebase Rules System")) {
                             CreateRole = "roles/firebaserules.system";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "Compute Engine Service") {
+                        } else if (CreateRole.equals("Compute Engine Service")) {
                             CreateRole = "roles/compute.serviceAgent";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "Logging Admin") {
+                        } else if (CreateRole.equals("Logging Admin")) {
                             CreateRole = "roles/logging.admin";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "Storage Admin") {
+                        } else if (CreateRole.equals("Storage Admin")) {
                             CreateRole = "roles/storage.admin";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "Monitoring Admin") {
+                        } else if (CreateRole.equals("Monitoring Admin")) {
                             CreateRole = "roles/monitoring.admin";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);
-                        } else if (CreateRole == "API Keys Admin") {
+                        } else if (CreateRole.equals("API Keys Admin")) {
                             CreateRole = "roles/serviceusage.apiKeysAdmin";
                             System.out.println("CHOOSE " + CreateAdminRole);
                             permissions.addPermissions(CreateAdmin, CreateAdminRole);

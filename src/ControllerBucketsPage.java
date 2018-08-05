@@ -546,7 +546,7 @@ public class ControllerBucketsPage implements Initializable {
                 }
 
                 String successfulMessage2 = null;
-                if (bucketROLE == "Reader") {
+                if (bucketROLE.equals("Reader")) {
                     finalBucketRole = "roles/storage.legacyBucketReader";
                     System.out.println("Final Bucket Role: " + finalBucketRole);
                     String member = "user:" + inputMEMBER;
@@ -554,7 +554,7 @@ public class ControllerBucketsPage implements Initializable {
                     System.out.println("BUCKET NAME IS THIS " + finalBucketName);
                     bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
                     successfulMessage2 = "This member, " + inputMEMBER + " was added successfully with the role of, " + bucketROLE + ".";
-                } else if (bucketROLE == "Writer") {
+                } else if (bucketROLE.equals("Writer")) {
                     finalBucketRole = "roles/storage.legacyBucketWriter";
                     System.out.println("Final Bucket Role: " + finalBucketRole);
                     String member = "user:" + inputMEMBER;
@@ -562,7 +562,7 @@ public class ControllerBucketsPage implements Initializable {
                     System.out.println("BUCKET NAME IS THIS " + finalBucketName);
                     bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
                     successfulMessage2 = "This member, " + inputMEMBER + " was added successfully with the role of, " + bucketROLE + ".";
-                } else if (bucketROLE == "Owner") {
+                } else if (bucketROLE.equals("Owner")) {
                     finalBucketRole = "roles/storage.legacyBucketOwner";
                     System.out.println("Final Bucket Role: " + finalBucketRole);
                     String member = "user:" + inputMEMBER;
@@ -703,15 +703,15 @@ public class ControllerBucketsPage implements Initializable {
 
                         String finalBucketRole = null;
 
-                        if (bucketROLE == "Reader") {
+                        if (bucketROLE.equals("Reader")) {
                             finalBucketRole = "roles/storage.legacyBucketReader";
                             bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
-                        } else if (bucketROLE == "Writer") {
+                        } else if (bucketROLE.equals("Writer")) {
                             finalBucketRole = "roles/storage.legacyBucketWriter";
                             bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
-                        } else if (bucketROLE == "Owner") {
+                        } else if (bucketROLE.equals("Owner")) {
                             finalBucketRole = "roles/storage.legacyBucketOwner";
                             bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
@@ -731,11 +731,11 @@ public class ControllerBucketsPage implements Initializable {
 
                         String finalBucketRole = null;
 
-                        if (bucketROLE == "Reader") {
+                        if (bucketROLE.equals("Reader")) {
                             finalBucketRole = "roles/storage.legacyBucketReader";
-                        } else if (bucketROLE == "Writer") {
+                        } else if (bucketROLE.equals("Writer")) {
                             finalBucketRole = "roles/storage.legacyBucketWriter";
-                        } else if (bucketROLE == "Owner") {
+                        } else if (bucketROLE.equals("Owner")) {
                             finalBucketRole = "roles/storage.legacyBucketOwner";
                         }
 
