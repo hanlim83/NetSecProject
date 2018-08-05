@@ -127,7 +127,6 @@ public class ControllerBucketsPage implements Initializable {
                     }));
 
 
-
                     Platform.runLater(() -> {
                         objectList = FXCollections.observableList(objectArrayList);
                         bucketsTable1.setItems(objectList);
@@ -149,10 +148,9 @@ public class ControllerBucketsPage implements Initializable {
             String whatismyIP = IPAddressPolicy.getIp();
             ipAddr.setText(whatismyIP);
             Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
-            if(validityIP==true){
+            if (validityIP == true) {
                 ipAddr.setTextFill(Color.rgb(1, 0, 199));
-            }
-            else{
+            } else {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
@@ -331,7 +329,7 @@ public class ControllerBucketsPage implements Initializable {
         VBox vbox = new VBox();
 
         GridPane grid = new GridPane();
-        grid.setPrefSize(650,330);
+        grid.setPrefSize(650, 330);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(10, 100, 10, 0));
@@ -345,7 +343,7 @@ public class ControllerBucketsPage implements Initializable {
 
         String BucketName = bucketsTable1.getSelectionModel().getSelectedItem().getBucketName();
         Label LABEL0 = new Label();
-        String BUCKETname = BucketName.substring(12,BucketName.length()-1);
+        String BUCKETname = BucketName.substring(12, BucketName.length() - 1);
         LABEL0.setText(String.valueOf(BUCKETname));
 
         String string1 = "Bucket Name :";
@@ -357,20 +355,19 @@ public class ControllerBucketsPage implements Initializable {
         grid.add(LABEL0, 1, 0);
 
 
-
         // roles/storage.legacyBucketOwner , roles/storage.legacyBucketReader , roles/storage.legacyBucketWriter
         String bucketinfo = String.valueOf(bucketiam.listBucketIamMembers(BUCKETname));
         System.out.println(bucketinfo);
 
         ArrayList<String> bucketRoleList = bucketiam.getBucketRoleList();
         System.out.println("Things inside bucketRoleList " + bucketRoleList.size());
-        for(int omg1=0;omg1<bucketRoleList.size();omg1++){
+        for (int omg1 = 0; omg1 < bucketRoleList.size(); omg1++) {
             System.out.println(bucketRoleList.get(omg1));
         }
 
-        ArrayList<String>bucketMember = bucketiam.getBucketMember();
+        ArrayList<String> bucketMember = bucketiam.getBucketMember();
         System.out.println("Things inside bucketMember " + bucketMember.size());
-        for(int omg=0;omg<bucketMember.size();omg++){
+        for (int omg = 0; omg < bucketMember.size(); omg++) {
             System.out.println(bucketMember.get(omg));
         }
 
@@ -386,25 +383,23 @@ public class ControllerBucketsPage implements Initializable {
         thirdTiltedPane.setText("Bucket Reader");
         VBox content3 = new VBox();
 
-        for(int p=0;p<bucketRoleList.size();p++){
+        for (int p = 0; p < bucketRoleList.size(); p++) {
             String whatistherole = bucketRoleList.get(p);
             System.out.println(whatistherole);
 
-            if (whatistherole.equals("roles/storage.legacyBucketOwner")){
+            if (whatistherole.equals("roles/storage.legacyBucketOwner")) {
                 String ownerMember = bucketMember.get(0);
                 System.out.println(ownerMember);
                 content1.getChildren().add(new Label(ownerMember));
 //                content1.getChildren().add(new Label("INPUT 2"));
 //                content1.getChildren().add(new Label("INPUT 3"));
-            }
-            else if(whatistherole.equals("roles/storage.legacyBucketWriter")){
+            } else if (whatistherole.equals("roles/storage.legacyBucketWriter")) {
                 String writerMember = bucketMember.get(2);
                 System.out.println(writerMember);
                 content2.getChildren().add(new Label(writerMember));
 //                content2.getChildren().add(new Label("INPUT 1"));
 //                content2.getChildren().add(new Label("INPUT 2"));
-            }
-            else if(whatistherole.equals("roles/storage.legacyBucketReader")){
+            } else if (whatistherole.equals("roles/storage.legacyBucketReader")) {
                 String readerMember = bucketMember.get(1);
                 System.out.println(readerMember);
                 content3.getChildren().add(new Label(readerMember));
@@ -417,12 +412,12 @@ public class ControllerBucketsPage implements Initializable {
         secondTitledPane.setContent(content2);
         thirdTiltedPane.setContent(content3);
 
-        Accordion root= new Accordion();
-        System.out.println("EXPANDED PROPERTY "+root.getExpandedPane());
-        root.getPanes().addAll(firstTitledPane, secondTitledPane,thirdTiltedPane);
+        Accordion root = new Accordion();
+        System.out.println("EXPANDED PROPERTY " + root.getExpandedPane());
+        root.getPanes().addAll(firstTitledPane, secondTitledPane, thirdTiltedPane);
         root.setPadding(new Insets(0, 0, 70, 0));
 
-        vbox.getChildren().addAll(new Label(title),grid);
+        vbox.getChildren().addAll(new Label(title), grid);
 
         VBox vbox1 = new VBox();
 
@@ -458,7 +453,7 @@ public class ControllerBucketsPage implements Initializable {
 
         String message = "\nPlease input the follow required data to edit buckets." + "\n" + "Changes made to buckets must be approved by the owner and other respective administrators in charge.";
 
-        String title = "Edit Bucket Permission"+ "\n" + message;
+        String title = "Edit Bucket Permission" + "\n" + message;
 
         JFXButton no = new JFXButton(buttonContent);
         no.setButtonType(JFXButton.ButtonType.RAISED);
@@ -503,7 +498,7 @@ public class ControllerBucketsPage implements Initializable {
         checkbox1.setWrapText(true);
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(grid,checkbox1);
+        vbox.getChildren().addAll(grid, checkbox1);
 
         layout.setBody(vbox);
 
@@ -524,58 +519,65 @@ public class ControllerBucketsPage implements Initializable {
 
             inputMEMBER = inputMember.getText();
             String bucketNAME = bucketsTable1.getSelectionModel().getSelectedItem().getBucketName();
-            String finalBucketName = bucketNAME.substring(12,bucketNAME.length()-1);
+            String finalBucketName = bucketNAME.substring(12, bucketNAME.length() - 1);
 
             String bucketROLE = bucketroles.getSelectionModel().getSelectedItem();
             String finalBucketRole = null;
 
             String successfulMessage1 = null;
-            if(checkbox1.isSelected()){
-                bucketiam.removeBucketIamMember(finalBucketName, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
-                successfulMessage1 = "All generic viewers of project has been revoked of access to this bucket, " + finalBucketName +".";
+
+            if (ipChecker == false) {
+                System.out.println("NOT WITHIN COMPANY PREMISES!");
+                //Display not within ip range error message
+                errorMessage = "You are not within the company's premises to perform this function.";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            } else {
+                if (checkbox1.isSelected()) {
+                    bucketiam.removeBucketIamMember(finalBucketName, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
+                    successfulMessage1 = "All generic viewers of project has been revoked of access to this bucket, " + finalBucketName + ".";
+                }
+
+                String successfulMessage2 = null;
+                if (bucketROLE == "Reader") {
+                    finalBucketRole = "roles/storage.legacyBucketReader";
+                    System.out.println("Final Bucket Role: " + finalBucketRole);
+                    String member = "user:" + inputMEMBER;
+                    System.out.println("Member is " + member);
+                    System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                    bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                    successfulMessage2 = "This member, " + inputMEMBER + " was added successfully with the role of, " + bucketROLE + ".";
+                } else if (bucketROLE == "Writer") {
+                    finalBucketRole = "roles/storage.legacyBucketWriter";
+                    System.out.println("Final Bucket Role: " + finalBucketRole);
+                    String member = "user:" + inputMEMBER;
+                    System.out.println("Member is " + member);
+                    System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                    bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                    successfulMessage2 = "This member, " + inputMEMBER + " was added successfully with the role of, " + bucketROLE + ".";
+                } else if (bucketROLE == "Owner") {
+                    finalBucketRole = "roles/storage.legacyBucketOwner";
+                    System.out.println("Final Bucket Role: " + finalBucketRole);
+                    String member = "user:" + inputMEMBER;
+                    System.out.println("Member is " + member);
+                    System.out.println("BUCKET NAME IS THIS " + finalBucketName);
+                    bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
+                    successfulMessage2 = "This member, " + inputMEMBER + " was added successfully with the role of, " + bucketROLE + ".";
+                }
+
+
+                if (successfulMessage2 != null && successfulMessage1 != null) {
+                    successfulMessage = successfulMessage1 + "\n" + successfulMessage2;
+                } else if (successfulMessage1 != null) {
+                    successfulMessage = successfulMessage1;
+                } else {
+                    successfulMessage = successfulMessage2;
+                }
+
+                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
             }
-
-            String successfulMessage2 = null;
-            if (bucketROLE == "Reader") {
-                finalBucketRole = "roles/storage.legacyBucketReader";
-                System.out.println("Final Bucket Role: " + finalBucketRole);
-                String member="user:"+inputMEMBER;
-                System.out.println("Member is " + member);
-                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
-                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
-                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
-            } else if (bucketROLE == "Writer") {
-                finalBucketRole = "roles/storage.legacyBucketWriter";
-                System.out.println("Final Bucket Role: " + finalBucketRole);
-                String member="user:"+inputMEMBER;
-                System.out.println("Member is " + member);
-                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
-                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
-                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
-            } else if (bucketROLE == "Owner") {
-                finalBucketRole = "roles/storage.legacyBucketOwner";
-                System.out.println("Final Bucket Role: " + finalBucketRole);
-                String member="user:"+inputMEMBER;
-                System.out.println("Member is " + member);
-                System.out.println("BUCKET NAME IS THIS " + finalBucketName);
-                bucketiam.addBucketIamMember(finalBucketName, finalBucketRole, member);
-                successfulMessage2 = "This member, " +inputMEMBER+ " was added successfully with the role of, " +bucketROLE+ ".";
-            }
-
-
-            if(successfulMessage2!=null && successfulMessage1!=null){
-                successfulMessage = successfulMessage1 + "\n" + successfulMessage2;
-            }
-            else if( successfulMessage1!=null){
-                successfulMessage=successfulMessage1;
-            }else{
-                successfulMessage=successfulMessage2;
-            }
-
-            successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
-
             alert.hideWithAnimation();
         });
+
         no.setOnAction(__addEvent -> {
             checker2 = 0;
             System.out.println("NO IS PRESSED, CHECKER2 is " + checker2);
@@ -638,17 +640,17 @@ public class ControllerBucketsPage implements Initializable {
         inputMember.setPrefWidth(250);
         inputMember.setPromptText("Type Member Here");
 
-        grid.add(addMembers,0,1);
-        grid.add(inputMember,1,1);
+        grid.add(addMembers, 0, 1);
+        grid.add(inputMember, 1, 1);
 
         String chooserole = "Choose Role: ";
         JFXComboBox<String> bucketroles = new JFXComboBox<>();
-        bucketroles.getItems().addAll("Reader","Writer","Owner");
+        bucketroles.getItems().addAll("Reader", "Writer", "Owner");
         grid.add(new Label(chooserole), 0, 2);
         grid.add(bucketroles, 1, 2);
 
         VBox vbox1 = new VBox();
-        vbox1.getChildren().addAll(checkbox1,grid);
+        vbox1.getChildren().addAll(checkbox1, grid);
 
         layout.setBody(vbox1);
 
@@ -671,84 +673,91 @@ public class ControllerBucketsPage implements Initializable {
 
             System.out.println("Bucket name is : " + inputBUCKETNAME);
 
-            //Checking for eligibilty - NOT ACCEPTED
-            try {
-                //if checkbox is selected, create bucket normally/usually as all viewers allowed to view
-                if (checkbox1.isSelected()) {
-                    storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+            if (ipChecker == false) {
+                System.out.println("NOT WITHIN COMPANY PREMISES!");
+                //Display not within ip range error message
+                errorMessage = "You are not within the company's premises to perform this function.";
+                errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
+            } else {
+                //Checking for eligibilty - NOT ACCEPTED
+                try {
+                    //if checkbox is selected, create bucket normally/usually as all viewers allowed to view
+                    if (checkbox1.isSelected()) {
+                        storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
 
-                    String finalBucketRole = null;
+                        String finalBucketRole = null;
 
-                    if (bucketROLE == "Reader") {
-                        finalBucketRole = "roles/storage.legacyBucketReader";
-                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+                        if (bucketROLE == "Reader") {
+                            finalBucketRole = "roles/storage.legacyBucketReader";
+                            bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
-                    } else if (bucketROLE == "Writer") {
-                        finalBucketRole = "roles/storage.legacyBucketWriter";
-                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+                        } else if (bucketROLE == "Writer") {
+                            finalBucketRole = "roles/storage.legacyBucketWriter";
+                            bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
-                    } else if (bucketROLE == "Owner") {
-                        finalBucketRole = "roles/storage.legacyBucketOwner";
-                        bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
+                        } else if (bucketROLE == "Owner") {
+                            finalBucketRole = "roles/storage.legacyBucketOwner";
+                            bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
 
+                        }
+
+                        objectArrayList = storagesnippets.getCloudbucketsList();
+                        objectList = FXCollections.observableList(objectArrayList);
+                        bucketsTable1.setItems(objectList);
+
+                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
+                        snackbar.show("Updating The Database", 3000);
+                    } else {
+                        storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
+                        //Remove all viewers from the bucket
+                        bucketiam.removeBucketIamMember(inputBUCKETNAME, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
+
+                        String finalBucketRole = null;
+
+                        if (bucketROLE == "Reader") {
+                            finalBucketRole = "roles/storage.legacyBucketReader";
+                        } else if (bucketROLE == "Writer") {
+                            finalBucketRole = "roles/storage.legacyBucketWriter";
+                        } else if (bucketROLE == "Owner") {
+                            finalBucketRole = "roles/storage.legacyBucketOwner";
+                        }
+
+                        bucketiam.addBucketIamMember(inputBUCKETNAME, finalBucketRole, "user:" + inputMEMBER);
+
+
+                        objectArrayList = storagesnippets.getCloudbucketsList();
+                        objectList = FXCollections.observableList(objectArrayList);
+                        bucketsTable1.setItems(objectList);
+
+                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
+                        snackbar.show("Updating The Database", 3000);
                     }
-
-                    objectArrayList = storagesnippets.getCloudbucketsList();
-                    objectList = FXCollections.observableList(objectArrayList);
-                    bucketsTable1.setItems(objectList);
-
-                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                    snackbar.getStylesheets().add("Style.css");
-                    snackbar.show("Updating The Database", 3000);
-                } else {
-                    storagesnippets.createBucketWithStorageClassAndLocation(inputBUCKETNAME);
-                    //Remove all viewers from the bucket
-                    bucketiam.removeBucketIamMember(inputBUCKETNAME, "roles/storage.legacyBucketReader", "projectViewer:netsecpj");
-
-                    String finalBucketRole = null;
-
-                    if (bucketROLE == "Reader") {
-                        finalBucketRole = "roles/storage.legacyBucketReader";
-                    } else if (bucketROLE == "Writer") {
-                        finalBucketRole = "roles/storage.legacyBucketWriter";
-                    } else if (bucketROLE == "Owner") {
-                        finalBucketRole = "roles/storage.legacyBucketOwner";
+                } catch (com.google.cloud.storage.StorageException e) {
+                    errorMessage = "-";
+                    checkEligible(inputBUCKETNAME);
+                    if (errorMessage.equals("-")) {
+                        errorMessage = "Error with creating this bucket. Please try again.";
+                        System.out.println(errorMessage);
+                        errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
                     }
-
-                    bucketiam.addBucketIamMember(inputBUCKETNAME,finalBucketRole,"user:"+inputMEMBER);
-
-
-                    objectArrayList = storagesnippets.getCloudbucketsList();
-                    objectList = FXCollections.observableList(objectArrayList);
-                    bucketsTable1.setItems(objectList);
-
-                    JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                    snackbar.getStylesheets().add("Style.css");
-                    snackbar.show("Updating The Database", 3000);
-                }
-            } catch (com.google.cloud.storage.StorageException e) {
-                errorMessage = "-";
-                checkEligible(inputBUCKETNAME);
-                if (errorMessage.equals("-")) {
-                    errorMessage = "Error with creating this bucket. Please try again.";
-                    System.out.println(errorMessage);
-                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-                }
 //                else {
 //                    System.out.println(errorMessage);
 //                    errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
 //                }
-            }
+                }
 
-            if (errorMessage.equals("")) {
-                objectArrayList = storagesnippets.getCloudbucketsList();
-                successfulMessage = "Successful Creation - Bucket has been created";
-                successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
+                if (errorMessage.equals("")) {
+                    objectArrayList = storagesnippets.getCloudbucketsList();
+                    successfulMessage = "Successful Creation - Bucket has been created";
+                    successfulMessage(anchorPane.getScene(), successfulMessage, "Close");
 
-                objectList = FXCollections.observableList(objectArrayList);
-                bucketsTable1.setItems(objectList);
+                    objectList = FXCollections.observableList(objectArrayList);
+                    bucketsTable1.setItems(objectList);
 
-                alert.hideWithAnimation();
+                    alert.hideWithAnimation();
+                }
             }
 
         });
@@ -764,7 +773,7 @@ public class ControllerBucketsPage implements Initializable {
     private void doubleConfirmation(Scene scene, String doubleconfirm, String buttonContent, String buttonContent2) {
         checker2 = -1;
         try {
-            myIPAddress=IPAddressPolicy.getIp();
+            myIPAddress = IPAddressPolicy.getIp();
             System.out.println(myIPAddress);
         } catch (Exception e) {
             e.printStackTrace();
@@ -804,14 +813,13 @@ public class ControllerBucketsPage implements Initializable {
             System.out.println("YES IS PRESSED, CHECKER2 is " + checker2);
             CHECKING = checker2;
 
-            ipChecker=IPAddressPolicy.isValidRange(myIPAddress);
-            System.out.println("IS IT WITHIN IP RANGE? = "+ipChecker);
-            if(ipChecker==false) {
+            ipChecker = IPAddressPolicy.isValidRange(myIPAddress);
+            System.out.println("IS IT WITHIN IP RANGE? = " + ipChecker);
+            if (ipChecker == false) {
                 //Display not within ip range error message
                 errorMessage = "You are not within the company's premises to perform this function.";
                 errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
-            }
-            else {
+            } else {
                 bucketsTable1.getItems().remove(cldB2);
                 String allBucketNames = "";
                 System.out.println("DELETING THIS BUCKET: " + cldB2.getBucketName());
