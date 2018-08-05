@@ -11,11 +11,8 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -51,7 +48,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -676,107 +672,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     private boolean checkPassword;
     private String tempPassword;
 
-    //TODO DELETE THIS AFTER sufficient testing
-    //TODO UPDATE DEPRECATE THIS SOON
-//    private void checkUserPassword() {
-//        myScene = anchorPane.getScene();
-//        Stage stage = (Stage) (myScene).getWindow();
-//
-//        String title = "Enter your password to enter the restricted area";
-//
-//        JFXPasswordField jfxPasswordField = new JFXPasswordField();
-//        jfxPasswordField.setPromptText("Enter password");
-//
-//        JFXButton jfxOKButton = new JFXButton("Ok");
-//
-//        jfxOKButton.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//        jfxOKButton.setStyle("-fx-background-color: #00bfff;");
-//
-//        JFXAlert<Void> alert = new JFXAlert<>(stage);
-//        if (password == null) {
-//            JFXDialogLayout layout = new JFXDialogLayout();
-//            layout.setHeading(new Label(title));
-//            layout.setBody(jfxPasswordField);
-//            layout.setActions(jfxOKButton);
-//            alert.setOverlayClose(true);
-//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//            alert.setContent(layout);
-//            alert.initModality(Modality.NONE);
-//            jfxOKButton.setOnAction(__ -> {
-//                //check
-//                tempPassword = jfxPasswordField.getText();
-//                jfxOKButton.setDisable(true);
-//                jfxPasswordField.setDisable(true);
-//                uploadProcess.start();
-//            });
-//            alert.show();
-//        } else {
-////            password = jfxPasswordField.getText();
-//            alert.hideWithAnimation();
-//            calculateEmail();
-//            //        UploadFileTest();
-//            FileChooser fileChooser = new FileChooser();
-//            fileChooser.setTitle("Choose File to Upload");
-//            Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-//            File file = fileChooser.showOpenDialog(stage1);
-//            if (file != null) {
-//                try {
-//                    if (checkNameTaken(file.getName()) == true) {
-//                        System.out.println("Change NAME!!!! Add showing alert");
-//                    } else {
-//                        encryptFileNew(file);
-//                        //may need to move update Table somewhere else instead
-//                        updateTable();
-//                    }
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        }
-//        uploadProcess.setOnSucceeded(e -> {
-//            uploadProcess.reset();
-//            //if dosen't match redo process
-//            if (checkPassword == false) {
-//                jfxPasswordField.setDisable(false);
-//                jfxOKButton.setDisable(false);
-//                System.out.println("Wrong password");
-//            } else {
-//                //if matches continue to encrypt also need to store the password somewhere
-//                password = jfxPasswordField.getText();
-//                alert.hideWithAnimation();
-//                calculateEmail();
-//                //        UploadFileTest();
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Choose File to Upload");
-//                //FEATURE: stage now loads as 1 page instead of 2
-//                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-//                File file = fileChooser.showOpenDialog(stage1);
-//                if (file != null) {
-//                    try {
-//                        if (checkNameTaken(file.getName()) == true) {
-//                            System.out.println("Change NAME!!!! Add showing alert");
-//                        } else {
-//                            encryptFileNew(file);
-//                            //may need to move update Table somewhere else instead
-//                            updateTable();
-//                        }
-//                    } catch (Exception e1) {
-//                        e1.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//        uploadProcess.setOnCancelled(e -> {
-//            uploadProcess.reset();
-//        });
-//        uploadProcess.setOnFailed(e -> {
-//            uploadProcess.reset();
-//            jfxOKButton.setDisable(false);
-//        });
-//    }
-
-    private ArrayList<String> arrayFolder=new ArrayList<String>();
+    private ArrayList<String> arrayFolder = new ArrayList<String>();
 
     //Update to use this instead
     private void updateObservableList() throws Exception {
@@ -798,17 +694,16 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            BlobList.add(new MyBlob(blob));
             //if it is folder only add in once check here
 
-            if (blob.getName().contains("/")){
+            if (blob.getName().contains("/")) {
                 Scanner s = new Scanner(blob.getName()).useDelimiter("/");
-                String folderName=s.next();
+                String folderName = s.next();
 //                String filename=s.next();
                 if (checkFolderName(folderName) == false) {
                     arrayFolder.add(folderName);
-                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()),folderName,"General","Folder"));
+                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()), folderName, "General", "Folder"));
                 }
-            }
-            else {
-                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"", "General","File"));
+            } else {
+                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()), "", "General", "File"));
             }
         }
 
@@ -824,15 +719,14 @@ public class ControllerSecureCloudStorage implements Initializable {
         typeColumn.setPrefWidth(156);
     }
 
-    private boolean checkFolderName(String folderName){
+    private boolean checkFolderName(String folderName) {
         boolean check = false;
-        for (String s : arrayFolder){
-            if(folderName.equals(s)){
-             check=true;
-             break;
-            }
-            else{
-                check=false;
+        for (String s : arrayFolder) {
+            if (folderName.equals(s)) {
+                check = true;
+                break;
+            } else {
+                check = false;
             }
         }
         return check;
@@ -844,14 +738,8 @@ public class ControllerSecureCloudStorage implements Initializable {
     private JFXTreeTableColumn<TableBlob, String> folderColumn = new JFXTreeTableColumn<>("Folder");
     private JFXTreeTableColumn<TableBlob, String> typeColumn = new JFXTreeTableColumn<>("Type");
 
+    //for building table etc.
     private void TableMethod() {
-//        blobs = FXCollections.observableArrayList();
-//        Page<Blob> blobList = storage.list(privateBucketName);
-//        for (Blob blob : blobList.iterateAll()) {
-////            BlobList.add(new MyBlob(blob));
-//            blobs.add(new TableBlob(blob.getName(), convertTime(blob.getCreateTime())));
-//        }
-
         fileColumn.setPrefWidth(390);
         fileColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (fileColumn.validateValue(param)) {
@@ -894,10 +782,10 @@ public class ControllerSecureCloudStorage implements Initializable {
                                         int selectdIndex = getTreeTableRow().getIndex();
                                         System.out.println(selectdIndex);
                                         TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getModelItem(selectdIndex).getValue();
-                                        if (tableBlob.getType2().equals("Folder")){
+                                        if (tableBlob.getType2().equals("Folder")) {
                                             JFXTreeTableView.refresh();
                                             return;
-                                        }else{
+                                        } else {
                                             btn.setOnAction(event -> {
                                                 System.out.println(tableBlob.getBlobName());
                                                 blobName = tableBlob.getBlobName();
@@ -1064,9 +952,9 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            System.out.println(tableBlob.getBlobName());
 //            System.out.println(tableBlob.getDate());
                     System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().type);
-                    if(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType().equals("Folder")){
+                    if (JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType().equals("Folder")) {
                         System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName());
-                        String folderName=JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
+                        String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
                         //clear observable list and repopulate it with only that particular folder info
 //                blobs.clear();
 
@@ -1088,7 +976,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                         Page<Blob> blobList = storage.list(privateBucketName);
                         blobs.clear();
                         for (Blob blob : blobList.iterateAll()) {
-                            if(blob.getName().startsWith(folderName)) {
+                            if (blob.getName().startsWith(folderName)) {
 //                                if (blob.getName().contains("/")){
 //                                    Scanner s = new Scanner(blob.getName()).useDelimiter("/");
 //                                    String folderName=s.next();
@@ -1099,11 +987,11 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                    }
 //                                }
                                 Scanner s = new Scanner(blob.getName()).useDelimiter("/");
-                                String folderName1=s.next();
+                                String folderName1 = s.next();
 //                                String fileName = null;
-                                if (s.hasNext()){
-                                    String fileName=s.next();
-                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()),folderName,"File","File"));
+                                if (s.hasNext()) {
+                                    String fileName = s.next();
+                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "File"));
                                 }
                             }
                         }
@@ -1115,14 +1003,9 @@ public class ControllerSecureCloudStorage implements Initializable {
                         JFXTreeTableView.getColumns();
                         fileColumn.setPrefWidth(544);
                         backButton.setVisible(true);
-                        FilePathLabel.setText("/"+folderName);
+                        FilePathLabel.setText("/" + folderName);
                     }
                 }
-//                try {
-////                    onEdit();
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                }
             }
         });
     }
@@ -1144,7 +1027,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         double minHeight = 100;
         this.minX = minX;
         this.maxY = maxY;
-        this.direction=direction;
+        this.direction = direction;
         if (vBoxCounter == 0) {
             if (direction == false) {
                 vBox.setLayoutX(minX);
@@ -1152,7 +1035,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 vBox.setMinSize(minWidth, minHeight);
                 Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
                 vBox.setBackground(unfocusBackground);
-            } else{
+            } else {
                 vBox.setLayoutX(minX);
                 vBox.setLayoutY(maxY);
                 vBox.setMinSize(minWidth, minHeight);
@@ -1256,7 +1139,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 Background unfocusBackground = new Background(new BackgroundFill(Color.web("#F4F4F4"), CornerRadii.EMPTY, Insets.EMPTY));
                 vBox.setBackground(unfocusBackground);
                 vBox.setVisible(true);
-            } else{
+            } else {
                 vBox.setLayoutX(minX);
                 vBox.setLayoutY(maxY);
                 vBox.setMinSize(minWidth, minHeight);
@@ -1291,7 +1174,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             JFXDialogLayout layout = new JFXDialogLayout();
             layout.setHeading(new Label(title));
             layout.setBody(jfxPasswordField);
-            layout.setActions(jfxOKButton,jfxcancelButton);
+            layout.setActions(jfxOKButton, jfxcancelButton);
             alert.setOverlayClose(false);
             alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
             alert.setContent(layout);
@@ -1341,7 +1224,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                         if (checkNameTaken(file.getName()) == true) {
                             System.out.println("Change NAME!!!! Add showing alert");
                             changeNameAlert("Please change your file name");
-                        } else if (CheckFileSafe(file.getAbsolutePath())==false){
+                        } else if (CheckFileSafe(file.getAbsolutePath()) == false) {
                             changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
                             //if false means virus so show alert
                         } else {
@@ -1419,10 +1302,10 @@ public class ControllerSecureCloudStorage implements Initializable {
                             if (checkNameTaken(file.getName()) == true) {
                                 System.out.println("Change NAME!!!! Add showing alert");
                                 changeNameAlert("Please change your file name");
-                            } else if (CheckFileSafe(file.getAbsolutePath())==false){
+                            } else if (CheckFileSafe(file.getAbsolutePath()) == false) {
                                 changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
                                 //if false means virus so show alert
-                            }  else {
+                            } else {
                                 encryptFileNew(file);
                                 updateTable();
                             }
@@ -1483,13 +1366,13 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
-    private boolean CheckFileSafe(String filepath){
+    private boolean CheckFileSafe(String filepath) {
         FileScanner fileScanner = new FileScanner();
         fileScanner.Scanner(filepath);
         return fileScanner.scannerReport();
     }
 
-    private void changeNameAlert(String message){
+    private void changeNameAlert(String message) {
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
 
@@ -1528,7 +1411,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                     myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
                     System.out.println("Close VBox");
                 }
-            } else{
+            } else {
                 if (mouseEvent.getX() >= minX && mouseEvent.getX() <= minX + 100 && mouseEvent.getY() >= maxY && mouseEvent.getY() <= maxY + 100) {
                     System.out.println("Inside the vbox");
                 } else {
@@ -1611,11 +1494,11 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                this.type = new SimpleStringProperty("File");
 //                this.folderName = new SimpleStringProperty("");
 //            }
-            if (type2.equals("Folder")){
+            if (type2.equals("Folder")) {
                 this.type2 = new SimpleStringProperty("Folder");
-                this.type =  new SimpleStringProperty("Folder");
+                this.type = new SimpleStringProperty("Folder");
                 this.folderName = new SimpleStringProperty(folderName);
-            }else{
+            } else {
                 this.type2 = new SimpleStringProperty("File");
                 this.type = new SimpleStringProperty("File");
                 this.folderName = new SimpleStringProperty("");

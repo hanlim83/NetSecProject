@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSignUpPage">
     <children>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #29ddf4;">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #03A9F4;">
             <children>
                 <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
                 <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
@@ -71,8 +71,14 @@
             </Label>
          </children>
       </GridPane>
-      <JFXButton fx:id="ConfirmButton" layoutX="288.0" layoutY="481.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" text="Confirm" />
-      <JFXButton fx:id="CancelButton" layoutX="571.0" layoutY="481.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" text="Cancel" />
+      <JFXButton fx:id="ConfirmButton" buttonType="RAISED" layoutX="571.0" layoutY="481.0" onAction="#onClickConfirmButton" prefHeight="89.0" prefWidth="232.0" style="-fx-background-color: #00ffff;" text="Confirm">
+         <font>
+            <Font size="23.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="CancelButton" buttonType="RAISED" layoutX="288.0" layoutY="481.0" onAction="#onClickCancelButton" prefHeight="89.0" prefWidth="232.0" style="-fx-background-color: #00ffff;" text="Cancel">
+         <font>
+            <Font size="23.0" />
+         </font></JFXButton>
       <VBox layoutX="723.0" layoutY="263.0" prefHeight="157.0" prefWidth="256.0">
          <children>
             <Label prefHeight="49.0" prefWidth="256.0" text="Password requirements:">
