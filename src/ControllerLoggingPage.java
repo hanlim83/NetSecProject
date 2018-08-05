@@ -1,9 +1,6 @@
-import Model.CloudBuckets;
 import Model.IPAddressPolicy;
 import Model.LoggingSnippets;
 import Model.LogsExtract;
-import com.google.api.gax.paging.Page;
-import com.google.cloud.logging.LogEntry;
 import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
@@ -13,54 +10,48 @@ import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
-import sun.rmi.runtime.Log;
 
 //HI XD
 public class ControllerLoggingPage implements Initializable {
@@ -158,21 +149,38 @@ public class ControllerLoggingPage implements Initializable {
     private ArrayList<Integer> globalCheckerList2 = new ArrayList<Integer>();
 
 
-    @FXML
-    void onClickHomeButton(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("AdminHome.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
+    //Service method
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() {
+                    try (Logging logging = options.getService()) {
+                        System.out.println(options.getProjectId());
+                        loggingsnippets.listLogEntries(filters);
 
-        ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
-        //controller.passData(admin);
+                    } catch (com.google.cloud.logging.LoggingException e1) {
+                        e1.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
-    }
+
+                    Platform.runLater(() -> {
+                        logsObservableList = FXCollections.observableList(logsList);
+                        TableMethod();
+                        searchFunction.setVisible(true);
+
+                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                        snackbar.getStylesheets().add("Style.css");
+                        snackbar.show("Updating The Logs", 3000);
+                    });
+                    return null;
+                }
+            };
+        }
+    };
 
     private void TableMethod() {
         JFXTreeTableColumn<LogsExtract, String> timestampCol = new JFXTreeTableColumn<>("Timestamp");
@@ -621,6 +629,21 @@ public class ControllerLoggingPage implements Initializable {
         });
     }
 
+    @FXML
+    void onClickHomeButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AdminHome.fxml"));
+        myScene = ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerAdminHome controller = loader.getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+    }
 
     @FXML
     void handleonetwo(MouseEvent event) {
@@ -656,7 +679,7 @@ public class ControllerLoggingPage implements Initializable {
         }
         process.setOnSucceeded(e -> {
             appearLine.setVisible(true);
-            searchPic.setVisible(true);h
+            searchPic.setVisible(true);
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
@@ -685,39 +708,6 @@ public class ControllerLoggingPage implements Initializable {
             process.reset();
         });
     }
-
-    //Service method
-    Service process = new Service() {
-        @Override
-        protected Task createTask() {
-            return new Task() {
-                @Override
-                protected Void call() throws Exception {
-                    try (Logging logging = options.getService()) {
-                        System.out.println(options.getProjectId());
-                        loggingsnippets.listLogEntries(filters);
-
-                    } catch (com.google.cloud.logging.LoggingException e1) {
-                        e1.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-                    Platform.runLater(() -> {
-                        logsObservableList = FXCollections.observableList(logsList);
-                        TableMethod();
-                        searchFunction.setVisible(true);
-
-                        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-                        snackbar.getStylesheets().add("Style.css");
-                        snackbar.show("Updating The Logs", 3000);
-                    });
-                    return null;
-                }
-            };
-        }
-    };
 
     private void errorMessagePopOut(Scene scene, String errorMessage, String buttonContent) {
         myScene = scene;
