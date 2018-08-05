@@ -105,21 +105,53 @@ public class ControllerLoginPage implements Initializable{
                     stage.setTitle("NSPJ");
                     stage.show();
                 } else if (AccStatus.equals("Active")) {
-                    //Go to SMS OTP page
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-                    Parent nextView = null;
-                    try {
-                        nextView = loader.load();
-                        ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
-                        controller.sendNew(phoneNo);
-                    } catch (IOException u) {
-                        u.printStackTrace();
+                    if (phoneNo!=null){
+                        //Go to SMS OTP page
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+                        Parent nextView = null;
+                        try {
+                            nextView = loader.load();
+                            ControllerVerifyText controller = loader.<ControllerVerifyText>getController();
+                            controller.sendNew(phoneNo);
+                        } catch (IOException u) {
+                            u.printStackTrace();
+                        }
+                        stage.setScene(new Scene(nextView));
+                        stage.setTitle("NSPJ");
+                        stage.show();
+                    } else{
+                        //show alert
+                        System.out.println("No phone number try again");
+                        process.reset();
+                        LoginButton.setDisable(false);
+                        RevokeCredentialsButton.setDisable(false);
+                        LoadingSpinner.setVisible(false);
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+
+                        String title = "";
+                        String content = "An error occurred please try again";
+
+                        JFXButton close = new JFXButton("Close");
+
+                        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                        close.setStyle("-fx-background-color: #00bfff;");
+
+                        JFXDialogLayout layout = new JFXDialogLayout();
+                        layout.setHeading(new Label(title));
+                        layout.setBody(new Label(content));
+                        layout.setActions(close);
+                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+                        alert.setOverlayClose(true);
+                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                        alert.setContent(layout);
+                        alert.initModality(Modality.NONE);
+                        close.setOnAction(__ -> alert.hideWithAnimation());
+                        alert.show();
                     }
-                    stage.setScene(new Scene(nextView));
-                    stage.setTitle("NSPJ");
-                    stage.show();
                 } else {
                     process.reset();
                     LoginButton.setDisable(false);
@@ -128,7 +160,7 @@ public class ControllerLoginPage implements Initializable{
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();
 
-                    String title = "";
+                    String title = "Warning";
                     String content = "Permission Invalid: You are not allowed the access the app. Please contact your administrator for more information";
 
                     JFXButton close = new JFXButton("Close");
