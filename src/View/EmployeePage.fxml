@@ -41,14 +41,19 @@
         </AnchorPane>
       <AnchorPane fx:id="secondAnchor" layoutY="160.0" prefHeight="438.0" prefWidth="1066.0" visible="false">
          <children>
-            <JFXComboBox fx:id="jfxcombobox" layoutX="77.0" layoutY="21.0" onAction="#handlejfxcombobox" prefHeight="40.0" prefWidth="163.0" />
-            <TableView fx:id="rolesTable" layoutX="78.0" layoutY="83.0" prefHeight="310.0" prefWidth="806.0">
+            <JFXComboBox fx:id="jfxcombobox" layoutX="196.0" layoutY="19.0" onAction="#handlejfxcombobox" prefHeight="40.0" prefWidth="163.0" />
+            <TableView fx:id="rolesTable" layoutX="78.0" layoutY="83.0" prefHeight="310.0" prefWidth="931.0">
               <columns>
                 <TableColumn fx:id="roleColumn" prefWidth="244.0" text="Role" />
-                <TableColumn fx:id="userColumn" prefWidth="445.0" text="User" />
-                  <TableColumn fx:id="revokePermissions" prefWidth="116.0" text="Revoke" />
+                <TableColumn fx:id="userColumn" prefWidth="495.0" text="User" />
+                  <TableColumn fx:id="revokePermissions" prefWidth="191.0" text="Revoke" />
               </columns>
             </TableView>
+            <Label layoutX="83.0" layoutY="34.0" text="Choose Role: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <TableView fx:id="employeeTable" layoutX="71.0" layoutY="159.0" onMouseClicked="#clickItem" prefHeight="393.0" prefWidth="937.0">

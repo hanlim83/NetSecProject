@@ -8,6 +8,8 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
@@ -51,10 +53,15 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="843.0" prefWidth="1045.0">
                <children>
-                  <PieChart fx:id="piechart1" layoutX="51.0" layoutY="10.0" prefHeight="335.0" prefWidth="408.0" />
+                  <PieChart fx:id="piechart1" layoutX="319.0" layoutY="14.0" prefHeight="335.0" prefWidth="408.0" />
                   <AnchorPane fx:id="treeTableAnchor" layoutX="10.0" layoutY="424.0" prefHeight="408.0" prefWidth="1025.0" />
-                  <JFXTextField fx:id="searchFunction" layoutX="845.0" layoutY="370.0" />
-                  <Line fx:id="appearLine" endX="1050.0" layoutY="370.0" visible="false" />
+                  <JFXTextField fx:id="searchFunction" layoutX="842.0" layoutY="368.0" />
+                  <Line fx:id="appearLine" endX="1050.0" layoutY="360.0" visible="false" />
+                  <ImageView fx:id="searchPic" fitHeight="44.0" fitWidth="53.0" layoutX="785.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@baseline_search_black_18dp.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
         </content>

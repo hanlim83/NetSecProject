@@ -69,6 +69,9 @@ public class ControllerLoggingPage implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private ImageView searchPic;
+
+    @FXML
     private Label ipAddr;
 
     @FXML
@@ -504,7 +507,6 @@ public class ControllerLoggingPage implements Initializable {
         general.setDisable(true);
         deletedlogs.setDisable(true);
         spinner.setVisible(true);
-        //   logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "delete";
 
@@ -523,6 +525,7 @@ public class ControllerLoggingPage implements Initializable {
             process.start();
         }
         process.setOnSucceeded(e -> {
+            searchPic.setVisible(true);
             appearLine.setVisible(true);
             spinner.setVisible(false);
             popupanchor.setVisible(false);
@@ -570,7 +573,6 @@ public class ControllerLoggingPage implements Initializable {
         deletedlogs.setDisable(true);
         general.setDisable(true);
         spinner.setVisible(true);
-        //      logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "create";
 
@@ -590,7 +592,7 @@ public class ControllerLoggingPage implements Initializable {
         }
         process.setOnSucceeded(e -> {
             appearLine.setVisible(true);
-
+            searchPic.setVisible(true);
             spinner.setVisible(false);
             createdlogs.setDisable(false);
             popupanchor.setVisible(false);
@@ -634,7 +636,6 @@ public class ControllerLoggingPage implements Initializable {
         deletedlogs.setDisable(true);
         createdlogs.setDisable(true);
         spinner.setVisible(true);
-        //     logsTable.setVisible(true);
         popupanchor.setVisible(false);
         filters = "one two";
 
@@ -655,6 +656,7 @@ public class ControllerLoggingPage implements Initializable {
         }
         process.setOnSucceeded(e -> {
             appearLine.setVisible(true);
+            searchPic.setVisible(true);h
             general.setDisable(false);
             deletedlogs.setDisable(false);
             createdlogs.setDisable(false);
