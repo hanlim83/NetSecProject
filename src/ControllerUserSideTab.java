@@ -67,81 +67,75 @@ public class ControllerUserSideTab implements Initializable {
 
 
         ControllerSecureCloudStorage controller = loader.<ControllerSecureCloudStorage>getController();
-//        if (SecureCloudStorageCounter==0) {
-            controller.passData(getObservableList());
-//            SecureCloudStorageCounter++;
-//        }else {
-//            controller.rebuildTable();
-//        }
-        //controller.passData(admin);
+        controller.loadTableProcess();
+//        controller.passData(getObservableList());
 
         stage.setScene(new Scene(nextView));
         stage.setTitle("NSPJ");
         stage.show();
     }
 
-    private Credential credential;
-    private OAuth2Login login = new OAuth2Login();
-
-    ArrayList<String> arrayFolder=new ArrayList<String>();
-
-    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
-    public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
-        credential=login.login();
-        ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
-        blobs = FXCollections.observableArrayList();
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        String email = null;
-        try {
-            email = login.getEmail();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scanner s = new Scanner(email).useDelimiter("@");
-        String emailFront = s.next();
-        emailFront = emailFront.replace(".", "");
-        String privateBucketName = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobList = storage.list(privateBucketName);
-        for (Blob blob : blobList.iterateAll()) {
-//            BlobList.add(new MyBlob(blob));
-            //if it is folder only add in once check here
-
-            if (blob.getName().contains("/")){
-                Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
-                String folderName=s1.next();
-//                String filename=s1.next();
-                if (checkFolderName(folderName) == false) {
-                    arrayFolder.add(folderName);
-                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()),folderName,"General","Folder"));
-                }
-            }
-            else {
-                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()),"", "General","File"));
-            }
-        }
-        return blobs;
-    }
-
-    public String convertTime(long time) {
-        Date date = new Date(time);
-        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return format.format(date);
-    }
-
-    private boolean checkFolderName(String folderName){
-        boolean check = false;
-        for (String s : arrayFolder){
-            if(folderName.equals(s)){
-                check=true;
-                break;
-            }
-            else{
-                check=false;
-            }
-        }
-        return check;
-    }
+//    private Credential credential;
+//    private OAuth2Login login = new OAuth2Login();
+//
+//    ArrayList<String> arrayFolder = new ArrayList<String>();
+//
+//    public static ObservableList<ControllerSecureCloudStorage.TableBlob> blobs = FXCollections.observableArrayList();
+//
+//    public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
+//        credential = login.login();
+//        ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
+//        blobs = FXCollections.observableArrayList();
+//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        String email = null;
+//        try {
+//            email = login.getEmail();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Scanner s = new Scanner(email).useDelimiter("@");
+//        String emailFront = s.next();
+//        emailFront = emailFront.replace(".", "");
+//        String privateBucketName = emailFront + "nspj";
+////        String bucketname="hugochiaxyznspj";
+//        Page<Blob> blobList = storage.list(privateBucketName);
+//        for (Blob blob : blobList.iterateAll()) {
+////            BlobList.add(new MyBlob(blob));
+//            //if it is folder only add in once check here
+//
+//            if (blob.getName().contains("/")) {
+//                Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
+//                String folderName = s1.next();
+////                String filename=s1.next();
+//                if (checkFolderName(folderName) == false) {
+//                    arrayFolder.add(folderName);
+//                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()), folderName, "General", "Folder"));
+//                }
+//            } else {
+//                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()), "", "General", "File"));
+//            }
+//        }
+//        return blobs;
+//    }
+//
+//    public String convertTime(long time) {
+//        Date date = new Date(time);
+//        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//        return format.format(date);
+//    }
+//
+//    private boolean checkFolderName(String folderName) {
+//        boolean check = false;
+//        for (String s : arrayFolder) {
+//            if (folderName.equals(s)) {
+//                check = true;
+//                break;
+//            } else {
+//                check = false;
+//            }
+//        }
+//        return check;
+//    }
 
     @FXML
     void onHover(MouseEvent event) {
@@ -183,7 +177,7 @@ public class ControllerUserSideTab implements Initializable {
     }
 
     @FXML
-    void onClickUserSettings (ActionEvent event) throws IOException {
+    void onClickUserSettings(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("UserSettings.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -210,7 +204,7 @@ public class ControllerUserSideTab implements Initializable {
 
     @FXML
     void onClickLogoutButton(ActionEvent event) throws IOException {
-        File file1= new File(System.getProperty("user.home")+"\\"+".store\\oauth2_sample\\StoredCredential");
+        File file1 = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sample\\StoredCredential");
         file1.delete();
 
         FXMLLoader loader = new FXMLLoader();

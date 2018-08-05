@@ -11,8 +11,10 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -48,6 +50,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -95,6 +98,9 @@ public class ControllerSecureCloudStorage implements Initializable {
     @FXML
     private JFXButton backButton;
 
+    @FXML
+    private JFXSpinner JFXSpinner;
+
     private Scene myScene;
 
     public static AnchorPane rootP;
@@ -141,6 +147,106 @@ public class ControllerSecureCloudStorage implements Initializable {
             e.printStackTrace();
         }
     }
+
+    ObservableList<ControllerSecureCloudStorage.TableBlob> blobsListFirst;
+    public void loadTableProcess(){
+        process.start();
+        process.setOnSucceeded(e -> {
+            JFXSpinner.setVisible(false);
+            process.reset();
+            blobs = blobsListFirst;
+            TableMethod();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+    }
+
+    //restart testing to optimize this page
+    Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    getObservableList();
+                    return null;
+                }
+            };
+        }
+    };
+
+    //On succeded do this
+//    this.blobs = blobs;
+//    TableMethod();
+
+    private Credential credential1;
+    private OAuth2Login login1 = new OAuth2Login();
+
+    private ArrayList<String> arrayFolder1=new ArrayList<String>();
+
+    public ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
+    public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
+        credential1=login1.login();
+        ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
+        blobs1 = FXCollections.observableArrayList();
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential1.getAccessToken(), null))).build().getService();
+        String email = null;
+        try {
+            email = login.getEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scanner s = new Scanner(email).useDelimiter("@");
+        String emailFront = s.next();
+        emailFront = emailFront.replace(".", "");
+        String privateBucketName = emailFront + "nspj";
+//        String bucketname="hugochiaxyznspj";
+        Page<Blob> blobList = storage.list(privateBucketName);
+        for (Blob blob : blobList.iterateAll()) {
+//            BlobList.add(new MyBlob(blob));
+            //if it is folder only add in once check here
+
+            if (blob.getName().contains("/")){
+                Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
+                String folderName=s1.next();
+//                String filename=s1.next();
+                if (checkFolderName1(folderName) == false) {
+                    arrayFolder1.add(folderName);
+                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()),folderName,"General","Folder"));
+                }
+            }
+            else {
+                blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()),"", "General","File"));
+            }
+        }
+        blobsListFirst=blobs1;
+        return blobs1;
+    }
+
+    public String convertTime1(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
+    }
+
+    private boolean checkFolderName1(String folderName){
+        boolean check = false;
+        for (String s : arrayFolder1){
+            if(folderName.equals(s)){
+                check=true;
+                break;
+            }
+            else{
+                check=false;
+            }
+        }
+        return check;
+    }
+    //restart testing to optimize this page
 
     @FXML
     void onClickHomeButton(ActionEvent event) throws IOException {

@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -41,6 +42,7 @@
       </ImageView>
       <JFXButton fx:id="backButton" layoutX="20.0" layoutY="78.0" onAction="#onClickBackButton" prefHeight="58.0" prefWidth="108.0" text="Back" visible="false" />
       <Label fx:id="FilePathLabel" layoutX="156.0" layoutY="103.0" prefHeight="44.0" prefWidth="285.0" text="/" />
+      <JFXSpinner fx:id="JFXSpinner" layoutX="435.0" layoutY="277.0" prefHeight="174.0" prefWidth="196.0" />
       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>

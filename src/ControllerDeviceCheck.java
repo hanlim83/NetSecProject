@@ -40,7 +40,6 @@ public class ControllerDeviceCheck implements Initializable {
     private Scene myScene;
 
     public static AnchorPane rootP;
-//    private WindowsUtils utils = new WindowsUtils();
 
     //if this set to false means dosen't meet requirement
     private boolean AllFirewallStatus;

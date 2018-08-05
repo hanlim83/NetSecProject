@@ -41,7 +41,6 @@ public class ControllerAdminDeviceCheck implements Initializable {
     private Scene myScene;
 
     public static AnchorPane rootP;
-//    private WindowsUtils utils = new WindowsUtils();
 
     private boolean AllFirewallStatus;
     private boolean WindowsStatus;
