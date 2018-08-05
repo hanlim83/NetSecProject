@@ -37,6 +37,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -116,12 +117,12 @@ public class ControllerSecureCloudStorage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-        try {
-            credential = login.login();
-            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            credential = login.login();
+//            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         Path path = FileSystems.getDefault().getPath("src/View/baseline_cloud_upload_black_18dp_small.png");
         File file = new File(path.toUri());
         Image imageForFile;
@@ -179,14 +180,14 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     };
 
-    private Credential credential1;
     private OAuth2Login login1 = new OAuth2Login();
 
     private ArrayList<String> arrayFolder1=new ArrayList<String>();
 
     private ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
     private ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
-        credential1=login1.login();
+        Credential credential1 = login1.login();
+        credential = credential1;
         ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
         blobs1 = FXCollections.observableArrayList();
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential1.getAccessToken(), null))).build().getService();
@@ -507,15 +508,12 @@ public class ControllerSecureCloudStorage implements Initializable {
                 System.out.println(bucket.toString());
                 File initialFile = new File(AbsolutePath);
                 InputStream input = new ByteArrayInputStream(out);
-//                InputStream targetStream = new FileInputStream(initialFile);
-//            InputStream content = new ByteArrayInputStream("Hello, World!".getBytes(UTF_8));
                 Blob blob = bucket.create(filename, input, "text/plain");
             }
         }
     }
 
     //Download,saving and decrypt is here now
-//    private void downloadFile(Storage storage, String bucketName, String objectName, Path downloadTo) throws Exception {
     private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
         vBox.setVisible(false);
         myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
@@ -1094,6 +1092,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
 
             jfxDownloadButton.setText("Download");
+            jfxDownloadButton.setFont(Font.font ("System", 15));
             jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
             jfxDownloadButton.setOnAction(__ -> {
                 //Download File
@@ -1119,6 +1118,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 }
             });
             jfxDeleteButton.setText("Delete");
+            jfxDeleteButton.setFont(Font.font ("System", 15));
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
             //Update this to show confirmation pop-up
