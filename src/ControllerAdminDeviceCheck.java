@@ -292,28 +292,17 @@ public class ControllerAdminDeviceCheck implements Initializable {
         });
     }
 
-    private String findSysInfo(String term) {
+    private String getBuildNumber() {
+        Runtime rt = Runtime.getRuntime();
+        Process pr = null;
         try {
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"" + term + "\"");
-            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            return in.readLine();
+            pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"OS Version:\"");
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
-        return "";
-    }
+        BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
-    private String getEdition() {
-        String osName = findSysInfo("OS Version:");
-//        if (!osName.isEmpty()) {
-//            for (String edition : EDITIONS) {
-//                if (osName.contains(edition)) {
-//                    return edition;
-//                }
-//            }
-//        }
-        Scanner s = new Scanner(osName).useDelimiter("                ");
+        Scanner s = new Scanner(in).useDelimiter("                ");
         String firstLine=s.next();
         String osBuildNoStr=s.next();
         //System.out.println("OS version is " + osName);
@@ -326,7 +315,7 @@ public class ControllerAdminDeviceCheck implements Initializable {
     String currentOSVersion;
     private boolean checkWindowsApprovedOld(){
         boolean windowsApproved = false;
-        String currentOSVersion=getEdition();
+        String currentOSVersion=getBuildNumber();
         Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
         ArrayList<OSVersion> supportedVersions = device_build_numberDB.CheckSupportedVersion();
 //        CheckSupportedVersion();

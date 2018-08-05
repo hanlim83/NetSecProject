@@ -181,7 +181,6 @@ public class ControllerLoginPage implements Initializable{
                     alert.show();
                     System.out.println("NOT INSIDE DB.REJECTED!!!");
                 }
-//                endTimer();
             }
         });
         process.setOnCancelled(e -> {
