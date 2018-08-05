@@ -96,22 +96,18 @@ public class NetworkCapture {
         return PacketsReceived;
     }
 
-    //Packet count increment
     synchronized private void incrementCount() {
         ++pktCount;
     }
 
-    //get the packet count
     synchronized public int getPacketCount() {
         return pktCount;
     }
 
-    //Events count increment
     synchronized private void incrementEvents() {
         ++eventCount;
     }
 
-    //get the event count
     synchronized public int getEvents() {
         return eventCount;
     }
@@ -283,34 +279,6 @@ public class NetworkCapture {
             e.printStackTrace();
         }
     }
-
-    /*//start capturing the packets
-    public void startSniffing() {
-        try {
-            Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-            Phandle.loop(COUNT, listener);
-        } catch (PcapNativeException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            System.err.println("Stopped successfully");
-        } catch (NotOpenException e) {
-            e.printStackTrace();
-        } finally {
-            printStat();
-            Phandle.close();
-        }
-    }
-
-    //stop capturing the packets
-    public void stopSniffing() {
-        System.out.println("\nStopping Sniffing...\n");
-        try {
-            Phandle.breakLoop();
-            printStat();
-        } catch (NotOpenException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     //Specific Export to pcap file
     public boolean Specficexport() {

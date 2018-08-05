@@ -85,37 +85,57 @@ public class CapturedPacket {
             if (this.srcPort == 20 || this.dstPort == 20 || this.srcPort == 21 || this.dstPort == 21)
                 identifiedProtocol = "FTP";
             else if (this.srcPort == 22 || this.dstPort == 22)
-                identifiedProtocol = "SSH";
+                identifiedProtocol = "SSH/SFTP";
             else if (this.srcPort == 23 || this.dstPort == 23)
-                identifiedProtocol = "Telnet";
+                identifiedProtocol = "TELNET";
             else if (this.srcPort == 25 || this.dstPort == 25)
                 identifiedProtocol = "SMTP";
             else if (this.srcPort == 80 || this.dstPort == 80)
                 identifiedProtocol = "HTTP";
-            else if (this.srcPort == 443 || this.dstPort == 443)
-                identifiedProtocol = "HTTPS";
             else if (this.srcPort == 110 || this.dstPort == 110)
                 identifiedProtocol = "POP3";
             else if (this.srcPort == 143 || this.dstPort == 143)
                 identifiedProtocol = "IMAP";
             else if (this.srcPort == 179 || this.dstPort == 179)
                 identifiedProtocol = "BGP";
-            if (this.srcPort == 989 || this.dstPort == 989 || this.srcPort == 990 || this.dstPort == 990)
+            else if (this.srcPort == 443 || this.dstPort == 443)
+                identifiedProtocol = "HTTPS";
+            else if (this.srcPort == 989 || this.dstPort == 989 || this.srcPort == 990 || this.dstPort == 990)
                 identifiedProtocol = "FTPS";
+            else if ((this.srcPort >= 66660 && this.srcPort <= 6669) || (this.dstPort >= 66660 && this.dstPort <= 6669))
+                identifiedProtocol = "IRC";
+            else if (this.srcPort == 6697 || this.dstPort == 6697 || this.srcPort == 6679 || this.dstPort == 6679)
+                identifiedProtocol = "SIRC";
         } else if (this.Protocol.equals("UDP")) {
-            if (this.srcPort == 67 || this.dstPort == 67 || this.srcPort == 68 || this.dstPort == 68)
+            if (this.srcPort == 9 || this.dstPort == 9)
+                identifiedProtocol = "WOL";
+            else if (this.srcPort == 67 || this.dstPort == 67 || this.srcPort == 68 || this.dstPort == 68)
                 identifiedProtocol = "DHCP";
             else if (this.srcPort == 69 || this.dstPort == 69)
                 identifiedProtocol = "TFTP";
             else if (this.srcPort == 123 || this.dstPort == 123)
                 identifiedProtocol = "NTP";
+            else if (this.srcPort == 443 || this.dstPort == 443)
+                identifiedProtocol = "QUIC";
+            else if (this.srcPort == 5353 || this.dstPort == 5353)
+                identifiedProtocol = "MDNS";
         } else if (this.Protocol.equals("TCP") || this.Protocol.equals("UDP")) {
-            if (this.srcPort == 53 || this.dstPort == 53)
+            if (this.srcPort == 7 || this.dstPort == 7)
+                identifiedProtocol = "ECHO";
+            else if (this.srcPort == 13 || this.dstPort == 13)
+                identifiedProtocol = "DAYTIME";
+            else if (this.srcPort == 37 || this.dstPort == 37)
+                identifiedProtocol = "TIME";
+            else if (this.srcPort == 53 || this.dstPort == 53)
                 identifiedProtocol = "DNS";
+            else if (this.srcPort == 107 || this.dstPort == 107)
+                identifiedProtocol = "RTELNET";
             else if (this.srcPort == 137 || this.dstPort == 137 || this.srcPort == 138 || this.dstPort == 138 || this.srcPort == 139 || this.dstPort == 139)
                 identifiedProtocol = "NETBIOS";
-            if (this.srcPort == 161 || this.dstPort == 161 || this.srcPort == 162 || this.dstPort == 162)
+            else if (this.srcPort == 161 || this.dstPort == 161 || this.srcPort == 162 || this.dstPort == 162)
                 identifiedProtocol = "SNMP";
+            else if (this.srcPort == 194 || this.dstPort == 194)
+                identifiedProtocol = "IRC";
             else if (this.srcPort == 389 || this.dstPort == 389)
                 identifiedProtocol = "LDAP";
             else if (this.srcPort == 636 || this.dstPort == 636)
