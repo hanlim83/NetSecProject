@@ -194,7 +194,6 @@ public class ControllerCAAlerts implements Initializable {
                                             stage.setTitle("Alert Dashboard");
                                             stage.show();
                                         });
-                                        System.out.println(rItem.getPcapPath());
                                         btn.setId("tableJFXButton");
                                         btn.getStylesheets().add("Style.css");
                                         setGraphic(btn);
