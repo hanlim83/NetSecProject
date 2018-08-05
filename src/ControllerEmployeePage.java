@@ -762,7 +762,7 @@ public class ControllerEmployeePage implements Initializable {
                             stringEmail = stringArrayList.get(u);
                             System.out.println("======================" + stringEmail);
                         }
-                    } else if (chosenRole.equals("Monitoring Admin")) {
+                    } else if (chosenRole.equals("Monitoring Admin"))   {
                         globalChecker = 9;
                         getiam.takeinGlobalChecker(globalChecker);
                         permissions.listPermissions();

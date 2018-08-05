@@ -55,7 +55,7 @@
                <children>
                   <PieChart fx:id="piechart1" layoutX="319.0" layoutY="14.0" prefHeight="335.0" prefWidth="408.0" />
                   <AnchorPane fx:id="treeTableAnchor" layoutX="10.0" layoutY="424.0" prefHeight="408.0" prefWidth="1025.0" />
-                  <JFXTextField fx:id="searchFunction" layoutX="842.0" layoutY="368.0" />
+                  <JFXTextField fx:id="searchFunction" layoutX="842.0" layoutY="368.0" promptText="Search for" />
                   <Line fx:id="appearLine" endX="1050.0" layoutY="360.0" visible="false" />
                   <ImageView fx:id="searchPic" fitHeight="44.0" fitWidth="53.0" layoutX="785.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
