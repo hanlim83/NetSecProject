@@ -44,7 +44,7 @@ public class NetworkCapture {
     private int Threshold, perMinutePktCount = 0;
     private Timestamp TrackAheadTimeStamp = null, TrackCurrentTimeStamp = null, lastTimeStamp = null, alertBeforeTimeStamp = null, alertAfterTimeStamp = null;
     private int eventCount = 0;
-    private boolean sendLimit = false, renewCount = true, ARPSpoofing = false;
+    private boolean sendLimit = false, renewCount = true, ARPSpoofing = false, flag = false;
     private int pktCount = 0;
     private String specificPcapExportPath, fullPcapExportPath;
     private int TPSSize = 0;
@@ -254,7 +254,37 @@ public class NetworkCapture {
         }
     }
 
-    //start capturing the packets
+    public void startSniffing() {
+        try {
+            Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            flag = true;
+            while (flag != false) {
+                Phandle.loop(COUNT, listener);
+            }
+        } catch (PcapNativeException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.err.println("Stopped successfully");
+        } catch (NotOpenException e) {
+            e.printStackTrace();
+        } finally {
+            printStat();
+            Phandle.close();
+        }
+    }
+
+    public void stopSniffing() {
+        System.out.println("\nStopping Sniffing...\n");
+        flag = false;
+        try {
+            Phandle.breakLoop();
+            printStat();
+        } catch (NotOpenException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*//start capturing the packets
     public void startSniffing() {
         try {
             Phandle = Netinterface.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
@@ -280,7 +310,7 @@ public class NetworkCapture {
         } catch (NotOpenException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     //Specific Export to pcap file
     public boolean Specficexport() {
