@@ -588,7 +588,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         show.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                handler.cancelTableviewRunnable();
+                                handler.cancelchartDataRunnable();
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                 myScene = ((Node) event.getSource()).getScene();
                                 Parent nextView = null;
@@ -642,7 +642,7 @@ public class ControllerCAMainDashboard implements Initializable {
                         show.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                handler.cancelTableviewRunnable();
+                                handler.cancelchartDataRunnable();
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("CAMainAlertDashboard.fxml"));
                                 myScene = ((Node) event.getSource()).getScene();
                                 Parent nextView = null;
