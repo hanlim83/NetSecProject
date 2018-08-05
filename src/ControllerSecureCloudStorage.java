@@ -185,7 +185,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     private ArrayList<String> arrayFolder1=new ArrayList<String>();
 
     private ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
-    public ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
+    private ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
         credential1=login1.login();
         ObservableList<ControllerSecureCloudStorage.TableBlob> blobs;
         blobs1 = FXCollections.observableArrayList();
@@ -245,7 +245,7 @@ public class ControllerSecureCloudStorage implements Initializable {
     //restart testing to optimize this page
 
     @FXML
-    private void onClickHomeButton(ActionEvent event) throws IOException {
+    void onClickHomeButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("UserHome.fxml"));
         myScene = (Scene) ((Node) event.getSource()).getScene();
@@ -483,7 +483,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         return cipher.doFinal(symmetricKey.getBytes());
     }
 
-
     //By the time it comes here must password must be converted to same Key using the same salt
     private String getDecryptedSymmetricKey(SecretKey passwordKey, String EncryptedSymmetricKeyEncoded) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException, BadPaddingException {
         //decode String from EncryptedSymmetricKeyString
@@ -719,57 +718,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 ////        cipher.do
 ////        decryptFile(f);
 //    }
-
-    public void UploadFileTest() {
-//        try {
-//            // authorization
-//            //commented out credential to test new optimization techniques
-////            credential = login.login();
-//            // set up global Oauth2 instance
-//            if (file != null) {
-//                String pathsInfo = "";
-//                pathsInfo += "getPath(): " + file.getPath() + "\n";
-//                pathsInfo += "getAbsolutePath(): " + file.getAbsolutePath() + "\n";
-//
-//                pathsInfo += (new File(file.getPath())).isAbsolute();
-//
-//                try {
-//                    pathsInfo += "getCanonicalPath(): " +
-//                            file.getCanonicalPath() + "\n";
-//                } catch (IOException ex) {
-//
-//                }
-//                System.out.println(pathsInfo);
-//                // authorization + Get Buckets
-//                getStorage();
-//                //Testing for storage
-//                Page<Bucket> buckets = storage.list();
-//                for (Bucket bucket : buckets.iterateAll()) {
-//                    System.out.println(bucket.toString());
-//                }
-//
-//                for (Bucket bucket : buckets.iterateAll()) {
-//                    Page<Blob> blobs = bucket.list();
-//                    for (Blob blob : blobs.iterateAll()) {
-//                        // do something with the blob
-//                        System.out.println(blob);
-//                        System.out.println(blob.getName());
-//                    }
-//                }
-//                //String filename= "TestFILENEW1";
-//                //Actual Codes
-//                if (checkNameTaken(file.getName()) == true) {
-//                    System.out.println("Change NAME!!!!");
-//                } else {
-//                    uploadFile(file.getName(), file.getAbsolutePath());
-//                }
-//            } else {
-//                System.out.println("No file selected");
-//            }
-//        } catch (Throwable t) {
-//            t.printStackTrace();
-//        }
-    }
 
     private boolean checkPassword;
     private String tempPassword;
