@@ -58,8 +58,7 @@ public class ControllerDeviceCheck implements Initializable {
         RestartDeviceCheckButton.setDisable(true);
     }
 
-    //TODO Include error handling for cloud next time
-    public void runCheck(){
+    void runCheck(){
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
@@ -100,7 +99,7 @@ public class ControllerDeviceCheck implements Initializable {
                 try {
                     nextView = loader.load();
                     ControllerUserHome controller = loader.<ControllerUserHome>getController();
-                    controller.InfoUpdate();
+//                    controller.InfoUpdate();
                 } catch (Exception u) {
                     u.printStackTrace();
                 }
@@ -308,28 +307,33 @@ public class ControllerDeviceCheck implements Initializable {
         });
     }
 
-    private String findSysInfo(String term) {
-        try {
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"" + term + "\"");
-            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            return in.readLine();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        return "";
-    }
-
-    private String getEdition() {
-        String osName = findSysInfo("OS Version:");
-//        if (!osName.isEmpty()) {
-//            for (String edition : EDITIONS) {
-//                if (osName.contains(edition)) {
-//                    return edition;
-//                }
-//            }
+//    private String findSysInfo(String term) {
+//        try {
+//            Runtime rt = Runtime.getRuntime();
+//            Process pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"" + term + "\"");
+//            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+//            return in.readLine();
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
 //        }
-        Scanner s = new Scanner(osName).useDelimiter("                ");
+//        return "";
+//    }
+
+    private String getBuildNumber() {
+//        String osName = findSysInfo("OS Version:");
+
+        //Test
+        Runtime rt = Runtime.getRuntime();
+        Process pr = null;
+        try {
+            pr = rt.exec("CMD /C SYSTEMINFO | FINDSTR /B /C:\"OS Version:\"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+        //Test
+
+        Scanner s = new Scanner(in).useDelimiter("                ");
         String firstLine=s.next();
         String osBuildNoStr=s.next();
         //System.out.println("OS version is " + osName);
@@ -339,10 +343,10 @@ public class ControllerDeviceCheck implements Initializable {
         return osBuildNo;
     }
 
-    String currentOSVersion;
+    private String currentOSVersion;
     private boolean checkWindowsApprovedOld() throws SQLException {
         boolean windowsApproved = false;
-        String currentOSVersion=getEdition();
+        String currentOSVersion=getBuildNumber();
         Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
         ArrayList<OSVersion> supportedVersions = device_build_numberDB.CheckSupportedVersion();
 //        CheckSupportedVersion();

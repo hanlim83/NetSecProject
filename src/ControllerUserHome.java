@@ -6,9 +6,8 @@ import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -22,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.*;
@@ -50,8 +51,6 @@ public class ControllerUserHome implements Initializable {
 
     @FXML
     private Label GreetingsLabel;
-
-    private Scene myScene;
 
     public static AnchorPane rootP;
 
@@ -154,18 +153,47 @@ public class ControllerUserHome implements Initializable {
         emailFront = emailFront.replace(".", "");
         String bucketname = emailFront + "nspj";
 //        String bucketname="hugochiaxyznspj";
-        Page<Blob> blobs = storage.list(bucketname);
-        for (Blob blob : blobs.iterateAll()) {
-            // do something with the blob
-            BlobList.add(new MyBlob(blob));
-            System.out.println("FROM METHOD" + blob);
-            System.out.println(convertTime(blob.getCreateTime()));
-            System.out.println("FROM METHOD" + blob.getName());
+        try {
+            Page<Blob> blobs = storage.list(bucketname);
+            for (Blob blob : blobs.iterateAll()) {
+                // do something with the blob
+                BlobList.add(new MyBlob(blob));
+                System.out.println("FROM METHOD" + blob);
+                System.out.println(convertTime(blob.getCreateTime()));
+                System.out.println("FROM METHOD" + blob.getName());
 //            if (fileName.equals(blob.getName())) {
 //                System.out.println("Choose Different NAME!");
 //                return true;
 //            }
+            }
+        } catch (com.google.cloud.storage.StorageException e) {
+            Platform.runLater(() -> {
+                Scene myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+
+                String title = "Alert";
+                String content = "Your bucket was not found. Please contact the administrator for more details";
+
+                JFXButton close = new JFXButton("Close");
+
+                close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                close.setStyle("-fx-background-color: #00bfff;");
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
         }
+
     }
 
     private String convertTime(long time) {
@@ -194,30 +222,36 @@ public class ControllerUserHome implements Initializable {
         }
     };
 
-    public void InfoUpdate() throws Exception {
+    private void InfoUpdate() throws Exception {
         credential = login.login();
         getLatestFile();
-        Collections.sort(BlobList);
-        System.out.println("=======================LATEST FILE/TIME===============================");
-        System.out.println(BlobList.get(0).toString());
-        System.out.println(convertTime(BlobList.get(0).getTime()));
-        lastFile="Your last file was modified on " + convertTime(BlobList.get(0).getTime());
-        LastFileModifiedLabel.setText(lastFile);
-        greetings=getGreetings() + login.getName();
-        GreetingsLabel.setText(greetings);
+        if (!BlobList.isEmpty()) {
+            Collections.sort(BlobList);
+            System.out.println("=======================LATEST FILE/TIME===============================");
+            System.out.println(BlobList.get(0).toString());
+            System.out.println(convertTime(BlobList.get(0).getTime()));
+            lastFile = "Your last file was modified on " + convertTime(BlobList.get(0).getTime());
+            LastFileModifiedLabel.setText(lastFile);
+            greetings = getGreetings() + login.getName();
+            GreetingsLabel.setText(greetings);
+        } else {
+            LastFileModifiedLabel.setText("No file in your storage");
+            greetings = getGreetings() + login.getName();
+            GreetingsLabel.setText(greetings);
+        }
     }
 
     private String getGreetings() {
         String greetings = null;
         int hours = Integer.parseInt(new SimpleDateFormat("HH").format(new Date()));
-        if(hours>=0 && hours<12){
-            greetings="Good morning ";
-        }else if(hours>=12 && hours<16){
-            greetings="Good afternoon ";
-        }else if(hours>=16 && hours<21){
-            greetings="Good evening ";
-        }else if(hours>=21 && hours<=24){
-            greetings="Good night ";
+        if (hours >= 0 && hours < 12) {
+            greetings = "Good morning ";
+        } else if (hours >= 12 && hours < 16) {
+            greetings = "Good afternoon ";
+        } else if (hours >= 16 && hours < 21) {
+            greetings = "Good evening ";
+        } else if (hours >= 21 && hours <= 24) {
+            greetings = "Good night ";
         }
         return greetings;
     }
@@ -260,15 +294,15 @@ public class ControllerUserHome implements Initializable {
 //        String nowString=now.toString();
 //        System.out.println(nowString);
 //        long l=now.get
-        User_InfoDB user_infoDB=new User_InfoDB();
-        PublicKey publicKey=user_infoDB.getMyPublicKey("");
+        User_InfoDB user_infoDB = new User_InfoDB();
+        PublicKey publicKey = user_infoDB.getMyPublicKey("");
         System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
     }
 
     @FXML
     void onClickRSAButton(ActionEvent event) throws Exception {
-        User_InfoDB user_infoDB=new User_InfoDB();
-        System.out.println(user_infoDB.checkPassword("WrongPassword","Email here"));
+        User_InfoDB user_infoDB = new User_InfoDB();
+        System.out.println(user_infoDB.checkPassword("WrongPassword", "Email here"));
 //        Database.RSAKeyGenerator rsaKeyGenerator = new Database.RSAKeyGenerator();
 //        rsaKeyGenerator.buildKeyPair();
 //        System.out.println("=====================Public Key==========================");

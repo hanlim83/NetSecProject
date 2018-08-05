@@ -52,8 +52,6 @@ public class ControllerUserSideTab implements Initializable {
 
     private Scene myScene;
 
-//    private static int SecureCloudStorageCounter=0;
-
     @FXML
     void onClickSecureCloudStorageButton(ActionEvent event) throws Exception {
         //go back to user home and reference the observablelist

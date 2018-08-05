@@ -122,7 +122,6 @@ public class ControllerLoginPage implements Initializable{
                         stage.setTitle("NSPJ");
                         stage.show();
                     } else{
-                        //show alert
                         System.out.println("No phone number try again");
                         process.reset();
                         LoginButton.setDisable(false);
@@ -131,8 +130,8 @@ public class ControllerLoginPage implements Initializable{
                         myScene = anchorPane.getScene();
                         Stage stage = (Stage) (myScene).getWindow();
 
-                        String title = "";
-                        String content = "An error occurred please try again";
+                        String title = "Alert";
+                        String content = "An error occurred. Please try again. Based on our algorithm you probably do not have a phone number. Please contact administrator to check.";
 
                         JFXButton close = new JFXButton("Close");
 

@@ -4,12 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class admin_DB {
-    //TODO check if migration is successful
-//    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//    private static String databaseName = "admin_DB";
-//    private static String username = "root";
-//    private static String password = "root";
-
     public ArrayList<Admin> getAdminList(){
         ArrayList<Admin> AdminList = new ArrayList<Admin>();
 

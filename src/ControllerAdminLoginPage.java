@@ -108,21 +108,6 @@ public class ControllerAdminLoginPage implements Initializable {
 
     private int counter = 0;
 
-    public void Test(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("SecureCloudStorage.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
-
-        ControllerSecureCloudStorage controller = loader.<ControllerSecureCloudStorage>getController();
-        //controller.passData(admin);
-
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
-    }
-
     @FXML
     void onClickLoginButton(ActionEvent event) throws Exception {
         String state = process.getState().toString();
@@ -155,20 +140,51 @@ public class ControllerAdminLoginPage implements Initializable {
                 System.out.println("No email");
             } else {
                 if (AccStatus.equals("1")) {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
-                    myScene = anchorPane.getScene();
-                    Stage stage = (Stage) (myScene).getWindow();
-                    Parent nextView = null;
-                    try {
-                        nextView = loader.load();
-                        ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
-                        controller.adminAuth(phoneNo);
-                    } catch (IOException u) {
-                        u.printStackTrace();
+                    if (phoneNo!=null) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+                        Parent nextView = null;
+                        try {
+                            nextView = loader.load();
+                            ControllerAdminVerifyTextAuth controller = loader.<ControllerAdminVerifyTextAuth>getController();
+                            controller.adminAuth(phoneNo);
+                        } catch (IOException u) {
+                            u.printStackTrace();
+                        }
+                        stage.setScene(new Scene(nextView));
+                        stage.setTitle("NSPJ");
+                        stage.show();
+                    } else{
+                        System.out.println("No phone number try again");
+                        process.reset();
+                        LoginButton.setDisable(false);
+//                        RevokeCredentialsButton.setDisable(false);
+                        LoadingSpinner.setVisible(false);
+                        myScene = anchorPane.getScene();
+                        Stage stage = (Stage) (myScene).getWindow();
+
+                        String title = "Alert";
+                        String content = "An error occurred. Please try again. Based on our algorithm you probably do not have a phone number. Please contact administrator to check.";
+
+                        JFXButton close = new JFXButton("Close");
+
+                        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+                        close.setStyle("-fx-background-color: #00bfff;");
+
+                        JFXDialogLayout layout = new JFXDialogLayout();
+                        layout.setHeading(new Label(title));
+                        layout.setBody(new Label(content));
+                        layout.setActions(close);
+                        JFXAlert<Void> alert = new JFXAlert<>(stage);
+                        alert.setOverlayClose(true);
+                        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                        alert.setContent(layout);
+                        alert.initModality(Modality.NONE);
+                        close.setOnAction(__ -> alert.hideWithAnimation());
+                        alert.show();
                     }
-                    stage.setScene(new Scene(nextView));
-                    stage.setTitle("NSPJ");
-                    stage.show();
                 } else{
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();
