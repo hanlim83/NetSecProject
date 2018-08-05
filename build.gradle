@@ -13,7 +13,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.jfoenix:jfoenix:8.0.7'
     compile 'com.google.cloud:google-cloud-storage:1.31.0'
     compile 'com.google.auth:google-auth-library-oauth2-http:0.9.1'
@@ -37,6 +36,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     compile group: 'commons-pool', name: 'commons-pool', version: '1.4'
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
 }
 
 sourceSets {
