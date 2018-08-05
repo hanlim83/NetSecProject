@@ -25,9 +25,13 @@
             </children>
         </AnchorPane>
         <JFXButton fx:id="LoginButton" buttonType="RAISED" layoutX="429.0" layoutY="437.0" onAction="#onClickLoginButton" prefHeight="122.0" prefWidth="211.0" style="-fx-background-color: #FFEB3B;" text="Login">
-         <font>
+        <font>
             <Font size="37.0" />
          </font></JFXButton>
-      <JFXSpinner fx:id="LoadingSpinner" layoutX="403.0" layoutY="197.0" prefHeight="206.0" prefWidth="263.0" visible="false" />
+        <JFXButton fx:id="RevokeCredentialsButton" buttonType="RAISED" layoutX="669.0" layoutY="437.0" onAction="#onClickRevokeCredentialsButton" prefHeight="122.0" prefWidth="373.0" style="-fx-background-color: #FFEB3B;;" text="Revoke Credentials">
+            <font>
+                <Font size="37.0" />
+            </font></JFXButton>
+        <JFXSpinner fx:id="LoadingSpinner" layoutX="403.0" layoutY="197.0" prefHeight="206.0" prefWidth="263.0" visible="false" />
     </children>
 </AnchorPane>

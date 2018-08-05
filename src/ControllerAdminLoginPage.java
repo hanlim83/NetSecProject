@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -36,7 +37,7 @@ public class ControllerAdminLoginPage implements Initializable {
     private JFXSpinner LoadingSpinner;
 
     @FXML
-    private JFXButton TestButton;
+    private JFXButton RevokeCredentialsButton;
 
     private Scene myScene;
 
@@ -56,7 +57,7 @@ public class ControllerAdminLoginPage implements Initializable {
     private static Timer timer;
     private TimerTask Task;
 
-    public void startTimer() {
+    private void startTimer() {
         timer = new Timer();
         Task = new TimerTask() {
             public void run() {
@@ -64,6 +65,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     login.stopLocalServerReciver();
                     LoadingSpinner.setVisible(false);
                     LoginButton.setDisable(false);
+                    RevokeCredentialsButton.setDisable(false);
                     endTimer();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -121,26 +123,27 @@ public class ControllerAdminLoginPage implements Initializable {
         } else if (process.getState().toString().equals("CANCELLED")) {
             process.start();
             startTimer();
-        }
-        else{
+        } else {
             System.out.println(state);
             System.out.println(process.getState());
             System.out.println("Failed to run");
         }
 
         LoginButton.setDisable(true);
+        RevokeCredentialsButton.setDisable(true);
 
         process.setOnSucceeded(e -> {
             endTimer();
             process.reset();
             LoginButton.setDisable(false);
+            RevokeCredentialsButton.setDisable(false);
             LoadingSpinner.setVisible(false);
             System.out.println("Process succeeded");
             if (email.equals("")) {
                 System.out.println("No email");
             } else {
                 if (AccStatus.equals("1")) {
-                    if (phoneNo!=null) {
+                    if (phoneNo != null) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminVerifyTextAuth.fxml"));
                         myScene = anchorPane.getScene();
                         Stage stage = (Stage) (myScene).getWindow();
@@ -155,11 +158,11 @@ public class ControllerAdminLoginPage implements Initializable {
                         stage.setScene(new Scene(nextView));
                         stage.setTitle("NSPJ");
                         stage.show();
-                    } else{
+                    } else {
                         System.out.println("No phone number try again");
                         process.reset();
                         LoginButton.setDisable(false);
-//                        RevokeCredentialsButton.setDisable(false);
+                        RevokeCredentialsButton.setDisable(false);
                         LoadingSpinner.setVisible(false);
                         myScene = anchorPane.getScene();
                         Stage stage = (Stage) (myScene).getWindow();
@@ -185,7 +188,7 @@ public class ControllerAdminLoginPage implements Initializable {
                         close.setOnAction(__ -> alert.hideWithAnimation());
                         alert.show();
                     }
-                } else{
+                } else {
                     myScene = anchorPane.getScene();
                     Stage stage = (Stage) (myScene).getWindow();
 
@@ -222,6 +225,7 @@ public class ControllerAdminLoginPage implements Initializable {
                     System.out.println("No email");
                     process.reset();
                     LoginButton.setDisable(false);
+                    RevokeCredentialsButton.setDisable(false);
                     LoadingSpinner.setVisible(false);
                 } else {
                     endTimer();
@@ -269,8 +273,39 @@ public class ControllerAdminLoginPage implements Initializable {
             alert.show();
             process.reset();
             LoginButton.setDisable(false);
+            RevokeCredentialsButton.setDisable(false);
             LoadingSpinner.setVisible(false);
         });
+    }
+
+    @FXML
+    void onClickRevokeCredentialsButton(ActionEvent event) {
+        File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+        file.delete();
+
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+
+        String title = "";
+        String content = "Credentials successfully revoked";
+
+        JFXButton close = new JFXButton("Close");
+
+        close.setButtonType(JFXButton.ButtonType.RAISED);
+
+        close.setStyle("-fx-background-color: #00bfff;");
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label(title));
+        layout.setBody(new Label(content));
+        layout.setActions(close);
+        JFXAlert<Void> alert = new JFXAlert<>(stage);
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(layout);
+        alert.initModality(Modality.NONE);
+        close.setOnAction(__ -> alert.hideWithAnimation());
+        alert.show();
     }
 
     //Service method
@@ -280,17 +315,12 @@ public class ControllerAdminLoginPage implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
-                    //After 2nd click spinner dosen't appear
                     LoadingSpinner.setVisible(true);
                     try {
                         credential = login.login();
                         System.out.println("First step done");
                         email = login.getEmail();
                         System.out.println("2nd step done" + email);
-//                        if(counter>1){
-//                            process.cancel();
-//                            System.out.println("Restarting process");
-//                        }
                     } catch (UnknownHostException u) {
                         Platform.runLater(() -> {
                             System.out.println("No wifi");
@@ -303,61 +333,14 @@ public class ControllerAdminLoginPage implements Initializable {
                     }
                     //Check with another DB
                     if (!email.equals("")) {
-//                        AccStatus = utils.getAccStatus(email);
-                        AccStatus=admin_db.getAdminAccStatus(email);
+                        AccStatus = admin_db.getAdminAccStatus(email);
                     }
-                    if (AccStatus.equals("1")){
-                        phoneNo=admin_db.getPhoneNo(email);
+                    if (AccStatus.equals("1")) {
+                        phoneNo = admin_db.getPhoneNo(email);
                     }
                     return null;
                 }
             };
         }
     };
-
-    //redundant codes
-
-    //TODO To be removed soon
-    @FXML
-    void onClickTestButton(ActionEvent event) throws Exception {
-        //login.l.stop();
-//        login.stopLocalServerReciver();
-//        LoadingSpinner.setVisible(false);
-//        LoginButton.setDisable(false);
-
-        try {
-            //login.l.stop();
-            login.stopLocalServerReciver();
-            LoadingSpinner.setVisible(false);
-            LoginButton.setDisable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        endTimer();
-//        Platform.runLater(() -> {
-//            myScene = anchorPane.getScene();
-//            Stage stage = (Stage) (myScene).getWindow();
-//
-//            String title = "";
-//            String content = "The connection timeout. Please try again";
-//
-//            JFXButton close = new JFXButton("Close");
-//
-//            close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//            close.setStyle("-fx-background-color: #00bfff;");
-//
-//            JFXDialogLayout layout = new JFXDialogLayout();
-//            layout.setHeading(new Label(title));
-//            layout.setBody(new Label(content));
-//            layout.setActions(close);
-//            JFXAlert<Void> alert = new JFXAlert<>(stage);
-//            alert.setOverlayClose(true);
-//            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//            alert.setContent(layout);
-//            alert.initModality(Modality.NONE);
-//            close.setOnAction(__ -> alert.hideWithAnimation());
-//            alert.show();
-//        });
-    }
 }
