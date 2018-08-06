@@ -1,13 +1,14 @@
+import Database.Admin;
 import Database.User_InfoDB;
 import Model.OAuth2Login;
 import Model.TextAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
-import com.jfoenix.controls.JFXAlert;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.nexmo.client.NexmoClientException;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +26,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ControllerAdminVerifyTextAuth implements Initializable {
+public class ControllerAdminVerifyTextAuth {
 
     private Scene myScene;
     private Credential credential;
@@ -43,13 +44,37 @@ public class ControllerAdminVerifyTextAuth implements Initializable {
     @FXML
     private Label numberViewer;
 
+    private static String phoneNo;
+
     @FXML
     void adminResend(ActionEvent event) throws MalformedURLException {
 
-        TextAuthentication resend = new TextAuthentication();
-        resend.adminSendNew();
+//        TextAuthentication resend = new TextAuthentication();
+        adminSendNew(phoneNo);
 
     }
+
+    void adminSendNew(String phoneNo){
+        numberViewer.setText(phoneNo);
+        this.phoneNo=phoneNo;
+        process.start();
+        process.setOnSucceeded(e -> {
+            process.reset();
+            Platform.runLater(() -> {
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.show("OTP sent", 3000);
+                snackbar.getStylesheets().add("Style.css");
+            });
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+
+    }
+
 
     @FXML
     void adminVerifyConfirm(ActionEvent event) throws NexmoClientException {
@@ -120,24 +145,47 @@ public class ControllerAdminVerifyTextAuth implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
-        try {
-            credential = login.login();
-
-        User_InfoDB user = new User_InfoDB();
-        String number = user.getPhoneNumber(user.getPhoneNumber(login.getEmail()));
-
-        viewerText.setText("Please enter the OTP sent to this number: ");
-        numberViewer.setText(number);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    private Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    viewerText.setText("Please enter the OTP sent to this number: ");
+                    TextAuthentication auth = new TextAuthentication();
+                    auth.adminSendAuth(phoneNo);
+//                    Platform.runLater(() -> {
+//
+//                    });
+                    System.out.println(" Correct phone number input");
+                    return null;
+                }
+            };
         }
+    };
 
 
-    }
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//
+//        try {
+//            credential = login.login();
+//
+//            User_InfoDB user = new User_InfoDB();
+//            this.phoneNo = user.getPhoneNumber(login.getEmail());
+//
+//
+//
+//        viewerText.setText("Please enter the OTP sent to this number: ");
+//        numberViewer.setText(phoneNo);
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 }
 

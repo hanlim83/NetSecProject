@@ -63,7 +63,7 @@ public class ControllerVerifyText {
     @FXML
     private JFXButton resendText;
 
-    private String phoneNo;
+    private static String phoneNo;
 
     void sendNew(String phoneNo){
         numberViewer.setText(phoneNo);
@@ -108,9 +108,9 @@ public class ControllerVerifyText {
     void resendText(ActionEvent event) throws MalformedURLException {
 
         String phoneNo = numberViewer.getText();
-        TextAuthentication auth = new TextAuthentication();
+//        TextAuthentication auth = new TextAuthentication();
 
-        auth.sendNew();
+        sendNew(phoneNo);
 
     }
 
