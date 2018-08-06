@@ -85,7 +85,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     public static AnchorPane rootP;
     private String privateBucketName;
     private Storage storage;
-    private Credential credential;
+    private static Credential credential;
     private OAuth2Login login = new OAuth2Login();
 
     private SecretKeySpec secretKey;
@@ -100,6 +100,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     private static String ownBucketName;
     private static String downloadThis;
     private static String password = "Pass123!";
+    private static String ownEmail;
 
     public ControllerSecureFileTransfer() throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.RSAcipher = Cipher.getInstance("RSA");
@@ -190,12 +191,14 @@ public class ControllerSecureFileTransfer implements Initializable {
         User_InfoDB user = new User_InfoDB();
         ObservableList<String> Email = null;
 
-
         try {
+
             credential = login.login();
 
-            Scanner sc = new Scanner(login.getEmail());
-            System.out.println(login.getEmail());
+            ownEmail = login.getEmail();
+
+            Scanner sc = new Scanner(ownEmail);
+            System.out.println(ownEmail);
             sc.useDelimiter("@gmail.com");
             String send = sc.next();
 
@@ -228,7 +231,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             ArrayList<String> newEmail = user.getAllEmail();
-            newEmail.remove(login.getEmail());
+            newEmail.remove(ownEmail);
             for (int i = 0; i < newEmail.size(); i++) {
 
                 if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
@@ -287,7 +290,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     @FXML
     void transferFile(ActionEvent event) throws Exception {
 
-        credential = login.login();
+//        credential = login.login();
 
         Scanner sc = new Scanner(emailBox.getValue());
         System.out.println(emailBox.getValue());
@@ -410,9 +413,9 @@ public class ControllerSecureFileTransfer implements Initializable {
     }
 
     private void getStorage() throws Exception {
-        credential = login.login();
+//        credential = login.login();
         if (credential.getExpiresInSeconds() < 250) {
-            credential = login.login();
+//            credential = login.login();
             storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
         }
         if (storage == null) {
@@ -555,7 +558,6 @@ public class ControllerSecureFileTransfer implements Initializable {
     private byte[] encryptSymmetricKey(String symmetricKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         User_InfoDB user = new User_InfoDB();
-        login.login();
         cipher.init(Cipher.ENCRYPT_MODE, user.getPublicKey(emailBox.getValue()));
 
         return cipher.doFinal(symmetricKey.getBytes());
@@ -573,8 +575,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     private byte[] decryptSymmetricKey(byte[] encrypted) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA");
         User_InfoDB user = new User_InfoDB();
-        login.login();
-        cipher.init(Cipher.DECRYPT_MODE, user.getPrivateKey(login.getEmail(),password));
+        cipher.init(Cipher.DECRYPT_MODE, user.getPrivateKey(ownEmail,password));
 
         return cipher.doFinal(encrypted);
     }
