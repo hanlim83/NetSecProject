@@ -2,6 +2,10 @@ import Database.User_InfoDB;
 import Model.OAuth2Login;
 import Model.TextAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.JFXAlert;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import com.nexmo.client.NexmoClientException;
 import javafx.event.ActionEvent;
@@ -12,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -77,6 +82,30 @@ public class ControllerAdminVerifyTextAuth implements Initializable {
             stage.show();
 
         } else {
+
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "Invalid!";
+            String content = "OTP entered is invalid!";
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
             System.out.print("Sorry, wrong pin!");
         }
 
