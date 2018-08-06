@@ -722,11 +722,10 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private ArrayList<String> arrayFolder = new ArrayList<String>();
 
-    //updateObservableListProcess
     private void updateObservableList() throws Exception {
 //        if (process.getState().toString().equals("SUCCEEDED")) {
 //            process.reset();
-            processUpdateObservableList.start();
+        processUpdateObservableList.start();
 //        }
         processUpdateObservableList.setOnSucceeded(e -> {
             processUpdateObservableList.reset();
@@ -1077,30 +1076,113 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            System.out.println(tableBlob.getDate());
 //                    System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().type);
                     if (JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType2().equals("Folder")) {
-                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName());
-                        String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
-                        //clear observable list and repopulate it with only that particular folder info
-//                blobs.clear();
-
+//                        System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName());
+//                        String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
+//                        //clear observable list and repopulate it with only that particular folder info
+////                blobs.clear();
+//
+//                        try {
+//                            if (storage == null) {
+//                                getStorage();
+//                            }
+//                        } catch (Exception e1) {
+//                            e1.printStackTrace();
+//                            try {
+//                                getStorage();
+//                            } catch (Exception e2) {
+//                                e2.printStackTrace();
+//                            }
+//                        }
+//                        if (privateBucketName == null) {
+//                            calculateEmail();
+//                        }
+//                        Page<Blob> blobList = storage.list(privateBucketName);
+//                        blobs.clear();
+//                        for (Blob blob : blobList.iterateAll()) {
+//                            if (blob.getName().startsWith(folderName)) {
+////                                if (blob.getName().contains("/")){
+////                                    Scanner s = new Scanner(blob.getName()).useDelimiter("/");
+////                                    String folderName=s.next();
+//////                String filename=s.next();
+////                                    if (checkFolderName(folderName) == false) {
+////                                        arrayFolder.add(folderName);
+////                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()),folderName,"General","Folder"));
+////                                    }
+////                                }
+//                                Scanner s = new Scanner(blob.getName()).useDelimiter("/");
+//                                String folderName1 = s.next();
+////                                String fileName = null;
+//                                if (s.hasNext()) {
+//                                    String fileName = s.next();
+//                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File"));
+////                                    }
+//                                }
+//                            }
+//                        }
+//
+//                        JFXTreeTableView.unGroup(folderColumn);
+//                        JFXTreeTableView.unGroup(typeColumn);
+//                        JFXTreeTableView.getColumns().clear();
+//                        JFXTreeTableView.getColumns().setAll(fileColumn, dateColumn, settingsColumn);
+//                        JFXTreeTableView.getColumns();
+//                        fileColumn.setPrefWidth(544);
+//                        backButton.setVisible(true);
+//                        FilePathLabel.setText("/" + folderName);
                         try {
-                            if (storage == null) {
-                                getStorage();
-                            }
+                            updateObservableListFolder();
                         } catch (Exception e1) {
                             e1.printStackTrace();
-                            try {
-                                getStorage();
-                            } catch (Exception e2) {
-                                e2.printStackTrace();
-                            }
                         }
-                        if (privateBucketName == null) {
-                            calculateEmail();
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateObservableListFolder(){
+        processUpdateObservableListFolder.start();
+        processUpdateObservableListFolder.setOnSucceeded(e -> {
+            processUpdateObservableListFolder.reset();
+        });
+        processUpdateObservableListFolder.setOnCancelled(e -> {
+            processUpdateObservableListFolder.reset();
+        });
+        processUpdateObservableListFolder.setOnFailed(e -> {
+            processUpdateObservableListFolder.reset();
+        });
+    }
+
+    //Service here
+    private Service processUpdateObservableListFolder = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    JFXSpinner.setVisible(true);
+                    String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
+                    //clear observable list and repopulate it with only that particular folder info
+//                blobs.clear();
+
+                    try {
+                        if (storage == null) {
+                            getStorage();
                         }
-                        Page<Blob> blobList = storage.list(privateBucketName);
-                        blobs.clear();
-                        for (Blob blob : blobList.iterateAll()) {
-                            if (blob.getName().startsWith(folderName)) {
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                        try {
+                            getStorage();
+                        } catch (Exception e2) {
+                            e2.printStackTrace();
+                        }
+                    }
+                    if (privateBucketName == null) {
+                        calculateEmail();
+                    }
+                    Page<Blob> blobList = storage.list(privateBucketName);
+                    blobs.clear();
+                    for (Blob blob : blobList.iterateAll()) {
+                        if (blob.getName().startsWith(folderName)) {
 //                                if (blob.getName().contains("/")){
 //                                    Scanner s = new Scanner(blob.getName()).useDelimiter("/");
 //                                    String folderName=s.next();
@@ -1110,34 +1192,16 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()),folderName,"General","Folder"));
 //                                    }
 //                                }
-                                Scanner s = new Scanner(blob.getName()).useDelimiter("/");
-                                String folderName1 = s.next();
+                            Scanner s = new Scanner(blob.getName()).useDelimiter("/");
+                            String folderName1 = s.next();
 //                                String fileName = null;
-                                if (s.hasNext()) {
-                                    String fileName = s.next();
-                                    //Test
-//                                    if (fileName.contains("/")){
-//                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "Folder"));
-//                                    } else{
-                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File"));
-//                                    }
-                                }
-
-                                //Test
-//                                if (blob.getName().contains("/")) {
-//                                    Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
-//                                    String folderName = s1.next();
-////                String filename=s1.next();
-//                                    if (checkFolderName1(folderName) == false) {
-//                                        arrayFolder1.add(folderName);
-//                                        blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()), folderName, "General", "Folder"));
-//                                    }
-//                                } else {
-//                                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()), "", "General", "File"));
-//                                }
+                            if (s.hasNext()) {
+                                String fileName = s.next();
+                                blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File"));
                             }
                         }
-
+                    }
+                    Platform.runLater(() -> {
                         JFXTreeTableView.unGroup(folderColumn);
                         JFXTreeTableView.unGroup(typeColumn);
                         JFXTreeTableView.getColumns().clear();
@@ -1146,11 +1210,13 @@ public class ControllerSecureCloudStorage implements Initializable {
                         fileColumn.setPrefWidth(544);
                         backButton.setVisible(true);
                         FilePathLabel.setText("/" + folderName);
-                    }
+                        JFXSpinner.setVisible(false);
+                    });
+                    return null;
                 }
-            }
-        });
-    }
+            };
+        }
+    };
 
     private VBox vBox = new VBox();
     private JFXButton jfxDownloadButton = new JFXButton();
