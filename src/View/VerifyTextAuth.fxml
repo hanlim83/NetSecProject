@@ -12,12 +12,12 @@
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #03A9F4;">
             <children>
-                <Text layoutX="488.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="90.13671875">
+                <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+                <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                     <font>
-                        <Font size="40.0" />
+                        <Font name="Serif Regular" size="40.0" />
                     </font>
-                </Text>
-                <Line endX="1067.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+                </Label>
             </children>
         </AnchorPane>
       <JFXTextField fx:id="verifyField" alignment="CENTER" layoutX="450.0" layoutY="328.0" promptText="Enter OTP here" />
