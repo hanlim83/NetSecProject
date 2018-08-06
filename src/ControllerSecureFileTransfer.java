@@ -33,11 +33,13 @@ import org.json.simple.JSONObject;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,6 +70,9 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     @FXML
     private TableView userInbox;
+
+    @FXML
+    private JFXButton homeButton;
 
     @FXML
     private TableColumn<ControllerSecureFileTransfer, String> filename;
@@ -186,6 +191,20 @@ public class ControllerSecureFileTransfer implements Initializable {
         User_InfoDB user = new User_InfoDB();
         ObservableList<String> Email = null;
 
+
+        Path path1 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file1 = new File(path1.toUri());
+        Image imageForFile1;
+        try {
+            imageForFile1 = new Image(file1.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile1);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         try {
 
             credential = login.login();
@@ -226,7 +245,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             ArrayList<String> newEmail = user.getAllEmail();
-//            newEmail.remove(ownEmail);
+            newEmail.remove(ownEmail);
             for (int i = 0; i < newEmail.size(); i++) {
 
                 if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
@@ -246,6 +265,24 @@ public class ControllerSecureFileTransfer implements Initializable {
 
         hamburgerBar();
         emailBox.setItems(Email);
+
+    }
+
+    @FXML
+    void onClickHomeButton (ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UserHome.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerUserHome controller = loader.<ControllerUserHome>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
 
     }
 

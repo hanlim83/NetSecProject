@@ -22,6 +22,7 @@
                         <Font name="Serif Regular" size="40.0" />
                     </font>
                 </Label>
+                <JFXButton fx:id="homeButton" buttonType="RAISED" layoutX="992.0" layoutY="10.0" onAction="#onClickHomeButton" prefHeight="44.0" prefWidth="64.0" ripplerFill="#00bfff00" style="-fx-border-radius: 30; -fx-background-color: #607D8B;" />
             </children>
         </AnchorPane>
       <JFXButton fx:id="transfer" layoutX="866.0" layoutY="116.0" onAction="#transferFile" prefHeight="43.0" prefWidth="121.0" text="Transfer a file" />

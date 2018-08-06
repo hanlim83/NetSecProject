@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -139,14 +140,14 @@ public class FileScanner {
 
     }
 
-    public boolean extensionCheck(String path) {
+    public static boolean extensionCheck(String path) {
 
 
 
         String ext = FilenameUtils.getExtension(path);
         System.out.print("\n\n" + ext + " - \n");
 
-        if (ext.equals("bat") || ext.equals("exe")) {
+        if (ext.equals("")) {
 
             return true;
 
@@ -156,6 +157,12 @@ public class FileScanner {
 
         return false;
 
+    }
+
+    public static void main (String[]args) {
+
+        FileScanner scan = new FileScanner();
+        boolean hello = extensionCheck("C:\\Users\\Fende\\Desktop\\virus.txt");
     }
 
 }
