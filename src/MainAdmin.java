@@ -19,6 +19,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class MainAdmin extends Application {
@@ -194,9 +195,9 @@ public class MainAdmin extends Application {
         if (!ScheduledThreadPoolExecutorHandler.getService().isShutdown())
             handler.forceShutdownService();
         try {
-            //FileUtils.cleanDirectory(new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin"));
-            /*File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
-            file.delete();*/
+            File file = new File(System.getProperty("user.home") + "\\" + ".store\\oauth2_sampleAdmin\\StoredCredential");
+            file.delete();
+            ControllerAdminHome.StopTimer();
             FileUtils.cleanDirectory(new File("PcapExport"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,7 +235,5 @@ public class MainAdmin extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
 }
