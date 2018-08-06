@@ -1,5 +1,7 @@
 package Database;
 
+import java.util.Scanner;
+
 public class User {
     private String email;
     private String status;
@@ -71,6 +73,21 @@ public class User {
     }
 
     public void setActivationTime(String activationTime) {
-        ActivationTime = activationTime;
+        ActivationTime = convertTime(activationTime);
+    }
+
+    private String convertTime(String time) {
+        String dateDisplay;
+        String timeDisplay;
+        Scanner s = new Scanner(time).useDelimiter("T");
+        String dateGeneral = s.next();
+        timeDisplay = s.next();
+        Scanner s1 = new Scanner(dateGeneral).useDelimiter("-");
+        String year = s1.next();
+        String month = s1.next();
+        String date = s1.next();
+        dateDisplay = date + "/" + month + "/" + year;
+        System.out.println(dateDisplay + " " + timeDisplay.substring(0, 8));
+        return dateDisplay + " " + timeDisplay.substring(0, 8);
     }
 }

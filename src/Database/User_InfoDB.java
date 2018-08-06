@@ -10,11 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class User_InfoDB {
-//    private static String instanceConnectionName = "netsecpj:us-central1:nspj-project";
-//    private static String databaseName = "user_info";
-//    private static String username = "root";
-//    private static String password = "root";
-
     public ArrayList<User> getUserList(){
         ArrayList<User> UserList = new ArrayList<User>();
 

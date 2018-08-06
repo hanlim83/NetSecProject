@@ -271,18 +271,6 @@ public class ControllerUserHome implements Initializable {
 //    };
 
     //TODO Test new implementation of generating symmetric key per file, encrypting using Master Key(Password), and uploading/downloading of file followed by decrypting file
-    //To be removed soon
-    @FXML
-    void onClickRandomButton(ActionEvent event) throws Exception {
-//        LocalDateTime now=LocalDateTime.now();
-//        String nowString=now.toString();
-//        System.out.println(nowString);
-//        long l=now.get
-        User_InfoDB user_infoDB = new User_InfoDB();
-        PublicKey publicKey = user_infoDB.getMyPublicKey("");
-        System.out.println(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
-    }
-
     @FXML
     void onClickRSAButton(ActionEvent event) throws Exception {
         User_InfoDB user_infoDB = new User_InfoDB();
@@ -326,7 +314,7 @@ public class ControllerUserHome implements Initializable {
         }
     }
 
-    public void MACaddrTest() throws SocketException, UnknownHostException {
+    private void MACaddrTest() throws SocketException, UnknownHostException {
 //        System.out.println("Ip: " + GetNetworkAddress.GetAddress("ip"));
 //        System.out.println("Mac: " + GetNetworkAddress.GetAddress("mac"));
         InetAddress ip;
@@ -359,7 +347,7 @@ public class ControllerUserHome implements Initializable {
         System.out.println("TESTTTTTTTTTTTTTTTTTTTTT" + getMacAddress());
     }
 
-    public static String getMacAddress() throws UnknownHostException,
+    private static String getMacAddress() throws UnknownHostException,
             SocketException {
         InetAddress ipAddress = InetAddress.getLocalHost();
         NetworkInterface networkInterface = NetworkInterface
