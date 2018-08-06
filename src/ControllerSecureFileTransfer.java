@@ -8,22 +8,16 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
-import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,22 +29,19 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
 import javax.crypto.*;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
-import java.security.spec.KeySpec;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -96,7 +87,11 @@ public class ControllerSecureFileTransfer implements Initializable {
     private Storage storage;
     private Credential credential;
     private OAuth2Login login = new OAuth2Login();
+
+    private SecretKeySpec secretKey;
     private Cipher cipher;
+
+    private Cipher RSAcipher;
 
     private String name;
     private String detail;
@@ -104,11 +99,45 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     private static String ownBucketName;
     private static String downloadThis;
-    private static String password;
+    private static String password = "Pass123!";
 
     public ControllerSecureFileTransfer() throws NoSuchAlgorithmException, NoSuchPaddingException {
-        this.cipher = Cipher.getInstance("RSA");
+        this.RSAcipher = Cipher.getInstance("RSA");
     }
+
+//    public ControllerSecureFileTransfer(String secret)
+//            throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException {
+//        byte[] key = new byte[128];
+//        key = fixSecret(secret, 128);
+//        this.secretKey = new SecretKeySpec(key, "AES");
+//        this.cipher = Cipher.getInstance("AES");
+//    }
+//
+//    private byte[] fixSecret(String s, int length) throws UnsupportedEncodingException {
+//        if (s.length() < length) {
+//            int missingLength = length - s.length();
+//            for (int i = 0; i < missingLength; i++) {
+//                s += " ";
+//            }
+//        }
+//        return s.substring(0, length).getBytes("UTF-8");
+//    }
+//
+//    public void encryptFile(File f)
+//            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException {
+//        System.out.println("Encrypting file: " + f.getName());
+//        this.cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
+//    }
+//
+//    public void decryptFile(File f)
+//            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException {
+//        System.out.println("Decrypting file: " + f.getName());
+//        this.cipher.init(Cipher.DECRYPT_MODE, this.secretKey);
+//        writeToFile(f, getFileInBytes(f));
+//    }
+
+
+
 
     public ControllerSecureFileTransfer (String filename, String date) {
 
@@ -125,13 +154,13 @@ public class ControllerSecureFileTransfer implements Initializable {
            try {
 
                getStorage();
-                downloadFile(storage,ownBucketName,downloadThis);
+                downloadFileNew(storage,ownBucketName,downloadThis);
 
                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                snackbar.getStylesheets().add("Style.css");
                snackbar.show("Download success", 3000);
 
-//                deleteFile(ownBucketName, downloadThis);
+                deleteFile(ownBucketName, downloadThis);
 
 
             } catch (Exception e1) {
@@ -162,11 +191,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         ObservableList<String> Email = null;
 
 
-
         try {
-
-
-
             credential = login.login();
 
             Scanner sc = new Scanner(login.getEmail());
@@ -186,11 +211,10 @@ public class ControllerSecureFileTransfer implements Initializable {
             date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
             action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
 
-            for (ControllerSecureFileTransfer r : thisInbox){
+            for (ControllerSecureFileTransfer r : thisInbox) {
                 r.toString();
             }
             userInbox.setItems(thisInbox);
-
 
 
         } catch (UnknownHostException e) {
@@ -204,7 +228,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             ArrayList<String> newEmail = user.getAllEmail();
-//            newEmail.remove(login.getEmail());
+            newEmail.remove(login.getEmail());
             for (int i = 0; i < newEmail.size(); i++) {
 
                 if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
@@ -227,11 +251,36 @@ public class ControllerSecureFileTransfer implements Initializable {
 
     }
 
+
     @FXML
     void refresh(ActionEvent event) throws Exception {
 
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerSecureFileTransfer controller = loader.<ControllerSecureFileTransfer>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
 
 
+//        thisInbox = assign(ownBucketName);
+//
+//        System.out.println(thisInbox);
+//
+//        filename.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("name"));
+//        date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
+//        action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
+//
+//        for (ControllerSecureFileTransfer r : thisInbox){
+//            r.toString();
+//        }
+//        userInbox.setItems(thisInbox);
     }
 
 
@@ -267,10 +316,12 @@ public class ControllerSecureFileTransfer implements Initializable {
         } else {
 
             String filename = file.getName();
-            User_InfoDB user = new User_InfoDB();
+//            User_InfoDB user = new User_InfoDB();
             System.out.println(emailBox.getValue() + " " + filename);
 
-            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
+            encryptFileNew(file);
+
+//            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
         }
 
 //        process.start();
@@ -345,6 +396,19 @@ public class ControllerSecureFileTransfer implements Initializable {
         snackbar.show("Upload success", 3000);
     }
 
+    private void uploadFileNew(String filename, String AbsolutePath, byte[] out) throws Exception {
+        getStorage();
+        Page<Bucket> buckets = storage.list();
+        for (Bucket bucket : buckets.iterateAll()) {
+            if (bucket.toString().contains(privateBucketName)) {
+                System.out.println(bucket.toString());
+                File initialFile = new File(AbsolutePath);
+                InputStream input = new ByteArrayInputStream(out);
+                Blob blob = bucket.create(filename, input, "text/plain");
+            }
+        }
+    }
+
     private void getStorage() throws Exception {
         credential = login.login();
         if (credential.getExpiresInSeconds() < 250) {
@@ -365,12 +429,159 @@ public class ControllerSecureFileTransfer implements Initializable {
     }
 
 
-    public byte[] encryptFile(byte[] input, PublicKey key)
-            throws IOException, GeneralSecurityException {
-        this.cipher.init(Cipher.ENCRYPT_MODE, key);
+//    public byte[] encryptFile(byte[] input)
+//            throws IOException, GeneralSecurityException {
+//        this.cipher.init(Cipher.ENCRYPT_MODE, key);
+//
+//        return this.cipher.doFinal(input);
+////      writeToFile(output, this.cipher.doFinal(input));
+//    }
 
-        return this.cipher.doFinal(input);
-//      writeToFile(output, this.cipher.doFinal(input));
+    private void encryptFileNew(File f) throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(128);
+
+        SecretKey secKey = keyGen.generateKey();
+
+        Cipher aesCipher = Cipher.getInstance("AES");
+
+        byte[] byteTextNew = Files.readAllBytes(new File(f.getAbsolutePath()).toPath());
+
+        aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+        //Encrypt file here
+        byte[] byteCipherText = aesCipher.doFinal(byteTextNew);
+
+        uploadFileNew(f.getName(), f.getAbsolutePath(), byteCipherText);
+
+        //TODO Encrypt the key and get back the E key string which will be uploaded to the cloud
+        //encoding the key to String
+        String encodedSecretKey = Base64.getEncoder().encodeToString(secKey.getEncoded());
+        System.out.println(encodedSecretKey);
+//
+//        byte[] salt = new byte[8];
+//        srandom.nextBytes(salt);
+//        //Convert salt to base64 for uploading
+//        String encodedSalt = Base64.getEncoder().encodeToString(salt);
+
+        /* Derive the key, given password and salt. */
+//        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+//        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+//        SecretKey tmp = factory.generateSecret(spec);
+//        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        String encryptedSymmetricKey = getEncryptedSymmetricKey(encodedSecretKey);
+        //At this point symmetric key has been encoded then encrypted then encoded again
+        System.out.println(encryptedSymmetricKey);
+        //TODO Upload this instead^
+
+//        JSONObject main =new JSONObject();
+
+        //encrypt the secretKey then encode?
+
+        //Testing for decoded key
+        byte[] decodedKey = Base64.getDecoder().decode(encodedSecretKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        System.err.println("TESTING" + secKey.equals(originalKey));
+        //Testing for decoded key
+
+        JSONObject fileObj = new JSONObject();
+
+        JSONObject filemetadata = new JSONObject();
+        filemetadata.put("Encrypted Symmetric Key", encryptedSymmetricKey);
+//        filemetadata.put("Salt", encodedSalt);
+
+        fileObj.put("metadata", filemetadata);
+//        main.put("metadata",fileObj);
+
+        try {
+            // Writing to a file
+            File file = new File("JsonFile.json");
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);
+            System.out.println("Writing JSON object to file");
+            System.out.println("-----------------------");
+            System.out.print(fileObj);
+
+            fileWriter.write(fileObj.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String[] command = {"curl", "-X", "PATCH", "--data-binary", "@JsonFile.json",
+                "-H", "Authorization: Bearer " + credential.getAccessToken(),
+                "-H", "Content-Type: application/json",
+                "https://www.googleapis.com/storage/v1/b/" + privateBucketName + "/o/" + convertName(f.getName())};
+
+        ProcessBuilder process = new ProcessBuilder(command);
+        Process p;
+        try {
+            p = process.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append(System.getProperty("line.separator"));
+            }
+            String result = builder.toString();
+            System.out.print(result);
+
+        } catch (IOException e) {
+            System.out.print("error");
+            e.printStackTrace();
+        }
+
+        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+        snackbar.show("Transfer success", 3000);
+        snackbar.getStylesheets().add("Style.css");
+    }
+
+//    private byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//    private IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+    private String getEncryptedSymmetricKey(String symmetricKey) throws Exception {
+
+        //returns encrypted symmetric key
+        byte[] EncryptedSymmetricKey = encryptSymmetricKey(symmetricKey);
+        //convert E. symmetric key to base64
+        return Base64.getEncoder().encodeToString(EncryptedSymmetricKey);
+//        return null;
+    }
+
+    private byte[] encryptSymmetricKey(String symmetricKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        User_InfoDB user = new User_InfoDB();
+        login.login();
+        cipher.init(Cipher.ENCRYPT_MODE, user.getPublicKey(emailBox.getValue()));
+
+        return cipher.doFinal(symmetricKey.getBytes());
+    }
+
+    //By the time it comes here must password must be converted to same Key using the same salt
+    private String getDecryptedSymmetricKey(String EncryptedSymmetricKeyEncoded) throws Exception {
+        //decode String from EncryptedSymmetricKeyString
+        byte[] EncryptedSymmetricKey = Base64.getDecoder().decode(EncryptedSymmetricKeyEncoded);
+        byte[] PrivateKeyString = decryptSymmetricKey(EncryptedSymmetricKey);
+        //return Base64.getEncoder().encodeToString(PrivateKeyString);
+        return new String(PrivateKeyString);
+    }
+
+    private byte[] decryptSymmetricKey(byte[] encrypted) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        User_InfoDB user = new User_InfoDB();
+        login.login();
+        cipher.init(Cipher.DECRYPT_MODE, user.getPrivateKey(login.getEmail(),password));
+
+        return cipher.doFinal(encrypted);
+    }
+
+    private String convertName(String name) {
+        name = name.replace(" ", "%20");
+        return name;
     }
 
     public void decryptFile(byte[] input,File output, PrivateKey key)
@@ -468,6 +679,80 @@ public class ControllerSecureFileTransfer implements Initializable {
         });
     }
 
+    private void downloadFileNew(Storage storage, String bucketName, String objectName) throws Exception {
+
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialFileName(objectName);
+        File filePath = fileChooser.showSaveDialog(null);
+        if (filePath != null) {
+            String filePathString = filePath.getAbsolutePath();
+            Path downloadTo = Paths.get(filePathString);
+
+            BlobId blobId = BlobId.of(bucketName, objectName);
+            Blob blob = storage.get(blobId);
+            System.out.println(blob);
+            if (blob == null) {
+                System.out.println("No such object");
+                return;
+            }
+            PrintStream writeTo = System.out;
+            if (downloadTo != null) {
+                writeTo = new PrintStream(new FileOutputStream(downloadTo.toFile()));
+            }
+            if (blob.getSize() < 1_000_000) {
+                // Blob is small read all its content in one request
+                byte[] content = blob.getContent();
+
+                writeTo.write(content);
+            } else {
+                // When Blob size is big or unknown use the blob's channel reader.
+                try (ReadChannel reader = blob.reader()) {
+                    WritableByteChannel channel = Channels.newChannel(writeTo);
+                    ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                    while (reader.read(bytes) > 0) {
+                        bytes.flip();
+                        channel.write(bytes);
+                        bytes.clear();
+                    }
+                }
+            }
+            if (downloadTo == null) {
+                writeTo.println();
+            } else {
+                writeTo.close();
+            }
+
+            //Current decryption is here
+            //getting back the same salt
+//            byte[] salt = new byte[8];
+//            String saltMetadata = blob.getMetadata().get("Salt");
+//            System.err.println(saltMetadata);
+//            salt = Base64.getDecoder().decode(saltMetadata);
+
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+//            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+//            SecretKey tmp = factory.generateSecret(spec);
+//            SecretKey passwordKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+            String encodedKey = blob.getMetadata().get("Encrypted Symmetric Key");
+            String decryptedSymmetricKey = getDecryptedSymmetricKey(encodedKey);
+
+            byte[] decodedKey = Base64.getDecoder().decode(decryptedSymmetricKey);
+            // rebuild key using SecretKeySpec
+            SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+//        decryptFileNew(file1,originalKey);
+//        byte[] cipherText = Files.readAllBytes(new File(file1.getAbsolutePath()).toPath());
+            byte[] cipherText = Files.readAllBytes(new File(filePath.getAbsolutePath()).toPath());
+
+
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+            byte[] bytePlainText = aesCipher.doFinal(cipherText);
+            Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
+        }
+    }
+
     private void deleteFile(String bucketName, String blobName) throws Exception {
 
         try {
@@ -484,7 +769,7 @@ public class ControllerSecureFileTransfer implements Initializable {
             // the blob was deleted
             System.out.println("Deleted");
             JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-            snackbar.show("Delete success", 3000);
+            snackbar.show("Download Success", 3000);
             snackbar.getStylesheets().add("Style.css");
         } else {
             // the blob was not found
