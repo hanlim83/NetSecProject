@@ -191,11 +191,12 @@ public class NetworkCapture {
     public boolean checkARP() {
         if (ARPSpoofing == false)
             return false;
-        else if (sendLimit == true) {
+        /*else if (sendLimit == true) {
             System.out.println("Incremented");
             incrementEvents();
             return false;
-        } else {
+        }*/
+        else {
             System.out.println("Incremented and sent alert");
             incrementEvents();
             sendLimit = true;
@@ -384,6 +385,7 @@ public class NetworkCapture {
     }
 
     public void printARPDatabase() {
+        System.out.println("==== ARP Database ====");
         for (ARPObject O : ARPDatabase) {
             System.out.println(O.getIPAddress() + " : " + O.getMACAddress());
         }
@@ -412,6 +414,7 @@ public class NetworkCapture {
                 if (o.getIPAddress().equals(ipAddr) && o.getMACAddress().equals(macAddr)) {
                     return;
                 } else if (o.getIPAddress().equals(ipAddr) && !o.getMACAddress().equals(macAddr)) {
+                    System.out.println(ipAddr + " Recorded in DB: " + o.getMACAddress() + " | Found: " + macAddr);
                     ARPSpoofing = true;
                     return;
                 }

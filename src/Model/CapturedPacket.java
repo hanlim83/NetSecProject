@@ -22,7 +22,7 @@ public class CapturedPacket {
             ArpPacket arpPacket = this.originalPacket.get(ArpPacket.class);
             this.srcIP = arpPacket.getHeader().getSrcProtocolAddr().getHostAddress();
             this.destIP = arpPacket.getHeader().getDstProtocolAddr().getHostAddress();
-            this.Protocol = arpPacket.getHeader().getProtocolType().name();
+            this.Protocol = "ARP";
             this.length = arpPacket.getHeader().length();
             if (arpPacket.getHeader().getOperation().value() == 1)
                 this.information = "ARP Request";

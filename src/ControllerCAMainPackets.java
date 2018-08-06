@@ -665,6 +665,7 @@ public class ControllerCAMainPackets implements Initializable {
         @Override
         public void run() {
             capture.getTrafficPerSecond();
+            capture.printARPDatabase();
         }
     }
 
