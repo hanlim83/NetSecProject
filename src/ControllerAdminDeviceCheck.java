@@ -1,5 +1,8 @@
 import Database.Device_Build_NumberDB;
 import Database.OSVersion;
+import Database.admin_DB;
+import Model.OAuth2LoginAdmin;
+import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -46,6 +50,12 @@ public class ControllerAdminDeviceCheck implements Initializable {
     private boolean WindowsStatus;
     private boolean WirelessEncryption;
 
+    private Credential credential;
+    private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
+
+    private String name = null;
+    private String email = null;
+    private String lastLogin = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,11 +69,11 @@ public class ControllerAdminDeviceCheck implements Initializable {
         RestartDeviceCheckButton.setDisable(true);
     }
 
-    void runCheck(){
+    void runCheck() {
         process.start();
         process.setOnSucceeded(e -> {
             process.reset();
-            if (!AllFirewallStatus){
+            if (!AllFirewallStatus) {
                 Process p;
                 try {
                     p = Runtime.getRuntime().exec("C:\\Program Files\\Windows Defender\\MSASCui.exe");
@@ -72,25 +82,28 @@ public class ControllerAdminDeviceCheck implements Initializable {
                     e1.printStackTrace();
                 }
                 handleAlert("Please turn on your firewall and try again.");
-            } else if(!WirelessEncryption) {
+            } else if (!WirelessEncryption) {
                 handleAlert("Please connect to a more secure network. DO NOT use open networks.");
-            }else if(!WindowsStatus){
+            } else if (!WindowsStatus) {
                 handleAlert("Your device version is not supported. Please update or use a device with a newer software.");
-            } else{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("AdminHome.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
-            } catch (IOException u) {
-                u.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+            } else {
+
+
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("AdminHome.fxml"));
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
+                Parent nextView = null;
+                try {
+                    nextView = loader.load();
+                    ControllerAdminHome controller = loader.<ControllerAdminHome>getController();
+                    controller.passData(name, email, lastLogin);
+                } catch (IOException u) {
+                    u.printStackTrace();
+                }
+                stage.setScene(new Scene(nextView));
+                stage.setTitle("NSPJ");
+                stage.show();
             }
         });
         process.setOnCancelled(e -> {
@@ -127,34 +140,34 @@ public class ControllerAdminDeviceCheck implements Initializable {
             RestartDeviceCheckButton.setVisible(true);
         });
         process.setOnFailed(e -> {
-                    LoadingSpinner.setVisible(false);
-                    RestartDeviceCheckButton.setVisible(true);
-                    RestartDeviceCheckButton.setDisable(false);
-                    Platform.runLater(() -> {
-                                myScene = anchorPane.getScene();
-                                Stage stage = (Stage) (myScene).getWindow();
+            LoadingSpinner.setVisible(false);
+            RestartDeviceCheckButton.setVisible(true);
+            RestartDeviceCheckButton.setDisable(false);
+            Platform.runLater(() -> {
+                myScene = anchorPane.getScene();
+                Stage stage = (Stage) (myScene).getWindow();
 
-                                String title = "";
-                                String content = "An error occurred. Please try again later";
+                String title = "";
+                String content = "An error occurred. Please try again later";
 
-                                JFXButton close = new JFXButton("Close");
+                JFXButton close = new JFXButton("Close");
 
-                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                close.setButtonType(JFXButton.ButtonType.RAISED);
 
-                                close.setStyle("-fx-background-color: #00bfff;");
+                close.setStyle("-fx-background-color: #00bfff;");
 
-                                JFXDialogLayout layout = new JFXDialogLayout();
-                                layout.setHeading(new Label(title));
-                                layout.setBody(new Label(content));
-                                layout.setActions(close);
-                                JFXAlert<Void> alert = new JFXAlert<>(stage);
-                                alert.setOverlayClose(true);
-                                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                                alert.setContent(layout);
-                                alert.initModality(Modality.NONE);
-                                close.setOnAction(__ -> alert.hideWithAnimation());
-                                alert.show();
-                            });
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Label(title));
+                layout.setBody(new Label(content));
+                layout.setActions(close);
+                JFXAlert<Void> alert = new JFXAlert<>(stage);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(layout);
+                alert.initModality(Modality.NONE);
+                close.setOnAction(__ -> alert.hideWithAnimation());
+                alert.show();
+            });
             process.reset();
             System.out.println("Failed");
             RestartDeviceCheckButton.setVisible(true);
@@ -167,6 +180,20 @@ public class ControllerAdminDeviceCheck implements Initializable {
             return new Task() {
                 @Override
                 protected Void call() throws Exception {
+                    try {
+                        credential = login.login();
+                        email = login.getEmail();
+                        name = login.getName();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    admin_DB admin_db = new admin_DB();
+                    if (admin_db.getLastLoginTime(email) == null) {
+                        lastLogin = "Welcome this is your first time logging in";
+                    } else {
+                        lastLogin = "Your last login was on " + convertTime(admin_db.getLastLoginTime(email));
+                    }
+
                     localDeviceFirewallCheck();
                     checkWirelessConnectionEncryption();
                     checkWindowsApproved();
@@ -175,6 +202,21 @@ public class ControllerAdminDeviceCheck implements Initializable {
             };
         }
     };
+
+    private String convertTime(String time) {
+        String dateDisplay;
+        String timeDisplay;
+        Scanner s = new Scanner(time).useDelimiter("T");
+        String dateGeneral = s.next();
+        timeDisplay = s.next();
+        Scanner s1 = new Scanner(dateGeneral).useDelimiter("-");
+        String year = s1.next();
+        String month = s1.next();
+        String date = s1.next();
+        dateDisplay = date + "/" + month + "/" + year;
+
+        return dateDisplay + " " + timeDisplay.substring(0, 8);
+    }
 
 
     private String DomainFirewall = null;
@@ -218,10 +260,10 @@ public class ControllerAdminDeviceCheck implements Initializable {
         System.out.println(PrivateFirewall);
         System.out.println(PublicFirewall);
 
-        if (!DomainFirewall.equals("ON")||!PrivateFirewall.equals("ON")||!PublicFirewall.equals("ON")){
-            AllFirewallStatus=false;
-        }else{
-            AllFirewallStatus=true;
+        if (!DomainFirewall.equals("ON") || !PrivateFirewall.equals("ON") || !PublicFirewall.equals("ON")) {
+            AllFirewallStatus = false;
+        } else {
+            AllFirewallStatus = true;
         }
     }
 
@@ -233,33 +275,33 @@ public class ControllerAdminDeviceCheck implements Initializable {
         String line;
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
-            if (line.contains("State") && (line.contains("disconnected"))){
+            if (line.contains("State") && (line.contains("disconnected"))) {
                 System.out.println("Probably on LAN");
-                WirelessEncryption=true;
+                WirelessEncryption = true;
                 break;
-            } else{
-                if(line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))){
+            } else {
+                if (line.contains("Authentication") && (line.contains("WPA2-Enterprise") || line.contains("WPA2-Personal"))) {
                     //set global variable
-                    WirelessEncryption=true;
+                    WirelessEncryption = true;
                     System.out.println("Wireless Secure!!!");
                     break;
                 }
             }
-            WirelessEncryption=false;
+            WirelessEncryption = false;
         }
     }
 
     private void checkWindowsApproved() throws SQLException {
-        if (checkWindowsApprovedOld()==true) {
+        if (checkWindowsApprovedOld() == true) {
             System.out.println("SUPPORTED VERSION");
-            WindowsStatus=true;
-        }else{
-            WindowsStatus=false;
+            WindowsStatus = true;
+        } else {
+            WindowsStatus = false;
             System.out.println("Not supported VERSION!");
         }
     }
 
-    private void handleAlert(String message){
+    private void handleAlert(String message) {
         Platform.runLater(() -> {
             LoadingSpinner.setVisible(false);
             RestartDeviceCheckButton.setVisible(true);
@@ -303,31 +345,32 @@ public class ControllerAdminDeviceCheck implements Initializable {
         BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
         Scanner s = new Scanner(in).useDelimiter("                ");
-        String firstLine=s.next();
-        String osBuildNoStr=s.next();
+        String firstLine = s.next();
+        String osBuildNoStr = s.next();
         //System.out.println("OS version is " + osName);
         Scanner sc = new Scanner(osBuildNoStr).useDelimiter(" ");
-        String osBuildNo=sc.next();
+        String osBuildNo = sc.next();
         System.out.println(osBuildNo);
         return osBuildNo;
     }
 
     String currentOSVersion;
-    private boolean checkWindowsApprovedOld(){
+
+    private boolean checkWindowsApprovedOld() {
         boolean windowsApproved = false;
-        String currentOSVersion=getBuildNumber();
-        Device_Build_NumberDB device_build_numberDB=new Device_Build_NumberDB();
+        String currentOSVersion = getBuildNumber();
+        Device_Build_NumberDB device_build_numberDB = new Device_Build_NumberDB();
         ArrayList<OSVersion> supportedVersions = device_build_numberDB.CheckSupportedVersion();
 //        CheckSupportedVersion();
 //        run();
-        for(OSVersion o: supportedVersions) {
+        for (OSVersion o : supportedVersions) {
             if (o.getVersionNumber().equals(currentOSVersion)) {
-                System.out.println("Current Version: "+currentOSVersion+" ArrList: "+o);
-                windowsApproved=true;
+                System.out.println("Current Version: " + currentOSVersion + " ArrList: " + o);
+                windowsApproved = true;
                 break;
             } else {
                 System.out.println(o);
-                windowsApproved=false;
+                windowsApproved = false;
             }
         }
         return windowsApproved;

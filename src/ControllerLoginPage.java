@@ -154,32 +154,6 @@ public class ControllerLoginPage implements Initializable{
                     }
                 } else {
                     process.reset();
-//                    LoginButton.setDisable(false);
-//                    RevokeCredentialsButton.setDisable(false);
-//                    LoadingSpinner.setVisible(false);
-//                    myScene = anchorPane.getScene();
-//                    Stage stage = (Stage) (myScene).getWindow();
-//
-//                    String title = "Warning";
-//                    String content = "Permission Invalid: You are not allowed the access the app. Please contact your administrator for more information";
-//
-//                    JFXButton close = new JFXButton("Close");
-//
-//                    close.setButtonType(JFXButton.ButtonType.RAISED);
-//
-//                    close.setStyle("-fx-background-color: #00bfff;");
-//
-//                    JFXDialogLayout layout = new JFXDialogLayout();
-//                    layout.setHeading(new Label(title));
-//                    layout.setBody(new Label(content));
-//                    layout.setActions(close);
-//                    JFXAlert<Void> alert = new JFXAlert<>(stage);
-//                    alert.setOverlayClose(true);
-//                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-//                    alert.setContent(layout);
-//                    alert.initModality(Modality.NONE);
-//                    close.setOnAction(__ -> alert.hideWithAnimation());
-//                    alert.show();
                     showAlert("Warning","Permission Invalid: You are not allowed the access the app. Please contact your administrator for more information");
                     System.out.println("NOT INSIDE DB.REJECTED!!!");
                 }

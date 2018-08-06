@@ -12,6 +12,7 @@ import com.google.cloud.storage.StorageOptions;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -19,12 +20,14 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.*;
@@ -65,11 +68,7 @@ public class ControllerAdminHome implements Initializable {
     private OAuth2LoginAdmin login = new OAuth2LoginAdmin();
 
     private static String lastLogin;
-    private static int loginCounter=0;
-
-//    private String myIPAddress;
-//    private boolean ipChecker;
-
+    private static int loginCounter = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,10 +84,9 @@ public class ControllerAdminHome implements Initializable {
             String whatismyIP = IPAddressPolicy.getIp();
             ipAddr.setText(whatismyIP);
             Boolean validityIP = IPAddressPolicy.isValidRange(whatismyIP);
-            if(validityIP==true){
+            if (validityIP == true) {
                 ipAddr.setTextFill(Color.rgb(1, 0, 199));
-            }
-            else{
+            } else {
                 ipAddr.setTextFill(Color.rgb(255, 0, 0));
             }
         } catch (Exception e) {
@@ -96,7 +94,8 @@ public class ControllerAdminHome implements Initializable {
         }
 
         hamburgerBar();
-        timerprocess.start();
+        updateTimer();
+//        timerprocess.start();
         try {
             InfoUpdate();
         } catch (Exception e) {
@@ -130,30 +129,6 @@ public class ControllerAdminHome implements Initializable {
     }
 
 
-//    ArrayList<MyBlob> BlobList = new ArrayList<MyBlob>();
-
-//    private void getLatestFile() throws IOException {
-//        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        String email = login.getEmail();
-//        Scanner s = new Scanner(email).useDelimiter("@");
-//        String emailFront = s.next();
-//        emailFront = emailFront.replace(".", "");
-//        String bucketname = emailFront + "nspj";
-////        String bucketname="hugochiaxyznspj";
-//        Page<Blob> blobs = storage.list(bucketname);
-//        for (Blob blob : blobs.iterateAll()) {
-//            // do something with the blob
-//            BlobList.add(new MyBlob(blob));
-//            System.out.println("FROM METHOD" + blob);
-//            System.out.println(convertTime(blob.getCreateTime()));
-//            System.out.println("FROM METHOD" + blob.getName());
-////            if (fileName.equals(blob.getName())) {
-////                System.out.println("Choose Different NAME!");
-////                return true;
-////            }
-//        }
-//    }
-
     private Service timerprocess = new Service() {
         @Override
         protected Task createTask() {
@@ -167,50 +142,85 @@ public class ControllerAdminHome implements Initializable {
         }
     };
 
-    private static boolean firstTime;
-    private void InfoUpdate() throws Exception {
-        credential = login.login();
-        String email;
-        email=login.getEmail();
-        admin_DB admin_db=new admin_DB();
-        if (loginCounter == 0) {
-            if (admin_db.getLastLoginTime(email)==null){
-                LastLoginLabel.setText("Welcome this is your first time logging in");
-                firstTime=true;
-            }else{
-                lastLogin=convertTime(admin_db.getLastLoginTime(email));
-                LastLoginLabel.setText("Your last login was on " + lastLogin);
-                //else this^
-                //also make this reference the static timing instead
-                firstTime=false;
-            }
-            LocalDateTime now=LocalDateTime.now();
-            String ActivationTime=now.toString();
-            admin_db.setLastLoginTime(ActivationTime,email);
-            loginCounter++;
-            GreetingsLabel.setText(getGreetings() + login.getName());
-        }else{
-            if (firstTime==true){
-                LastLoginLabel.setText("Welcome this is your first time logging in");
-            } else{
-                LastLoginLabel.setText("Your last login was on " + lastLogin);
-            }
-            GreetingsLabel.setText(getGreetings() + login.getName());
+    private static String email;
+    private static String name;
+
+    //set as global var
+    public void passData(String name, String email, String lastLogin) {
+        this.name = name;
+        this.email = email;
+        this.lastLogin = lastLogin;
+        process.start();
+        process.setOnSucceeded(e -> {
+            process.reset();
+        });
+        process.setOnCancelled(e -> {
+            process.reset();
+        });
+        process.setOnFailed(e -> {
+            process.reset();
+        });
+    }
+
+    private Service process = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    InfoUpdate();
+                    return null;
+                }
+            };
         }
-//        System.out.println(lastLogin);
+    };
 
-        //if last login null show another msg
+    private static boolean firstTime;
 
-        //set timing DB here
-        //set static timing
-        //increase counter
+    private void InfoUpdate() throws Exception {
+//        credential = login.login();
+//        String email;
+//        email=login.getEmail();
+        admin_DB admin_db = new admin_DB();
+        if (loginCounter == 0) {
+//                if (admin_db.getLastLoginTime(email) == null) {
+//                    LastLoginLabel.setText("Welcome this is your first time logging in");
+//                    firstTime = true;
+//                } else {
+//                    lastLogin = convertTime(admin_db.getLastLoginTime(email));
+//                    LastLoginLabel.setText("Your last login was on " + lastLogin);
+//                    //else this^
+//                    //also make this reference the static timing instead
+//                    firstTime = false;
+//                }
+            Platform.runLater(() -> {
+                GreetingsLabel.setText(getGreetings() + name);
+                LastLoginLabel.setText(lastLogin);
+                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                snackbar.show("Information Updated", 3000);
+                snackbar.getStylesheets().add("Style.css");
+            });
 
-//        //contact DB to store last login time
-//        if (loginCounter==0){
-//            lastLogin=admin_db.getLastLoginTime(email);
-//            loginCounter++;
-//        }
-//        //set new login time
+            LocalDateTime now = LocalDateTime.now();
+            String ActivationTime = now.toString();
+            admin_db.setLastLoginTime(ActivationTime, email);
+            loginCounter++;
+//                GreetingsLabel.setText(getGreetings() + name);
+        } else {
+//                if (firstTime == true) {
+//                    LastLoginLabel.setText("Welcome this is your first time logging in");
+//                } else {
+//                    LastLoginLabel.setText("Your last login was on " + lastLogin);
+//                }
+//                GreetingsLabel.setText(getGreetings() + name);
+            Platform.runLater(() -> {
+                GreetingsLabel.setText(getGreetings() + name);
+                LastLoginLabel.setText(lastLogin);
+//                JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//                snackbar.show("Information Updated", 3000);
+//                snackbar.getStylesheets().add("Style.css");
+            });
+        }
     }
 
     private String convertTime(String time) {
@@ -224,26 +234,21 @@ public class ControllerAdminHome implements Initializable {
         String month = s1.next();
         String date = s1.next();
         dateDisplay = date + "/" + month + "/" + year;
-//        Scanner s2 = new Scanner(timeGeneral).useDelimiter(".");
-//        timeDisplay = s2.next();
-//        String minute = s2.next();
-//        String second = s2.next();
-//        String time =
 
-        return dateDisplay + " " + timeDisplay.substring(0,8);
+        return dateDisplay + " " + timeDisplay.substring(0, 8);
     }
 
     private String getGreetings() {
         String greetings = null;
         int hours = Integer.parseInt(new SimpleDateFormat("HH").format(new Date()));
-        if(hours>=0 && hours<=12){
-            greetings="Good morning ";
-        }else if(hours>=12 && hours<=16){
-            greetings="Good afternoon ";
-        }else if(hours>=16 && hours<=21){
-            greetings="Good evening ";
-        }else if(hours>=21 && hours<=24){
-            greetings="Good night ";
+        if (hours >= 0 && hours <= 12) {
+            greetings = "Good morning ";
+        } else if (hours >= 12 && hours <= 16) {
+            greetings = "Good afternoon ";
+        } else if (hours >= 16 && hours <= 21) {
+            greetings = "Good evening ";
+        } else if (hours >= 21 && hours <= 24) {
+            greetings = "Good night ";
         }
         return greetings;
     }
