@@ -215,10 +215,10 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                String filename=s1.next();
                 if (checkFolderName1(folderName) == false) {
                     arrayFolder1.add(folderName);
-                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()), folderName, "General", "Folder"));
+                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()), folderName, "Folder"));
                 }
             } else {
-                blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()), "", "General", "File"));
+                blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()), "", "File"));
             }
         }
         blobsListFirst = blobs1;
@@ -748,10 +748,10 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                String filename=s.next();
                 if (checkFolderName(folderName) == false) {
                     arrayFolder.add(folderName);
-                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()), folderName, "General", "Folder"));
+                    blobs.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime(blob.getCreateTime()), folderName, "Folder"));
                 }
             } else {
-                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()), "", "General", "File"));
+                blobs.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime(blob.getCreateTime()), "", "File"));
             }
         }
 
@@ -911,7 +911,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         typeColumn.setPrefWidth(156);
         typeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableBlob, String> param) -> {
             if (typeColumn.validateValue(param)) {
-                return param.getValue().getValue().type;
+                return param.getValue().getValue().type2;
             } else {
                 return typeColumn.getComputedValue(param);
             }
@@ -929,7 +929,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         typeColumn.setOnEditCommit((CellEditEvent<TableBlob, String> t) -> t.getTreeTableView()
                 .getTreeItem(t.getTreeTablePosition()
                         .getRow())
-                .getValue().type.set(t.getNewValue()));
+                .getValue().type2.set(t.getNewValue()));
 
         dateColumn.setCellFactory((TreeTableColumn<TableBlob, String> param) -> new GenericEditableTreeTableCell<>(
                 new TextFieldEditorBuilder()));
@@ -996,7 +996,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            System.out.println(tableBlob.getBlobName());
 //            System.out.println(tableBlob.getDate());
 //                    System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().type);
-                    if (JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType().equals("Folder")) {
+                    if (JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType2().equals("Folder")) {
                         System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName());
                         String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
                         //clear observable list and repopulate it with only that particular folder info
@@ -1039,7 +1039,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                    if (fileName.contains("/")){
 //                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "Folder"));
 //                                    } else{
-                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "File"));
+                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File"));
 //                                    }
                                 }
 
@@ -1398,9 +1398,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                     //check password against the hash in DB first then set password temporarily as a global variable
                     User_InfoDB user_infoDB = new User_InfoDB();
                     checkPassword = user_infoDB.checkPassword(tempPassword, login.getEmail());
-//                    Platform.runLater(() -> {
-//
-//                    });
                     return null;
                 }
             };
@@ -1512,11 +1509,12 @@ public class ControllerSecureCloudStorage implements Initializable {
         final StringProperty blobName;
         final StringProperty date;
         final StringProperty folderName;
-        final StringProperty type;
+//        final StringProperty type;
         final StringProperty type2;
 
         //take in blobname can be file/folder, date, type, General/File, type
-        TableBlob(String blobName, String date, String folderName, String type, String type2) {
+//        TableBlob(String blobName, String date, String folderName, String type, String type2) {
+            TableBlob(String blobName, String date, String folderName, String type2) {
 //            if(blobName.contains("/")){
 //                Scanner s = new Scanner(blobName).useDelimiter("/");
 //                String folderName = s.next();
@@ -1537,11 +1535,11 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            }
             if (type2.equals("Folder")) {
                 this.type2 = new SimpleStringProperty("Folder");
-                this.type = new SimpleStringProperty("Folder");
+//                this.type = new SimpleStringProperty("Folder");
                 this.folderName = new SimpleStringProperty(folderName);
             } else {
                 this.type2 = new SimpleStringProperty("File");
-                this.type = new SimpleStringProperty("File");
+//                this.type = new SimpleStringProperty("File");
                 this.folderName = new SimpleStringProperty("");
             }
 //            this.folderName = new SimpleStringProperty(blobName);
@@ -1577,17 +1575,17 @@ public class ControllerSecureCloudStorage implements Initializable {
             this.folderName.set(folderName);
         }
 
-        public String getType() {
-            return type.get();
-        }
-
-        public StringProperty typeProperty() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type.set(type);
-        }
+//        public String getType() {
+//            return type.get();
+//        }
+//
+//        public StringProperty typeProperty() {
+//            return type;
+//        }
+//
+//        public void setType(String type) {
+//            this.type.set(type);
+//        }
 
         public String getType2() {
             return type2.get();
