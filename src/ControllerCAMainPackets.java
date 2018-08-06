@@ -656,7 +656,8 @@ public class ControllerCAMainPackets implements Initializable {
                 capture.stopSniffing();
                 packets = capture.packets;
                 OLpackets = FXCollections.observableArrayList(packets);
-                capture.startSniffing();
+                if (!capture.isRunning())
+                    capture.startSniffing();
             }
             Platform.runLater(() -> {
                 packetstable.setItems(OLpackets);
