@@ -25,9 +25,9 @@
          </children>
       </AnchorPane>
       <JFXSpinner fx:id="LoadingSpinner" layoutX="409.0" layoutY="191.0" prefHeight="218.0" prefWidth="250.0" />
-      <JFXButton fx:id="RestartDeviceCheckButton" layoutX="379.0" layoutY="453.0" onAction="#onClickRestartDeviceCheckButton" prefHeight="120.0" prefWidth="310.0" text="Restart Device Checking" visible="false">
+      <JFXButton fx:id="RestartDeviceCheckButton" buttonType="RAISED" layoutX="379.0" layoutY="453.0" onAction="#onClickRestartDeviceCheckButton" prefHeight="120.0" prefWidth="310.0" style="-fx-background-color: #FFEB3B;" text="Restart Device Checking" visible="false">
          <font>
-            <Font size="21.0" />
+            <Font size="23.0" />
          </font>
       </JFXButton>
       <Label layoutX="335.0" layoutY="74.0" prefHeight="67.0" prefWidth="398.0" text="Please wait while we check your device.....">
