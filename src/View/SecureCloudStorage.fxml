@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSecureCloudStorage">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerSecureCloudStorage">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #03A9F4;">
          <children>
@@ -28,7 +28,7 @@
       </AnchorPane>
       <JFXButton fx:id="UploadButton" buttonType="RAISED" layoutX="873.0" layoutY="76.0" mnemonicParsing="false" onAction="#onClickUploadButton" prefHeight="61.0" prefWidth="184.0" style="-fx-background-color: #4CAF50;" text="Upload file">
          <font>
-            <Font size="15.0" />
+            <Font size="17.0" />
          </font></JFXButton>
       <AnchorPane fx:id="TableAnchorPane" layoutX="9.0" layoutY="138.0" prefHeight="451.0" prefWidth="1048.0" />
       <JFXTextField fx:id="filterField" layoutX="685.0" layoutY="103.0" prefHeight="31.0" prefWidth="184.0" promptText="Search">
@@ -40,7 +40,10 @@
             <Image url="@baseline_search_black_18dp.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="backButton" layoutX="20.0" layoutY="78.0" onAction="#onClickBackButton" prefHeight="58.0" prefWidth="108.0" text="Back" visible="false" />
+      <JFXButton fx:id="backButton" buttonType="RAISED" layoutX="20.0" layoutY="78.0" onAction="#onClickBackButton" prefHeight="58.0" prefWidth="108.0" style="-fx-background-color: #4CAF50;" text="Back" visible="false">
+         <font>
+            <Font size="17.0" />
+         </font></JFXButton>
       <Label fx:id="FilePathLabel" layoutX="156.0" layoutY="103.0" prefHeight="44.0" prefWidth="285.0" text="/" />
       <JFXSpinner fx:id="JFXSpinner" layoutX="435.0" layoutY="277.0" prefHeight="174.0" prefWidth="196.0" />
       <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />

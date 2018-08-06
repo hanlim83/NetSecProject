@@ -1,7 +1,5 @@
 import Database.Device_Build_NumberDB;
-import Model.OAuth2Login;
 import Database.OSVersion;
-import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
