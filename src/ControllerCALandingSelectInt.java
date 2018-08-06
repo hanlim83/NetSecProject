@@ -178,6 +178,8 @@ public class ControllerCALandingSelectInt implements Initializable {
             for (TreeItem t : dummyRoot.getChildren()) {
                 t.setExpanded(true);
             }
+            intDisplay.getStylesheets().add("IntTreeTableViewStyle.css");
+            intDisplay.applyCss();
             intDisplayCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue()));
         } catch (PcapNativeException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

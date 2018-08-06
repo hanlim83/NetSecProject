@@ -45,7 +45,6 @@ public class MainAdmin extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root, 1056, 600);
             scene.getStylesheets().add("Style.css");
-            scene.getStylesheets().add("IntTreeTableViewStyle.css");
             loadAdminSideTabCtrl();
             if (!new File("PcapExport").exists()) {
                 FileUtils.forceMkdir(new File("PcapExport"));

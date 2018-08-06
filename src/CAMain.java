@@ -48,8 +48,6 @@ public class CAMain extends Application {
             handler = new ScheduledThreadPoolExecutorHandler();
             controller.passVariables(handler, null, false, 0, null, null, true, null);
             Scene scene = new Scene(root, 1056, 600);
-            String css = this.getClass().getResource("IntTreeTableViewStyle.css").toExternalForm();
-            scene.getStylesheets().add(css);
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.getIcons().add(new Image("FireIcon.png"));

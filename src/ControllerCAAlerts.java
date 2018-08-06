@@ -195,7 +195,7 @@ public class ControllerCAAlerts implements Initializable {
                                             stage.show();
                                         });
                                         btn.setId("tableJFXButton");
-                                        btn.getStylesheets().add("Style.css");
+                                        btn.getStylesheets().add("AlertBtnStyle.css");
                                         setGraphic(btn);
                                         setText(null);
                                     } catch (ClassCastException e) {
