@@ -46,7 +46,10 @@
             <TableColumn fx:id="deleteBuckets1" prefWidth="203.0" text="Deletion" />
          </columns>
       </TableView>
-      <JFXButton fx:id="CreateBuckets" layoutX="70.0" layoutY="117.0" onMouseClicked="#handleCreateBuckets" prefHeight="48.0" prefWidth="157.0" text="Creating Buckets" textFill="#0916ff" />
+      <JFXButton fx:id="CreateBuckets" buttonType="RAISED" layoutX="70.0" layoutY="117.0" onMouseClicked="#handleCreateBuckets" prefHeight="48.0" prefWidth="157.0" ripplerFill="#0d00ff" style="-fx-background-color: #FFC107;" text="Creating Buckets" textFill="#0916ff">
+         <font>
+            <Font size="16.0" />
+         </font></JFXButton>
       <JFXSpinner fx:id="spinner" layoutX="400.0" layoutY="250.0" prefHeight="212.0" prefWidth="230.0" visible="false" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>

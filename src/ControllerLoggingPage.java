@@ -38,6 +38,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -332,10 +333,10 @@ public class ControllerLoggingPage implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hamburgerBar();
 //        loggingsnippets = new LoggingSnippets();
 //        options = LoggingOptions.getDefaultInstance();
         initializeProcess.start();
-        hamburgerBar();
         spinner.setVisible(false);
 
         try {
@@ -364,8 +365,6 @@ public class ControllerLoggingPage implements Initializable {
             g.printStackTrace();
         }
 
-//        logsList = loggingsnippets.getLogsExtractList();
-//        logsObservableList = FXCollections.observableList(logsList);
 
         searchFunction.setVisible(false);
 
@@ -387,6 +386,9 @@ public class ControllerLoggingPage implements Initializable {
                 protected Void call() throws Exception {
                     loggingsnippets = new LoggingSnippets();
                     options = LoggingOptions.getDefaultInstance();
+
+                    logsList = loggingsnippets.getLogsExtractList();
+                    logsObservableList = FXCollections.observableList(logsList);
                     return null;
                 }
 
@@ -437,11 +439,11 @@ public class ControllerLoggingPage implements Initializable {
 
         StringProperty timestamp0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getTimestamp();
         Label LABEL0 = new Label();
-//        LABEL0.setFont(new Font(LABEL0.getFont().getName(),11));
+        LABEL0.setFont(new Font(LABEL0.getFont().getName(),15));
         LABEL0.setText(String.valueOf(timestamp0).substring(23, String.valueOf(timestamp0).length() - 1));
         StringProperty severity0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getSeverity();
         Label LABEL1 = new Label();
-//        LABEL1.setFont(new Font(LABEL0.getFont().getName(),11));
+        LABEL1.setFont(new Font(LABEL0.getFont().getName(),15));
         String severity00 = String.valueOf(severity0);
         if (severity00.contains("ERROR")) {
             LABEL1.setTextFill(Color.rgb(255, 0, 0));
@@ -453,18 +455,19 @@ public class ControllerLoggingPage implements Initializable {
 
         StringProperty action0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getAction();
         Label LABEL2 = new Label();
-//        LABEL2.setFont(new Font(LABEL0.getFont().getName(),11));
+        LABEL2.setFont(new Font(LABEL0.getFont().getName(),15));
         LABEL2.setText(String.valueOf(action0).substring(23, String.valueOf(action0).length() - 1));
         LABEL2.setWrapText(true);
         StringProperty bucketname0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getBucketName();
         Label LABEL3 = new Label();
-//        LABEL3.setFont(new Font(LABEL0.getFont().getName(),11));
+        LABEL3.setFont(new Font(LABEL0.getFont().getName(),13));
         LABEL3.setText(String.valueOf(bucketname0).substring(23, String.valueOf(bucketname0).length() - 1));
         LABEL3.setWrapText(true);
         StringProperty user0 = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFinalEmail();
         Label LABEL4 = new Label();
-//        LABEL4.setFont(new Font(LABEL0.getFont().getName(),11));
+        LABEL4.setFont(new Font(LABEL0.getFont().getName(),13));
         LABEL4.setText(String.valueOf(user0).substring(23, String.valueOf(user0).length() - 1));
+        LABEL4.setWrapText(true);
 
         String string1 = "Timestamp :";
         Label label1 = new Label();

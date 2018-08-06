@@ -46,12 +46,12 @@
             <TableColumn fx:id="revoke" prefWidth="116.0" text="Revoke " />
         </columns>
       </TableView>
-      <JFXButton fx:id="insertOS" layoutX="305.0" layoutY="96.0" onMouseClicked="#handleInsertOS" text="Insert OS Versions">
+      <JFXButton fx:id="insertOS" buttonType="RAISED" layoutX="305.0" layoutY="96.0" onMouseClicked="#handleInsertOS" ripplerFill="BLUE" style="-fx-background-color: #FFC107;" text="Insert OS Versions" textFill="#0009ff">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="viewButton" layoutX="126.0" layoutY="95.0" onMouseClicked="#handleView" text="View OS Versions">
+      <JFXButton fx:id="viewButton" buttonType="RAISED" layoutX="126.0" layoutY="95.0" onMouseClicked="#handleView" ripplerFill="BLUE" style="-fx-background-color: #FFC107;" text="View OS Versions" textFill="#0900ff">
          <font>
             <Font size="16.0" />
          </font>
