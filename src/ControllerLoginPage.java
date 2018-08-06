@@ -331,7 +331,7 @@ public class ControllerLoginPage implements Initializable{
     }
 
     //Service method
-    Service process = new Service() {
+    private Service process = new Service() {
         @Override
         protected Task createTask() {
             return new Task() {
@@ -366,4 +366,8 @@ public class ControllerLoginPage implements Initializable{
             };
         }
     };
+
+    private void showAlert(){
+
+    }
 }

@@ -202,7 +202,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         String emailFront = s.next();
         emailFront = emailFront.replace(".", "");
         String privateBucketName = emailFront + "nspj";
-//        String bucketname="hugochiaxyznspj";
         Page<Blob> blobList = storage.list(privateBucketName);
         for (Blob blob : blobList.iterateAll()) {
 //            BlobList.add(new MyBlob(blob));
@@ -756,7 +755,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
         }
 
-
         JFXTreeTableView.unGroup(folderColumn);
         JFXTreeTableView.unGroup(typeColumn);
         JFXTreeTableView.getColumns().clear();
@@ -823,9 +821,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                                     setGraphic(null);
                                     setText(null);
                                 } else {
-//                                    JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName()
-//                                    if (JFXTreeTableView.getSelectionModel().getSelectedItem()) {
-//                                    if cannot revoke -> disable
                                     try {
 //                                        System.out.println(item);
                                         int selectdIndex = getTreeTableRow().getIndex();
@@ -1248,7 +1243,6 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            password = jfxPasswordField.getText();
 //            alert.hideWithAnimation();
             calculateEmail();
-            //        UploadFileTest();
             if (type.equals("Download")) {
                 try {
                     getStorage();
@@ -1264,7 +1258,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 password = jfxPasswordField.getText();
                 alert.hideWithAnimation();
                 calculateEmail();
-                //        UploadFileTest();
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Choose File to Upload");
                 //FEATURE: stage now loads as 1 page instead of 2
@@ -1342,7 +1335,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                     password = jfxPasswordField.getText();
                     alert.hideWithAnimation();
                     calculateEmail();
-                    //        UploadFileTest();
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Choose File to Upload");
                     //FEATURE: stage now loads as 1 page instead of 2
