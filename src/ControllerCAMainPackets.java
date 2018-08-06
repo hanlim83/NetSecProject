@@ -38,6 +38,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -644,8 +645,15 @@ public class ControllerCAMainPackets implements Initializable {
                 });
                 ScheduledThreadPoolExecutorHandler.getService().execute(cRunnable);
             }
-            packets = capture.packets;
-            OLpackets = FXCollections.observableArrayList(packets);
+            try {
+                packets = capture.packets;
+                OLpackets = FXCollections.observableArrayList(packets);
+            } catch (ConcurrentModificationException e) {
+                capture.stopSniffing();
+                packets = capture.packets;
+                OLpackets = FXCollections.observableArrayList(packets);
+                capture.startSniffing();
+            }
             Platform.runLater(() -> {
                 packetstable.setItems(OLpackets);
                 packetstable.refresh();

@@ -42,6 +42,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -664,9 +665,17 @@ public class ControllerCAMainDashboard implements Initializable {
                 });
                 ScheduledThreadPoolExecutorHandler.getService().execute(captureRunnable);
             }
-            addToQueue();
-            ProtoMakeup();
-            TopIPMakeup();
+            try {
+                addToQueue();
+                ProtoMakeup();
+                TopIPMakeup();
+            } catch (ConcurrentModificationException e) {
+                capture.stopSniffing();
+                addToQueue();
+                ProtoMakeup();
+                TopIPMakeup();
+                capture.startSniffing();
+            }
             Platform.runLater(() -> alertCount.setText("Suspicious Events Count: " + Integer.toString(capture.getEvents())));
         }
     }
