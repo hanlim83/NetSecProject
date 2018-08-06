@@ -12,6 +12,8 @@ public class User {
     private String entryID;
     private String ActivationTime;
 
+    private String tempTime;
+
     public String getEmail() {
         return email;
     }
@@ -94,4 +96,6 @@ public class User {
             return "";
         }
     }
+
+
 }

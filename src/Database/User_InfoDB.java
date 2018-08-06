@@ -8,6 +8,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class User_InfoDB {
     public ArrayList<User> getUserList(){
@@ -33,6 +34,8 @@ public class User_InfoDB {
                 user.setPhoneNo(resultSet.getString("phoneNo"));
                 user.setEntryID(resultSet.getString("entryID"));
                 user.setActivationTime(resultSet.getString("activationTime"));
+
+//                user.setActivationTime(resultSet.getString("activationTime"));
                 UserList.add(user);
             }
         } catch (SQLException e) {

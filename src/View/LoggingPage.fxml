@@ -62,6 +62,11 @@
                         <Image url="@baseline_search_black_18dp.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="guide" layoutX="17.0" layoutY="378.0" text="Click on specific row to view more information" textFill="RED" visible="false">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
         </content>

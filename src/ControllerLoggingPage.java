@@ -67,6 +67,9 @@ public class ControllerLoggingPage implements Initializable {
     private Label ipAddr;
 
     @FXML
+    private Label guide;
+
+    @FXML
     private Line appearLine;
 
     @FXML
@@ -559,6 +562,7 @@ public class ControllerLoggingPage implements Initializable {
             process.start();
         }
         process.setOnSucceeded(e -> {
+            guide.setVisible(true);
             searchPic.setVisible(true);
             appearLine.setVisible(true);
             spinner.setVisible(false);
@@ -625,6 +629,7 @@ public class ControllerLoggingPage implements Initializable {
             process.start();
         }
         process.setOnSucceeded(e -> {
+            guide.setVisible(true);
             appearLine.setVisible(true);
             searchPic.setVisible(true);
             spinner.setVisible(false);
@@ -704,6 +709,7 @@ public class ControllerLoggingPage implements Initializable {
 
         }
         process.setOnSucceeded(e -> {
+            guide.setVisible(true);
             appearLine.setVisible(true);
             searchPic.setVisible(true);
             general.setDisable(false);
