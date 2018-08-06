@@ -55,7 +55,7 @@
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0"/>
         <JFXSpinner fx:id="spinner" layoutX="411.0" layoutY="267.0" prefHeight="209.0" prefWidth="200.0"/>
         <JFXButton fx:id="returnToCaptureBtn" layoutX="432.0" layoutY="553.0" onAction="#returnToCaptureScreen"
-                   text="Back to Alerts screen">
+                   style="-fx-background-color: #ffd149;" text="Back to Alerts screen">
             <font>
                 <Font name="Lucida Sans Regular" size="18.0"/>
             </font>

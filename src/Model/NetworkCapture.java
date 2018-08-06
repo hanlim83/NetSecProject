@@ -405,6 +405,8 @@ public class NetworkCapture {
         } else {
             return;
         }
+        if (ipAddr.equals("127.0.0.1"))
+            return;
         if (ARPDatabase.isEmpty()) {
             ARPObject newObject = new ARPObject(macAddr, ipAddr);
             ARPDatabase.add(newObject);

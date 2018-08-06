@@ -62,7 +62,7 @@
          </font>
       </JFXToggleButton>
        <JFXButton fx:id="clearCaptureBtn" layoutX="750.0" layoutY="84.0" onAction="#ClearPackets"
-                  text="Clear Current Capture" textFill="RED">
+                  style="-fx-background-color: #ffd149;" text="Clear Current Capture" textFill="RED">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>

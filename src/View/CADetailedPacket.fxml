@@ -58,7 +58,7 @@
             </font>
         </Text>
         <JFXButton fx:id="returnCaptureBtn" layoutX="407.0" layoutY="530.0" onAction="#returntoCapture"
-                   text="Return to Capture Page">
+                   style="-fx-background-color: #ffd149;" text="Return to Capture Page">
             <font>
                 <Font name="Lucida Sans Regular" size="20.0"/>
             </font>
