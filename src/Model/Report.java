@@ -89,7 +89,7 @@ public class Report {
 
                 if (virusInfo.isDetected() == true) {
                     //this.result = new String("Malicious");
-                    String this3 = "Malicious";
+                    String this3 = "Malicious - " + virusInfo.getResult();
                     results.add(this3);
                     System.out.println(results + "\n\n\n");
                 } else {

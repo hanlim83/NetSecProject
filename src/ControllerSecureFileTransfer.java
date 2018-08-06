@@ -1,4 +1,5 @@
 import Database.User_InfoDB;
+import Database.extension_DB;
 import Model.*;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.gax.paging.Page;
@@ -25,10 +26,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.io.FilenameUtils;
 import org.json.simple.JSONObject;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -105,6 +106,7 @@ public class ControllerSecureFileTransfer implements Initializable {
     private static String ownBucketName;
     private static String downloadThis;
     private static String password = "Pass123!";
+    private String tempPassword;
     private static String ownEmail;
 
     public ControllerSecureFileTransfer() throws NoSuchAlgorithmException, NoSuchPaddingException {
@@ -153,14 +155,62 @@ public class ControllerSecureFileTransfer implements Initializable {
 
         button.setOnAction(e -> {
 
-           downloadThis = getName();
-           System.out.println(downloadThis);
+//            myScene = anchorPane.getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//
+//            String title = "Enter your password to enter the restricted area";
+//
+//            JFXPasswordField jfxPasswordField = new JFXPasswordField();
+//            jfxPasswordField.setPromptText("Enter password");
+//
+//            JFXButton jfxOKButton = new JFXButton("Ok");
+//            jfxOKButton.setButtonType(JFXButton.ButtonType.RAISED);
+//            jfxOKButton.setStyle("-fx-background-color: #00bfff;");
+//
+//            JFXButton jfxcancelButton = new JFXButton("Cancel");
+//            jfxcancelButton.setButtonType(JFXButton.ButtonType.RAISED);
+//            jfxcancelButton.setStyle("-fx-background-color: #00bfff;");
+//
+//            JFXAlert<Void> alert = new JFXAlert<>(stage);
+//
+//            if (password==null) {
+//
+//                JFXDialogLayout layout = new JFXDialogLayout();
+//                layout.setHeading(new Label(title));
+//                layout.setBody(jfxPasswordField);
+//                layout.setActions(jfxOKButton, jfxcancelButton);
+//                alert.setOverlayClose(false);
+//                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                alert.setContent(layout);
+//                alert.initModality(Modality.NONE);
+//                jfxOKButton.setOnAction(__ -> {
+//                    //check
+//                    tempPassword = jfxPasswordField.getText();
+//                    jfxOKButton.setDisable(true);
+//                    jfxcancelButton.setDisable(true);
+//                    jfxPasswordField.setDisable(true);
+//                    User_InfoDB user = new User_InfoDB();
+//                    if(user.checkPassword(tempPassword,ownEmail)) {
+//
+//                        this.password = tempPassword;
+//
+//                    }
+//
+//                });
+//                jfxcancelButton.setOnAction(___ -> alert.hideWithAnimation());
+//                alert.show();
+//
+//
+//            } else {
+
+            downloadThis = getName();
+            System.out.println(downloadThis);
 
 
-           try {
+            try {
 
-               getStorage();
-                downloadFileNew(storage,ownBucketName,downloadThis);
+                getStorage();
+                downloadFileNew(storage, ownBucketName, downloadThis);
 
                 deleteFile(ownBucketName, downloadThis);
 
@@ -168,9 +218,9 @@ public class ControllerSecureFileTransfer implements Initializable {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-
         });
     }
+
 
 
     public String getName() { return name; }
@@ -347,26 +397,124 @@ public class ControllerSecureFileTransfer implements Initializable {
 
 
             File file;
+            extension_DB ext = new extension_DB();
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
             file = fileChooser.showOpenDialog(null);
-
+            String path = file.getAbsolutePath();
+            String thisExt = FilenameUtils.getExtension(path);
 
             FileScanner scan = new FileScanner();
-            scan.Scanner(file.getAbsolutePath());
 
-            if (scan.scannerReport() == false) {
+            if (ext.getExtensionList().contains(thisExt)) {
 
-                popAlert("Your file contains virus. It will not be allowed to be uploaded");
+                popAlert("This file's extension ( ."+thisExt+" ) has been blocked by the administrator(s) from being uploaded");
 
             } else {
+
+                scan.Scanner(file.getAbsolutePath());
+
+
+                if (scan.scannerReport() == false) {
+
+//                myScene = anchorPane.getScene();
+//                Stage stage2 = (Stage) (myScene).getWindow();
+//
+//                String title1 = "";
+//                String content = "Your file contains virus. It will not be allowed to be uploaded";
+//
+//                JFXButton close = new JFXButton("Close");
+//                close.setButtonType(JFXButton.ButtonType.RAISED);
+//                close.setStyle("-fx-background-color: #00bfff;");
+//
+//                JFXButton report = new JFXButton("Go to report");
+//                report.setButtonType(JFXButton.ButtonType.RAISED);
+//                report.setStyle("-fx-background-color: #00bfff;");
+//
+//                JFXDialogLayout layout = new JFXDialogLayout();
+//                layout.setHeading(new Label(title1));
+//                layout.setBody(new Label(content));
+//                layout.setActions(close,report);
+//                JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
+//                alert1.setOverlayClose(true);
+//                alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+//                alert1.setContent(layout);
+//                alert1.initModality(Modality.NONE);
+//                close.setOnAction(__ -> alert1.hideWithAnimation());
+//                report.setOnAction(__ -> {
+//                            alert1.hideWithAnimation();
+//                            FXMLLoader loader = new FXMLLoader();
+//                            loader.setLocation(getClass().getResource("ScanReport.fxml"));
+//                            Stage stage3 = (Stage) (myScene).getWindow();
+//                            Parent nextView = null;
+//                    try {
+//                        nextView = loader.load();
+//                    } catch (IOException e1) {
+//                        e1.printStackTrace();
+//                    }
+//
+//                    ControllerScanReport controller = loader.<ControllerScanReport>getController();
+//
+//                    stage3.setScene(new Scene(nextView));
+//                    stage3.setTitle("NSPJ");
+//                    stage3.show();
+//                            });
+
+                    myScene = anchorPane.getScene();
+                    Stage stage2 = (Stage) (myScene).getWindow();
+
+                    String title = "";
+                    String title1 = "";
+                    String content = "Your file contains virus. It will not be allowed to be uploaded";
+
+                    JFXButton close = new JFXButton("Close");
+                    close.setButtonType(JFXButton.ButtonType.RAISED);
+                    close.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXButton report = new JFXButton("Go to report");
+                    report.setButtonType(JFXButton.ButtonType.RAISED);
+                    report.setStyle("-fx-background-color: #00bfff;");
+
+                    JFXDialogLayout layout = new JFXDialogLayout();
+                    layout.setHeading(new Label(title));
+                    layout.setBody(new Label(content));
+                    layout.setActions(close, report);
+                    JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
+                    alert1.setOverlayClose(true);
+                    alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                    alert1.setContent(layout);
+                    alert1.initModality(Modality.NONE);
+                    close.setOnAction(__ -> alert1.hideWithAnimation());
+                    report.setOnAction(__ -> {
+                        alert1.hideWithAnimation();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("ScanReport.fxml"));
+                        Stage stage3 = (Stage) (myScene).getWindow();
+                        Parent nextView = null;
+                        try {
+                            nextView = loader.load();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        ControllerScanReport controller = loader.<ControllerScanReport>getController();
+
+                        stage3.setScene(new Scene(nextView));
+                        stage3.setTitle("NSPJ");
+                        stage3.show();
+                    });
+                    alert1.show();
+                }
+//                popAlert("Your file contains virus. It will not be allowed to be uploaded");
+
 
                 String filename = file.getName();
 //            User_InfoDB user = new User_InfoDB();
                 System.out.println(emailBox.getValue() + " " + filename);
 
                 encryptFileNew(file);
+            }
 
 //            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
             }
@@ -403,7 +551,6 @@ public class ControllerSecureFileTransfer implements Initializable {
 
         }
 
-    }
 
     public ObservableList assign(String bucketname) throws Exception {
         getStorage();
@@ -813,9 +960,9 @@ public class ControllerSecureFileTransfer implements Initializable {
         boolean deleted = storage.delete(blobId);
         if (deleted) {
             // the blob was deleted
-            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-            snackbar.getStylesheets().add("Style.css");
-            snackbar.show("Download success", 3000);
+//            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+//            snackbar.getStylesheets().add("Style.css");
+//            snackbar.show("Download success", 3000);
             System.out.println("Deleted");
         } else {
             // the blob was not found

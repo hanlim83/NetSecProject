@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchoPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerScanReport">
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerScanReport">
    <children>
        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="1067.0" style="-fx-background-color: #03A9F4;">
            <children>
                <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="22.0" />
-               <Text layoutX="484.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FireE" wrappingWidth="98.13671875">
+               <Line endX="1067.0" endY="65.0" startY="65.0" strokeMiterLimit="0.0" strokeWidth="1.8" />
+               <Label layoutX="489.0" layoutY="4.0" prefHeight="58.0" prefWidth="90.0" text="FireE">
                    <font>
-                       <Font size="40.0" />
+                       <Font name="Serif Regular" size="40.0" />
                    </font>
-               </Text>
-               <Line endX="1066.0" endY="65.0" startY="65.0" strokeWidth="1.8" />
+               </Label>
+               <JFXButton fx:id="homeButton" buttonType="RAISED" layoutX="992.0" layoutY="10.0" onAction="#onClickHomeButton" prefHeight="44.0" prefWidth="64.0" ripplerFill="#00bfff00" style="-fx-border-radius: 30; -fx-background-color: #607D8B;" />
            </children>
        </AnchorPane>
-      <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="76.0" prefHeight="535.0" prefWidth="219.0" />
-      <TableView fx:id="scanView" layoutX="93.0" layoutY="202.0" prefHeight="284.0" prefWidth="882.0">
+      <TableView fx:id="scanView" layoutX="56.0" layoutY="166.0" prefHeight="385.0" prefWidth="956.0">
         <columns>
-            <TableColumn fx:id="index" prefWidth="62.0" text="#" />
-          <TableColumn fx:id="antiVirus" prefWidth="393.0" text="AV Software" />
-          <TableColumn fx:id="version" prefWidth="161.0" text="Version" />
-            <TableColumn fx:id="scanResult" prefWidth="241.0" text="Result" />
+            <TableColumn fx:id="index" prefWidth="54.0" text="#" />
+          <TableColumn fx:id="antiVirus" prefWidth="299.0" text="AV Software" />
+          <TableColumn fx:id="version" prefWidth="234.0" text="Version" />
+            <TableColumn fx:id="scanResult" prefWidth="324.0" text="Result" />
         </columns>
       </TableView>
+      <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="76.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>
