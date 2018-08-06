@@ -5,6 +5,7 @@ import com.jfoenix.controls.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,7 +55,7 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     private Label numberSpecialCharLabel;
 
-    private Scene myScene;
+    private static Scene myScene;
     public static String email;
 
     //TODO Code CLEANUP AND IMPLEMENT MULTITHREADING
@@ -143,6 +144,8 @@ public class ControllerSignUpPage implements Initializable {
                 ConfirmPasswordField.setFocusColor(Color.RED);
             }
         });
+
+        myScene=anchorPane.getScene();
     }
 
     @FXML
@@ -205,8 +208,8 @@ public class ControllerSignUpPage implements Initializable {
     }
 
     private int counter=0;
+    private static JFXAlert<Void> alert = null;
     private void OTPAlert() throws IOException {
-        JFXAlert<Void> alert = null;
         AnchorPane layout = FXMLLoader.load(getClass().getResource("JFXSMSDialog.fxml"));
         if (counter!=0) {
             SignUpPage signUpPage=new SignUpPage(email,PasswordField.getText(),PhoneNoField.getText());
@@ -222,6 +225,23 @@ public class ControllerSignUpPage implements Initializable {
 //            jfxsmsDialog.setPhoneNo();
         }
         counter++;
+    }
+
+    public void changePage() throws IOException {
+        alert.hideWithAnimation();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
+//        myScene = (Scene) ((Node) event.getSource()).getScene();
+//        myScene=anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+        controller.runCheck();
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
     }
 
     //Will strengthen password validator
@@ -308,17 +328,5 @@ public class ControllerSignUpPage implements Initializable {
         close.setOnAction(__ -> alert.hideWithAnimation());
         alert.show();
     }
-
-
-//    public void changePage() throws InterruptedException, SQLException, IOException {
-//            Move Key Gen and stuff to the OTP CONTROLLER INSTEAD
-//keyGenerator();
-//    //Compute Hash of Password
-//    hashPassword = get_SHA_512_SecurePassword(password, email);
-//            System.out.println(hashPassword);
-//            System.out.println(phoneNo);
-//            utils.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,email);
-//            user_infoDB.setUserKeyInfo(hashPassword,publicKey,encryptedPrivateKey,phoneNo,email);
-//    }
 }
 

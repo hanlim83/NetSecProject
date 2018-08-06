@@ -122,18 +122,21 @@ public class ControllerJFXSMSDialog implements Initializable {
             String ActivationTime=now.toString();
             user_infoDB.setUserKeyInfo(hashPassword, publicKey, encryptedPrivateKey, phoneNo, ActivationTime, email);
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
-            myScene = (Scene) ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = loader.load();
+            ControllerSignUpPage controllerSignUpPage=new ControllerSignUpPage();
+            controllerSignUpPage.changePage();
 
-            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
-            controller.runCheck();
-
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("NSPJ");
-            stage.show();
+//            FXMLLoader loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("DeviceCheck.fxml"));
+//            myScene = (Scene) ((Node) event.getSource()).getScene();
+//            Stage stage = (Stage) (myScene).getWindow();
+//            Parent nextView = loader.load();
+//
+//            ControllerDeviceCheck controller = loader.<ControllerDeviceCheck>getController();
+//            controller.runCheck();
+//
+//            stage.setScene(new Scene(nextView));
+//            stage.setTitle("NSPJ");
+//            stage.show();
         } else {
             //show some wrong otp warning
         }
