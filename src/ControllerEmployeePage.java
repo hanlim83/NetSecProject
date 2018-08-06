@@ -1278,7 +1278,7 @@ public class ControllerEmployeePage implements Initializable {
         grid.add(new Label(message1), 0, 0);
         grid.add(inputAdmin, 1, 0);
 
-        String message2 = "Enter Handphone No: ";
+        String message2 = "Enter Handphone: ";
         JFXTextField inputAdminHP = new JFXTextField();
         inputAdminHP.setPrefWidth(250);
         inputAdminHP.setPromptText("Type Handphone Number Here");
