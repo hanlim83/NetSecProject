@@ -4,3 +4,7 @@
 .jfx-snackbar-toast {
     -fx-text-fill: WHITE;
 }
+
+#tableJFXButton {
+    -fx-background-color:  #29ddf4;
+}
