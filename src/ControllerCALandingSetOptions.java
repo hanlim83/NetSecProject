@@ -188,7 +188,7 @@ public class ControllerCALandingSetOptions implements Initializable {
             myScene = anchorPane.getScene();
             Stage stage = (Stage) (myScene).getWindow();
             String title = "Confirmation Dialog";
-            String content = "Are you sure that you want to leave ARP Detection disabled?";
+            String content = "Are you sure that you want to leave ARP Spoofing Detection disabled?";
             JFXButton yes = new JFXButton("Yes");
             yes.setButtonType(JFXButton.ButtonType.RAISED);
             yes.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");

@@ -256,7 +256,7 @@ public class ControllerCAMainDashboard implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (threshold != 0 && SMSHandler == null && EmailHandler == null) {
+        if ((threshold != 0 || ARPDetection == true) && SMSHandler == null && EmailHandler == null) {
             ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                 try {
                     adminPN = db.getAllPhoneNo();
@@ -328,7 +328,7 @@ public class ControllerCAMainDashboard implements Initializable {
                     e.printStackTrace();
                 }
             });
-        } else if (threshold != 0) {
+        } else if (threshold != 0 || ARPDetection == true) {
             this.SMSHandler = USMSHandler;
             ScheduledThreadPoolExecutorHandler.getService().execute(() -> {
                     adminPN = db.getAllPhoneNo();
