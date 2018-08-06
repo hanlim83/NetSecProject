@@ -55,7 +55,7 @@ public class ControllerSignUpPage implements Initializable {
     @FXML
     private Label numberSpecialCharLabel;
 
-    private static Scene myScene;
+    static Scene myScene;
     public static String email;
 
     //TODO Code CLEANUP AND IMPLEMENT MULTITHREADING

@@ -435,6 +435,8 @@ public class ControllerSecureCloudStorage implements Initializable {
             e.printStackTrace();
         }
 
+        updateObservableList();
+
         JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
         snackbar.show("Upload success", 3000);
         snackbar.getStylesheets().add("Style.css");
@@ -1416,7 +1418,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 calculateEmail();
                 downloadFile(storage, privateBucketName, blobName);
             } else if (type.equals("Upload")) {
-                //TODO upload codes
                 //if matches continue to encrypt also need to store the password somewhere
                 password = jfxPasswordField.getText();
                 alert.hideWithAnimation();
