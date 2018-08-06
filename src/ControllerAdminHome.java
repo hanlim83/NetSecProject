@@ -67,8 +67,8 @@ public class ControllerAdminHome implements Initializable {
     private static String lastLogin;
     private static int loginCounter=0;
 
-    private String myIPAddress;
-    private boolean ipChecker;
+//    private String myIPAddress;
+//    private boolean ipChecker;
 
 
     @Override
@@ -214,7 +214,6 @@ public class ControllerAdminHome implements Initializable {
     }
 
     private String convertTime(String time) {
-        //Upgrade to string builder next time
         String dateDisplay;
         String timeDisplay;
         Scanner s = new Scanner(time).useDelimiter("T");
@@ -270,7 +269,6 @@ public class ControllerAdminHome implements Initializable {
             if (drawer.isOpened()) {
                 drawer.close();
                 drawer.setDisable(true);
-                //drawer.setVisible(false);
             } else {
                 drawer.open();
                 drawer.setVisible(true);

@@ -77,17 +77,21 @@ public class User {
     }
 
     private String convertTime(String time) {
-        String dateDisplay;
-        String timeDisplay;
-        Scanner s = new Scanner(time).useDelimiter("T");
-        String dateGeneral = s.next();
-        timeDisplay = s.next();
-        Scanner s1 = new Scanner(dateGeneral).useDelimiter("-");
-        String year = s1.next();
-        String month = s1.next();
-        String date = s1.next();
-        dateDisplay = date + "/" + month + "/" + year;
-        System.out.println(dateDisplay + " " + timeDisplay.substring(0, 8));
-        return dateDisplay + " " + timeDisplay.substring(0, 8);
+        if (time!=null){
+            String dateDisplay;
+            String timeDisplay;
+            Scanner s = new Scanner(time).useDelimiter("T");
+            String dateGeneral = s.next();
+            timeDisplay = s.next();
+            Scanner s1 = new Scanner(dateGeneral).useDelimiter("-");
+            String year = s1.next();
+            String month = s1.next();
+            String date = s1.next();
+            dateDisplay = date + "/" + month + "/" + year;
+            System.out.println(dateDisplay + " " + timeDisplay.substring(0, 8));
+            return dateDisplay + " " + timeDisplay.substring(0, 8);
+        } else{
+            return "";
+        }
     }
 }

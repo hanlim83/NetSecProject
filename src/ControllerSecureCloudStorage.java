@@ -150,7 +150,8 @@ public class ControllerSecureCloudStorage implements Initializable {
     }
 
     private ObservableList<ControllerSecureCloudStorage.TableBlob> blobsListFirst;
-    public void loadTableProcess(){
+
+    public void loadTableProcess() {
         process.start();
         process.setOnSucceeded(e -> {
             JFXSpinner.setVisible(false);
@@ -183,9 +184,10 @@ public class ControllerSecureCloudStorage implements Initializable {
 
     private OAuth2Login login1 = new OAuth2Login();
 
-    private ArrayList<String> arrayFolder1=new ArrayList<String>();
+    private ArrayList<String> arrayFolder1 = new ArrayList<String>();
 
     private ObservableList<ControllerSecureCloudStorage.TableBlob> blobs1 = FXCollections.observableArrayList();
+
     private ObservableList<ControllerSecureCloudStorage.TableBlob> getObservableList() throws Exception {
         Credential credential1 = login1.login();
         credential = credential1;
@@ -207,20 +209,19 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            BlobList.add(new MyBlob(blob));
             //if it is folder only add in once check here
 
-            if (blob.getName().contains("/")){
+            if (blob.getName().contains("/")) {
                 Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
-                String folderName=s1.next();
+                String folderName = s1.next();
 //                String filename=s1.next();
                 if (checkFolderName1(folderName) == false) {
                     arrayFolder1.add(folderName);
-                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()),folderName,"General","Folder"));
+                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()), folderName, "General", "Folder"));
                 }
-            }
-            else {
-                blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()),"", "General","File"));
+            } else {
+                blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()), "", "General", "File"));
             }
         }
-        blobsListFirst=blobs1;
+        blobsListFirst = blobs1;
         return blobs1;
     }
 
@@ -230,15 +231,14 @@ public class ControllerSecureCloudStorage implements Initializable {
         return format.format(date);
     }
 
-    private boolean checkFolderName1(String folderName){
+    private boolean checkFolderName1(String folderName) {
         boolean check = false;
-        for (String s : arrayFolder1){
-            if(folderName.equals(s)){
-                check=true;
+        for (String s : arrayFolder1) {
+            if (folderName.equals(s)) {
+                check = true;
                 break;
-            }
-            else{
-                check=false;
+            } else {
+                check = false;
             }
         }
         return check;
@@ -995,7 +995,7 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            TableBlob tableBlob = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue();
 //            System.out.println(tableBlob.getBlobName());
 //            System.out.println(tableBlob.getDate());
-                    System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().type);
+//                    System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().type);
                     if (JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getType().equals("Folder")) {
                         System.out.println(JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName());
                         String folderName = JFXTreeTableView.getSelectionModel().getSelectedItem().getValue().getFolderName();
@@ -1035,8 +1035,26 @@ public class ControllerSecureCloudStorage implements Initializable {
 //                                String fileName = null;
                                 if (s.hasNext()) {
                                     String fileName = s.next();
-                                    blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "File"));
+                                    //Test
+//                                    if (fileName.contains("/")){
+//                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "Folder"));
+//                                    } else{
+                                        blobs.add(new ControllerSecureCloudStorage.TableBlob(fileName, convertTime(blob.getCreateTime()), folderName, "File", "File"));
+//                                    }
                                 }
+
+                                //Test
+//                                if (blob.getName().contains("/")) {
+//                                    Scanner s1 = new Scanner(blob.getName()).useDelimiter("/");
+//                                    String folderName = s1.next();
+////                String filename=s1.next();
+//                                    if (checkFolderName1(folderName) == false) {
+//                                        arrayFolder1.add(folderName);
+//                                        blobs1.add(new ControllerSecureCloudStorage.TableBlob(folderName, convertTime1(blob.getCreateTime()), folderName, "General", "Folder"));
+//                                    }
+//                                } else {
+//                                    blobs1.add(new ControllerSecureCloudStorage.TableBlob(blob.getName(), convertTime1(blob.getCreateTime()), "", "General", "File"));
+//                                }
                             }
                         }
 
@@ -1088,7 +1106,7 @@ public class ControllerSecureCloudStorage implements Initializable {
             }
 
             jfxDownloadButton.setText("Download");
-            jfxDownloadButton.setFont(Font.font ("System", 15));
+            jfxDownloadButton.setFont(Font.font("System", 15));
             jfxDownloadButton.setMinSize(vBox.getMinWidth(), vBox.getMinHeight() / 2);
             jfxDownloadButton.setOnAction(__ -> {
                 //Download File
@@ -1114,7 +1132,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                 }
             });
             jfxDeleteButton.setText("Delete");
-            jfxDeleteButton.setFont(Font.font ("System", 15));
+            jfxDeleteButton.setFont(Font.font("System", 15));
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
             //Update this to show confirmation pop-up
@@ -1167,7 +1185,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             });
 
             vBox.getChildren().addAll(jfxDownloadButton, jfxDeleteButton);
-//            vBox.getChildren().add(jfxDeleteButton);
             anchorPane.getChildren().add(vBox);
             vBoxCounter++;
 //            vBox.setFocusTraversable(true);
@@ -1357,25 +1374,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                         }
                     }
                 }
-//                //        UploadFileTest();
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Choose File to Upload");
-//                //FEATURE: stage now loads as 1 page instead of 2
-//                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-//                File file = fileChooser.showOpenDialog(stage1);
-//                if (file != null) {
-//                    try {
-//                        if (checkNameTaken(file.getName()) == true) {
-//                            System.out.println("Change NAME!!!! Add showing alert");
-//                        } else {
-//                            encryptFileNew(file);
-//                            //may need to move update Table somewhere else instead
-//                            updateTable();
-//                        }
-//                    } catch (Exception e1) {
-//                        e1.printStackTrace();
-//                    }
-//                }
             }
         });
         checkPasswordProcess.setOnCancelled(e -> {
