@@ -13,7 +13,6 @@ public class Main extends Application {
             loader.setLocation(getClass().getResource("LoginPage.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 1056, 600);
-//            scene.getStylesheets().add("Style.css");
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.getIcons().add(new Image("FireIcon.png"));

@@ -44,7 +44,6 @@ public class MainAdmin extends Application {
             loader.setLocation(getClass().getResource("AdminLoginPage.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 1056, 600);
-            scene.getStylesheets().add("Style.css");
             loadAdminSideTabCtrl();
             if (!new File("PcapExport").exists()) {
                 FileUtils.forceMkdir(new File("PcapExport"));
