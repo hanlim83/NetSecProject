@@ -1433,8 +1433,49 @@ public class ControllerSecureCloudStorage implements Initializable {
                             System.out.println("Change NAME!!!! Add showing alert");
                             changeNameAlert("Please change your file name");
                         } else if (CheckFileSafe(file.getAbsolutePath()) == false) {
-                            changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
-                            //if false means virus so show alert
+                            myScene = anchorPane.getScene();
+                            Stage stage2 = (Stage) (myScene).getWindow();
+
+                            String title1 = "";
+                            String content = "Your file contains virus. It will not be allowed to be uploaded";
+
+                            JFXButton close = new JFXButton("Close");
+                            close.setButtonType(JFXButton.ButtonType.RAISED);
+                            close.setStyle("-fx-background-color: #00bfff;");
+
+                            JFXButton report = new JFXButton("Go to report");
+                            report.setButtonType(JFXButton.ButtonType.RAISED);
+                            report.setStyle("-fx-background-color: #00bfff;");
+
+                            JFXDialogLayout layout = new JFXDialogLayout();
+                            layout.setHeading(new Label(title));
+                            layout.setBody(new Label(content));
+                            layout.setActions(close,report);
+                            JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
+                            alert1.setOverlayClose(true);
+                            alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                            alert1.setContent(layout);
+                            alert1.initModality(Modality.NONE);
+                            close.setOnAction(__ -> alert1.hideWithAnimation());
+                            report.setOnAction(__ -> {
+                                alert1.hideWithAnimation();
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(getClass().getResource("ScanReport.fxml"));
+                                Stage stage3 = (Stage) (myScene).getWindow();
+                                Parent nextView = null;
+                                try {
+                                    nextView = loader.load();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
+
+                                ControllerScanReport controller = loader.<ControllerScanReport>getController();
+
+                                stage3.setScene(new Scene(nextView));
+                                stage3.setTitle("NSPJ");
+                                stage3.show();
+                            });
+                            alert1.show();
                         } else {
                             encryptFileNew(file);
                             updateTable();
@@ -1510,8 +1551,49 @@ public class ControllerSecureCloudStorage implements Initializable {
                                 System.out.println("Change NAME!!!! Add showing alert");
                                 changeNameAlert("Please change your file name");
                             } else if (CheckFileSafe(file.getAbsolutePath()) == false) {
-                                changeNameAlert("Your file contains virus. It will not be allowed to be uploaded");
-                                //if false means virus so show alert
+                                myScene = anchorPane.getScene();
+                                Stage stage2 = (Stage) (myScene).getWindow();
+
+                                String title1 = "";
+                                String content = "Your file contains virus. It will not be allowed to be uploaded";
+
+                                JFXButton close = new JFXButton("Close");
+                                close.setButtonType(JFXButton.ButtonType.RAISED);
+                                close.setStyle("-fx-background-color: #00bfff;");
+
+                                JFXButton report = new JFXButton("Go to report");
+                                report.setButtonType(JFXButton.ButtonType.RAISED);
+                                report.setStyle("-fx-background-color: #00bfff;");
+
+                                JFXDialogLayout layout = new JFXDialogLayout();
+                                layout.setHeading(new Label(title));
+                                layout.setBody(new Label(content));
+                                layout.setActions(close,report);
+                                JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
+                                alert1.setOverlayClose(true);
+                                alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                                alert1.setContent(layout);
+                                alert1.initModality(Modality.NONE);
+                                close.setOnAction(__ -> alert1.hideWithAnimation());
+                                report.setOnAction(__ -> {
+                                    alert1.hideWithAnimation();
+                                    FXMLLoader loader = new FXMLLoader();
+                                    loader.setLocation(getClass().getResource("ScanReport.fxml"));
+                                    Stage stage3 = (Stage) (myScene).getWindow();
+                                    Parent nextView = null;
+                                    try {
+                                        nextView = loader.load();
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
+
+                                    ControllerScanReport controller = loader.<ControllerScanReport>getController();
+
+                                    stage3.setScene(new Scene(nextView));
+                                    stage3.setTitle("NSPJ");
+                                    stage3.show();
+                                });
+                                alert1.show();
                             } else {
                                 encryptFileNew(file);
                                 updateTable();
