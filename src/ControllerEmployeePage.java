@@ -85,6 +85,9 @@ public class ControllerEmployeePage implements Initializable {
     private TableColumn<User, Button> deletingEmployees;
 
     @FXML
+    private TableColumn<User, String> activationTime;
+
+    @FXML
     private JFXComboBox<String> jfxcombobox;
 
     @FXML
@@ -326,6 +329,7 @@ public class ControllerEmployeePage implements Initializable {
                     handphone.setCellValueFactory(new PropertyValueFactory<User, String>("phoneNo"));
                     status.setCellValueFactory(new PropertyValueFactory<User, String>("status"));
                     hashpassword.setCellValueFactory(new PropertyValueFactory<User, String>("hashPassword"));
+                    activationTime.setCellValueFactory(new PropertyValueFactory<User, String>("ActivationTime"));
 
                     entryID1.setCellValueFactory(new PropertyValueFactory<Admin, String>("entryID"));
                     email2.setCellValueFactory(new PropertyValueFactory<Admin, String>("email"));
@@ -389,17 +393,6 @@ public class ControllerEmployeePage implements Initializable {
 
     @FXML
     void handleEmployeeAdminComboBox(ActionEvent event) {
-//        processCOMBOXBOX.start();
-//
-//        processCOMBOXBOX.setOnSucceeded(e -> {
-//            processCOMBOXBOX.reset();
-//        });
-//        processCOMBOXBOX.setOnCancelled(e -> {
-//            processCOMBOXBOX.reset();
-//        });
-//        processCOMBOXBOX.setOnFailed(e -> {
-//            processCOMBOXBOX.reset();
-//        });
         String option = employeeAdminCombobox.getSelectionModel().getSelectedItem();
         if (option.equals("Employee Database")) {
             createUser.setVisible(true);
@@ -533,6 +526,7 @@ public class ControllerEmployeePage implements Initializable {
         String handphone1 = employeeTable.getSelectionModel().getSelectedItem().getPhoneNo();
         String status1 = employeeTable.getSelectionModel().getSelectedItem().getStatus();
         String hashpwd1 = employeeTable.getSelectionModel().getSelectedItem().getHashPassword();
+        String activationTime = employeeTable.getSelectionModel().getSelectedItem().getActivationTime();
 
         String string1 = "Entry ID :";
         Label label1 = new Label();
@@ -559,18 +553,25 @@ public class ControllerEmployeePage implements Initializable {
         label5.setTextFill(Color.rgb(1, 0, 199));
         label5.setText(string5);
 
+        String string6 = "Activation Time :";
+        Label label6 = new Label();
+        label6.setTextFill(Color.rgb(1, 0, 199));
+        label6.setText(string6);
 
         grid.add(label1, 0, 0);
         grid.add(label2, 0, 1);
         grid.add(label3, 0, 2);
         grid.add(label4, 0, 3);
         grid.add(label5, 0, 4);
+        grid.add(label6, 0, 5);
+
 
         grid.add(new Label(entryid1), 1, 0);
         grid.add(new Label(email1), 1, 1);
         grid.add(new Label(handphone1), 1, 2);
         grid.add(new Label(status1), 1, 3);
         grid.add(new Label(hashpwd1), 1, 4);
+        grid.add(new Label(activationTime), 1, 5);
 
         layout.setBody(grid);
 
