@@ -10,7 +10,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("UserHome.fxml"));
+            loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, 1056, 600);
 //            scene.getStylesheets().add("Style.css");

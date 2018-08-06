@@ -157,17 +157,12 @@ public class ControllerSecureFileTransfer implements Initializable {
                getStorage();
                 downloadFileNew(storage,ownBucketName,downloadThis);
 
-               JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-               snackbar.getStylesheets().add("Style.css");
-               snackbar.show("Download success", 3000);
-
                 deleteFile(ownBucketName, downloadThis);
 
 
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-
 
         });
     }
@@ -231,7 +226,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         try {
 
             ArrayList<String> newEmail = user.getAllEmail();
-            newEmail.remove(ownEmail);
+//            newEmail.remove(ownEmail);
             for (int i = 0; i < newEmail.size(); i++) {
 
                 if (user.getAccStatus(newEmail.get(i)).equals("Inactive")) {
@@ -258,18 +253,24 @@ public class ControllerSecureFileTransfer implements Initializable {
     @FXML
     void refresh(ActionEvent event) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
-        myScene = (Scene) ((Node) event.getSource()).getScene();
-        Stage stage = (Stage) (myScene).getWindow();
-        Parent nextView = loader.load();
+        inboxUpdate();
 
-        ControllerSecureFileTransfer controller = loader.<ControllerSecureFileTransfer>getController();
-        //controller.passData(admin);
+        JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+        snackbar.getStylesheets().add("Style.css");
+        snackbar.show("Refreshed", 3000);
 
-        stage.setScene(new Scene(nextView));
-        stage.setTitle("NSPJ");
-        stage.show();
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource("SecureFileTransfer.fxml"));
+//        myScene = (Scene) ((Node) event.getSource()).getScene();
+//        Stage stage = (Stage) (myScene).getWindow();
+//        Parent nextView = loader.load();
+//
+//        ControllerSecureFileTransfer controller = loader.<ControllerSecureFileTransfer>getController();
+//        //controller.passData(admin);
+//
+//        stage.setScene(new Scene(nextView));
+//        stage.setTitle("NSPJ");
+//        stage.show();
 
 
 //        thisInbox = assign(ownBucketName);
@@ -291,41 +292,47 @@ public class ControllerSecureFileTransfer implements Initializable {
     void transferFile(ActionEvent event) throws Exception {
 
 //        credential = login.login();
+        if (emailBox.getValue()==null) {
 
-        Scanner sc = new Scanner(emailBox.getValue());
-        System.out.println(emailBox.getValue());
-        sc.useDelimiter("@gmail.com");
-        String sending = sc.next();
+            popAlert("Please select an Email to send the file to.");
 
-        privateBucketName = "inbox-" + sending;
-
-        System.out.print(privateBucketName);
+        }else {
 
 
-        File file;
+            Scanner sc = new Scanner(emailBox.getValue());
+            System.out.println(emailBox.getValue());
+            sc.useDelimiter("@gmail.com");
+            String sending = sc.next();
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        file = fileChooser.showOpenDialog(null);
+            privateBucketName = "inbox-" + sending;
+
+            System.out.print(privateBucketName);
 
 
-        FileScanner scan = new FileScanner();
-        scan.Scanner(file.getAbsolutePath());
+            File file;
 
-        if (scan.scannerReport() == false) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            file = fileChooser.showOpenDialog(null);
 
-            popAlert("Your file contains virus. It will not be allowed to be uploaded");
 
-        } else {
+            FileScanner scan = new FileScanner();
+            scan.Scanner(file.getAbsolutePath());
 
-            String filename = file.getName();
+            if (scan.scannerReport() == false) {
+
+                popAlert("Your file contains virus. It will not be allowed to be uploaded");
+
+            } else {
+
+                String filename = file.getName();
 //            User_InfoDB user = new User_InfoDB();
-            System.out.println(emailBox.getValue() + " " + filename);
+                System.out.println(emailBox.getValue() + " " + filename);
 
-            encryptFileNew(file);
+                encryptFileNew(file);
 
 //            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));
-        }
+            }
 
 //        process.start();
 //        process.setOnSucceeded(e -> {
@@ -357,6 +364,7 @@ public class ControllerSecureFileTransfer implements Initializable {
 //            });
 //        });
 
+        }
 
     }
 
@@ -475,7 +483,7 @@ public class ControllerSecureFileTransfer implements Initializable {
         String encryptedSymmetricKey = getEncryptedSymmetricKey(encodedSecretKey);
         //At this point symmetric key has been encoded then encrypted then encoded again
         System.out.println(encryptedSymmetricKey);
-        //TODO Upload this instead^
+//        TODO Upload this instead^
 
 //        JSONObject main =new JSONObject();
 
@@ -768,14 +776,45 @@ public class ControllerSecureFileTransfer implements Initializable {
         boolean deleted = storage.delete(blobId);
         if (deleted) {
             // the blob was deleted
-            System.out.println("Deleted");
             JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-            snackbar.show("Download Success", 3000);
             snackbar.getStylesheets().add("Style.css");
+            snackbar.show("Download success", 3000);
+            System.out.println("Deleted");
         } else {
             // the blob was not found
             System.out.println("Not deleted not found");
         }
+    }
+
+    private void inboxUpdate() throws Exception {
+
+        thisInbox.clear();
+//        userInbox.setItems(thisInbox);
+
+        ownEmail = login.getEmail();
+
+        Scanner sc = new Scanner(ownEmail);
+        System.out.println(ownEmail);
+        sc.useDelimiter("@gmail.com");
+        String send = sc.next();
+
+        ownBucketName = "inbox-" + send;
+
+        System.out.println(ownBucketName);
+
+        thisInbox = assign(ownBucketName);
+
+        System.out.println(thisInbox);
+
+        filename.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("name"));
+        date.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, String>("detail"));
+        action.setCellValueFactory(new PropertyValueFactory<ControllerSecureFileTransfer, Button>("button"));
+
+        for (ControllerSecureFileTransfer r : thisInbox) {
+            r.toString();
+        }
+        userInbox.setItems(thisInbox);
+
     }
 
 
