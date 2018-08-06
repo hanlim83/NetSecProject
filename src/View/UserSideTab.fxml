@@ -6,19 +6,19 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="219.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerUserSideTab">
    <children>
-      <JFXButton fx:id="SecureCloudStorageButton" onAction="#onClickSecureCloudStorageButton" onMouseEntered="#onHover" onMouseExited="#onHoverExit" prefHeight="148.0" prefWidth="219.0" text="Secure Cloud Storage">
+      <JFXButton fx:id="SecureCloudStorageButton" onAction="#onClickSecureCloudStorageButton" onMouseEntered="#onHover" onMouseExited="#onHoverExit" prefHeight="133.75" prefWidth="219.0" text="Secure Cloud Storage">
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXButton fx:id="SecureCloudTransferButton" onAction="#onClickSecureCloudTransferButton" onMouseEntered="#onHover1" onMouseExited="#onHoverExit1" prefHeight="132.0" prefWidth="219.0" text="Secure Cloud Transfer">
+      <JFXButton fx:id="SecureCloudTransferButton" onAction="#onClickSecureCloudTransferButton" onMouseEntered="#onHover1" onMouseExited="#onHoverExit1" prefHeight="133.75" prefWidth="219.0" text="Secure Cloud Transfer">
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXButton fx:id="settingsButton" onAction="#onClickUserSettings" onMouseEntered="#onHover2" onMouseExited="#onHoverExit2" prefHeight="143.0" prefWidth="219.0" text="Settings">
+      <JFXButton fx:id="settingsButton" onAction="#onClickUserSettings" onMouseEntered="#onHover2" onMouseExited="#onHoverExit2" prefHeight="133.75" prefWidth="219.0" text="Settings">
          <font>
             <Font size="16.0" />
          </font></JFXButton>
-      <JFXButton fx:id="LogoutButton" onAction="#onClickLogoutButton" onMouseEntered="#onHover3" onMouseExited="#onHoverExit3" prefHeight="120.0" prefWidth="219.0" text="Logout">
+      <JFXButton fx:id="LogoutButton" onAction="#onClickLogoutButton" onMouseEntered="#onHover3" onMouseExited="#onHoverExit3" prefHeight="133.75" prefWidth="219.0" text="Logout">
          <font>
             <Font size="16.0" />
          </font></JFXButton>
