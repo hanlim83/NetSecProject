@@ -4,22 +4,12 @@ import com.kanishka.virustotal.dto.FileScanReport;
 import com.kanishka.virustotal.dto.ScanInfo;
 import com.kanishka.virustotal.dto.VirusScanInfo;
 import com.kanishka.virustotal.exception.APIKeyNotFoundException;
-import com.kanishka.virustotal.exception.QuotaExceededException;
 import com.kanishka.virustotal.exception.UnauthorizedAccessException;
 import com.kanishka.virustotalv2.VirusTotalConfig;
 import com.kanishka.virustotalv2.VirustotalPublicV2;
 import com.kanishka.virustotalv2.VirustotalPublicV2Impl;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 

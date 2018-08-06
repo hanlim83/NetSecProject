@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="1067.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerVerifyText">
     <children>
@@ -20,15 +19,15 @@
                 </Label>
             </children>
         </AnchorPane>
-      <JFXTextField fx:id="verifyField" alignment="CENTER" layoutX="450.0" layoutY="328.0" promptText="Enter OTP here" />
+      <JFXTextField fx:id="verifyField" alignment="CENTER" layoutX="450.0" layoutY="318.0" promptText="Enter OTP here" />
       <Label fx:id="viewerText" alignment="CENTER" layoutX="358.0" layoutY="165.0" prefHeight="93.0" prefWidth="351.0" text="Check your phone for the OTP" />
-      <Label fx:id="numberViewer" alignment="CENTER" layoutX="399.0" layoutY="258.0" prefHeight="43.0" prefWidth="273.0">
+      <Label fx:id="numberViewer" alignment="CENTER" layoutX="397.0" layoutY="258.0" prefHeight="43.0" prefWidth="273.0">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <JFXButton fx:id="verifyMe" layoutX="709.0" layoutY="456.0" onAction="#verifyConfirm" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: green;" text="Verify me!" textFill="WHITE" />
-      <JFXButton layoutX="465.0" layoutY="456.0" onAction="#resendText" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: yellow;" text="Resend?" />
-      <JFXButton layoutX="220.0" layoutY="456.0" onAction="#backLogin" prefHeight="40.0" prefWidth="138.0" style="-fx-background-color: red;" text="Back To Login" />
+      <JFXButton fx:id="verifyMe" layoutX="644.0" layoutY="436.0" onAction="#verifyConfirm" prefHeight="58.0" prefWidth="151.0" style="-fx-background-color: green;" text="Verify me!" textFill="WHITE" />
+      <JFXButton layoutX="458.0" layoutY="436.0" onAction="#resendText" prefHeight="58.0" prefWidth="151.0" style="-fx-background-color: yellow;" text="Resend?" />
+      <JFXButton layoutX="275.0" layoutY="436.0" onAction="#backLogin" prefHeight="58.0" prefWidth="151.0" style="-fx-background-color: #00ffff;" text="Back To Login" />
     </children>
 </AnchorPane>
