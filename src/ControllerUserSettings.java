@@ -1,18 +1,32 @@
 import Database.User_InfoDB;
 import Model.OAuth2Login;
 import com.google.api.client.auth.oauth2.Credential;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,10 +58,30 @@ public class ControllerUserSettings implements Initializable {
     @FXML
     private JFXPasswordField password;
 
+    @FXML
+    private JFXButton homeButton;
+
+    Scene myScene;
+
+
     public static AnchorPane rootP;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        Path path1 = FileSystems.getDefault().getPath("src/View/baseline_home_white_18dp.png");
+        File file1 = new File(path1.toUri());
+        Image imageForFile1;
+        try {
+            imageForFile1 = new Image(file1.toURI().toURL().toExternalForm());
+            ImageView imageView1 = new ImageView(imageForFile1);
+//            imageView.setFitHeight(24.5);
+//            imageView.setFitWidth(35);
+            homeButton.setGraphic(imageView1);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         hamburgerBar();
     }
 
@@ -82,6 +116,24 @@ public class ControllerUserSettings implements Initializable {
     }
 
     @FXML
+    void onClickHomeButton (ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UserHome.fxml"));
+        myScene = (Scene) ((Node) event.getSource()).getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = loader.load();
+
+        ControllerUserHome controller = loader.<ControllerUserHome>getController();
+        //controller.passData(admin);
+
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("NSPJ");
+        stage.show();
+
+    }
+
+    @FXML
     void newNumber(ActionEvent event) {
         if (changeNumber.isVisible()==false) {
             executeChange.setVisible(true);
@@ -107,7 +159,62 @@ public class ControllerUserSettings implements Initializable {
 
         // Need to add method to check password with the database
 
-        if (old.equals(exist)&& user.checkPassword(pass, mail)==true) {
+
+        if (old.isEmpty()==true || number.isEmpty()==true || pass.isEmpty()==true) {
+
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "Input null";
+            String content = "Please enter all data in the field";
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
+
+
+        } else if (!user.checkPassword(pass, mail) || !old.equals(exist)) {
+
+
+            myScene = anchorPane.getScene();
+            Stage stage = (Stage) (myScene).getWindow();
+
+            String title = "Invalid";
+            String content = "Invalid password or old number!";
+
+            JFXButton close = new JFXButton("Close");
+
+            close.setButtonType(JFXButton.ButtonType.RAISED);
+
+            close.setStyle("-fx-background-color: #00bfff;");
+
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Label(title));
+            layout.setBody(new Label(content));
+            layout.setActions(close);
+            JFXAlert<Void> alert = new JFXAlert<>(stage);
+            alert.setOverlayClose(true);
+            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+            alert.setContent(layout);
+            alert.initModality(Modality.NONE);
+            close.setOnAction(__ -> alert.hideWithAnimation());
+            alert.show();
+
+        } else if (old.equals(exist) && user.checkPassword(pass, mail)==true) {
 
             user.setPhoneNo(number, mail);
             System.out.print("Change Successful!");
