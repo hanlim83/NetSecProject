@@ -442,32 +442,36 @@ public class ControllerCAMainPackets implements Initializable {
     @FXML
     public void ShowpacketDetails(MouseEvent event) {
         if (capture == null) {
-
-        } else if (capture.isRunning()) {
-
+            System.err.println("No Data");
         } else {
-            CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
-            if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Unsupported Packet");
-                alert.setHeaderText("Unsupported Packet");
-                alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
-                alert.showAndWait();
-            } else {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
-                myScene = anchorPane.getScene();
-                Stage stage = (Stage) (myScene).getWindow();
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerCADetailedPacket controller = loader.getController();
-                    controller.passVariables(device, handler, capture, selected, ARPDetection, threshold, SMSHandler, EmailHandler);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            try {
+                CapturedPacket selected = (CapturedPacket) packetstable.getSelectionModel().getSelectedItem();
+                if (selected.getInformation() != null && selected.getInformation().equals("Not a Layer 2 (IP) Packet")) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Unsupported Packet");
+                    alert.setHeaderText("Unsupported Packet");
+                    alert.setContentText("The packet you have selected does not have an IP Header and therefore details cannot be seen!");
+                    alert.showAndWait();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CADetailedPacket.fxml"));
+                    myScene = anchorPane.getScene();
+                    Stage stage = (Stage) (myScene).getWindow();
+                    Parent nextView = null;
+                    try {
+                        nextView = loader.load();
+                        ControllerCADetailedPacket controller = loader.getController();
+                        controller.passVariables(device, handler, capture, selected, ARPDetection, threshold, SMSHandler, EmailHandler);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    stage.setScene(new Scene(nextView));
+                    stage.setTitle("Detailed Packet View");
+                    stage.show();
                 }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("Detailed Packet View");
-                stage.show();
+            } catch (NullPointerException e) {
+                System.err.println("No Packets Found");
+            } catch (ClassCastException e1) {
+                System.err.println("Invalid Data");
             }
         }
     }
