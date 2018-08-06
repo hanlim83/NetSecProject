@@ -159,7 +159,11 @@ public class ControllerAdminHome implements Initializable {
         });
         process.setOnFailed(e -> {
             process.reset();
-        });
+        });LocalDateTime now = LocalDateTime.now();
+        String ActivationTime = now.toString();
+        admin_DB admin_db = new admin_DB();
+        admin_db.setLastLoginTime(ActivationTime, email);
+
     }
 
     private Service process = new Service() {
@@ -177,11 +181,10 @@ public class ControllerAdminHome implements Initializable {
 
     private static boolean firstTime;
 
-    private void InfoUpdate() throws Exception {
+    private void InfoUpdate(){
 //        credential = login.login();
 //        String email;
 //        email=login.getEmail();
-        admin_DB admin_db = new admin_DB();
         if (loginCounter == 0) {
 //                if (admin_db.getLastLoginTime(email) == null) {
 //                    LastLoginLabel.setText("Welcome this is your first time logging in");
@@ -199,12 +202,8 @@ public class ControllerAdminHome implements Initializable {
                 JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
                 snackbar.show("Information Updated", 3000);
                 snackbar.getStylesheets().add("Style.css");
+                loginCounter++;
             });
-
-            LocalDateTime now = LocalDateTime.now();
-            String ActivationTime = now.toString();
-            admin_db.setLastLoginTime(ActivationTime, email);
-            loginCounter++;
 //                GreetingsLabel.setText(getGreetings() + name);
         } else {
 //                if (firstTime == true) {
