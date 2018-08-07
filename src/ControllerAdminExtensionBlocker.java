@@ -114,33 +114,27 @@ public class ControllerAdminExtensionBlocker implements Initializable {
             this.array = add.getExtensionList();
         System.out.println(array);
 
-//            for (int i=0; i<array.size()-1;i++) {
-//
-//                String hello = array.get(i);
-//                System.out.println(hello);
+            for (int i=0; i<array.size()-1;i++) {
+
+                String hello = array.get(i);
+                System.out.println(hello);
 
 
-
-                for (int i=0;i<array.size();i++) {
-
-                    if (array.get(i).equals(txt)) {
-                        txtSetter.setSelected(true);
-                    } else if (array.get(i).equals(docx)) {
-                        docxSetter.setSelected(true);
-                    } else if (array.get(i).equals(exe)) {
-                        exeSetter.setSelected(true);
-                    } else if (array.get(i).equals(dmg)) {
-                        dmgSetter.setSelected(true);
-                    } else if (array.get(i).equals(mp4)) {
-                        mp4Setter.setSelected(true);
-                        System.out.println( mp4Setter.getText());
-                    } else if (array.get(i).equals(mp4)) {
-                        wavSetter.setSelected(true);
-                    }
-
-
+                if (array.contains(txt) && !txtSetter.isSelected()) {
+                    txtSetter.setSelected(true);
+                } else if (array.contains(txt) && !txtSetter.isSelected()) {
+                    docxSetter.setSelected(true);
+                } else if (array.contains(docx) && !docxSetter.isSelected()) {
+                    exeSetter.setSelected(true);
+                } else if (array.contains(dmg)&& !dmgSetter.isSelected()) {
+                    dmgSetter.setSelected(true);
+                } else if (array.contains(mp4) && !mp4Setter.isSelected()) {
+                    mp4Setter.setSelected(true);
+                } else if (array.contains(wav) && !wavSetter.isSelected() ) {
+                    wavSetter.setSelected(true);
                 }
 
+            }
 
     }
 
@@ -171,50 +165,51 @@ public class ControllerAdminExtensionBlocker implements Initializable {
             array.clear();
             this.array = ext.getExtensionList();
 
-            if (txtSetter.isSelected() && !array.get(i).equals(txt)) {
+            if (txtSetter.isSelected() && !array.contains(txt)) {
                 ext.createExtension(txt);
                 System.out.println(txt + " extension added!");
-            } else if (!txtSetter.isSelected() && array.get(i).equals(txt)) {
+
+            } else if (!txtSetter.isSelected() && array.contains(txt)) {
                 ext.deleteExtension(txt);
                 System.out.println(txt + " extension removed!");
 
 
-            } else if (docxSetter.isSelected() && !array.get(i).equals(docx)) {
+            } else if (docxSetter.isSelected() && !array.contains(docx)) {
                 ext.createExtension("docx");
                 System.out.println(docx + " extension added!");
-            } else if (!docxSetter.isSelected() && array.get(i).equals(docx)) {
+            } else if (!docxSetter.isSelected() && array.contains(docx)) {
                 ext.deleteExtension(docx);
                 System.out.println(docx + " extension removed!");
 
 
-            } else if (exeSetter.isSelected() && !array.get(i).equals(exe)) {
+            } else if (exeSetter.isSelected() && !array.contains(exe)) {
                 ext.createExtension("exe");
                 System.out.println(exe + " extension added!");
-            } else if (!exeSetter.isSelected() && array.get(i).equals(exe)) {
+            } else if (!exeSetter.isSelected() && array.contains(exe)) {
                 ext.deleteExtension(exe);
                 System.out.println(exe + " extension removed!");
 
 
-            } else if (dmgSetter.isSelected() && !array.get(i).equals(dmg)) {
+            } else if (dmgSetter.isSelected() && !array.contains(dmg)) {
                 ext.createExtension("dmg");
                 System.out.println(dmg + " extension added!");
-            } else if (!dmgSetter.isSelected() && array.get(i).equals(dmg)) {
+            } else if (!dmgSetter.isSelected() && array.contains(dmg)) {
                 ext.deleteExtension(dmg);
                 System.out.println(dmg + " extension removed!");
 
 
-            } else if (mp4Setter.isSelected() && !array.get(i).equals(mp4)) {
+            } else if (mp4Setter.isSelected() && !array.contains(mp4)) {
                 ext.createExtension("mp4");
                 System.out.println(mp4 + " extension added!");
-            } else if (!mp4Setter.isSelected() && array.get(i).equals(mp4)) {
+            } else if (!mp4Setter.isSelected() && array.contains(mp4)) {
                 ext.deleteExtension(mp4);
                 System.out.println(mp4 + " extension removed!");
 
 
-            } else if (wavSetter.isSelected() && !array.get(i).equals(wav)) {
+            } else if (wavSetter.isSelected() && !array.contains(wav)) {
                 ext.createExtension("wav");
                 System.out.println(wav + " extension added!");
-            } else if (!wavSetter.isSelected() && array.get(i).equals(wav)) {
+            } else if (!wavSetter.isSelected() && array.contains(wav)) {
                 ext.deleteExtension(wav);
                 System.out.println(wav + " extension removed!");
             }

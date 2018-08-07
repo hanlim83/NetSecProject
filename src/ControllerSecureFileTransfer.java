@@ -505,15 +505,16 @@ public class ControllerSecureFileTransfer implements Initializable {
                         stage3.show();
                     });
                     alert1.show();
-                }
+                } else {
 //                popAlert("Your file contains virus. It will not be allowed to be uploaded");
 
 
-                String filename = file.getName();
+                    String filename = file.getName();
 //            User_InfoDB user = new User_InfoDB();
-                System.out.println(emailBox.getValue() + " " + filename);
+                    System.out.println(emailBox.getValue() + " " + filename);
 
-                encryptFileNew(file);
+                    encryptFileNew(file);
+                }
             }
 
 //            uploadFile(filename, encryptFile(getFileInBytes(file), user.getPublicKey(emailBox.getValue())));

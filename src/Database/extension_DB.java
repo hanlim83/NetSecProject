@@ -58,6 +58,8 @@ public class extension_DB {
         ResultSet resultSet = null;
 
         try {
+            connection = DataSource.getInstance().getConnection();
+
             preparedStatement=connection.prepareStatement("DELETE FROM entriesExtension WHERE extensions=?");
             preparedStatement.setString(1,extension);
 

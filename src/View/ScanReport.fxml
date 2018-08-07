@@ -32,6 +32,6 @@
             <TableColumn fx:id="scanResult" prefWidth="324.0" text="Result" />
         </columns>
       </TableView>
-      <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="76.0" prefHeight="535.0" prefWidth="219.0" />
+      <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
    </children>
 </AnchorPane>
