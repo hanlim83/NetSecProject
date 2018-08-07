@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -34,7 +35,8 @@
           <TableColumn fx:id="action" minWidth="0.0" prefWidth="156.0" text="Download" />
         </columns>
       </TableView>
-      <JFXButton layoutX="31.0" layoutY="116.0" onAction="#refresh" prefHeight="43.0" prefWidth="90.0" text="Refresh" />
+      <JFXButton layoutX="390.0" layoutY="73.0" onAction="#refresh" prefHeight="65.0" prefWidth="132.0" text="Refresh" />
+      <Label layoutX="2.0" layoutY="67.0" prefHeight="65.0" prefWidth="310.0" text="Enter your password below to unlock inbox:" />
         <JFXDrawer fx:id="drawer" layoutY="66.0" prefHeight="535.0" prefWidth="219.0" />
     </children>
 </AnchorPane>
