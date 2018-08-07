@@ -165,8 +165,12 @@ public class ControllerLoggingPage implements Initializable {
                         loggingsnippets.listLogEntries(filters);
 
                     } catch (com.google.cloud.logging.LoggingException e1) {
+                        errorMessage = "Error has occured. Please try again!";
+                        errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
                         e1.printStackTrace();
                     } catch (Exception e) {
+                        errorMessage = "Error has occured. Please try again!";
+                        errorMessagePopOut(anchorPane.getScene(), errorMessage, "Close");
                         e.printStackTrace();
                     }
 
