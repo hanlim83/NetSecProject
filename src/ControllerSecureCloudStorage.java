@@ -117,12 +117,6 @@ public class ControllerSecureCloudStorage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         hamburgerBar();
-//        try {
-//            credential = login.login();
-//            storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.create(new AccessToken(credential.getAccessToken(), null))).build().getService();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         Path path = FileSystems.getDefault().getPath("src/View/baseline_cloud_upload_black_18dp_small.png");
         File file = new File(path.toUri());
         Image imageForFile;
@@ -175,7 +169,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     getObservableList();
-                    //credential
                     return null;
                 }
             };
@@ -243,7 +236,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
         return check;
     }
-    //restart testing to optimize this page
 
     @FXML
     void onClickHomeButton(ActionEvent event) throws IOException {
@@ -591,30 +583,72 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
+    private String bucketNameDelete;
+    private String deleteblobName;
+
     private void deleteFile(String bucketName, String blobName) throws Exception {
-        vBox.setVisible(false);
-        myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
-        try {
-            if (storage == null) {
-                getStorage();
+        bucketNameDelete = bucketName;
+        deleteblobName = blobName;
+        JFXSpinner.setVisible(true);
+        processDelete.start();
+        processDelete.setOnSucceeded(e -> {
+            processDelete.reset();
+            JFXSpinner.setVisible(false);
+            try {
+                updateObservableList();
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            getStorage();
-        }
-        BlobId blobId = BlobId.of(bucketName, blobName);
-        boolean deleted = storage.delete(blobId);
-        if (deleted) {
-            // the blob was deleted
-            System.out.println("Deleted");
-            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
-            snackbar.show("Delete success", 3000);
-            snackbar.getStylesheets().add("Style.css");
-        } else {
-            // the blob was not found
-            System.out.println("Not deleted not found");
-        }
+        });
+        processDelete.setOnCancelled(e -> {
+            processDelete.reset();
+            JFXSpinner.setVisible(false);
+        });
+        processDelete.setOnFailed(e -> {
+            processDelete.reset();
+            JFXSpinner.setVisible(false);
+        });
     }
+
+    private Service processDelete = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+                    vBox.setVisible(false);
+                    myScene.removeEventFilter(MouseEvent.MOUSE_PRESSED, closeVbox);
+                    try {
+                        if (storage == null) {
+                            getStorage();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        getStorage();
+                    }
+                    BlobId blobId = BlobId.of(bucketNameDelete, deleteblobName);
+                    boolean deleted = storage.delete(blobId);
+                    if (deleted) {
+                        // the blob was deleted
+                        Platform.runLater(() -> {
+                            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+                            snackbar.show("Delete success", 3000);
+                            snackbar.getStylesheets().add("Style.css");
+                        });
+                        try {
+                            updateObservableList();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        // the blob was not found
+                        System.out.println("Not deleted not found");
+                    }
+                    return null;
+                }
+            };
+        }
+    };
 
     private String convertTime(long time) {
         Date date = new Date(time);
@@ -1141,7 +1175,7 @@ public class ControllerSecureCloudStorage implements Initializable {
         });
     }
 
-    private void updateObservableListFolder(){
+    private void updateObservableListFolder() {
         processUpdateObservableListFolder.start();
         processUpdateObservableListFolder.setOnSucceeded(e -> {
             processUpdateObservableListFolder.reset();
@@ -1283,7 +1317,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             jfxDeleteButton.setFont(Font.font("System", 15));
             jfxDeleteButton.setMinSize(minWidth, vBox.getMinHeight() / 2);
 
-            //Update this to show confirmation pop-up
             jfxDeleteButton.setOnAction(__ -> {
                 System.out.println("ONCLICK DELETE File");
                 myScene = anchorPane.getScene();
@@ -1311,18 +1344,19 @@ public class ControllerSecureCloudStorage implements Initializable {
                 alert.initModality(Modality.NONE);
                 delete.setOnAction(___ -> {
                     alert.hideWithAnimation();
-                    calculateEmail();
+//                    calculateEmail();
                     try {
+                        getStorage();
                         deleteFile(privateBucketName, blobName);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 //                    updateTable();
-                    try {
-                        updateObservableList();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        updateObservableList();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 });
                 cancel.setOnAction(___ -> {
                     vBox.setVisible(false);
@@ -1335,12 +1369,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             vBox.getChildren().addAll(jfxDownloadButton, jfxDeleteButton);
             anchorPane.getChildren().add(vBox);
             vBoxCounter++;
-//            vBox.setFocusTraversable(true);
-//            vBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-//                if (isNowFocused) {
-//                    vBox.setVisible(false);
-//                }
-//            });
             vBox.setVisible(true);
         } else {
             if (direction == false) {
@@ -1450,7 +1478,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                             JFXDialogLayout layout = new JFXDialogLayout();
                             layout.setHeading(new Label(title));
                             layout.setBody(new Label(content));
-                            layout.setActions(close,report);
+                            layout.setActions(close, report);
                             JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
                             alert1.setOverlayClose(true);
                             alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
@@ -1568,7 +1596,7 @@ public class ControllerSecureCloudStorage implements Initializable {
                                 JFXDialogLayout layout = new JFXDialogLayout();
                                 layout.setHeading(new Label(title));
                                 layout.setBody(new Label(content));
-                                layout.setActions(close,report);
+                                layout.setActions(close, report);
                                 JFXAlert<Void> alert1 = new JFXAlert<>(stage2);
                                 alert1.setOverlayClose(true);
                                 alert1.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
