@@ -249,54 +249,20 @@ public class ControllerCALandingSelectInt implements Initializable {
 
     @FXML
     public void goToNextScreen(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSetOptions.fxml"));
         myScene = anchorPane.getScene();
         Stage stage = (Stage) (myScene).getWindow();
-        String title = "Comfirmation of Selection";
-        String content = "You have selected " + intDisplayedName + ", are you sure you this is adapter that you have selected?";
-        JFXButton close = new JFXButton("Yes");
-        close.setButtonType(JFXButton.ButtonType.RAISED);
-        close.setStyle("-fx-background-color: #00bfff;");
-        JFXButton selectAgain = new JFXButton("Select Again");
-        selectAgain.setButtonType(JFXButton.ButtonType.RAISED);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Label(title));
-        layout.setBody(new Label(content));
-        layout.setActions(selectAgain, close);
-        JFXAlert<Void> alert = new JFXAlert<>(stage);
-        alert.setOverlayClose(true);
-        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-        alert.setContent(layout);
-        alert.initModality(Modality.NONE);
-        selectAgain.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent __) {
-                alert.hideWithAnimation();
-                device = null;
-                previousTreeItem.setGraphic(null);
-                intDisplay.refresh();
-                nextBtn.setDisable(true);
-            }
-        });
-        close.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                alert.hideWithAnimation();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingSetOptions.fxml"));
-                myScene = anchorPane.getScene();
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerCALandingSetOptions controller = loader.getController();
-                    controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayedName, CaptureType, EmailHandler);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("Set Options");
-                stage.show();
-            }
-        });
-        alert.showAndWait();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCALandingSetOptions controller = loader.getController();
+            controller.passVariables(handler, device, ARPDetection, threshold, SMSHandler, intDisplayedName, CaptureType, EmailHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Set Options");
+        stage.show();
     }
 
     public void hamburgerBar() {

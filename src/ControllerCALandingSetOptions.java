@@ -182,66 +182,23 @@ public class ControllerCALandingSetOptions implements Initializable {
 
     @FXML
     public void goToNextScreen(ActionEvent event) {
-        if (!ARPSpoofingCheckbox.isSelected()) {
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            String title = "Confirmation Dialog";
-            String content = "Are you sure that you want to leave ARP Spoofing Detection disabled?";
-            JFXButton yes = new JFXButton("Yes");
-            yes.setButtonType(JFXButton.ButtonType.RAISED);
-            yes.setStyle("-fx-background-color: #00bfff;-fx-spacing: 10px,20px,10px,20px;");
-            JFXButton no = new JFXButton("No");
-            no.setButtonType(JFXButton.ButtonType.RAISED);
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label(title));
-            layout.setBody(new Label(content));
-            layout.setActions(no, yes);
-            JFXAlert<Void> alert = new JFXAlert<>(stage);
-            alert.setOverlayClose(true);
-            alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-            alert.setContent(layout);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            yes.setOnAction(event1 -> {
-                alert.hideWithAnimation();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingVerifyDetails.fxml"));
-                Parent nextView = null;
-                try {
-                    nextView = loader.load();
-                    ControllerCALandingVerifyDetails controller = loader.getController();
-                    if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                        controller.passVariables(handler, device, false, 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
-                    else
-                        controller.passVariables(handler, device, false, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                stage.setScene(new Scene(nextView));
-                stage.setTitle("Verify Options");
-                stage.show();
-            });
-            no.setOnAction(event12 -> {
-                alert.hideWithAnimation();
-            });
-            alert.showAndWait();
-        } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingVerifyDetails.fxml"));
-            myScene = anchorPane.getScene();
-            Stage stage = (Stage) (myScene).getWindow();
-            Parent nextView = null;
-            try {
-                nextView = loader.load();
-                ControllerCALandingVerifyDetails controller = loader.getController();
-                if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
-                    controller.passVariables(handler, device, true, 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
-                else
-                    controller.passVariables(handler, device, true, Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            stage.setScene(new Scene(nextView));
-            stage.setTitle("Verify Options");
-            stage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CALandingVerifyDetails.fxml"));
+        myScene = anchorPane.getScene();
+        Stage stage = (Stage) (myScene).getWindow();
+        Parent nextView = null;
+        try {
+            nextView = loader.load();
+            ControllerCALandingVerifyDetails controller = loader.getController();
+            if (ThresholdChooser.getSelectionModel().getSelectedItem().equals("Select Threshold") || ThresholdChooser.getSelectionModel().getSelectedItem().equals("None"))
+                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), 0, SMSHandler, intDisplayName, CaptureType, EmailHandler);
+            else
+                controller.passVariables(handler, device, ARPSpoofingCheckbox.isSelected(), Integer.parseInt(ThresholdChooser.getSelectionModel().getSelectedItem()), SMSHandler, intDisplayName, CaptureType, EmailHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        stage.setScene(new Scene(nextView));
+        stage.setTitle("Verify Options");
+        stage.show();
     }
 
     public void hamburgerBar() {
