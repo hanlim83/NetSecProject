@@ -310,6 +310,10 @@ public class ControllerCAMainPackets implements Initializable {
             clearCaptureBtn.setDisable(true);
         else if (capture.isRunning()) {
             this.capture = capture;
+            packets = capture.packets;
+            OLpackets = FXCollections.observableArrayList(packets);
+            packetstable.setItems(OLpackets);
+            packetstable.refresh();
             captureToggle.setSelected(true);
             handler.setTableviewRunnable(ScheduledThreadPoolExecutorHandler.getService().scheduleAtFixedRate(tRunnable, 2, 1, TimeUnit.SECONDS));
 
