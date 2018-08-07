@@ -85,7 +85,7 @@ public class FileScanner {
                 System.out.println("\t\t Version :" + virusInfo.getVersion() + "\n\n");
             }
 
-            if (testPositive >= 5) {
+            if (testPositive >= 3) {
 
 //                Alert alert = new Alert(Alert.AlertType.WARNING);
 //                alert.setTitle("FireE");
