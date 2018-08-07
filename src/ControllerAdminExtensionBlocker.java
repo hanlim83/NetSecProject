@@ -114,17 +114,17 @@ public class ControllerAdminExtensionBlocker implements Initializable {
             this.array = add.getExtensionList();
         System.out.println(array);
 
-            for (int i=0; i<array.size()-1;i++) {
+            for (int i=0; i<array.size();i++) {
 
-                String hello = array.get(i);
-                System.out.println(hello);
+//                String hello = array.get(i);
+//                System.out.println(hello);
 
 
                 if (array.contains(txt) && !txtSetter.isSelected()) {
                     txtSetter.setSelected(true);
-                } else if (array.contains(txt) && !txtSetter.isSelected()) {
-                    docxSetter.setSelected(true);
                 } else if (array.contains(docx) && !docxSetter.isSelected()) {
+                    docxSetter.setSelected(true);
+                } else if (array.contains(exe) && !exeSetter.isSelected()) {
                     exeSetter.setSelected(true);
                 } else if (array.contains(dmg)&& !dmgSetter.isSelected()) {
                     dmgSetter.setSelected(true);
