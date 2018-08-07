@@ -106,7 +106,6 @@ public class ControllerLoginPage implements Initializable{
                     stage.show();
                 } else if (AccStatus.equals("Active")) {
                     if (phoneNo!=null){
-                        //Go to SMS OTP page
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("VerifyTextAuth.fxml"));
                         myScene = anchorPane.getScene();
                         Stage stage = (Stage) (myScene).getWindow();
