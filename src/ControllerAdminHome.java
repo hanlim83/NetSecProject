@@ -1,15 +1,7 @@
 import Database.admin_DB;
 import Model.IPAddressPolicy;
-import Model.MyBlob;
 import Model.OAuth2LoginAdmin;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.gax.paging.Page;
-import com.google.auth.oauth2.AccessToken;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXSnackbar;
@@ -20,23 +12,18 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.*;
-import java.text.Format;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ControllerAdminHome implements Initializable {
     @FXML
@@ -261,7 +248,7 @@ public class ControllerAdminHome implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);

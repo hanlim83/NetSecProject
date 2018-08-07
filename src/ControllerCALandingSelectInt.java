@@ -38,8 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ControllerCALandingSelectInt implements Initializable {
@@ -310,7 +308,7 @@ public class ControllerCALandingSelectInt implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);

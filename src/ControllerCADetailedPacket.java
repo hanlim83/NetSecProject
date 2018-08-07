@@ -32,8 +32,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ControllerCADetailedPacket implements Initializable {
 
@@ -127,7 +125,7 @@ public class ControllerCADetailedPacket implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);

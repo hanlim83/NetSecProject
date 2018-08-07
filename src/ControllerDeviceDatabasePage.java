@@ -1,6 +1,7 @@
 import Database.Device_Build_NumberDB;
 import Database.OSVersion;
-import Model.*;
+import Model.ActionButtonTableCell;
+import Model.IPAddressPolicy;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -17,7 +18,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,8 +41,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //here LOL 11.01pm
 public class ControllerDeviceDatabasePage implements Initializable {
@@ -489,7 +491,7 @@ public class ControllerDeviceDatabasePage implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);

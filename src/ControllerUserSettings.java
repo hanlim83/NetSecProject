@@ -28,8 +28,6 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ControllerUserSettings implements Initializable {
 
@@ -94,7 +92,7 @@ public class ControllerUserSettings implements Initializable {
             drawer.setVisible(false);
             drawer.setDefaultDrawerSize(219);
         } catch (IOException ex) {
-            Logger.getLogger(ControllerBaseLayoutNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
