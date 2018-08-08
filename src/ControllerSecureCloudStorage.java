@@ -369,18 +369,6 @@ public class ControllerSecureCloudStorage implements Initializable {
             e.printStackTrace();
         }
 
-//        URL url = new URL(
-////                "" +
-////                "curl -X PATCH --data-binary @JsonFile.json " +
-////                "        -H \"Authorization: Bearer "+"1/Gj3dwe658cFMW9X0IFyL5p8Pf6CnjAwZ0wT46IYDYeQ"+" \\\n" +
-////                "        -H \"Content-Type: application/json\" \\\n" +
-//                "https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted test");
-//
-////        curl -X PATCH --data-binary @JsonFile.json \\" +
-////        "    -H \"Authorization: Bearer "+"1/Gj3dwe658cFMW9X0IFyL5p8Pf6CnjAwZ0wT46IYDYeQ"+"\\\"" +
-////                "    -H \"Content-Type: application/json\"" +
-////                "    \"https://www.googleapis.com/storage/v1/b/hugochiaxyznspj/o/Encrypted test\"
-//
 //        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
 //            for (String line; (line = reader.readLine()) != null;) {
 //                System.out.println(line);
@@ -507,6 +495,19 @@ public class ControllerSecureCloudStorage implements Initializable {
         }
     }
 
+    private Service processUpload = new Service() {
+        @Override
+        protected Task createTask() {
+            return new Task() {
+                @Override
+                protected Void call() throws Exception {
+
+                    return null;
+                }
+            };
+        }
+    };
+
     //Download,saving and decrypt is here now
     private void downloadFile(Storage storage, String bucketName, String objectName) throws Exception {
         vBox.setVisible(false);
@@ -580,13 +581,17 @@ public class ControllerSecureCloudStorage implements Initializable {
             aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
             byte[] bytePlainText = aesCipher.doFinal(cipherText);
             Files.write(Paths.get(filePath.getAbsolutePath()), bytePlainText);
+
+            JFXSnackbar snackbar = new JFXSnackbar(anchorPane);
+            snackbar.show("Download success", 3000);
+            snackbar.getStylesheets().add("Style.css");
         }
     }
 
     private String bucketNameDelete;
     private String deleteblobName;
 
-    private void deleteFile(String bucketName, String blobName) throws Exception {
+    private void deleteFile(String bucketName, String blobName){
         bucketNameDelete = bucketName;
         deleteblobName = blobName;
         JFXSpinner.setVisible(true);
@@ -759,29 +764,16 @@ public class ControllerSecureCloudStorage implements Initializable {
     private ArrayList<String> arrayFolder = new ArrayList<String>();
 
     private void updateObservableList() throws Exception {
-//        if (process.getState().toString().equals("SUCCEEDED")) {
-//            process.reset();
         processUpdateObservableList.start();
-//        }
         processUpdateObservableList.setOnSucceeded(e -> {
             processUpdateObservableList.reset();
-//            Platform.runLater(() -> {
-//                JFXSpinner.setVisible(false);
-//            });
         });
         processUpdateObservableList.setOnCancelled(e -> {
             processUpdateObservableList.reset();
-//            Platform.runLater(() -> {
-//                JFXSpinner.setVisible(false);
-//            });
         });
         processUpdateObservableList.setOnFailed(e -> {
             processUpdateObservableList.reset();
-//            Platform.runLater(() -> {
-//                JFXSpinner.setVisible(false);
-//            });
         });
-
 
 //        try {
 //            if (storage == null) {
@@ -963,9 +955,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                                             });
 
                                             btn.setId("tableJFXButton");
-
-//                                    Image imageEllipsis = new Image("https://www.google.com.sg/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiLuLWN8cbcAhWEdH0KHQ5xAXIQjRx6BAgBEAU&url=https%3A%2F%2Fwww.charbase.com%2F22ef-unicode-midline-horizontal-ellipsis&psig=AOvVaw3K7nmLaegBi6CsmUh6izNv&ust=1533042128558435");
-//                                    btn.setGraphic(new ImageView(imageEllipsis));
 
                                             Path path = FileSystems.getDefault().getPath("src\\View\\more.png");
                                             File file = new File(path.toUri());
@@ -1745,7 +1734,6 @@ public class ControllerSecureCloudStorage implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     updateObservableList();
-//                    TableMethod();
                     return null;
                 }
             };
@@ -1766,7 +1754,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         final StringProperty blobName;
         final StringProperty date;
         final StringProperty folderName;
-        //        final StringProperty type;
         final StringProperty type2;
 
         //take in blobname can be file/folder, date, type, General/File, type
@@ -1792,11 +1779,9 @@ public class ControllerSecureCloudStorage implements Initializable {
 //            }
             if (type2.equals("Folder")) {
                 this.type2 = new SimpleStringProperty("Folder");
-//                this.type = new SimpleStringProperty("Folder");
                 this.folderName = new SimpleStringProperty(folderName);
             } else {
                 this.type2 = new SimpleStringProperty("File");
-//                this.type = new SimpleStringProperty("File");
                 this.folderName = new SimpleStringProperty("");
             }
 //            this.folderName = new SimpleStringProperty(blobName);
@@ -1831,18 +1816,6 @@ public class ControllerSecureCloudStorage implements Initializable {
         public void setFolderName(String folderName) {
             this.folderName.set(folderName);
         }
-
-//        public String getType() {
-//            return type.get();
-//        }
-//
-//        public StringProperty typeProperty() {
-//            return type;
-//        }
-//
-//        public void setType(String type) {
-//            this.type.set(type);
-//        }
 
         public String getType2() {
             return type2.get();
