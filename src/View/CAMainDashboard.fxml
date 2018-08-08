@@ -44,8 +44,12 @@
             <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                     <children>
-                        <PieChart fx:id="protocolChart" layoutY="342.0" title="Protocol Make-Up"/>
-                        <PieChart fx:id="top10IPChart" layoutX="538.0" layoutY="342.0" title="Top 5 IP Addresses"/>
+                        <PieChart fx:id="protocolChart" layoutY="342.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                  minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="421.0"
+                                  title="Protocol Make-Up"/>
+                        <PieChart fx:id="top10IPChart" layoutX="458.0" layoutY="342.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+                                  prefWidth="580.0" title="Top 5 IP Addresses"/>
                         <AnchorPane fx:id="LineChartAnchorPane" layoutX="-1.0" layoutY="1.0" maxHeight="-Infinity"
                                     maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0"
                                     prefWidth="1051.0"/>
